@@ -45,6 +45,11 @@ export default function HomeNav({ activePage }) {
       chineseName: '關於我們',
       subMenu: [],
     },
+    {
+      name: 'join',
+      chineseName: '加入我們',
+      subMenu: [],
+    },
   ]
 
   return (
