@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 // import { useState } from 'react'
 import {
   Navbar,
@@ -68,7 +68,7 @@ export default function HomeNav({ activePage }) {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         {menuItems.map((item, index) => (
-          <React.Fragment key={`${item}-${index}`}>
+          <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
                 <DropdownTrigger>
@@ -103,11 +103,14 @@ export default function HomeNav({ activePage }) {
                 </Link>
               </NavbarItem>
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </NavbarContent>
 
-      <NavbarContent justify="end">
+      <NavbarContent
+        justify="end"
+        // style={{ backgroundColor: 'blue', padding: '10px' }}
+      >
         <NavbarItem className="hidden lg:flex">
           <Link href="#">Login</Link>
         </NavbarItem>
@@ -120,7 +123,7 @@ export default function HomeNav({ activePage }) {
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <React.Fragment key={`${item}-${index}`}>
+          <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
                 <DropdownTrigger className="aaav">
@@ -155,7 +158,7 @@ export default function HomeNav({ activePage }) {
                 </Link>
               </NavbarItem>
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </NavbarMenu>
     </Navbar>
