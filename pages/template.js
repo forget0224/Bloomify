@@ -19,6 +19,9 @@ export default function Custom() {
             <p className="text-2xl text-primary">代客送花</p>
             <p className="text-2xl text-primary-200">代客送花</p>
             <p className="text-2xl text-primary-300">代客送花</p>
+            <MyButton className="bg-[#eeff88]" color="secondary" size="md">
+              加入我們ddd
+            </MyButton>
             <MyButton color="secondary" size="md">
               加入我們ddd
             </MyButton>
