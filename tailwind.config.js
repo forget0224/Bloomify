@@ -28,6 +28,7 @@ module.exports = {
               100: '#FFC1B4',
               200: '#FFEBE7',
               300: '#FFFBFA',
+              DEFAULT: '#FFEBE7',
             },
             tertiary: {
               black: '#272727',

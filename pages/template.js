@@ -16,7 +16,7 @@ export default function Custom() {
             <p className="text-2xl text-danger">代客送花</p>
             <p className="text-2xl text-tertiary-gray-200">代客送花</p>
             <p className="text-2xl text-tertiary-blue">代客送花</p>
-            <p className="text-2xl text-primary-100">代客送花</p>
+            <p className="text-2xl text-primary">代客送花</p>
             <p className="text-2xl text-primary-200">代客送花</p>
             <p className="text-2xl text-primary-300">代客送花</p>
             <MyButton color="secondary" size="md">
