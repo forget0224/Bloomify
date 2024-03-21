@@ -67,6 +67,11 @@ export default function HomeNav({ activePage }) {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarItem>
+          <Link color="foreground" href="/template">
+            範例
+          </Link>
+        </NavbarItem>
         {menuItems.map((item, index) => (
           <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
