@@ -29,6 +29,7 @@ export default function HomeNav({ activePage }) {
       name: 'online',
       chineseName: '線上商城',
       subMenu: [],
+      // 下拉分頁，有的話增加
     },
     {
       name: 'course',
