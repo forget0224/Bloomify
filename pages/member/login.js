@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
-import styles from './custom.module.css'
 import Image from 'next/image'
 import bannerFlower from '@/assets/banner-flower.jpg'
 export default function Custom() {
@@ -11,10 +10,9 @@ export default function Custom() {
         <>
           {/* main的東西 */}
           <div className="w-screen h-screen bg-orange-100 text-2xl text-black">
-            代客送花 建立custom branch
+            代客送花
           </div>
 
-          <div className={styles['foo']}>代客送花 建立custom branch</div>
           <div className="w-screen h-screen bg-blue-100  text-black flex flex-col  justify-center items-center">
             <div className="border-1 border-pink w-[1000px] h-[400px] flex flex-row">
               <div className="w-full flex flex-col bg-white justify-center items-center text-center">
