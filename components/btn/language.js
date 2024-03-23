@@ -19,10 +19,10 @@ export default function Language() {
 
   const selectedOptionValue = Array.from(selectedOption)[0]
   return (
-    <ButtonGroup variant="bordered" className="rounded-lg">
+    <ButtonGroup variant="bordered" className="rounded-lg ">
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
-          <Button className="border-1 border-black px-unit-6 text-xs h-[34px] ">
+          <Button className="border-1 border-black px-unit-6 text-xs h-[34px] w-[120px]">
             <TfiWorld />
             {labelsMap[selectedOptionValue]}
           </Button>
