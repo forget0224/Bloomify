@@ -15,7 +15,7 @@ export default function Footer() {
   return (
     <footer className="bg-secondary-300 h-90 w-screen text-tertiary-black text-xs px-5 py-6  flex flex-col gap-3 ">
       <div className="flex flex-col gap-3 sm:flex-row sm:px-72 sm:justify-around">
-        <div className="flex flex-col gap-2 sm:order-last w-36 sm:justify-center ">
+        <div className="flex flex-col gap-2 sm:order-last sm:w-36 sm:justify-center ">
           <div className="flex flex-col gap-2 ">
             <Link href="#">關注我們</Link>
 

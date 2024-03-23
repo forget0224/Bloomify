@@ -19,21 +19,21 @@ export default function Language() {
 
   const selectedOptionValue = Array.from(selectedOption)[0]
   return (
-    <ButtonGroup variant="bordered" className="rounded-lg ">
-      <Dropdown placement="bottom-end">
+    <ButtonGroup variant="bordered" className="rounded-lg">
+      <Dropdown>
         <DropdownTrigger>
-          <Button className="border-1 border-black px-unit-6 text-xs h-[34px] w-[120px]">
+          <Button className="border-1 border-black px-unit-6 text-xs min-h-[34px] min-w-[120px]">
             <TfiWorld />
             {labelsMap[selectedOptionValue]}
           </Button>
         </DropdownTrigger>
         <DropdownMenu
           disallowEmptySelection
-          aria-label="Merge options"
+          aria-label="language options"
           selectedKeys={selectedOption}
           selectionMode="single"
           onSelectionChange={setSelectedOption}
-          className="max-w-[300px] text-tertiary-black"
+          className=" text-tertiary-black"
         >
           <DropdownItem key="chinese">{labelsMap['chinese']}</DropdownItem>
           <DropdownItem key="english">{labelsMap['english']}</DropdownItem>
