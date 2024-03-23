@@ -53,7 +53,7 @@ export default function HomeNav({ activePage }) {
   ]
 
   return (
-    <Navbar isBordered className="bg-pink-200">
+    <Navbar isBordered className="bg-primary-300">
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
