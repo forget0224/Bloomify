@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
-import photo1 from '/public/assets/shop/pink_Gladiola_0.jpg'
+import Image from 'next/image'
 
 function Category() {
   const categories = [
     {
       title: '全部',
-      img: photo1,
+      img: '/assets/shop/pink_Gladiola_0.jpg',
     },
     {
       title: '鮮花類',
-      img: photo1,
+      img: '/assets/shop/pink_Gladiola_0.jpg',
     },
     {
       title: '植栽類',
-      img: photo1,
+      img: '/assets/shop/pink_Gladiola_0.jpg',
     },
     {
       title: '資材類',
-      img: photo1,
+      img: '/assets/shop/pink_Gladiola_0.jpg',
     },
   ]
 
@@ -43,7 +43,9 @@ function Category() {
           }}
           className="my-8 mx-4 sm:mx-0"
         >
-          <img
+          <Image
+            width={300}
+            height={300}
             src={category.img}
             alt={category.title}
             className="w-36 h-36 rounded-full mx-auto"
