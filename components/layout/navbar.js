@@ -37,9 +37,12 @@ export default function HomeNav({ activePage }) {
       subMenu: [],
     },
     {
-      name: 'plant',
-      chineseName: '植物介紹',
-      subMenu: [],
+      name: 'intro',
+      chineseName: '花與遊戲',
+      subMenu: [
+        { href: 'flowers', chineseName: '花圖鑑' },
+        { href: 'game', chineseName: '花占卜' },
+      ],
     },
     {
       name: 'about',
