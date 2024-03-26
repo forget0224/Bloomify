@@ -7,6 +7,9 @@ import {
   Image,
 } from '@nextui-org/react'
 
+import { BsFillStarFill } from 'react-icons/bs'
+import { BsHeart } from 'react-icons/bs'
+
 export default function CardGroup() {
   const list = [
     {
@@ -18,18 +21,21 @@ export default function CardGroup() {
     },
     {
       title: '課程二',
+      content: '課程內容課程內容課程內容課程內容',
       img: '/assets/course/img_course_card_02.png',
       star: '5',
       price: 'NT$1000',
     },
     {
       title: '課程三',
+      content: '課程內容課程內容課程內容課程內容',
       img: '/assets/course/img_course_card_03.png',
       star: '5',
       price: 'NT$800',
     },
     {
       title: '課程四',
+      content: '課程內容課程內容課程內容課程內容',
       img: '/assets/course/img_course_card_04.png',
       star: '5',
       price: 'NT$600',
@@ -45,7 +51,7 @@ export default function CardGroup() {
           isPressable
           onPress={() => console.log('item pressed')}
         >
-          <CardBody className="overflow-visible p-0">
+          <CardBody className="static overflow-visible p-0">
             <Image
               shadow="none"
               radius="none"
@@ -55,17 +61,20 @@ export default function CardGroup() {
               src={item.img}
             />
           </CardBody>
-          <CardHeader>
+          <CardHeader className="block text-left">
             <div>
-              <b>{item.title}</b>
+              <p class="text-xl truncate ...">{item.title}</p>
             </div>
             <div>
-              <p>{item.content}</p>
+              <p class="text-base truncate ...">{item.content}</p>
             </div>
           </CardHeader>
           <CardFooter className="text-small justify-between">
-            <p className="text-default-500">{item.star}</p>
-            <p className="text-default-500">{item.price}</p>
+            <p className="text-base flex">
+              <BsFillStarFill className="text-secondary-100" />
+              {item.star}
+            </p>
+            <p className="text-base">{item.price}</p>
           </CardFooter>
         </Card>
       ))}
