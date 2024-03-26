@@ -92,7 +92,7 @@ export default function HomeNav({ activePage }) {
                   {item.subMenu.map((subItem, subIndex) => (
                     <DropdownItem key={`${subItem}-${subIndex}`}>
                       {subItem ? (
-                        <Link href={`/custom/${subItem.href}`}>
+                        <Link href={`/${item.name}/${subItem.href}`}>
                           <p className="text-black">{subItem.chineseName}</p>
                         </Link>
                       ) : (
@@ -132,7 +132,7 @@ export default function HomeNav({ activePage }) {
           <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
-                <DropdownTrigger className="aaav">
+                <DropdownTrigger>
                   <Button
                     className={`bg-red-100 ${
                       activePage === item.name
@@ -147,7 +147,7 @@ export default function HomeNav({ activePage }) {
                   {item.subMenu.map((subItem, subIndex) => (
                     <DropdownItem key={`${subItem}-${subIndex}`}>
                       {subItem ? (
-                        <Link href={`/custom/${subItem.href}`}>
+                        <Link href={`/${item.name}/${subItem.href}`}>
                           <p className="text-black">{subItem.chineseName}</p>
                         </Link>
                       ) : (
