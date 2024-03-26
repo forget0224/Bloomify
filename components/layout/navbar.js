@@ -1,4 +1,4 @@
-import React from 'react'
+import { Fragment } from 'react'
 // import { useState } from 'react'
 import {
   Navbar,
@@ -26,7 +26,7 @@ export default function HomeNav({ activePage }) {
       ],
     },
     {
-      name: 'online',
+      name: 'shop',
       chineseName: '線上商城',
       subMenu: [],
     },
@@ -45,10 +45,15 @@ export default function HomeNav({ activePage }) {
       chineseName: '關於我們',
       subMenu: [],
     },
+    {
+      name: 'join',
+      chineseName: '加入我們',
+      subMenu: [],
+    },
   ]
 
   return (
-    <Navbar isBordered className="bg-pink-200">
+    <Navbar isBordered className="bg-primary-300">
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
@@ -62,8 +67,13 @@ export default function HomeNav({ activePage }) {
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        {menuItems.map((item, index) => (
-          <React.Fragment key={`${item}-${index}`}>
+        <NavbarItem>
+          <Link color="foreground" href="/template">
+            範例
+          </Link>
+        </NavbarItem>
+        {/* {menuItems.map((item, index) => (
+          <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
                 <DropdownTrigger>
@@ -98,11 +108,59 @@ export default function HomeNav({ activePage }) {
                 </Link>
               </NavbarItem>
             )}
-          </React.Fragment>
+          </Fragment>
+        ))} */}
+        {/* 這樣是否會有問題 */}
+        {menuItems.map((item, index) => (
+          <Fragment key={`${item}-${index}`}>
+            {item.name === 'shop' ? (
+              <NavbarItem>
+                <Link color="foreground" href="/shop/shop">
+                  {item.chineseName}
+                </Link>
+              </NavbarItem>
+            ) : item.subMenu.length > 0 ? (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button
+                    className={`bg-red-100 ${
+                      activePage === item.name
+                        ? ' border-b-3  border-red-700'
+                        : ''
+                    }`}
+                  >
+                    {item.chineseName}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Sub menu">
+                  {item.subMenu.map((subItem, subIndex) => (
+                    <DropdownItem key={`${subItem}-${subIndex}`}>
+                      {subItem ? (
+                        <Link href={`/custom/${subItem.href}`}>
+                          <p className="text-black">{subItem.chineseName}</p>
+                        </Link>
+                      ) : (
+                        ''
+                      )}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            ) : (
+              <NavbarItem>
+                <Link color="foreground" href={`/custom/${item.name}`}>
+                  {item.chineseName}
+                </Link>
+              </NavbarItem>
+            )}
+          </Fragment>
         ))}
       </NavbarContent>
 
-      <NavbarContent justify="end">
+      <NavbarContent
+        justify="end"
+        // style={{ backgroundColor: 'blue', padding: '10px' }}
+      >
         <NavbarItem className="hidden lg:flex">
           <Link href="#">Login</Link>
         </NavbarItem>
@@ -115,7 +173,7 @@ export default function HomeNav({ activePage }) {
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <React.Fragment key={`${item}-${index}`}>
+          <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
                 <DropdownTrigger className="aaav">
@@ -150,7 +208,7 @@ export default function HomeNav({ activePage }) {
                 </Link>
               </NavbarItem>
             )}
-          </React.Fragment>
+          </Fragment>
         ))}
       </NavbarMenu>
     </Navbar>

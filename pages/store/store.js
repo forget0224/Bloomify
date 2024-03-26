@@ -9,8 +9,8 @@ export default function Custom() {
       {
         <>
           {/* main的東西 */}
-          <div className="w-screen h-screen bg-orange-100 text-2xl text-black">
-            代客送花
+          {/* <div className="w-screen h-screen bg-orange-100 text-2xl text-black">
+            代客送花 建立custom branch
           </div>
 
           <div className="w-screen h-screen bg-blue-100  text-black flex flex-col  justify-center items-center">
@@ -30,7 +30,7 @@ export default function Custom() {
                 <Image src={bannerFlower} alt="" className="w-[500px] h-full" />
               </div>
             </div>
-          </div>
+          </div> */}
         </>
       }
     </DefaultLayout>

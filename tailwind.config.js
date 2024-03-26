@@ -14,6 +14,46 @@ module.exports = {
   plugins: [
     nextui({
       defaultTheme: 'light',
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              100: '#68A392',
+              200: '#A5D1AE',
+              300: '#DBEDDF',
+              400: '#F6FBF7',
+              DEFAULT: '#A5D1AE',
+            },
+            secondary: {
+              100: '#FFC1B4',
+              200: '#FFEBE7',
+              300: '#FFFBFA',
+              DEFAULT: '#FFEBE7',
+            },
+            tertiary: {
+              black: '#272727',
+              blue: '#394A54',
+              'gray-100': '#959595',
+              'gray-200': '#E4E4E4',
+            },
+            danger: {
+              DEFAULT: '#FF7C7C',
+            },
+          },
+        },
+      },
+      layout: {
+        fontSize: {
+          // xxs: '0.625rem',
+          // xs: '0.75rem',
+          // sm: '0.875rem',
+          // base: '1rem',
+          tiny: '0.75rem', //12
+          small: '0.875rem', //14
+          medium: '1rem', //16
+          large: '1.125rem', //18
+        },
+      },
       // themes: {
       //   modern: {
       //     extend: 'light', // <- inherit default values from dark theme
