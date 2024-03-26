@@ -1,0 +1,10 @@
+// 小標題
+import React from 'react'
+
+export default function SmTitle(props) {
+  return (
+    <div className="border-s-5 border-primary text-2xl px-4 ">
+      <p>{props.text}</p>
+    </div>
+  )
+}
