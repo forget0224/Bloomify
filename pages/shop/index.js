@@ -4,10 +4,10 @@ import { Breadcrumbs, BreadcrumbItem, Checkbox } from '@nextui-org/react'
 import 'react-slideshow-image/dist/styles.css'
 import { Fade } from 'react-slideshow-image'
 import Image from 'next/image'
-import SearchSort from '../../components/shop/home/SearchSort.js'
+import SearchSort from '../../components/shop/search-sort.js'
 // import { Slider } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-import ShopSlider from '../../components/shop/home/ShopSlider.js'
+import ShopSlider from '../../components/shop/shop-slider.js'
 
 export default function Shop() {
   // carousel start
@@ -122,17 +122,14 @@ export default function Shop() {
               <BreadcrumbItem>線上商城</BreadcrumbItem>
             </Breadcrumbs>
             {/* carousel start */}
-            <div className="slide-container ">
+            <div className="slide-container">
               <Fade>
                 {banners.map((image, index) => (
-                  <div key={index}>
+                  <div key={index} className="h-700">
                     <div
-                      className="h-96 sm:h-80 md:h-72 lg:h-60 xl:h-64 bg-cover bg-center"
+                      className="h-96 bg-cover bg-center"
                       style={{ backgroundImage: `url(${image.url})` }}
-                    >
-                      {/* Optionally, you can add a caption */}
-                      {/* <p>{image.caption}</p> */}
-                    </div>
+                    ></div>
                   </div>
                 ))}
               </Fade>
@@ -144,14 +141,11 @@ export default function Shop() {
                 <div
                   key={index}
                   onClick={() => setSelectedCategory(index)}
-                  style={{
-                    cursor: 'pointer',
-                    borderBottom:
-                      index === selectedCategory
-                        ? '5px solid #FFC1B4'
-                        : '5px solid transparent',
-                  }}
-                  className="mx-4"
+                  className={`mx-4 ${
+                    index === selectedCategory
+                      ? 'border-b-2 border-pink-500'
+                      : ''
+                  }`}
                 >
                   <Image
                     width={300}
