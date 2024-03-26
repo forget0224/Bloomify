@@ -1,108 +1,102 @@
 import React from 'react'
-import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
+import { Card, CardBody, CardFooter } from '@nextui-org/react'
+import Image from 'next/image'
 
 function Products() {
-  const list = [
+  const productList = [
     {
       title: 'Avocado',
-      img: '/images/fruit-5.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$15.70',
     },
     {
       title: 'Lemon 2',
-      img: '/images/fruit-6.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$8.00',
     },
     {
       title: 'Banana',
-      img: '/images/fruit-7.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$7.50',
     },
     {
       title: 'Watermelon',
-      img: '/images/fruit-8.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$12.20',
     },
     {
       title: 'Orange',
-      img: '/images/fruit-1.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$5.50',
     },
     {
       title: 'Tangerine',
-      img: '/images/fruit-2.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$3.00',
     },
     {
       title: 'Raspberry',
-      img: '/images/fruit-3.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$10.00',
     },
     {
       title: 'Lemon',
-      img: '/images/fruit-4.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$5.30',
     },
     {
       title: 'Avocado',
-      img: '/images/fruit-5.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$15.70',
     },
     {
       title: 'Lemon 2',
-      img: '/images/fruit-6.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$8.00',
     },
     {
       title: 'Banana',
-      img: '/images/fruit-7.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$7.50',
     },
     {
       title: 'Watermelon',
-      img: '/images/fruit-8.jpeg',
+      img: '/assets/shop/pink_Gladiola_0.jpg',
       price: '$12.20',
     },
   ]
 
   return (
-    <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
-      {list.map((item, index) => (
-        <Card
-          shadow="sm"
-          key={index}
-          isPressable
-          onPress={() => console.log('item pressed')}
-        >
-          <CardBody className="overflow-visible p-0">
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
+      {productList.map((item, index) => (
+        <div key={index} className="shadow-sm">
+          <div className="overflow-visible p-0">
             <Image
-              shadow="sm"
-              radius="lg"
-              width="100%"
-              alt={item.title}
-              className="w-full object-cover h-[140px]"
               src={item.img}
-              style={{ width: '350px', height: '350px' }}
+              alt={item.title}
+              className="w-full h-40 object-cover rounded-lg"
+              width={300}
+              height={300}
             />
-          </CardBody>
-          <CardFooter className="pb-0 pt-2 px-4 flex-col items-start">
+          </div>
+          <div className="pb-0 pt-2 px-4 flex flex-col items-start">
             <div className="flex justify-between w-full">
               <b>{item.title}</b>
-              <span className="flex">
+              <div className="flex items-center">
                 <p>star</p>
                 <p className="text-default-500">4.0</p>
-              </span>
+              </div>
             </div>
             <small className="text-default-500">花店名稱</small>
-            <div className="border-solid border-2 py-0.4 px-4">
-              <p className="text-tiny uppercase font-bold">TAGS</p>
+            <div className="border border-solid border-2 py-1 px-4 mt-1">
+              <p className="text-xs uppercase font-bold">TAGS</p>
             </div>
             <div className="flex justify-between w-full">
-              <h4 className="font-bold text-large">NT{item.price}</h4>
+              <h4 className="font-bold text-lg">NT{item.price}</h4>
               <p className="text-default-500">CART</p>
             </div>
-          </CardFooter>
-        </Card>
+          </div>
+        </div>
       ))}
     </div>
   )
