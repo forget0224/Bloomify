@@ -5,7 +5,7 @@ import { MyButton } from '@/components/btn/mybutton'
 import CardGroup from '@/components/course/card-group'
 
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
-import SmTitle from '@/components/course/small-title'
+import Subtitle from '@/components/course/subtitle'
 
 export default function Course() {
   const underlines = ['none']
@@ -35,23 +35,23 @@ export default function Course() {
 
           {/* 卡片群組 */}
           <div className="grid gap-y-4 my-14 ">
-            <SmTitle text="最新課程" />
+            <Subtitle text="最新課程" />
             <CardGroup />
           </div>
           <div className="grid gap-y-4 my-14 ">
-            <SmTitle text="熱銷課程" />
+            <Subtitle text="熱銷課程" />
             <CardGroup />
           </div>
           <div className="grid gap-y-4 my-14 ">
-            <SmTitle text="精選商家" />
+            <Subtitle text="精選商家" />
             <CardGroup />
           </div>
           <div className="grid gap-y-4 my-14 ">
-            <SmTitle text="四大分類" />
+            <Subtitle text="四大分類" />
             <CardGroup />
           </div>
           <div className="grid gap-y-4 my-14 ">
-            <SmTitle text="為您推薦" />
+            <Subtitle text="為您推薦" />
             <CardGroup />
           </div>
         </div>
