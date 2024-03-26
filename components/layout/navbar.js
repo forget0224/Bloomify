@@ -28,6 +28,7 @@ export default function HomeNav({ activePage }) {
     {
       name: 'shop',
       chineseName: '線上商城',
+      href: 'shop',
       subMenu: [],
     },
     {
@@ -72,7 +73,7 @@ export default function HomeNav({ activePage }) {
             範例
           </Link>
         </NavbarItem>
-        {/* {menuItems.map((item, index) => (
+        {menuItems.map((item, index) => (
           <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
@@ -103,52 +104,7 @@ export default function HomeNav({ activePage }) {
               </Dropdown>
             ) : (
               <NavbarItem>
-                <Link color="foreground" href={`/custom/${item.name}`}>
-                  {item.chineseName}
-                </Link>
-              </NavbarItem>
-            )}
-          </Fragment>
-        ))} */}
-        {/* 這樣是否會有問題 */}
-        {menuItems.map((item, index) => (
-          <Fragment key={`${item}-${index}`}>
-            {item.name === 'shop' ? (
-              <NavbarItem>
-                <Link color="foreground" href="/shop/shop">
-                  {item.chineseName}
-                </Link>
-              </NavbarItem>
-            ) : item.subMenu.length > 0 ? (
-              <Dropdown>
-                <DropdownTrigger>
-                  <Button
-                    className={`bg-red-100 ${
-                      activePage === item.name
-                        ? ' border-b-3  border-red-700'
-                        : ''
-                    }`}
-                  >
-                    {item.chineseName}
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu aria-label="Sub menu">
-                  {item.subMenu.map((subItem, subIndex) => (
-                    <DropdownItem key={`${subItem}-${subIndex}`}>
-                      {subItem ? (
-                        <Link href={`/custom/${subItem.href}`}>
-                          <p className="text-black">{subItem.chineseName}</p>
-                        </Link>
-                      ) : (
-                        ''
-                      )}
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            ) : (
-              <NavbarItem>
-                <Link color="foreground" href={`/custom/${item.name}`}>
+                <Link color="foreground" href={`/${item.name}/${item.href}`}>
                   {item.chineseName}
                 </Link>
               </NavbarItem>
