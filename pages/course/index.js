@@ -7,10 +7,14 @@ import CardGroup from '@/components/course/card-group'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/course/subtitle'
 
-export default function Course() {
+export default function CourseIndex() {
+  const [activePage, setActivePage] = useState('course')
   const underlines = ['none']
   return (
-    <DefaultLayout className="justify-center flex-col items-center">
+    <DefaultLayout
+      activePage={activePage}
+      className="justify-center flex-col items-center"
+    >
       <main className="bg-white flex justify-center items-center">
         <div className="container justify-center flex-col items-center">
           {/* 麵包屑 */}
@@ -18,7 +22,7 @@ export default function Course() {
             {underlines.map((u) => (
               <div key={u}>
                 <Breadcrumbs underline={u}>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem className="font-serif">首頁</BreadcrumbItem>
                   <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>
                 </Breadcrumbs>
               </div>

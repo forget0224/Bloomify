@@ -19,6 +19,20 @@ export default function Custom() {
             <p className="text-2xl text-primary">代客送花</p>
             <p className="text-2xl text-primary-200">代客送花</p>
             <p className="text-2xl text-primary-300">代客送花</p>
+
+            <p className="text-4xl text-tertiary-black">
+              字體演示 font FONT normal 甚麼都不做{' '}
+            </p>
+            <p className="text-4xl text-tertiary-black font-medium">
+              字體演示 font FONT font-medium
+            </p>
+            <p className="text-4xl text-tertiary-black font-semibold">
+              字體演示 font FONT font-semibold
+            </p>
+            <p className="text-4xl text-tertiary-black font-bold">
+              字體演示 font FONT font-bold
+            </p>
+
             <MyButton className="bg-[#eeff88]" color="secondary" size="md">
               加入我們ddd
             </MyButton>
