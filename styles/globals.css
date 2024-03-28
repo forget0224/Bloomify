@@ -5,29 +5,29 @@
 @font-face {
   font-family: 'NotoSerifTC';
   src: url('/fonts/NotoSerifTC-Bold.otf') format('opentype');
-  font-weight: bold;
-  font-style: normal;
+  font-weight: 700;
+  font-style: bold;
 }
 
 @font-face {
   font-family: 'NotoSerifTC';
   src: url('/fonts/NotoSerifTC-Medium.otf') format('opentype');
   font-weight: 500;
-  font-style: normal;
+  font-style: medium;
 }
 
 @font-face {
   font-family: 'NotoSerifTC';
   src: url('/fonts/NotoSerifTC-Regular.otf') format('opentype');
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'NotoSerifTC';
   src: url('/fonts/NotoSerifTC-SemiBold.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+  font-weight: 600;
+  font-style: semibold;
 }
 
 
