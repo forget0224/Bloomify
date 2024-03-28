@@ -3,20 +3,32 @@ import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem, Checkbox } from '@nextui-org/react'
 import 'react-slideshow-image/dist/styles.css'
 import { Fade } from 'react-slideshow-image'
-import Image from 'next/image'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+} from '@nextui-org/react'
+import { BsFillStarFill } from 'react-icons/bs'
+import { BsHeart } from 'react-icons/bs'
 import SearchSort from '../../components/shop/search-sort.js'
-// import { Slider } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import ShopSlider from '../../components/shop/shop-slider.js'
+import Subtitle from '@/components/course/subtitle.js'
+import Link from 'next/link.js'
 
 export default function Shop() {
   // carousel start
   const banners = [
     {
-      url: 'https://blog.currentcatalog.com/wp-content/uploads/2019/09/AdobeStock_269466462.jpeg',
+      url: '/assets/shop/products/pink_Gladiola_0.jpg',
     },
     {
-      url: 'https://blog.currentcatalog.com/wp-content/uploads/2019/09/AdobeStock_234433400-1024x684.jpeg',
+      url: '/assets/shop/products/red_Amaryllis_3.jpg',
+    },
+    {
+      url: '/assets/shop/products/red_Snapdragon_1.jpg',
     },
   ]
   // carousel end
@@ -24,19 +36,19 @@ export default function Shop() {
   const categories = [
     {
       title: '全部',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
     },
     {
       title: '鮮花類',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
     },
     {
       title: '植栽類',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
     },
     {
       title: '資材類',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
     },
   ]
   const initialSelectedCategoryIndex = categories.findIndex(
@@ -46,71 +58,71 @@ export default function Shop() {
     initialSelectedCategoryIndex !== -1 ? initialSelectedCategoryIndex : 0
   const [selectedCategory, setSelectedCategory] = useState(defaultIndex)
   // select categories end
+
   // products start
   const productList = [
     {
       title: 'Avocado',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$15.70',
     },
     {
       title: 'Lemon 2',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$8.00',
     },
     {
       title: 'Banana',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$7.50',
     },
     {
       title: 'Watermelon',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$12.20',
     },
     {
       title: 'Orange',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$5.50',
     },
     {
       title: 'Tangerine',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$3.00',
     },
     {
       title: 'Raspberry',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$10.00',
     },
     {
       title: 'Lemon',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$5.30',
     },
     {
       title: 'Avocado',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$15.70',
     },
     {
       title: 'Lemon 2',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$8.00',
     },
     {
       title: 'Banana',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$7.50',
     },
     {
       title: 'Watermelon',
-      img: '/assets/shop/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       price: '$12.20',
     },
   ]
   // products end
-
   const [activePage, setActivePage] = useState('shop')
   return (
     <DefaultLayout activePage={activePage}>
@@ -146,27 +158,26 @@ export default function Shop() {
                       ? 'border-b-2 border-pink-500'
                       : ''
                   }`}
+                  style={{ cursor: 'pointer' }}
                 >
                   <Image
-                    width={300}
-                    height={300}
                     src={category.img}
                     alt={category.title}
-                    className="w-36 h-36 rounded-full mx-auto"
+                    className="sm:w-16 sm:h-16 md:w-36 md:h-36 rounded-full mx-auto"
                   />
                   <p className="text-center text-2xl my-6">{category.title}</p>
                 </div>
               ))}
             </div>
-            {/* select categories end */}
 
+            {/* select categories end */}
             <SearchSort />
             {/* main section start */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <div className="flex flex-col md:flex-row gap-4">
               {/* filter start */}
-              <div className="col-span-1 sm:col-span-1">
+              <div className="md:w-3/12">
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                  <h1 className="text-xl font-bold mb-5">篩選</h1>
+                  <Subtitle text="篩選" />
                   <h3 className="text-gray-600 mb-5">共 100 項結果</h3>
                   <div className="mb-6">
                     <h2 className="text-lg font-bold mb-3">子類</h2>
@@ -326,40 +337,49 @@ export default function Shop() {
                 </div>
               </div>
               {/* filter end */}
-              <div className="col-span-1 sm:col-span-2">
-                <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
+              {/* products starts */}
+              {/* <Link to={`/shop/details/${item.id}`} key={index}> */}
+              <div className="md:w-9/12">
+                <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                   {productList.map((item, index) => (
-                    <div key={index} className="shadow-sm">
-                      <div className="overflow-visible p-0">
-                        <Image
-                          src={item.img}
-                          alt={item.title}
-                          className="w-full h-40 object-cover rounded-lg"
-                          width={300}
-                          height={300}
-                        />
-                      </div>
-                      <div className="pb-0 pt-2 px-4 flex flex-col items-start">
-                        <div className="flex justify-between w-full">
-                          <b>{item.title}</b>
-                          <div className="flex items-center">
-                            <p>star</p>
-                            <p className="text-default-500">4.0</p>
+                    <Link href="/shop/details" key={index}>
+                      <Card
+                        shadow="sm"
+                        key={index}
+                        isPressable
+                        onPress={() => console.log('item pressed')}
+                      >
+                        <CardBody className="static overflow-visible p-0">
+                          <Image
+                            shadow="none"
+                            radius="none"
+                            width="100%"
+                            alt={item.title}
+                            className="w-full object-cover h-[140px]"
+                            src={item.img}
+                          />
+                        </CardBody>
+                        <CardHeader className="block text-left">
+                          <div>
+                            <p class="text-xl truncate ...">{item.title}</p>
                           </div>
-                        </div>
-                        <small className="text-default-500">花店名稱</small>
-                        <div className="border border-solid border-2 py-1 px-4 mt-1">
-                          <p className="text-xs uppercase font-bold">TAGS</p>
-                        </div>
-                        <div className="flex justify-between w-full">
-                          <h4 className="font-bold text-lg">NT{item.price}</h4>
-                          <p className="text-default-500">CART</p>
-                        </div>
-                      </div>
-                    </div>
+                          <div>
+                            <p class="text-base truncate ...">{item.content}</p>
+                          </div>
+                        </CardHeader>
+                        <CardFooter className="text-small justify-between">
+                          <p className="text-base flex">
+                            <BsFillStarFill className="text-secondary-100" />
+                            {item.star}
+                          </p>
+                          <p className="text-base">{item.price}</p>
+                        </CardFooter>
+                      </Card>
+                    </Link>
                   ))}
                 </div>
               </div>
+              {/* products end */}
             </div>
             <div className="flex justify-center mt-8">
               <div className="flex flex-col items-center">
