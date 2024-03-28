@@ -34,6 +34,7 @@ export default function HomeNav({ activePage }) {
     {
       name: 'course',
       chineseName: '課程預約',
+      href: '',
       subMenu: [],
     },
     {
