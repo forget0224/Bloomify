@@ -28,7 +28,7 @@ export default function HomeNav({ activePage }) {
     {
       name: 'shop',
       chineseName: '線上商城',
-      href: 'shop',
+      href: 'shop/index',
       subMenu: [],
     },
     {
