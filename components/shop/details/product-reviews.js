@@ -10,11 +10,13 @@ function ProductReview() {
   const [selected, setSelected] = React.useState('all')
   return (
     <>
-      <div>
+      <div className="space-y-6">
         <Subtitle text="商品評價" />
         {/* starts */}
-        <div className="flex items-center mt-2.5 mb-1">
-          <h1>4.0</h1>
+        <div className="flex items-center mt-2.5 mb-1 space-x-4">
+          <div>
+            <p className="text-4xl text-tertiary-black font-bold">5.0/5</p>
+          </div>
           <div className="flex items-center space-x-1 rtl:space-x-reverse">
             <BsFillStarFill className="text-secondary-100" />
             <BsFillStarFill className="text-secondary-100" />
@@ -78,7 +80,7 @@ function ProductReview() {
                       哈哈哈 哈哈哈 哈哈哈 哈哈哈 哈哈哈
                     </p>
                     {/* imgs */}
-                    <div className="mr-3 flex space-x-1.5">
+                    <div className="my-4 flex space-x-1.5">
                       <div className="max-w-[100px] max-h-[100px] border border-gray-400 overflow-hidden rounded-lg mb-1">
                         <Image
                           alt=""
@@ -129,12 +131,14 @@ function ProductReview() {
               </Card>
             </Tab>
           </Tabs>
-          <Pagination
-            showControls
-            total={10}
-            initialPage={1}
-            className="flex justify-center"
-          />
+          <div className="my-6">
+            <Pagination
+              showControls
+              total={10}
+              initialPage={1}
+              className="flex justify-center"
+            />
+          </div>
         </div>
       </div>
     </>

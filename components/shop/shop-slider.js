@@ -9,29 +9,43 @@ import {
 } from '@nextui-org/react'
 import { BsFillStarFill } from 'react-icons/bs'
 import { BsHeart } from 'react-icons/bs'
-import { IoIosArrowDropleft, IoIosArrowDropright } from 'react-icons/io'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import Link from 'next/link'
+import { Button } from '@nextui-org/react'
 
 function ShopSlider() {
-  const list = [
+  const productList = [
     {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Avocado',
+      starCount: '5.0',
+      shop: 'shop1',
+      tag: 'hot sale',
+      price: '$15.70',
+    },
+    {
+      img: '/assets/shop/products/red_Amaryllis_3.jpg',
+      title: 'Watermelon',
+      starCount: '4.0',
+      shop: 'shop2',
+      tag: 'hot sale',
+      price: '$8.70',
+    },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Apple',
+      starCount: '3.0',
+      shop: 'shop3',
+      tag: 'hot sale',
+      price: '$44.70',
+    },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       title: 'Orange',
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      price: '$5.50',
-    },
-    {
-      title: 'Tangerine',
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      price: '$3.00',
-    },
-    {
-      title: 'Raspberry',
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      price: '$10.00',
-    },
-    {
-      title: 'Lemon',
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      price: '$5.30',
+      starCount: '5.0',
+      shop: 'shop4',
+      tag: 'hot sale',
+      price: '$78.70',
     },
   ]
 
@@ -39,46 +53,62 @@ function ShopSlider() {
     <>
       <Subtitle text="熱門商品" />
       <div className="flex items-center justify-between my-8">
-        <IoIosArrowDropleft style={{ fontSize: '30px' }} />
-        <div className="flex gap-2">
-          {list.map((item, index) => (
+        <Button
+          color="primary"
+          className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center"
+        >
+          <IoIosArrowBack />
+        </Button>
+
+        <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-1 sm:grid-cols-4 w-full">
+          {productList.map((item, index) => (
             <Card
               shadow="sm"
               key={index}
               isPressable
               onPress={() => console.log('item pressed')}
-              className="flex-auto w-[200px]"
-              style={{ maxWidth: '200px' }}
             >
-              <CardBody className="static overflow-visible p-0">
-                <Image
-                  shadow="none"
-                  radius="none"
-                  width="100%"
-                  alt={item.title}
-                  className="w-full object-cover h-[140px]"
-                  src={item.img}
-                />
+              <CardBody className="relative overflow-visible p-0">
+                <Link
+                  href="/shop/details"
+                  key={index}
+                  className="block relative"
+                >
+                  <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                  <Image
+                    shadow="none"
+                    radius="none"
+                    width="100%"
+                    alt={item.title}
+                    className="w-full object-cover h-[140px] z-0"
+                    src={item.img}
+                  />
+                </Link>
               </CardBody>
               <CardHeader className="block text-left">
-                <div>
-                  <p class="text-xl truncate ...">{item.title}</p>
+                <div className="flex justify-between">
+                  <p class="text-xl truncate">{item.title}</p>
+                  {/* <p className="text-base flex items-center space-x-1">
+                    <BsFillStarFill className="text-secondary-100" />
+                    {item.star}
+                    <span>{item.starCount}</span>
+                  </p> */}
                 </div>
-                <div>
-                  <p class="text-base truncate ...">{item.content}</p>
-                </div>
+                <p class="text-base">{item.shop}</p>
               </CardHeader>
               <CardFooter className="text-small justify-between">
-                <p className="text-base flex">
-                  <BsFillStarFill className="text-secondary-100" />
-                  {item.star}
-                </p>
-                <p className="text-base">{item.price}</p>
+                <p class="text-xl truncate">{item.price}</p>
               </CardFooter>
             </Card>
           ))}
         </div>
-        <IoIosArrowDropright style={{ fontSize: '30px' }} />
+
+        <Button
+          color="primary"
+          className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center"
+        >
+          <IoIosArrowForward />
+        </Button>
       </div>
     </>
   )
