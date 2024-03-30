@@ -4,7 +4,7 @@ import styles from '../custom/custom.module.css'
 import Image from 'next/image'
 import bannerFlower from '@/assets/banner-flower.jpg'
 import { Card, CardBody, CardFooter } from '@nextui-org/react'
-
+import 'index.scss'
 import game from 'index.css'
 //import {Image} from "@nextui-org/react";
 export default function Intro() {
