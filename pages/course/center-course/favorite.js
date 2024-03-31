@@ -1,21 +1,15 @@
 import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
-import { Breadcrumbs, BreadcrumbItem, table } from '@nextui-org/react'
-import Subtitle from '@/components/course/subtitle'
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-} from '@nextui-org/react'
-import { MyButton } from '@/components/btn/mybutton'
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
+
+import Title from '@/components/course/title'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { CiSearch } from 'react-icons/ci'
 import Link from 'next/link'
-import { BsFillStarFill } from 'react-icons/bs'
-import { BsHeartFill } from 'react-icons/bs'
+import Sidebar from '@/components/layout/sidebar'
+import CardGroup from '@/components/course/card-group'
+import { Pagination } from '@nextui-org/react'
 
 export default function Favorite() {
   const list = [
@@ -29,274 +23,104 @@ export default function Favorite() {
       title: 'Raspberry',
     },
   ]
-  const productList = [
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Avocado',
-      starCount: '5.0',
-      shop: 'shop1',
-      tag: 'hot sale',
-      price: '$15.70',
-    },
-    {
-      img: '/assets/shop/products/red_Amaryllis_3.jpg',
-      title: 'Watermelon',
-      starCount: '4.0',
-      shop: 'shop2',
-      tag: 'hot sale',
-      price: '$8.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Apple',
-      starCount: '3.0',
-      shop: 'shop3',
-      tag: 'hot sale',
-      price: '$44.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Orange',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Peach',
-      starCount: '2.5',
-      shop: 'shop5',
-      tag: 'hot sale',
-      price: '$24.70',
-    },
-  ]
-  const [activePage, setActivePage] = useState('shop')
+  // const productList = []
+  const [activePage, setActivePage] = useState('course')
+  const underlines = ['none']
   return (
     <DefaultLayout activePage={activePage}>
-      {
-        <>
-          <div className="mx-auto md:px-52 sm:24">
-            <div className="py-6">
-              <Breadcrumbs>
-                <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem>會員中心</BreadcrumbItem>
-                <BreadcrumbItem>線上商城</BreadcrumbItem>
-                <BreadcrumbItem>收藏商品</BreadcrumbItem>
-              </Breadcrumbs>
+      <>
+        {/* 置中 & 背景色 */}
+        <main className="flex flex-col justify-center items-center bg-white">
+          {/* 主要容器 */}
+          <div className="bg-white container justify-center flex flex-col items-start columns-12 mb-20">
+            {/* 麵包屑 */}
+            <div className="bg-white flex flex-col flex-wrap gap-4 py-6 w-full">
+              {underlines.map((u) => (
+                <div key={u}>
+                  <Breadcrumbs underline={u}>
+                    <BreadcrumbItem>首頁</BreadcrumbItem>
+                    <BreadcrumbItem>會員中心</BreadcrumbItem>
+                    <BreadcrumbItem>課程</BreadcrumbItem>
+                    <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>
+                  </Breadcrumbs>
+                </div>
+              ))}
             </div>
-            <div className="flex space-x-10">
+
+            <div className="flex flex-row w-full mt-6">
               {/* sidebar start */}
-              <Card className="max-w-60 w-full h-auto">
-                <CardBody className="space-y-8">
-                  <div className="flex justify-center items-center space-x-2 my-4">
-                    <Image
-                      // key={}
-                      src="/assets/shop/products/pink_Gladiola_0.jpg"
-                      alt=""
-                      className="w-8 h-8 md:w-8 md:h-8 rounded-full"
-                    />
-                    <p className="text-2xl text-tertiary-black font-medium">
-                      會員姓名
-                    </p>
-                  </div>
-                  {/* custom start */}
-                  <div>
-                    <p className=" text-tertiary-gray-1">代客送花</p>
-                    <div className="py-4">
-                      <hr />
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="flex flex-col gap-2">
-                        <Link href="#" className="hover:text-primary">
-                          我的訂單
-                        </Link>
-                        <Link href="#" className="hover:text-primary">
-                          收藏花束
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  {/* custom end */}
-                  {/* shop start */}
-                  <div>
-                    <p className=" text-tertiary-gray-1">線上商城</p>
-                    <div className="py-4">
-                      <hr />
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="flex flex-col  gap-2">
-                        <Link href="#" className="hover:text-primary">
-                          我的訂單
-                        </Link>
-                        <Link href="#" className="hover:text-primary">
-                          收藏商品
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  {/* shop end */}
-                  {/* course start */}
-                  <div>
-                    <p className=" text-tertiary-gray-1">課程預約</p>
-                    <div className="py-4">
-                      <hr />
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="flex flex-col  gap-2">
-                        <Link href="#" className="hover:text-primary">
-                          我的課程
-                        </Link>
-                        <Link href="#" className="hover:text-primary">
-                          我的課表
-                        </Link>
-                        <Link href="#" className="hover:text-primary">
-                          收藏課程
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  {/* course end */}
-                  {/* intro start */}
-                  <div>
-                    <p className=" text-tertiary-gray-1">花占卜</p>
-                    <div className="py-4">
-                      <hr />
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="flex flex-col  gap-2">
-                        <Link href="#" className="hover:text-primary">
-                          占卜紀錄
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  {/* intro end */}
-                  {/* member start */}
-                  <div>
-                    <p className=" text-tertiary-gray-1">我的帳戶</p>
-                    <div className="py-4">
-                      <hr />
-                    </div>
-                    <div className="flex justify-center">
-                      <div className="flex flex-col  gap-2">
-                        <Link href="#" className="hover:text-primary">
-                          個人資料
-                        </Link>
-                        <Link href="#" className="hover:text-primary">
-                          優惠券
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                  {/* member end */}
-                </CardBody>
-              </Card>
+              <Sidebar />
               {/* sidebar end */}
+
               {/* order content start */}
-              <div className="max-w-296 w-full">
-                <div className="my-4">
-                  <Subtitle text="收藏商品" />
-                </div>
-                <div>
-                  {/* search & select start */}
+              <div className="w-10/12 pl-10">
+                <Title text="收藏課程" />
 
-                  <div className="flex justify-end space-x-6 my-2">
-                    {/* searchbar */}
-                    <Input
-                      variant="bordered"
-                      placeholder="搜尋..."
-                      endContent={
-                        <button
-                          className="focus:outline-none"
-                          type="button"
-                          onClick={() => {}}
-                        >
-                          <CiSearch />
-                        </button>
-                      }
-                      className="max-w-xs"
-                    />
-                    {/* filter */}
-                    <div className="flex flex-cols items-center space-x-4">
-                      <p className=" text-tertiary-black whitespace-nowrap">
-                        排序
-                      </p>
-                      <Select
-                        placeholder="Select"
-                        defaultSelectedKeys={['Orange']}
-                        className="max-w-xs w-48"
-                        scrollShadowProps={{
-                          isEnabled: false,
-                        }}
+                {/* search & select start */}
+                <div className="flex justify-between gap-4 py-4">
+                  {/* searchbar */}
+                  <Input
+                    variant="bordered"
+                    placeholder="搜尋..."
+                    endContent={
+                      <button
+                        className="focus:outline-none"
+                        type="button"
+                        onClick={() => {}}
                       >
-                        {list.map((item, index) => (
-                          <SelectItem key={item.title} value={item.title}>
-                            {item.title}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>
-
-                  {/* search & select end */}
-                  <div className="flex w-full flex-col">
-                    <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-3 sm:grid-cols-3 w-full">
-                      {productList.map((item, index) => (
-                        <Card
-                          shadow="sm"
-                          key={index}
-                          isPressable
-                          onPress={() => console.log('item pressed')}
-                        >
-                          <CardBody className="relative overflow-visible p-0">
-                            <Link
-                              href="/shop/details"
-                              key={index}
-                              className="block relative"
-                            >
-                              <BsHeartFill className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                              <Image
-                                shadow="none"
-                                radius="none"
-                                width="100%"
-                                alt={item.title}
-                                className="w-full object-cover h-[140px] z-0"
-                                src={item.img}
-                              />
-                            </Link>
-                          </CardBody>
-                          <CardHeader className="block text-left">
-                            <div className="flex justify-between">
-                              <p class="text-xl truncate">{item.title}</p>
-                              <p className="text-base flex items-center space-x-1">
-                                <BsFillStarFill className="text-secondary-100" />
-                                {item.star}
-                                <span>{item.starCount}</span>
-                              </p>
-                            </div>
-                            <p class="text-base">{item.shop}</p>
-                          </CardHeader>
-                          <CardFooter className="text-small justify-between">
-                            <p class="text-xl truncate">{item.price}</p>
-                          </CardFooter>
-                        </Card>
+                        <CiSearch />
+                      </button>
+                    }
+                    className="max-w-xs"
+                  />
+                  {/* filter */}
+                  <div className="flex flex-cols items-center space-x-4">
+                    <p className=" text-tertiary-black whitespace-nowrap">
+                      排序
+                    </p>
+                    <Select
+                      placeholder="Select"
+                      defaultSelectedKeys={['Orange']}
+                      className="max-w-xs w-48"
+                      scrollShadowProps={{
+                        isEnabled: false,
+                      }}
+                    >
+                      {list.map((item, index) => (
+                        <SelectItem key={item.title} value={item.title}>
+                          {item.title}
+                        </SelectItem>
                       ))}
-                    </div>
+                    </Select>
                   </div>
                 </div>
 
-                <div className="flex justify-center space-x-10 py-10">
+                {/* search & select end */}
+                <div className="grid gap-y-10 gap-x-6 w-full mt-4">
+                  <CardGroup />
+                  <CardGroup />
+                  <CardGroup />
+                </div>
+
+                {/* pagination */}
+                <Pagination
+                  color="secondary-100"
+                  initialPage={3}
+                  total={10}
+                  className="flex justify-center mt-6"
+                />
+              </div>
+
+              {/* <div className="flex justify-center space-x-10 py-10">
                   <MyButton color="primary" size="xl">
                     繼續查看
                   </MyButton>
-                </div>
-              </div>
-              {/* order content end */}
+                </div> */}
             </div>
+            {/* order content end */}
           </div>
-        </>
-      }
+        </main>
+      </>
     </DefaultLayout>
   )
 }
