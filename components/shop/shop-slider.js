@@ -1,112 +1,114 @@
 import React from 'react'
-import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
+import Subtitle from '../course/subtitle'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+} from '@nextui-org/react'
+import { BsFillStarFill } from 'react-icons/bs'
+import { BsHeart } from 'react-icons/bs'
+import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import Link from 'next/link'
+import { Button } from '@nextui-org/react'
 
 function ShopSlider() {
-  const list = [
+  const productList = [
     {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Avocado',
+      starCount: '5.0',
+      shop: 'shop1',
+      tag: 'hot sale',
+      price: '$15.70',
+    },
+    {
+      img: '/assets/shop/products/red_Amaryllis_3.jpg',
+      title: 'Watermelon',
+      starCount: '4.0',
+      shop: 'shop2',
+      tag: 'hot sale',
+      price: '$8.70',
+    },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Apple',
+      starCount: '3.0',
+      shop: 'shop3',
+      tag: 'hot sale',
+      price: '$44.70',
+    },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
       title: 'Orange',
-      img: '/images/fruit-1.jpeg',
-      price: '$5.50',
-    },
-    {
-      title: 'Tangerine',
-      img: '/images/fruit-2.jpeg',
-      price: '$3.00',
-    },
-    {
-      title: 'Raspberry',
-      img: '/images/fruit-3.jpeg',
-      price: '$10.00',
-    },
-    {
-      title: 'Lemon',
-      img: '/images/fruit-4.jpeg',
-      price: '$5.30',
+      starCount: '5.0',
+      shop: 'shop4',
+      tag: 'hot sale',
+      price: '$78.70',
     },
   ]
 
   return (
     <>
-      <h1>熱門商品</h1>
-      <div className="flex justify-center place-items-center content-center">
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          style={{ transform: 'rotateY(180deg)' }}
+      <Subtitle text="熱門商品" />
+      <div className="flex items-center justify-between my-8">
+        <Button
+          color="primary"
+          className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center"
         >
-          <svg
-            class="w-4 h-4"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 10"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 5h12m0 0L9 1m4 4L9 9"
-            />
-          </svg>
-          <span class="sr-only">Icon description</span>
-        </button>
-        <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
-          {list.map((item, index) => (
+          <IoIosArrowBack />
+        </Button>
+
+        <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-1 sm:grid-cols-4 w-full">
+          {productList.map((item, index) => (
             <Card
               shadow="sm"
               key={index}
               isPressable
               onPress={() => console.log('item pressed')}
             >
-              <CardBody className="overflow-visible p-0">
-                <Image
-                  shadow="sm"
-                  radius="lg"
-                  width="100%"
-                  alt={item.title}
-                  className="w-full object-cover h-[140px]"
-                  src={item.img}
-                  style={{ width: '240px', height: '240px' }}
-                />
+              <CardBody className="relative overflow-visible p-0">
+                <Link
+                  href="/shop/details"
+                  key={index}
+                  className="block relative"
+                >
+                  <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                  <Image
+                    shadow="none"
+                    radius="none"
+                    width="100%"
+                    alt={item.title}
+                    className="w-full object-cover h-[140px] z-0"
+                    src={item.img}
+                  />
+                </Link>
               </CardBody>
-              <CardFooter className="pb-0 pt-2 px-4 flex-col items-start">
-                <div className="flex justify-between w-full">
-                  <b>{item.title}</b>
-                  <span className="flex">
-                    <p>star</p>
-                    <p className="text-default-500">4.0</p>
-                  </span>
+              <CardHeader className="block text-left">
+                <div className="flex justify-between">
+                  <p class="text-xl truncate">{item.title}</p>
+                  {/* <p className="text-base flex items-center space-x-1">
+                    <BsFillStarFill className="text-secondary-100" />
+                    {item.star}
+                    <span>{item.starCount}</span>
+                  </p> */}
                 </div>
-                <small className="text-default-500">花店名稱</small>
-                <div className="flex justify-between w-full">
-                  <h4 className="font-bold text-large">NT{item.price}</h4>
-                </div>
+                <p class="text-base">{item.shop}</p>
+              </CardHeader>
+              <CardFooter className="text-small justify-between">
+                <p class="text-xl truncate">{item.price}</p>
               </CardFooter>
             </Card>
           ))}
         </div>
-        <button
-          type="button"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center me-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+
+        <Button
+          color="primary"
+          className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center"
         >
-          <svg
-            class="w-4 h-4"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 14 10"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 5h12m0 0L9 1m4 4L9 9"
-            />
-          </svg>
-          <span class="sr-only">Icon description</span>
-        </button>
+          <IoIosArrowForward />
+        </Button>
       </div>
     </>
   )

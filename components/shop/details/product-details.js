@@ -44,7 +44,6 @@ function ProductDetails() {
               <CardBody>尺寸</CardBody>
             </Card>
           </Tab>
-          {/* 新增的Tab */}
           <Tab
             key="note"
             title={<div className="flex items-center space-x-2">注意事項</div>}
