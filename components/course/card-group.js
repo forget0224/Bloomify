@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-} from '@nextui-org/react'
+import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import Link from 'next/link'
 
 import { BsFillStarFill } from 'react-icons/bs'
@@ -48,7 +42,7 @@ export default function CardGroup() {
   ]
 
   return (
-    <div className="gap- grid grid-cols-2 sm:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
       {list.map((item, index) => (
         <Card
           shadow="sm"
@@ -58,7 +52,7 @@ export default function CardGroup() {
           className="relative"
         >
           <Link href="/course/details" key={index} className="block relative">
-            <CardBody className="static overflow-visible p-0">
+            <CardBody className="relative overflow-visible p-0">
               <Image
                 shadow="none"
                 radius="none"
@@ -79,7 +73,7 @@ export default function CardGroup() {
                 </p>
               </div>
             </CardFooter>
-            <BsFillHeartFill className="text-secondary-100 absolute top-4 right-4 z-40 w-6 h-6" />
+            <BsFillHeartFill className="text-secondary-100 absolute top-4 right-4 z-10 w-6 h-6" />
           </Link>
         </Card>
       ))}

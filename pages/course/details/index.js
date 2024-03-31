@@ -14,7 +14,7 @@ import CourseShare from '@/components/course/course-share'
 import CourseMap from '@/components/course/course-map-card'
 import CourseSlider from '@/components/course/banner-silder'
 import CourseComment from '@/components/course/course-comment'
-import CourseRatingFilter from '@/components/course/course-filter'
+import CourseRatingFilter from '@/components/course/filter-rating'
 
 import { BsChevronRight } from 'react-icons/bs'
 import { FaStar } from 'react-icons/fa'
