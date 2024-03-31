@@ -108,11 +108,11 @@ export default function CourseDetails() {
           </div>
           <div className="flex flex-col md:flex-row gap-10">
             {/* 開課商家資訊 */}
-            <div className="col-5 w-full order-0 md:order-1">
+            <div className="w-full order-0 md:order-1 border-1 h-fit sticky top-0">
               <CourseMap />
             </div>
             {/* 其他詳細資訊 */}
-            <div className="flex flex-col col-7 w-full gap-[80px]">
+            <div className="flex flex-col w-full gap-[80px]">
               {/* 課程最新訊息 */}
               <div className="flex flex-col gap-6">
                 <Subtitle text="課程最新訊息" />
