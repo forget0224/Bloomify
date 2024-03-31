@@ -8,7 +8,7 @@ import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/intro/subtitle'
 import ButtonGL from '@/components/intro/buttonGL'
 
-export default function CourseIndex() {
+export default function FlowersIndex() {
   const [activePage, setActivePage] = useState('course')
   const underlines = ['none']
   return (
@@ -45,22 +45,24 @@ export default function CourseIndex() {
           </div>
 
           {/* 卡片群組 */}
-          <div className="grid gap-y-4 my-14 ">
-            <CardGroup />
-          </div>
-          <div className="grid gap-y-4 my-14 ">
-            <CardGroup />
-          </div>
-          <div className="grid gap-y-4 my-14 ">
-            <CardGroup />
-          </div>
-          <div className="grid gap-y-4 my-14 ">
-            <CardGroup />
-          </div>
-          <div className="grid gap-y-4 my-14 ">
-            <CardGroup />
-            <div class="flex justify-center">
-              <ButtonGL text="查看更多"></ButtonGL>
+          <div class="bg-[url('/assets/intro/vintage_speckles.png')]">
+            <div className="grid gap-y-4 my-14 ">
+              <CardGroup />
+            </div>
+            <div className="grid gap-y-4 my-14 ">
+              <CardGroup />
+            </div>
+            <div className="grid gap-y-4 my-14 ">
+              <CardGroup />
+            </div>
+            <div className="grid gap-y-4 my-14 ">
+              <CardGroup />
+            </div>
+            <div className="grid gap-y-4 my-14 ">
+              <CardGroup />
+              <div class="flex justify-center">
+                <ButtonGL text="查看更多"></ButtonGL>
+              </div>
             </div>
           </div>
         </div>

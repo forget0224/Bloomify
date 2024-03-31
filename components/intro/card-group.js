@@ -42,22 +42,25 @@ export default function CardGroup() {
           key={index}
           isPressable
           onPress={() => console.log('item pressed')}
+          className="bg-none opacity-100"
         >
-          <CardBody className="static overflow-visible p-0">
-            <Image
-              shadow="none"
-              radius="none"
-              width="100%"
-              alt={item.title}
-              className="w-full object-cover h-auto"
-              src={item.img}
-            />
+          <CardBody className="static overflow-visible p-0 ">
+            <div className="bg-white opacity-100">
+              <Image
+                shadow="none"
+                radius="none"
+                width="100%"
+                alt={item.title}
+                className="w-full object-cover h-auto opacity-100"
+                src={item.img}
+              />
+            </div>
           </CardBody>
           <CardHeader className="block text-center">
-            <div>
+            <div className="bg-white opacity-100">
               <p class="text-xl truncate ...">{item.title}</p>
             </div>
-            <div>
+            <div className="bg-white">
               <p class="text-base truncate ...">{item.content}</p>
             </div>
           </CardHeader>
