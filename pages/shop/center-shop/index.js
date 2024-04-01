@@ -212,7 +212,7 @@ export default function CenterShop() {
                                             key={index}
                                             src={image.src}
                                             alt=""
-                                            className="w-6 h-6 md:w-24 md:h-24"
+                                            className="w-14 h-14 md:w-24 md:h-24 mx-auto rounded-lg"
                                           />
                                         ))}
                                       </div>
@@ -243,15 +243,15 @@ export default function CenterShop() {
                                       <TableBody>
                                         <TableRow key="1">
                                           <TableCell>
-                                            <div className="flex flex-row items-center space-x-20">
+                                            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-x-10">
                                               <Image
                                                 src={
                                                   '/assets/shop/products/pink_Gladiola_0.jpg'
                                                 }
                                                 alt=""
-                                                className="w-6 h-6 md:w-24 md:h-24 mx-auto rounded-full"
+                                                className="w-10 h-auto md:w-24 md:h-auto mx-auto rounded-lg"
                                               />
-                                              <div className="flex flex-col">
+                                              <div className="whitespace-nowrap">
                                                 <p>花的名稱</p>
                                                 <p>店家名稱</p>
                                               </div>
@@ -356,7 +356,7 @@ export default function CenterShop() {
                                             key={index}
                                             src={image.src}
                                             alt=""
-                                            className="w-6 h-6 md:w-24 md:h-24"
+                                            className="w-14 h-14 md:w-24 md:h-24 mx-auto rounded-lg"
                                           />
                                         ))}
                                       </div>
@@ -390,15 +390,15 @@ export default function CenterShop() {
                                       <TableBody>
                                         <TableRow key="1">
                                           <TableCell>
-                                            <div className="flex flex-row items-center space-x-20">
+                                            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-x-5">
                                               <Image
                                                 src={
                                                   '/assets/shop/products/pink_Gladiola_0.jpg'
                                                 }
                                                 alt=""
-                                                className="w-6 h-6 md:w-24 md:h-24 mx-auto rounded-full"
+                                                className="w-10 h-auto md:w-24 md:h-auto mx-auto rounded-lg"
                                               />
-                                              <div className="flex flex-col">
+                                              <div className="whitespace-nowrap">
                                                 <p>花的名稱</p>
                                                 <p>店家名稱</p>
                                               </div>
@@ -418,15 +418,15 @@ export default function CenterShop() {
                                         </TableRow>
                                         <TableRow key="2">
                                           <TableCell>
-                                            <div className="flex flex-row items-center space-x-20">
+                                            <div className="flex flex-col sm:flex-row items-center space-y-1 sm:space-x-5">
                                               <Image
                                                 src={
                                                   '/assets/shop/products/pink_Gladiola_0.jpg'
                                                 }
                                                 alt=""
-                                                className="w-6 h-6 md:w-24 md:h-24 mx-auto rounded-full"
+                                                className="w-10 h-auto md:w-24 md:h-auto mx-auto rounded-lg"
                                               />
-                                              <div className="flex flex-col">
+                                              <div className="whitespace-nowrap">
                                                 <p>花的名稱</p>
                                                 <p>店家名稱</p>
                                               </div>

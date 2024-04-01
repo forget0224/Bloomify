@@ -165,11 +165,11 @@ export default function Shop() {
     <DefaultLayout activePage={activePage}>
       {
         <>
-          <div className="mx-auto md:px-52 sm:24">
+          <div className="mx-auto md:px-52">
             <div className="py-6">
               <Breadcrumbs>
-                <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem>線上商城</BreadcrumbItem>
+                <BreadcrumbItem className="font-serif">首頁</BreadcrumbItem>
+                <BreadcrumbItem color="primary">線上商城</BreadcrumbItem>
               </Breadcrumbs>
             </div>
 
@@ -423,6 +423,7 @@ export default function Shop() {
                           shadow="none"
                           radius="none"
                           width="100%"
+                          height="100%"
                           alt={item.title}
                           className="w-full object-cover h-[140px] z-0"
                           src={item.img}
