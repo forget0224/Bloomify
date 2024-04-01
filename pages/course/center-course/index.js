@@ -48,9 +48,9 @@ export default function CenterShop() {
         {/* 置中 & 背景色 */}
         <main className="flex flex-col justify-center items-center bg-white">
           {/* 主要容器 */}
-          <div className="bg-white container justify-center flex flex-col items-start columns-12 mb-20">
+          <div className="container justify-center flex flex-col items-start columns-12 mb-20">
             {/* 麵包屑 */}
-            <div className="bg-white flex flex-col flex-wrap gap-4 py-6 w-full">
+            <div className="flex flex-col flex-wrap gap-4 py-6 w-full">
               {underlines.map((u) => (
                 <div key={u}>
                   <Breadcrumbs underline={u}>
@@ -63,6 +63,7 @@ export default function CenterShop() {
               ))}
             </div>
 
+            {/* 主要內容 */}
             <div className="flex flex-row w-full mt-6">
               {/* 側邊欄 start */}
               <Sidebar />

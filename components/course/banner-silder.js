@@ -20,7 +20,7 @@ export default function CourseSlider() {
           className="rounded-2xl"
         />
       </div>
-      <div className="flex flex-col justify-center gap-2">
+      <div className="flex md:flex-col justify-center gap-2">
         <div>
           <Image
             width={120}
