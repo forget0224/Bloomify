@@ -1,10 +1,6 @@
-// 小標題
+// 頁面標題
 import React from 'react'
 
 export default function Title(props) {
-  return (
-    <div className="text-2xl">
-      <p>{props.text}</p>
-    </div>
-  )
+  return <p className="text-2xl inline">{props.text}</p>
 }
