@@ -29,9 +29,9 @@ export default function CourseDetails() {
       className="justify-center flex-col items-center"
     >
       <main className="bg-white flex justify-center items-center px-5">
-        <div className="container justify-center flex-col items-center">
+        <div className="container justify-center flex flex-col items-center">
           {/* 麵包屑 */}
-          <div className="bg-white flex flex-col flex-wrap gap-4 py-6">
+          <div className="bg-white flex flex-col w-full gap-4 py-6">
             {underlines.map((u) => (
               <div key={u}>
                 <Breadcrumbs underline={u}>
@@ -46,13 +46,13 @@ export default function CourseDetails() {
             ))}
           </div>
           {/* 課程圖和課程資訊 */}
-          <div className="flex flex-col md:flex-row mb-8">
+          <div className="flex flex-col gap-6 md:flex-row mb-12">
             {/* -課程圖 */}
-            <div className="col-6 w-full">
+            <div className="md:w-6/12 w-full mb-6 md:mb-0">
               <CourseSlider />
             </div>
             {/* -課程資訊 */}
-            <div className="col-6 w-full flex flex-col gap-6 pl-0 md:pl-4">
+            <div className="md:w-6/12 w-full flex flex-col gap-6">
               {/* 主要資訊 */}
               <div className="flex flex-col gap-4">
                 <div className="">
@@ -106,13 +106,14 @@ export default function CourseDetails() {
               </div>
             </div>
           </div>
-          <div className="flex flex-col md:flex-row gap-10">
+
+          <div className="flex flex-col md:flex-row gap-16 static overflow:auto">
             {/* 開課商家資訊 */}
-            <div className="w-full order-0 md:order-1 border-1 h-fit sticky top-0">
+            <div className="w-full md:w-5/12 order-0 md:order-1 h-fit sticky top-0">
               <CourseMap />
             </div>
             {/* 其他詳細資訊 */}
-            <div className="flex flex-col w-full gap-[80px]">
+            <div className="flex md:w-7/12 flex-col w-full gap-[80px]">
               {/* 課程最新訊息 */}
               <div className="flex flex-col gap-6">
                 <Subtitle text="課程最新訊息" />

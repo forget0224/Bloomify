@@ -40,4 +40,5 @@ next-env.d.ts
 # misc
 package-lock.json
 yarn.lock
+pnpm-lock.yaml
 /.temp/

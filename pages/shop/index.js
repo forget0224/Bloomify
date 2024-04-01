@@ -165,306 +165,310 @@ export default function Shop() {
     <DefaultLayout activePage={activePage}>
       {
         <>
-          <div className="mx-auto md:px-52 sm:24">
-            <div className="py-6">
-              <Breadcrumbs>
-                <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem>線上商城</BreadcrumbItem>
-              </Breadcrumbs>
-            </div>
-
-            {/* carousel start */}
-
-            {/* carousel end */}
-            {/* select categories start */}
-            <div className="flex justify-center flex-wrap my-8">
-              {categories.map((category, index) => (
-                <div
-                  key={index}
-                  onClick={() => setSelectedCategory(index)}
-                  className={`mx-4 ${
-                    index === selectedCategory
-                      ? 'border-b-2 border-pink-500'
-                      : ''
-                  }`}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <Image
-                    src={category.img}
-                    alt={category.title}
-                    className="sm:w-16 sm:h-16 md:w-36 md:h-36 rounded-full mx-auto"
-                  />
-                  <p className="text-center  my-6">{category.title}</p>
-                </div>
-              ))}
-            </div>
-            {/* select categories end */}
-            {/* search & select start */}
-            <div className="flex py-6 justify-between">
-              {/* searchbar */}
-              <Input
-                variant="bordered"
-                placeholder="搜尋..."
-                endContent={
-                  <button
-                    className="focus:outline-none"
-                    type="button"
-                    onClick={() => {}}
-                  >
-                    <CiSearch />
-                  </button>
-                }
-                className="max-w-xs"
-              />
-              {/* filter */}
-              <div className="flex flex-cols items-center space-x-4">
-                <p className="text-xl text-tertiary-black whitespace-nowrap">
-                  排序
-                </p>
-                <Select
-                  placeholder="Select"
-                  defaultSelectedKeys={['Orange']}
-                  className="max-w-xs w-48"
-                  scrollShadowProps={{
-                    isEnabled: false,
-                  }}
-                >
-                  {productList.map((item, index) => (
-                    <SelectItem key={item.title} value={item.title}>
-                      {item.title}
-                    </SelectItem>
-                  ))}
-                </Select>
+          {/* 置中 & 背景色 */}
+          <main className="flex flex-col justify-center items-center bg-white">
+            {/* 主要容器 */}
+            <div className="container justify-center flex flex-col items-start columns-12 mb-20">
+              <div className="py-6 w-full">
+                <Breadcrumbs>
+                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem>線上商城</BreadcrumbItem>
+                </Breadcrumbs>
               </div>
-            </div>
-            {/* search & select end */}
-            {/* main section start */}
-            <div className="flex flex-col md:flex-row gap-4">
-              {/* filter start */}
-              <div className="bg-white p-4 rounded-lg shadow-md space-y-8 max-w-[335px]">
-                <Subtitle text="篩選" />
-                <p className=" text-tertiary-black">共 100 項結果</p>
 
-                <div className="space-y-4">
-                  <p className="text-lg text-tertiary-black">子類</p>
-                  <div className="space-y-2">
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <p className=" text-tertiary-black">鮮花</p>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <p className=" text-tertiary-black">花盆栽</p>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <p className=" text-tertiary-black">葉材</p>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <p className=" text-tertiary-black">植盆栽</p>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <p className=" text-tertiary-black">器具</p>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <p className=" text-tertiary-black">材料</p>
-                    </Checkbox>
-                  </div>
-                </div>
-                <hr className="my-6 border-t border-gray-300" />
-                <div className="space-y-4">
-                  <p className="text-lg text-tertiary-black">價格</p>
-                  <div className="flex justify-between items-center">
-                    <input
-                      type="text"
-                      placeholder="最低價格"
-                      className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+              {/* carousel start */}
+
+              {/* carousel end */}
+              {/* select categories start */}
+              <div className="flex justify-center flex-wrap my-8 w-full">
+                {categories.map((category, index) => (
+                  <div
+                    key={index}
+                    onClick={() => setSelectedCategory(index)}
+                    className={`mx-4 ${
+                      index === selectedCategory
+                        ? 'border-b-2 border-pink-500'
+                        : ''
+                    }`}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <Image
+                      src={category.img}
+                      alt={category.title}
+                      className="sm:w-16 sm:h-16 md:w-36 md:h-36 rounded-full mx-auto"
                     />
-                    <div className="h-px w-10 bg-gray-400"></div>
-                    <input
-                      type="text"
-                      placeholder="最高價格"
-                      className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                    />
+                    <p className="text-center  my-6">{category.title}</p>
+                  </div>
+                ))}
+              </div>
+              {/* select categories end */}
+              {/* search & select start */}
+              <div className="flex py-6 justify-between w-full">
+                {/* searchbar */}
+                <Input
+                  variant="bordered"
+                  placeholder="搜尋..."
+                  endContent={
+                    <button
+                      className="focus:outline-none"
+                      type="button"
+                      onClick={() => {}}
+                    >
+                      <CiSearch />
+                    </button>
+                  }
+                  className="max-w-xs"
+                />
+                {/* filter */}
+                <div className="flex flex-cols items-center space-x-4">
+                  <p className="text-xl text-tertiary-black whitespace-nowrap">
+                    排序
+                  </p>
+                  <Select
+                    placeholder="Select"
+                    defaultSelectedKeys={['Orange']}
+                    className="max-w-xs w-48"
+                    scrollShadowProps={{
+                      isEnabled: false,
+                    }}
+                  >
+                    {productList.map((item, index) => (
+                      <SelectItem key={item.title} value={item.title}>
+                        {item.title}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                </div>
+              </div>
+              {/* search & select end */}
+              {/* main section start */}
+              <div className="flex flex-col md:flex-row gap-4 w-full">
+                {/* filter start */}
+                <div className="bg-white p-4 rounded-lg shadow-md space-y-8 max-w-[335px]">
+                  <Subtitle text="篩選" />
+                  <p className=" text-tertiary-black">共 100 項結果</p>
+
+                  <div className="space-y-4">
+                    <p className="text-lg text-tertiary-black">子類</p>
+                    <div className="space-y-2">
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <p className=" text-tertiary-black">鮮花</p>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <p className=" text-tertiary-black">花盆栽</p>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <p className=" text-tertiary-black">葉材</p>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <p className=" text-tertiary-black">植盆栽</p>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <p className=" text-tertiary-black">器具</p>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <p className=" text-tertiary-black">材料</p>
+                      </Checkbox>
+                    </div>
+                  </div>
+                  <hr className="my-6 border-t border-gray-300" />
+                  <div className="space-y-4">
+                    <p className="text-lg text-tertiary-black">價格</p>
+                    <div className="flex justify-between items-center">
+                      <input
+                        type="text"
+                        placeholder="最低價格"
+                        className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                      />
+                      <div className="h-px w-10 bg-gray-400"></div>
+                      <input
+                        type="text"
+                        placeholder="最高價格"
+                        className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
+                  <hr className="my-6 border-t border-gray-300" />
+                  <div className="space-y-4">
+                    <p className="text-lg text-tertiary-black">顏色</p>
+                    <div className="place-items-center space-y-2">
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">红色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#FF0000' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">橙色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#FFA500' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">黃色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#FFFF00' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">綠色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#CFDD81' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">藍色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#0000FF' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">紫色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#8B00FF' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">粉色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#FFC0CB' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">褐色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: 'red' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">灰色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#704214' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">黑色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#808080' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+
+                      <Checkbox defaultSelected radius="sm" className="mr-2">
+                        <div className="flex items-center">
+                          <p className=" mr-2">白色</p>
+                          <div
+                            className="h-4 w-4 rounded-full bg-red-500"
+                            style={{ backgroundColor: '#000000' }}
+                          ></div>
+                        </div>
+                      </Checkbox>
+                    </div>
+                  </div>
+                  <div className="flex justify-center">
+                    <MyButton color="primary" size="xl" isOutline>
+                      清除選項
+                    </MyButton>
                   </div>
                 </div>
-                <hr className="my-6 border-t border-gray-300" />
-                <div className="space-y-4">
-                  <p className="text-lg text-tertiary-black">顏色</p>
-                  <div className="place-items-center space-y-2">
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">红色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#FF0000' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">橙色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#FFA500' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
 
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">黃色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#FFFF00' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">綠色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#CFDD81' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">藍色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#0000FF' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">紫色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#8B00FF' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">粉色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#FFC0CB' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">褐色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: 'red' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">灰色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#704214' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">黑色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#808080' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-
-                    <Checkbox defaultSelected radius="sm" className="mr-2">
-                      <div className="flex items-center">
-                        <p className=" mr-2">白色</p>
-                        <div
-                          className="h-4 w-4 rounded-full bg-red-500"
-                          style={{ backgroundColor: '#000000' }}
-                        ></div>
-                      </div>
-                    </Checkbox>
-                  </div>
+                {/* filter end */}
+                {/* products starts */}
+                <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-3 sm:grid-cols-3 w-full">
+                  {productList.map((item, index) => (
+                    <Card
+                      shadow="sm"
+                      key={index}
+                      isPressable
+                      onPress={() => console.log('item pressed')}
+                    >
+                      <CardBody className="relative overflow-visible p-0">
+                        <Link
+                          href="/shop/details"
+                          key={index}
+                          className="block relative"
+                        >
+                          <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                          <Image
+                            shadow="none"
+                            radius="none"
+                            width="100%"
+                            alt={item.title}
+                            className="w-full object-cover h-[140px] z-0"
+                            src={item.img}
+                          />
+                        </Link>
+                      </CardBody>
+                      <CardHeader className="block text-left">
+                        <div className="flex justify-between">
+                          <p class="text-xl truncate">{item.title}</p>
+                          <p className="text-base flex items-center space-x-1">
+                            <BsFillStarFill className="text-secondary-100" />
+                            {item.star}
+                            <span>{item.starCount}</span>
+                          </p>
+                        </div>
+                        <p class="text-base">{item.shop}</p>
+                        <p class="text-base px-2.5 py-0.5 inline-block bg-primary">
+                          {item.tag}
+                        </p>
+                      </CardHeader>
+                      <CardFooter className="text-small justify-between">
+                        <p class="text-xl truncate">{item.price}</p>
+                        <p className="text-base items-center">
+                          <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                        </p>
+                      </CardFooter>
+                    </Card>
+                  ))}
                 </div>
-                <div className="flex justify-center">
-                  <MyButton color="primary" size="xl" isOutline>
-                    清除選項
+                {/* products end */}
+              </div>
+              <div className="flex justify-center mt-8 w-full">
+                <div className="flex flex-col items-center">
+                  <h1 className="text-xl font-bold mb-4 sm:">繼續探索</h1>
+                  <MyButton color="primary" size="xl">
+                    查看更多
                   </MyButton>
                 </div>
               </div>
-
-              {/* filter end */}
-              {/* products starts */}
-              <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-3 sm:grid-cols-3 w-full">
-                {productList.map((item, index) => (
-                  <Card
-                    shadow="sm"
-                    key={index}
-                    isPressable
-                    onPress={() => console.log('item pressed')}
-                  >
-                    <CardBody className="relative overflow-visible p-0">
-                      <Link
-                        href="/shop/details"
-                        key={index}
-                        className="block relative"
-                      >
-                        <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                        <Image
-                          shadow="none"
-                          radius="none"
-                          width="100%"
-                          alt={item.title}
-                          className="w-full object-cover h-[140px] z-0"
-                          src={item.img}
-                        />
-                      </Link>
-                    </CardBody>
-                    <CardHeader className="block text-left">
-                      <div className="flex justify-between">
-                        <p class="text-xl truncate">{item.title}</p>
-                        <p className="text-base flex items-center space-x-1">
-                          <BsFillStarFill className="text-secondary-100" />
-                          {item.star}
-                          <span>{item.starCount}</span>
-                        </p>
-                      </div>
-                      <p class="text-base">{item.shop}</p>
-                      <p class="text-base px-2.5 py-0.5 inline-block bg-primary">
-                        {item.tag}
-                      </p>
-                    </CardHeader>
-                    <CardFooter className="text-small justify-between">
-                      <p class="text-xl truncate">{item.price}</p>
-                      <p className="text-base items-center">
-                        <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
-                      </p>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-              {/* products end */}
+              {/* main section end */}
+              <ShopSlider />
             </div>
-            <div className="flex justify-center mt-8">
-              <div className="flex flex-col items-center">
-                <h1 className="text-xl font-bold mb-4 sm:">繼續探索</h1>
-                <MyButton color="primary" size="xl">
-                  查看更多
-                </MyButton>
-              </div>
-            </div>
-            {/* main section end */}
-            <ShopSlider />
-          </div>
+          </main>
         </>
       }
     </DefaultLayout>
