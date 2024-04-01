@@ -10,6 +10,40 @@ import Subtitle from '@/components/course/subtitle'
 export default function CourseIndex() {
   const [activePage, setActivePage] = useState('course')
   const underlines = ['none']
+  const list = [
+    {
+      title: '課程一',
+      content:
+        '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
+      img: '/assets/course/img_course_card_01.png',
+      star: '5.0',
+      price: 'NT$1200',
+    },
+    {
+      title: '課程二',
+      content:
+        '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
+      img: '/assets/course/img_course_card_02.png',
+      star: '5.0',
+      price: 'NT$1000',
+    },
+    {
+      title: '課程三',
+      content:
+        '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
+      img: '/assets/course/img_course_card_03.png',
+      star: '5.0',
+      price: 'NT$800',
+    },
+    {
+      title: '課程四',
+      content:
+        '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
+      img: '/assets/course/img_course_card_04.png',
+      star: '5.0',
+      price: 'NT$600',
+    },
+  ]
   return (
     <DefaultLayout
       activePage={activePage}
@@ -40,7 +74,7 @@ export default function CourseIndex() {
               className="rounded-2xl"
             />
             {/* 加入我們 */}
-            <Card className="flex flex-row p-6 columns-2 m-4 md:m-10 absolute top-0 left-0 z-40 rounded-lg">
+            <Card className="flex flex-row p-6 columns-2 m-4 md:m-10 absolute top-0 left-0 z-10 rounded-lg">
               <CardBody className="p-0">
                 <div className="flex flex-col gap-2 items-start justify-between ">
                   <p>與我們一起提供優質的線下課程，讓更多人愛上花藝</p>
@@ -57,7 +91,7 @@ export default function CourseIndex() {
 
           {/* 卡片群組 */}
           <div className="grid gap-y-4 my-14 w-full">
-            <Subtitle text="最新課程" />
+            <Subtitle text="最新課程" className="inline-block" />
             <CardGroup />
           </div>
           <div className="grid gap-y-4 my-14 w-full">
