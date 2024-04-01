@@ -24,10 +24,16 @@ export default function Sidebar() {
           <p className="w-full text-base text-tertiary-gray-100 border-b-1 pb-2">
             代客送花
           </p>
-          <Link href="#" className="hover:text-primary-100">
+          <Link
+            href="/custom/center-custom/"
+            className="hover:text-primary-100"
+          >
             我的訂單
           </Link>
-          <Link href="#" className="hover:text-primary-100">
+          <Link
+            href="/custom/center-custom/favorite"
+            className="hover:text-primary-100"
+          >
             收藏花束
           </Link>
         </div>
@@ -39,7 +45,7 @@ export default function Sidebar() {
             線上商城
           </p>
           <Link href="/shop/center-shop/" className="hover:text-primary-100">
-            我的訂單
+            商品訂單
           </Link>
           <Link
             href="/shop/center-shop/favorite"
@@ -59,9 +65,12 @@ export default function Sidebar() {
             href="/course/center-course/"
             className="hover:text-primary-100"
           >
-            我的課程
+            課程訂單
           </Link>
-          <Link href="#" className="hover:text-primary-100">
+          <Link
+            href="/course/center-course/calendar"
+            className="hover:text-primary-100"
+          >
             我的課表
           </Link>
           <Link

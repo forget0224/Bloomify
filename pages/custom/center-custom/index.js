@@ -54,8 +54,8 @@ export default function CenterShop() {
                 <Breadcrumbs underline={u}>
                   <BreadcrumbItem>首頁</BreadcrumbItem>
                   <BreadcrumbItem>會員中心</BreadcrumbItem>
-                  <BreadcrumbItem>課程</BreadcrumbItem>
-                  <BreadcrumbItem color="primary">課程訂單</BreadcrumbItem>
+                  <BreadcrumbItem>代客送花</BreadcrumbItem>
+                  <BreadcrumbItem color="primary">我的訂單</BreadcrumbItem>
                 </Breadcrumbs>
               </div>
             ))}
@@ -68,13 +68,7 @@ export default function CenterShop() {
             {/* 側邊欄 end */}
             {/* 訂單明細 start */}
             <div className="w-10/12 pl-10">
-              <Title text="我的課程" />
-              {/* 
-                  <div className="flex justify-center space-x-10 py-10">
-                    <MyButton color="primary" size="xl">
-                      繼續查看
-                    </MyButton>
-                  </div> */}
+              <Title text="我的訂單" />
             </div>
             {/* 訂單明細 end */}
           </div>

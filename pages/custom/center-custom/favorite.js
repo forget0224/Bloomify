@@ -40,8 +40,8 @@ export default function Favorite() {
                   <Breadcrumbs underline={u}>
                     <BreadcrumbItem>首頁</BreadcrumbItem>
                     <BreadcrumbItem>會員中心</BreadcrumbItem>
-                    <BreadcrumbItem>課程</BreadcrumbItem>
-                    <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>
+                    <BreadcrumbItem>代客送花</BreadcrumbItem>
+                    <BreadcrumbItem color="primary">收藏花束</BreadcrumbItem>
                   </Breadcrumbs>
                 </div>
               ))}
@@ -54,7 +54,7 @@ export default function Favorite() {
 
               {/* order content start */}
               <div className="w-10/12 pl-10">
-                <Title text="收藏課程" />
+                <Title text="收藏花束" />
 
                 {/* search & select start */}
                 <div className="flex justify-between gap-4 py-4">
@@ -95,20 +95,6 @@ export default function Favorite() {
                   </div>
                 </div>
                 {/* search & select end */}
-
-                <div className="grid gap-y-10 gap-x-6 w-full mt-4">
-                  <CardGroup />
-                  <CardGroup />
-                  <CardGroup />
-                </div>
-
-                {/* pagination */}
-                <Pagination
-                  color="secondary-100"
-                  initialPage={3}
-                  total={10}
-                  className="flex justify-center mt-6"
-                />
               </div>
 
               {/* <div className="flex justify-center space-x-10 py-10">
