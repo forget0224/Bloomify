@@ -107,24 +107,24 @@ export default function Shop() {
                   {/* tag end */}
                 </div>
 
-                <div class="flex justify-start">
+                <div className="flex justify-start">
                   <table>
                     <tbody>
-                      <tr class="my-4">
-                        <td class="py-2">商品定價</td>
-                        <td class="px-4 py-2">NT$30</td>
+                      <tr className="my-4">
+                        <td className="py-2">商品定價</td>
+                        <td className="px-4 py-2">NT$30</td>
                       </tr>
-                      <tr class="my-4">
-                        <td class="py-2">商品庫存</td>
-                        <td class="px-4 py-2">300支</td>
+                      <tr className="my-4">
+                        <td className="py-2">商品庫存</td>
+                        <td className="px-4 py-2">300支</td>
                       </tr>
-                      <tr class="my-4">
-                        <td class="py-2">累積購買數</td>
-                        <td class="px-4 py-2">30支</td>
+                      <tr className="my-4">
+                        <td className="py-2">累積購買數</td>
+                        <td className="px-4 py-2">30支</td>
                       </tr>
-                      <tr class="my-4">
-                        <td class="py-2">購買數量</td>
-                        <td class="px-4 py-2">300支</td>
+                      <tr className="my-4">
+                        <td className="py-2">購買數量</td>
+                        <td className="px-4 py-2">300支</td>
                       </tr>
                     </tbody>
                   </table>

@@ -434,20 +434,20 @@ export default function Shop() {
                       </CardBody>
                       <CardHeader className="block text-left">
                         <div className="flex justify-between">
-                          <p class="text-xl truncate">{item.title}</p>
+                          <p className="text-xl truncate">{item.title}</p>
                           <p className="text-base flex items-center space-x-1">
                             <BsFillStarFill className="text-secondary-100" />
                             {item.star}
                             <span>{item.starCount}</span>
                           </p>
                         </div>
-                        <p class="text-base">{item.shop}</p>
-                        <p class="text-base px-2.5 py-0.5 inline-block bg-primary">
+                        <p className="text-base">{item.shop}</p>
+                        <p className="text-base px-2.5 py-0.5 inline-block bg-primary">
                           {item.tag}
                         </p>
                       </CardHeader>
                       <CardFooter className="text-small justify-between">
-                        <p class="text-xl truncate">{item.price}</p>
+                        <p className="text-xl truncate">{item.price}</p>
                         <p className="text-base items-center">
                           <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
                         </p>

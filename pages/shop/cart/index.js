@@ -33,13 +33,13 @@ export default function Cart() {
           <div className="bg-white container justify-center flex flex-col items-center columns-12 px-5 md:px-0 mb-10">
             {/* session bar */}
             <div className="flex w-full">
-              <div class="flex flex-1 items-center justify-center h-16 max-h-full md:max-h-16 border-b-1 border-black">
+              <div className="flex flex-1 items-center justify-center h-16 max-h-full md:max-h-16 border-b-1 border-black">
                 <p>代客送花</p>
               </div>
-              <div class="flex flex-1 items-center justify-center h-16 max-h-full md:max-h-16 border-b-1 border-black">
+              <div className="flex flex-1 items-center justify-center h-16 max-h-full md:max-h-16 border-b-1 border-black">
                 <p>線上商城</p>
               </div>
-              <div class="flex flex-1 items-center justify-center h-16 max-h-full md:max-h-16 border-b-1 border-black">
+              <div className="flex flex-1 items-center justify-center h-16 max-h-full md:max-h-16 border-b-1 border-black">
                 <p>課程預約</p>
               </div>
             </div>

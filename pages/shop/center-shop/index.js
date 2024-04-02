@@ -201,48 +201,58 @@ export default function CenterShop() {
                                       </TableRow>
                                     </TableBody>
                                   </Table>
-                                  <div class="flex justify-end">
+                                  <div className="flex justify-end">
                                     <table>
                                       <tbody>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">小計</td>
-                                          <td class="px-4 py-2">NT$90</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">小計</td>
+                                          <td className="px-4 py-2">NT$90</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">運費</td>
-                                          <td class="px-4 py-2">NT$60</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">運費</td>
+                                          <td className="px-4 py-2">NT$60</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">折扣</td>
-                                          <td class="px-4 py-2">-NT$50</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">折扣</td>
+                                          <td className="px-4 py-2">-NT$50</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">總計</td>
-                                          <td class="px-4 py-2">NT$100</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">總計</td>
+                                          <td className="px-4 py-2">NT$100</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">付款方式</td>
-                                          <td class="px-4 py-2">Line Pay</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            付款方式
+                                          </td>
+                                          <td className="px-4 py-2">
+                                            Line Pay
+                                          </td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">寄送方式</td>
-                                          <td class="px-4 py-2">
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            寄送方式
+                                          </td>
+                                          <td className="px-4 py-2">
                                             7-ELEVEN 超商
                                           </td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">運送資訊</td>
-                                          <td class="px-4 py-2">未取貨</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            運送資訊
+                                          </td>
+                                          <td className="px-4 py-2">未取貨</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">發票種類</td>
-                                          <td class="px-4 py-2">載具</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            發票種類
+                                          </td>
+                                          <td className="px-4 py-2">載具</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
                                             寄送日期及時間
                                           </td>
-                                          <td class="px-4 py-2">
+                                          <td className="px-4 py-2">
                                             2024-02-27 11:02:08
                                           </td>
                                         </tr>
@@ -382,48 +392,58 @@ export default function CenterShop() {
                                       </TableRow>
                                     </TableBody>
                                   </Table>
-                                  <div class="flex justify-end">
+                                  <div className="flex justify-end">
                                     <table>
                                       <tbody>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">小計</td>
-                                          <td class="px-4 py-2">NT$90</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">小計</td>
+                                          <td className="px-4 py-2">NT$90</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">運費</td>
-                                          <td class="px-4 py-2">NT$60</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">運費</td>
+                                          <td className="px-4 py-2">NT$60</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">折扣</td>
-                                          <td class="px-4 py-2">-NT$50</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">折扣</td>
+                                          <td className="px-4 py-2">-NT$50</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">總計</td>
-                                          <td class="px-4 py-2">NT$100</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">總計</td>
+                                          <td className="px-4 py-2">NT$100</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">付款方式</td>
-                                          <td class="px-4 py-2">Line Pay</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            付款方式
+                                          </td>
+                                          <td className="px-4 py-2">
+                                            Line Pay
+                                          </td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">寄送方式</td>
-                                          <td class="px-4 py-2">
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            寄送方式
+                                          </td>
+                                          <td className="px-4 py-2">
                                             7-ELEVEN 超商
                                           </td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">運送資訊</td>
-                                          <td class="px-4 py-2">已取貨</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            運送資訊
+                                          </td>
+                                          <td className="px-4 py-2">已取貨</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">發票種類</td>
-                                          <td class="px-4 py-2">載具</td>
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
+                                            發票種類
+                                          </td>
+                                          <td className="px-4 py-2">載具</td>
                                         </tr>
-                                        <tr class="my-4">
-                                          <td class="px-4 py-2">
+                                        <tr className="my-4">
+                                          <td className="px-4 py-2">
                                             寄送日期及時間
                                           </td>
-                                          <td class="px-4 py-2">
+                                          <td className="px-4 py-2">
                                             2024-02-27 11:02:08
                                           </td>
                                         </tr>
