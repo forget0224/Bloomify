@@ -13,6 +13,14 @@ import { MyButton } from '@/components/btn/mybutton'
 
 export default function Confirm() {
   const [activePage, setActivePage] = useState('shop')
+
+  //table樣式
+  const tableStyles = {
+    th: 'text-base', // 表頭
+    td: 'text-base', // 表格
+    wrapper: 'text-base', // 整個表格
+  }
+
   return (
     <DefaultLayout activePage={activePage}>
       <>
@@ -42,12 +50,12 @@ export default function Confirm() {
                 />
                 <circle cx="59.3984" cy="82.5996" r="3" fill="white" />
               </svg>
-              <p className="text-2xl mt-6">付款成功，您的訂單已成立</p>
+              <p className="text-2xl font-medium mt-6">付款失敗</p>
             </div>
             {/* 訂單明細 */}
             <div className="w-full flex flex-col md:w-6/12 lg:w-4/12 items-center justify-center gap-4">
               <Subtitle text="訂單明細" className="w-full" />
-              <Table hideHeader className="text-base">
+              <Table hideHeader classNames={tableStyles}>
                 <TableHeader>
                   <TableColumn></TableColumn>
                   <TableColumn></TableColumn>

@@ -41,6 +41,13 @@ export default function CenterShop() {
     },
   ]
 
+  //table樣式
+  const tableStyles = {
+    th: 'text-base', // 表頭
+    td: 'text-base', // 表格
+    wrapper: 'text-base', // 整個表格
+  }
+
   const [activePage, setActivePage] = useState('shop')
   return (
     <DefaultLayout activePage={activePage}>
@@ -57,60 +64,65 @@ export default function CenterShop() {
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
-            <div className="flex flex-row w-full">
+            <div className="flex flex-row w-full justify-center">
               {/* 側邊欄 */}
               <Sidebar />
 
               {/* 歷史訂單 */}
-              <div className="w-10/12 pl-10">
-                {/* 搜尋框 */}
-                <div className="hidden sm:absolute sm:top-0 sm:right-2">
-                  <div className="flex space-x-6">
-                    {/* searchbar */}
-                    <Input
-                      variant="bordered"
-                      placeholder="搜尋..."
-                      endContent={
-                        <button
-                          className="focus:outline-none"
-                          type="button"
-                          onClick={() => {}}
-                        >
-                          <CiSearch />
-                        </button>
-                      }
-                      className="max-w-xs"
-                    />
-                    {/* filter */}
-                    <div className="flex flex-cols items-center space-x-4">
-                      <p className=" text-tertiary-black whitespace-nowrap">
-                        排序
-                      </p>
-                      <Select
-                        placeholder="Select"
-                        defaultSelectedKeys={['Orange']}
-                        className="max-w-xs w-48"
-                        scrollShadowProps={{
-                          isEnabled: false,
-                        }}
-                      >
-                        {list.map((item, index) => (
-                          <SelectItem key={item.title} value={item.title}>
-                            {item.title}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>
-                </div>
+              <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
                 {/* 訂單明細 */}
                 <Title text="商品訂單" />
                 <div className="flex w-full flex-col">
-                  <Tabs aria-label="Options">
+                  <Tabs
+                    key={''}
+                    radius={'full'}
+                    color={'primary'}
+                    aria-label="Tabs radius"
+                    className="pt-4"
+                  >
                     {/* all order start */}
                     <Tab key="all" title="全部訂單">
-                      <div className="space-y-5">
-                        <Card>
+                      {/* 搜尋框 */}
+                      <div className="flex justify-between gap-4 pb-4">
+                        {/* searchbar */}
+                        <Input
+                          variant="bordered"
+                          placeholder="搜尋..."
+                          endContent={
+                            <button
+                              className="focus:outline-none"
+                              type="button"
+                              onClick={() => {}}
+                            >
+                              <CiSearch />
+                            </button>
+                          }
+                          className="max-w-xs "
+                        />
+                        {/* filter */}
+                        <div className="flex flex-cols items-center space-x-4">
+                          <p className=" text-tertiary-black whitespace-nowrap">
+                            排序
+                          </p>
+                          <Select
+                            placeholder="Select"
+                            defaultSelectedKeys={['Orange']}
+                            className="max-w-xs w-48"
+                            scrollShadowProps={{
+                              isEnabled: false,
+                            }}
+                          >
+                            {list.map((item, index) => (
+                              <SelectItem key={item.title} value={item.title}>
+                                {item.title}
+                              </SelectItem>
+                            ))}
+                          </Select>
+                        </div>
+                      </div>
+                      {/* 歷史訂單卡片 */}
+                      <div className="flex flex-col gap-4">
+                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none">
                           <CardBody>
                             <Accordion>
                               <AccordionItem
@@ -121,6 +133,8 @@ export default function CenterShop() {
                                     <Table
                                       hideHeader
                                       aria-label="Example static collection table"
+                                      removeWrapper
+                                      classNames={tableStyles}
                                     >
                                       <TableHeader>
                                         <TableColumn>xx</TableColumn>
@@ -264,7 +278,7 @@ export default function CenterShop() {
                             </Accordion>
                           </CardBody>
                         </Card>
-                        <Card>
+                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none">
                           <CardBody>
                             <Accordion>
                               <AccordionItem
@@ -275,6 +289,7 @@ export default function CenterShop() {
                                     <Table
                                       hideHeader
                                       aria-label="Example static collection table"
+                                      removeWrapper
                                     >
                                       <TableHeader>
                                         <TableColumn>xx</TableColumn>
@@ -460,44 +475,50 @@ export default function CenterShop() {
                     {/* all order end */}
                     {/* unfinished start */}
                     <Tab key="unfinished" title="未完成">
-                      <Card>
-                        <CardBody>
-                          Ut enim ad minim veniam, quis nostrud exercitation
-                          ullamco laboris nisi ut aliquip ex ea commodo
-                          consequat. Duis aute irure dolor in reprehenderit in
-                          voluptate velit esse cillum dolore eu fugiat nulla
-                          pariatur.
-                        </CardBody>
-                      </Card>
-                    </Tab>{' '}
+                      <div className="flex flex-col gap-4">
+                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none">
+                          <CardBody>
+                            Ut enim ad minim veniam, quis nostrud exercitation
+                            ullamco laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in
+                            voluptate velit esse cillum dolore eu fugiat nulla
+                            pariatur.
+                          </CardBody>
+                        </Card>
+                      </div>
+                    </Tab>
                     {/* unfinished end */}
                     {/* finished start */}
                     <Tab key="finished" title="已完成">
-                      <Card>
-                        <CardBody>
-                          Excepteur sint occaecat cupidatat non proident, sunt
-                          in culpa qui officia deserunt mollit anim id est
-                          laborum.
-                        </CardBody>
-                      </Card>
+                      <div className="flex flex-col gap-4">
+                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none">
+                          <CardBody>
+                            Excepteur sint occaecat cupidatat non proident, sunt
+                            in culpa qui officia deserunt mollit anim id est
+                            laborum.
+                          </CardBody>
+                        </Card>
+                      </div>
                     </Tab>
                     {/* finished end */}
                     {/* review start */}
                     <Tab key="review" title="待評價">
-                      <Card>
-                        <CardBody>
-                          Excepteur sint occaecat cupidatat non proident, sunt
-                          in culpa qui officia deserunt mollit anim id est
-                          laborum.
-                        </CardBody>
-                      </Card>
+                      <div className="flex flex-col gap-4">
+                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none">
+                          <CardBody>
+                            Excepteur sint occaecat cupidatat non proident, sunt
+                            in culpa qui officia deserunt mollit anim id est
+                            laborum.
+                          </CardBody>
+                        </Card>
+                      </div>
                     </Tab>
                     {/* review end */}
                   </Tabs>
                 </div>
 
                 {/* 按鈕群組 */}
-                <div className="flex justify-center space-x-10 py-10">
+                <div className="flex justify-center py-10">
                   <MyButton color="primary" size="xl">
                     繼續查看
                   </MyButton>
