@@ -52,7 +52,7 @@ export default function HomeNav({ activePage }) {
       subMenu: [],
     },
     {
-      name: 'join',
+      name: 'store',
       chineseName: '加入我們',
       href: '',
       subMenu: [],
