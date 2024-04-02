@@ -16,6 +16,14 @@ export default function FillOut() {
     label: 'text-base',
     input: ['text-base', 'rounded-lg'],
   }
+  // select 樣式
+  const selectStyles = {
+    label: 'text-base',
+    base: 'text-base',
+    placeholder: 'text-base',
+    selected: 'text-base',
+    popoverContent: 'text-base',
+  }
 
   const shippingMethods = [
     {
@@ -155,27 +163,26 @@ export default function FillOut() {
         <main className="flex flex-col justify-center items-center bg-white">
           {/* 主要容器 */}
           <div className="bg-white container justify-center flex flex-col items-center columns-12 px-5 md:px-0 mb-10">
+            {/* steps */}
+            <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 mt-6">
+              <Stepper
+                steps={steps}
+                pallet={{
+                  default: '#E4E4E4',
+                  warning: '#FF7C7C',
+                  danger: '#FF7C7C',
+                  success: '#68A392',
+                }}
+                footerData={{
+                  // submitHandler: submitStepper,
+                  prevBtnClassName: 'hidden',
+                  nextBtnClassName: 'hidden',
+                  submitBtnClassName: 'hidden',
+                }}
+              />
+            </div>
             {/* 主要內容 */}
             <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14">
-              {/* steps */}
-              <div className="mt-6">
-                <Stepper
-                  steps={steps}
-                  pallet={{
-                    default: '#E4E4E4',
-                    warning: '#FF7C7C',
-                    danger: '#FF7C7C',
-                    success: '#68A392',
-                  }}
-                  footerData={{
-                    // submitHandler: submitStepper,
-                    prevBtnClassName: 'hidden',
-                    nextBtnClassName: 'hidden',
-                    submitBtnClassName: 'hidden',
-                  }}
-                />
-              </div>
-
               {/*  buyer start */}
               <div className="w-full justify-center max-w-3xl flex flex-col gap-4">
                 <div className="flex text-black border-b-2 border-primary-300">
@@ -229,12 +236,13 @@ export default function FillOut() {
                     labelPlacement="outside"
                     disableSelectorIconRotation
                     isRequired
-                    classNames={{ ...inputStyles }}
+                    classNames={{ ...selectStyles }}
                   >
                     {shippingMethods.map((shippingMethod) => (
                       <SelectItem
                         key={shippingMethod.value}
                         value={shippingMethod.value}
+                        classNames={{ ...selectStyles }}
                       >
                         {shippingMethod.label}
                       </SelectItem>
@@ -280,7 +288,7 @@ export default function FillOut() {
                         labelPlacement="outside"
                         disableSelectorIconRotation
                         isRequired
-                        classNames={{ ...inputStyles }}
+                        classNames={{ ...selectStyles }}
                       >
                         {shippingMethods.map((shippingMethod) => (
                           <SelectItem
@@ -297,7 +305,7 @@ export default function FillOut() {
                         labelPlacement="outside"
                         disableSelectorIconRotation
                         isRequired
-                        classNames={{ ...inputStyles }}
+                        classNames={{ ...selectStyles }}
                       >
                         {shippingMethods.map((shippingMethod) => (
                           <SelectItem
@@ -314,7 +322,7 @@ export default function FillOut() {
                         labelPlacement="outside"
                         disableSelectorIconRotation
                         isRequired
-                        classNames={{ ...inputStyles }}
+                        classNames={{ ...selectStyles }}
                       >
                         {shippingMethods.map((shippingMethod) => (
                           <SelectItem
@@ -426,13 +434,13 @@ export default function FillOut() {
                     labelPlacement="outside"
                     disableSelectorIconRotation
                     isRequired
-                    classNames={{ ...inputStyles }}
+                    classNames={{ ...selectStyles }}
                   >
                     {invoiceTypes.map((invoiceType) => (
                       <SelectItem
                         key={invoiceType.value}
                         value={invoiceType.value}
-                        classNames={{ ...inputStyles }}
+                        classNames={{ ...selectStyles }}
                       >
                         {invoiceType.label}
                       </SelectItem>
