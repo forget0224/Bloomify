@@ -138,49 +138,47 @@ export default function Favorite() {
                 {/* search & select end */}
 
                 {/* 卡片 */}
-                <div className="flex w-full flex-col">
-                  <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-3 sm:grid-cols-3 w-full">
-                    {productList.map((item, index) => (
-                      <Card
-                        shadow="sm"
-                        key={index}
-                        isPressable
-                        onPress={() => console.log('item pressed')}
-                      >
-                        <CardBody className="relative overflow-visible p-0">
-                          <Link
-                            href="/shop/details"
-                            key={index}
-                            className="block relative"
-                          >
-                            <BsHeartFill className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                            <Image
-                              shadow="none"
-                              radius="none"
-                              width="100%"
-                              alt={item.title}
-                              className="w-full object-cover h-[140px] z-0"
-                              src={item.img}
-                            />
-                          </Link>
-                        </CardBody>
-                        <CardHeader className="block text-left">
-                          <div className="flex justify-between">
-                            <p class="text-xl truncate">{item.title}</p>
-                            <p className="text-base flex items-center space-x-1">
-                              <BsFillStarFill className="text-secondary-100" />
-                              {item.star}
-                              <span>{item.starCount}</span>
-                            </p>
-                          </div>
-                          <p class="text-base">{item.shop}</p>
-                        </CardHeader>
-                        <CardFooter className="text-small justify-between">
-                          <p class="text-xl truncate">{item.price}</p>
-                        </CardFooter>
-                      </Card>
-                    ))}
-                  </div>
+                <div className="flex w-full flex-col rounded-lg gap-4 grid grid-cols-3 sm:grid-cols-3">
+                  {productList.map((item, index) => (
+                    <Card
+                      shadow="sm"
+                      key={index}
+                      isPressable
+                      onPress={() => console.log('item pressed')}
+                    >
+                      <CardBody className="relative overflow-visible p-0">
+                        <Link
+                          href="/shop/details"
+                          key={index}
+                          className="block relative"
+                        >
+                          <BsHeartFill className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                          <Image
+                            shadow="none"
+                            radius="none"
+                            width="100%"
+                            alt={item.title}
+                            className="w-full object-cover h-[140px] z-0"
+                            src={item.img}
+                          />
+                        </Link>
+                      </CardBody>
+                      <CardHeader className="block text-left">
+                        <div className="flex justify-between">
+                          <p class="text-xl truncate">{item.title}</p>
+                          <p className="text-base flex items-center space-x-1">
+                            <BsFillStarFill className="text-secondary-100" />
+                            {item.star}
+                            <span>{item.starCount}</span>
+                          </p>
+                        </div>
+                        <p class="text-base">{item.shop}</p>
+                      </CardHeader>
+                      <CardFooter className="text-small justify-between">
+                        <p class="text-xl truncate">{item.price}</p>
+                      </CardFooter>
+                    </Card>
+                  ))}
                 </div>
 
                 {/* 按鈕群組 */}

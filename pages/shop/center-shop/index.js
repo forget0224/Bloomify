@@ -63,6 +63,47 @@ export default function CenterShop() {
 
               {/* 歷史訂單 */}
               <div className="w-10/12 pl-10">
+                {/* 搜尋框 */}
+                <div className="hidden sm:absolute sm:top-0 sm:right-2">
+                  <div className="flex space-x-6">
+                    {/* searchbar */}
+                    <Input
+                      variant="bordered"
+                      placeholder="搜尋..."
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={() => {}}
+                        >
+                          <CiSearch />
+                        </button>
+                      }
+                      className="max-w-xs"
+                    />
+                    {/* filter */}
+                    <div className="flex flex-cols items-center space-x-4">
+                      <p className=" text-tertiary-black whitespace-nowrap">
+                        排序
+                      </p>
+                      <Select
+                        placeholder="Select"
+                        defaultSelectedKeys={['Orange']}
+                        className="max-w-xs w-48"
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                      >
+                        {list.map((item, index) => (
+                          <SelectItem key={item.title} value={item.title}>
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+                {/* 訂單明細 */}
                 <Title text="商品訂單" />
                 <div className="flex w-full flex-col">
                   <Tabs aria-label="Options">
@@ -434,47 +475,6 @@ export default function CenterShop() {
                     {/* review end */}
                   </Tabs>
                 </div>
-                {/* search & select start */}
-                <div className="hidden sm:absolute sm:top-0 sm:right-2">
-                  <div className="flex space-x-6">
-                    {/* searchbar */}
-                    <Input
-                      variant="bordered"
-                      placeholder="搜尋..."
-                      endContent={
-                        <button
-                          className="focus:outline-none"
-                          type="button"
-                          onClick={() => {}}
-                        >
-                          <CiSearch />
-                        </button>
-                      }
-                      className="max-w-xs"
-                    />
-                    {/* filter */}
-                    <div className="flex flex-cols items-center space-x-4">
-                      <p className=" text-tertiary-black whitespace-nowrap">
-                        排序
-                      </p>
-                      <Select
-                        placeholder="Select"
-                        defaultSelectedKeys={['Orange']}
-                        className="max-w-xs w-48"
-                        scrollShadowProps={{
-                          isEnabled: false,
-                        }}
-                      >
-                        {list.map((item, index) => (
-                          <SelectItem key={item.title} value={item.title}>
-                            {item.title}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>
-                </div>
-                {/* search & select end */}
 
                 {/* 按鈕群組 */}
                 <div className="flex justify-center space-x-10 py-10">
