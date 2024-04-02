@@ -2,9 +2,12 @@ import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Image from 'next/image'
+import { Tabs, Tab, Card, CardBody, CardHeader } from '@nextui-org/react'
 
 export default function Custom() {
   const [activePage, setActivePage] = useState('about')
+
+  const [selected, setSelected] = useState('photos')
   return (
     // navbar + footer
     <DefaultLayout activePage={activePage}>
@@ -23,10 +26,55 @@ export default function Custom() {
               </div>
               <div className="container flex justify-center">
                 {/* 左側邊欄 */}
-                <section className="w-1/4 flex flex-col ">
-                  <div>關於我們</div>
-                  <div>服務項目</div>
-                  <div>服務範圍</div>
+                <section className="w-1/4 flex flex-col text-center ">
+                  <Tabs
+                    aria-label="Options"
+                    selectedKey={selected}
+                    onSelectionChange={setSelected}
+                  >
+                    <Tab key="photos" title="Photos">
+                      {/* <Card>
+                        <CardBody>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt ut labore et
+                          dolore magna aliqua. Ut enim ad minim veniam, quis
+                          nostrud exercitation ullamco laboris nisi ut aliquip
+                          ex ea commodo consequat.
+                        </CardBody>
+                      </Card> */}
+                    </Tab>
+                    <Tab key="music" title="Music">
+                      {/* <Card>
+                        <CardBody>
+                          Ut enim ad minim veniam, quis nostrud exercitation
+                          ullamco laboris nisi ut aliquip ex ea commodo
+                          consequat. Duis aute irure dolor in reprehenderit in
+                          voluptate velit esse cillum dolore eu fugiat nulla
+                          pariatur.
+                        </CardBody>
+                      </Card> */}
+                    </Tab>
+                    <Tab key="videos" title="Videos">
+                      {/* <Card>
+                        <CardBody>
+                          Excepteur sint occaecat cupidatat non proident, sunt
+                          in culpa qui officia deserunt mollit anim id est
+                          laborum.
+                        </CardBody>
+                      </Card> */}
+                    </Tab>
+                  </Tabs>
+                  {/* <ul className="bg-green-100">
+                    <li className="px-8 py-4">
+                      <a href="javascript:">關於我們</a>
+                    </li>
+                    <li className="px-8 py-4">
+                      <a href="javascript:">服務項目</a>
+                    </li>
+                    <li className="px-8 py-4">
+                      <a href="javascript:">服務範圍</a>
+                    </li>
+                  </ul> */}
                 </section>
                 {/* 右側邊欄-切換顯示/隱藏 */}
                 {/* 關於我們 */}
@@ -95,7 +143,7 @@ export default function Custom() {
                   </div>
                 </section>
                 {/* 服務範圍 */}
-                <section className="w-3/4 flex ">
+                <section className="w-3/4 flex mb-8">
                   {/* 店家列表 */}
                   <div className="w-1/2">
                     <div>

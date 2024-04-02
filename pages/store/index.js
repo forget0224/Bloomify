@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, React } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
@@ -11,6 +11,7 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react'
+import Process from '@/components/store/process'
 
 export default function Custom() {
   const [activePage, setActivePage] = useState('store')
@@ -34,8 +35,10 @@ export default function Custom() {
       img: '/images/fruit-4.jpeg',
     },
   ]
+
   // 控制 Modal Button
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const size = ['2xl']
 
   return (
     // navbar + footer
@@ -56,11 +59,18 @@ export default function Custom() {
               {/* banner */}
               <div className="bg-stone-100">
                 <div className="text-4xl text-center py-4">合作申請流程</div>
-                <div className="flex justify-around  py-4">
-                  <div className="w-[222px] h-[222px] bg-rose-100 rounded-full flex justify-center items-center">
+                <div className="flex justify-around flex-wrap py-4">
+                  {/* <div className="w-[222px] h-[222px] bg-rose-100 rounded-full flex justify-center items-center">
                     填入表單
-                  </div>
-                  <div className="w-[222px] h-[222px] bg-rose-100 rounded-full flex justify-center items-center">
+                  </div> */}
+                  <Process
+                    process01={'填寫表單'}
+                    process02={'登入系統'}
+                    process03={'完成付款'}
+                    process04={'等候權限'}
+                    process05={'歡迎使用'}
+                  ></Process>
+                  {/* <div className="w-[222px] h-[222px] bg-rose-100 rounded-full flex justify-center items-center">
                     登入系統
                   </div>
                   <div className="w-[222px] h-[222px] bg-rose-100 rounded-full flex justify-center items-center">
@@ -71,7 +81,7 @@ export default function Custom() {
                   </div>
                   <div className="w-[222px] h-[222px] bg-rose-100 rounded-full flex justify-center items-center">
                     歡迎使用
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -108,48 +118,109 @@ export default function Custom() {
                 <Button onPress={onOpen} className="mt-6">
                   Open Modal
                 </Button>
-                <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <Modal size={size} isOpen={isOpen} onClose={onClose}>
                   <ModalContent>
                     {(onClose) => (
                       <>
                         <ModalHeader className="flex flex-col gap-1">
-                          Modal Title
+                          <div className="text-2xl text-center py-4">
+                            合作店家申請
+                          </div>
                         </ModalHeader>
                         <ModalBody>
-                          <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Nullam pulvinar risus non risus hendrerit
-                            venenatis. Pellentesque sit amet hendrerit risus,
-                            sed porttitor quam.
-                          </p>
-                          <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Nullam pulvinar risus non risus hendrerit
-                            venenatis. Pellentesque sit amet hendrerit risus,
-                            sed porttitor quam.
-                          </p>
-                          <p>
-                            Magna exercitation reprehenderit magna aute tempor
-                            cupidatat consequat elit dolor adipisicing. Mollit
-                            dolor eiusmod sunt ex incididunt cillum quis. Velit
-                            duis sit officia eiusmod Lorem aliqua enim laboris
-                            do dolor eiusmod. Et mollit incididunt nisi
-                            consectetur esse laborum eiusmod pariatur proident
-                            Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
-                          </p>
-                        </ModalBody>
-                        <ModalFooter>
-                          <Button
-                            color="danger"
-                            variant="light"
-                            onPress={onClose}
+                          {/* 表單 */}
+                          <form
+                            name="form1"
+                            method="post"
+                            // onSubmit={submitHandler}
+                            className="border border-orange-200 flex flex-col "
                           >
-                            Close
-                          </Button>
-                          <Button color="primary" onPress={onClose}>
-                            Action
-                          </Button>
-                        </ModalFooter>
+                            <div className="flex flex-col  mx-auto">
+                              {/* input 輸入框 */}
+                              <div className={'mb-3'}>
+                                <label htmlFor="name" className="">
+                                  姓名
+                                </label>
+                                <br />
+                                <input
+                                  type="text"
+                                  className="border border-black"
+                                  id="name"
+                                  name="name"
+                                  // value={myForm.name}
+                                  // onChange={changeHandler}
+                                  // value = ""  不能是空字串
+                                  // value 改變 => useState改變
+                                  // value 這邊需要有onChange{}做狀態監聽
+                                />
+                                {/* <div className="form-text">{errors.name}</div> */}
+                              </div>
+                              <div className={'mb-3'}>
+                                <label htmlFor="email" className="">
+                                  email
+                                </label>
+                                <br />
+                                <input
+                                  type="text"
+                                  className="border border-black"
+                                  id="email"
+                                  name="email"
+                                  // value={myForm.email}
+                                  // onChange={changeHandler}
+                                />
+                                {/* <div className="form-text">{errors.email}</div> */}
+                              </div>
+                              <div className="mb-3">
+                                <label htmlFor="mobile" className="">
+                                  mobile
+                                </label>
+                                <br />
+                                <input
+                                  type="text"
+                                  className="border border-black"
+                                  id="mobile"
+                                  name="mobile"
+                                  // value={myForm.mobile}
+                                  // onChange={changeHandler}
+                                />
+                                <div className="form-text"></div>
+                              </div>
+                              <div className="mb-3">
+                                <label htmlFor="birthday" className="">
+                                  birthday
+                                </label>
+                                <br />
+                                <input
+                                  type="date"
+                                  className="border border-black"
+                                  id="birthday"
+                                  name="birthday"
+                                  // value={myForm.birthday}
+                                  // onChange={changeHandler}
+                                />
+                                <div className="form-text"></div>
+                              </div>
+                              <div className="mb-3">
+                                <label htmlFor="address" className="">
+                                  address
+                                </label>
+                                <br />
+                                <textarea
+                                  className="border border-black"
+                                  name="address"
+                                  id="address"
+                                  cols="30"
+                                  rows="3"
+                                  // value={myForm.address}
+                                  // onChange={changeHandler}
+                                ></textarea>
+                              </div>
+                            </div>
+
+                            <Button>註冊</Button>
+                          </form>
+                        </ModalBody>
+                        <ModalFooter></ModalFooter>
                       </>
                     )}
                   </ModalContent>
