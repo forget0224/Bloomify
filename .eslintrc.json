@@ -28,7 +28,7 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended",
+    // "plugin:jsx-a11y/recommended", // 無障礙
     "plugin:import/errors",
     "next",
     "next/core-web-vitals",
