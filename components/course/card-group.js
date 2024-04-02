@@ -63,8 +63,8 @@ export default function CardGroup() {
               />
             </CardBody>
             <CardFooter className="block text-left">
-              <p class="text-xl truncate mb-2">{item.title}</p>
-              <p class="line-clamp-2 mb-2">{item.content}</p>
+              <p className="text-xl truncate mb-2">{item.title}</p>
+              <p className="line-clamp-2 mb-2">{item.content}</p>
               <div className="text-small flex justify-between pt-0">
                 <p className="text-lg">{item.price}</p>
                 <p className="text-base flex items-center">

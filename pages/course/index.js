@@ -5,7 +5,7 @@ import CardGroup from '@/components/course/card-group'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
 
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
-import Subtitle from '@/components/course/subtitle'
+import Subtitle from '@/components/common/subtitle'
 
 export default function CourseIndex() {
   const [activePage, setActivePage] = useState('course')

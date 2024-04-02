@@ -2,7 +2,7 @@ import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 
-import Title from '@/components/course/title'
+import Title from '@/components/common/title'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { CiSearch } from 'react-icons/ci'

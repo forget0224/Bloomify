@@ -1,5 +1,5 @@
 import React from 'react'
-import Subtitle from '../course/subtitle'
+import Subtitle from '../common/subtitle'
 import {
   Card,
   CardHeader,

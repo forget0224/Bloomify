@@ -2,7 +2,7 @@ import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
-import Title from '@/components/course/title'
+import Title from '@/components/common/title'
 import { Breadcrumbs, BreadcrumbItem, table } from '@nextui-org/react'
 import {
   Card,

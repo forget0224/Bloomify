@@ -4,7 +4,7 @@ import { MyButton } from '@/components/btn/mybutton'
 import CardGroup from '@/components/course/card-group'
 
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
-import Subtitle from '@/components/course/subtitle'
+import Subtitle from '@/components/common/subtitle'
 import CardNews from '@/components/course/card-news'
 import CardTime from '@/components/course/card-time'
 import CoursePagination from '@/components/course/pagination'

@@ -16,7 +16,7 @@ import { MyButton } from '@/components/btn/mybutton'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { CiSearch } from 'react-icons/ci'
-import Title from '@/components/course/title'
+import Title from '@/components/common/title'
 import CenterLayout from '@/components/layout/center-layout'
 
 export default function CenterShop() {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Tabs, Tab, Card, CardBody, CardHeader } from '@nextui-org/react'
 import { Image } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
-import Subtitle from '@/components/course/subtitle'
+import Subtitle from '@/components/common/subtitle'
 import { BsFillStarFill } from 'react-icons/bs'
 import { BsHeart } from 'react-icons/bs'
 

@@ -8,7 +8,7 @@ import {
 } from '@nextui-org/react'
 import { CiPhone } from 'react-icons/ci'
 import { CiLocationOn } from 'react-icons/ci'
-import Subtitle from './subtitle'
+import Subtitle from '../common/subtitle'
 
 export default function CourseMap() {
   return (

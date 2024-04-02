@@ -9,7 +9,7 @@ import {
   TableRow,
   TableCell,
 } from '@nextui-org/react'
-import Subtitle from '@/components/course/subtitle'
+import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
 import { Checkbox } from '@nextui-org/react'
 

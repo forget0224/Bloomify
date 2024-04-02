@@ -4,7 +4,7 @@ import { Image } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import CardGroup from '@/components/course/card-group'
 
-import Title from '@/components/course/title'
+import Title from '@/components/common/title'
 import SearchBtn from '@/components/course/btn-search'
 
 export default function CourseSearch() {

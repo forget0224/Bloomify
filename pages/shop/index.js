@@ -16,7 +16,7 @@ import { Input } from '@nextui-org/react'
 import { CiSearch } from 'react-icons/ci'
 import { MyButton } from '@/components/btn/mybutton'
 import ShopSlider from '../../components/shop/shop-slider.js'
-import Subtitle from '@/components/course/subtitle.js'
+import Subtitle from '@/components/common/subtitle.js'
 import Link from 'next/link.js'
 import { PiShoppingCartSimpleFill } from 'react-icons/pi'
 
