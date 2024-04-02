@@ -48,11 +48,13 @@ export default function HomeNav({ activePage }) {
     {
       name: 'about',
       chineseName: '關於我們',
+      href: '',
       subMenu: [],
     },
     {
       name: 'join',
       chineseName: '加入我們',
+      href: '',
       subMenu: [],
     },
   ]
