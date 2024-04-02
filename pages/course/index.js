@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
+import { Tabs, Tab } from '@nextui-org/react'
+
 import { Image } from '@nextui-org/react'
 import CardGroup from '@/components/course/card-group'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
