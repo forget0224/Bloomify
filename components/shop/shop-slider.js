@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Subtitle from '../common/subtitle'
 import {
   Card,
@@ -7,13 +7,17 @@ import {
   CardFooter,
   Image,
 } from '@nextui-org/react'
-import { BsFillStarFill } from 'react-icons/bs'
 import { BsHeart } from 'react-icons/bs'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import Link from 'next/link'
 import { Button } from '@nextui-org/react'
 
+const ITEM_WIDTH = 300
+
 function ShopSlider() {
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [isLeftDisabled, setIsLeftDisabled] = useState(true)
+  const [isRightDisabled, setIsRightDisabled] = useState(false)
   const productList = [
     {
       img: '/assets/shop/products/pink_Gladiola_0.jpg',
@@ -47,68 +51,142 @@ function ShopSlider() {
       tag: 'hot sale',
       price: '$78.70',
     },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Orange',
+      starCount: '5.0',
+      shop: 'shop4',
+      tag: 'hot sale',
+      price: '$78.70',
+    },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Orange',
+      starCount: '5.0',
+      shop: 'shop4',
+      tag: 'hot sale',
+      price: '$78.70',
+    },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Orange',
+      starCount: '5.0',
+      shop: 'shop4',
+      tag: 'hot sale',
+      price: '$78.70',
+    },
+    {
+      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      title: 'Orange',
+      starCount: '5.0',
+      shop: 'shop4',
+      tag: 'hot sale',
+      price: '$78.70',
+    },
   ]
+
+  const containerRef = useRef()
+  const contentWidth = ITEM_WIDTH * productList.length
+
+  // function to handle scrolling when the btn is clicked
+  const handleScroll = (scrollAmount) => {
+    const newScrollPosition = scrollPosition + scrollAmount
+    // update the state with the new scroll position
+    setScrollPosition(newScrollPosition)
+    // access the container element and set its scrollLeft property
+    containerRef.current.scrollLeft = newScrollPosition
+  }
+
+  useEffect(() => {
+    const containerWidth = containerRef.current.clientWidth
+    const contentWidth = containerRef.current.scrollWidth
+    const maxScroll = contentWidth - containerWidth
+
+    setIsLeftDisabled(scrollPosition === 0)
+    setIsRightDisabled(scrollPosition >= maxScroll)
+  }, [scrollPosition])
 
   return (
     <>
       <Subtitle text="熱門商品" />
-      <div className="flex items-center justify-between my-8">
-        <Button
-          color="primary"
-          className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center"
-        >
-          <IoIosArrowBack />
-        </Button>
-
-        <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-1 sm:grid-cols-4 ">
-          {productList.map((item, index) => (
-            <Card
-              shadow="sm"
-              key={index}
-              isPressable
-              onPress={() => console.log('item pressed')}
-            >
-              <CardBody className="relative overflow-visible p-0">
-                <Link
-                  href="/shop/details"
-                  key={index}
-                  className="block relative"
-                >
-                  <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                  <Image
-                    shadow="none"
-                    radius="none"
-                    width="100%"
-                    alt={item.title}
-                    className="w-full object-cover h-[140px] z-0"
-                    src={item.img}
-                  />
-                </Link>
-              </CardBody>
-              <CardHeader className="block text-left">
-                <div className="flex justify-between">
-                  <p class="text-xl truncate">{item.title}</p>
-                  {/* <p className="text-base flex items-center space-x-1">
-                    <BsFillStarFill className="text-secondary-100" />
-                    {item.star}
-                    <span>{item.starCount}</span>
-                  </p> */}
-                </div>
-                <p class="text-base">{item.shop}</p>
-              </CardHeader>
-              <CardFooter className="text-small justify-between">
-                <p class="text-xl truncate">{item.price}</p>
-              </CardFooter>
-            </Card>
-          ))}
+      <div className="container relative my-8 flex justify-center">
+        <div className="absolute left-0 top-[50%] z-10">
+          <Button
+            color="primary"
+            className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center "
+            onClick={() => {
+              handleScroll(-ITEM_WIDTH)
+            }}
+            disabled={isLeftDisabled}
+            style={{
+              opacity: isLeftDisabled ? 0.5 : 1,
+            }}
+          >
+            <IoIosArrowBack />
+          </Button>
         </div>
 
-        <Button
-          color="primary"
-          className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center"
+        <div
+          ref={containerRef}
+          className="overflow-x-scroll scrollbar-hide scroll-smooth sm:mx-20"
         >
-          <IoIosArrowForward />
-        </Button>
+          <div
+            className="content-box w-auto flex align-center gap-5"
+            style={{ width: contentWidth }}
+          >
+            {productList.map((item, index) => (
+              <Card
+                shadow="sm"
+                key={index}
+                isPressable
+                onPress={() => console.log('item pressed')}
+              >
+                <CardBody className="relative overflow-visible p-0">
+                  <Link
+                    href="/shop/details"
+                    key={index}
+                    className="block relative"
+                  >
+                    <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                    <Image
+                      shadow="none"
+                      radius="none"
+                      width="100%"
+                      alt={item.title}
+                      className="w-[300px] object-cover h-[200px] z-0"
+                      src={item.img}
+                    />
+                  </Link>
+                </CardBody>
+                <CardHeader className="block text-left">
+                  <div className="flex justify-between">
+                    <p className="text-xl truncate">{item.title}</p>
+                  </div>
+                  <p className="text-base">{item.shop}</p>
+                </CardHeader>
+                <CardFooter className="text-small justify-between">
+                  <p className="text-xl truncate">{item.price}</p>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <div className="absolute right-0 top-[50%]">
+          <Button
+            color="primary"
+            className="hidden sm:px-unit-3 sm:min-w-unit-3 sm:rounded-full sm:flex sm:items-center sm:justify-center "
+            onClick={() => {
+              handleScroll(ITEM_WIDTH)
+            }}
+            disabled={isRightDisabled}
+            style={{
+              opacity: isRightDisabled ? 0.5 : 1,
+            }}
+          >
+            <IoIosArrowForward />
+          </Button>
+        </div>
       </div>
     </>
   )
