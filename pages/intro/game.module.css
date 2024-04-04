@@ -1,11 +1,11 @@
 /* 原生CSS沒有轉成tailwind 對應到原檔的index.css */
 @import url("https://fonts.googleapis.com/css2?family=Croissant+One&display=swap");
-html,
+/* html,
 body {
   height: 100%;
   padding: 0;
   margin: 0;
-}
+} */
 
 .game {
   position: relative;
@@ -69,7 +69,7 @@ body {
   height: 100%;
   border-radius: 16px;
   overflow: hidden;
-  background-image: url(../images/back.png);
+  background-image: url(../../public/assets/intro/back.png);
   background-position: center center;
   background-size: cover;
 }
