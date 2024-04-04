@@ -61,6 +61,13 @@ export default function Cart() {
   //   console.log('submitted')
   // }
 
+  //table樣式
+  const tableStyles = {
+    th: 'text-base', // 表頭
+    td: 'text-base', // 表格
+    wrapper: 'text-base', // 整個表格
+  }
+
   return (
     <>
       <DefaultLayout activePage={activePage}>
@@ -105,7 +112,9 @@ export default function Cart() {
                   <Tab
                     key="information"
                     title={
-                      <div className="flex items-center space-x-2">購物車</div>
+                      <div className="flex items-center text-base space-x-2">
+                        購物車
+                      </div>
                     }
                   >
                     <Card className="p-4">
@@ -115,6 +124,7 @@ export default function Cart() {
                           defaultSelectedKeys={['2']}
                           aria-label="Example static collection table"
                           removeWrapper
+                          classNames={tableStyles}
                         >
                           <TableHeader>
                             <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
@@ -242,7 +252,7 @@ export default function Cart() {
                   <Tab
                     key="store"
                     title={
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center text-base space-x-2">
                         下次再買
                       </div>
                     }
@@ -253,6 +263,7 @@ export default function Cart() {
                           selectionMode="single"
                           defaultSelectedKeys={['2']}
                           aria-label="Example static collection table"
+                          classNames={tableStyles}
                         >
                           <TableHeader>
                             <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4">

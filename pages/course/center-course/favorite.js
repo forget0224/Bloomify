@@ -38,7 +38,7 @@ export default function Favorite() {
               {underlines.map((u) => (
                 <div key={u}>
                   <Breadcrumbs underline={u}>
-                    <BreadcrumbItem>首頁</BreadcrumbItem>
+                    <BreadcrumbItem href="/">首頁</BreadcrumbItem>
                     <BreadcrumbItem>會員中心</BreadcrumbItem>
                     <BreadcrumbItem>課程</BreadcrumbItem>
                     <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>

@@ -1,7 +1,17 @@
 import { useState } from 'react'
+import React from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 import CardGroup from '@/components/course/card-group'
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from '@nextui-org/react'
 
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/common/subtitle'
@@ -21,7 +31,12 @@ import { FaStar } from 'react-icons/fa'
 
 export default function CourseDetails() {
   const [activePage, setActivePage] = useState('course')
+  // 麵包屑 變數
   const underlines = ['none']
+
+  // Modal 變數和方法
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [size, setSize] = React.useState('4xl') // 預設大小設定為 '4xl'
 
   return (
     <DefaultLayout
@@ -35,7 +50,7 @@ export default function CourseDetails() {
             {underlines.map((u) => (
               <div key={u}>
                 <Breadcrumbs underline={u}>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem href="/">首頁</BreadcrumbItem>
                   <BreadcrumbItem>合作課程</BreadcrumbItem>
                   <BreadcrumbItem>基礎花藝課程</BreadcrumbItem>
                   <BreadcrumbItem color="primary">
@@ -45,6 +60,7 @@ export default function CourseDetails() {
               </div>
             ))}
           </div>
+
           {/* 課程圖和課程資訊 */}
           <div className="flex flex-col gap-6 md:flex-row mb-12">
             {/* -課程圖 */}
@@ -69,7 +85,10 @@ export default function CourseDetails() {
                   <div className="line-clamp-4">
                     歡迎參加我們的韓系乾燥花束製作課程！這堂課將教導您如何選擇適合的花材，以及製作出擁有濃厚韓風風格的精美花束。我們將分享製作過程中的技巧和訣竅，包括花材的層次搭配、包裝技術等，讓您能輕鬆打造出獨一無二的乾燥花藝品。無論您是初學者還是有一定經驗的花藝愛好者，都能在這堂課中獲得滿足感和成就感。透過豐富多彩的花束，帶著層層美好，為生活增添一抹花香。我們將分享製作過程中的技巧和訣竅，包括花材的層次搭配、包裝技術等，讓您能輕鬆打造出獨一無二的乾燥花藝品。
                   </div>
-                  <p className="text-tertiary-gray-100 flex items-center mt-1">
+                  <p
+                    className="text-tertiary-gray-100 flex items-center mt-1 cursor-pointer"
+                    onClick={onOpen}
+                  >
                     查看詳細
                     <BsChevronRight />
                   </p>
@@ -107,6 +126,7 @@ export default function CourseDetails() {
             </div>
           </div>
 
+          {/* 其他所有資訊 */}
           <div className="flex flex-col md:flex-row gap-16 static overflow:auto">
             {/* 開課商家資訊 */}
             <div className="w-full md:w-5/12 order-0 md:order-1 h-fit sticky top-0">
@@ -166,6 +186,58 @@ export default function CourseDetails() {
             </div>
           </div>
         </div>
+
+        {/* Modal */}
+        <>
+          <Modal
+            size={size}
+            isOpen={isOpen}
+            onClose={onClose}
+            classNames={{
+              body: '',
+              backdrop: 'bg-[#262626]/50 backdrop-opacity-40',
+              base: '',
+              header: '',
+              footer: '',
+              closeButton: 'hover:bg-primary/5 active:bg-primary/10 mr-4 mt-4',
+            }}
+          >
+            <ModalContent>
+              <ModalHeader className="flex flex-col gap-1 px-8 pt-8 text-2xl">
+                詳細介紹
+              </ModalHeader>
+              <ModalBody className="px-8">
+                {/* Modal 的內容 */}
+                <p>
+                  歡迎參加我們的韓系乾燥花束製作課程！這堂課將教導您如何選擇適合的花材，以及製作出擁有濃厚韓風風格的精美花束。我們將分享製作過程中的技巧和訣竅，包括花材的層次搭配、包裝技術等，讓您能輕鬆打造出獨一無二的乾燥花藝品。無論您是初學者還是有一定經驗的花藝愛好者，都能在這堂課中獲得滿足感和成就感。透過豐富多彩的花束，帶著層層美好，為生活增添一抹花香。我們將分享製作過程中的技巧和訣竅，包括花材的層次搭配、包裝技術等，讓您能輕鬆打造出獨一無二的乾燥花藝品。
+                  <br />
+                  <br />
+                  歡迎參加我們的韓系乾燥花束製作課程！這堂課將教導您如何選擇適合的花材，以及製作出擁有濃厚韓風風格的精美花束。我們將分享製作過程中的技巧和訣竅，包括花材的層次搭配、包裝技術等，讓您能輕鬆打造出獨一無二的乾燥花藝品。
+                </p>
+                {/* 更多內容 */}
+              </ModalBody>
+              <ModalFooter className="flex gap-4 px-8 pb-8">
+                <MyButton
+                  color="primary"
+                  size="xl"
+                  isOutline
+                  className="w-full"
+                  onPress={onClose}
+                >
+                  取消
+                </MyButton>
+                <MyButton
+                  color="primary"
+                  size="xl"
+                  className="w-full"
+                  onPress={onClose}
+                >
+                  確認
+                </MyButton>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </>
       </main>
     </DefaultLayout>
   )

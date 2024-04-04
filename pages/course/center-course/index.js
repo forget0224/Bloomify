@@ -28,17 +28,6 @@ export default function CenterShop() {
       src: '/assets/shop/products/pink_Gladiola_0.jpg',
     },
   ]
-  const list = [
-    {
-      title: 'Orange',
-    },
-    {
-      title: 'Tangerine',
-    },
-    {
-      title: 'Raspberry',
-    },
-  ]
 
   const [activePage, setActivePage] = useState('course')
   const underlines = ['none']
@@ -52,7 +41,7 @@ export default function CenterShop() {
             {underlines.map((u) => (
               <div key={u}>
                 <Breadcrumbs underline={u}>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem href="/">首頁</BreadcrumbItem>
                   <BreadcrumbItem>會員中心</BreadcrumbItem>
                   <BreadcrumbItem>課程</BreadcrumbItem>
                   <BreadcrumbItem color="primary">課程訂單</BreadcrumbItem>
@@ -68,7 +57,7 @@ export default function CenterShop() {
             {/* 側邊欄 end */}
             {/* 訂單明細 start */}
             <div className="w-10/12 pl-10">
-              <Title text="我的課程" />
+              <Title text="課程訂單" />
               {/* 
                   <div className="flex justify-center space-x-10 py-10">
                     <MyButton color="primary" size="xl">
