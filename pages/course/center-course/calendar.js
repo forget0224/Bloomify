@@ -52,7 +52,7 @@ export default function CenterShop() {
             {underlines.map((u) => (
               <div key={u}>
                 <Breadcrumbs underline={u}>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem href="/">首頁</BreadcrumbItem>
                   <BreadcrumbItem>會員中心</BreadcrumbItem>
                   <BreadcrumbItem>課程</BreadcrumbItem>
                   <BreadcrumbItem color="primary">我的課表</BreadcrumbItem>
