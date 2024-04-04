@@ -2,7 +2,24 @@ import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Image from 'next/image'
-import { Tabs, Tab, Card, CardBody, CardHeader } from '@nextui-org/react'
+import {
+  Tabs,
+  Tab,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+} from '@nextui-org/react'
+import { Button } from '@nextui-org/react'
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+} from '@nextui-org/react'
+import { MyButton } from '@/components/btn/mybutton'
 
 export default function Custom() {
   const [activePage, setActivePage] = useState('about')
@@ -26,144 +43,144 @@ export default function Custom() {
               </div>
               <div className="container flex justify-center">
                 {/* 左側邊欄 */}
-                <section className="w-1/4 flex flex-col text-center ">
-                  <Tabs
-                    aria-label="Options"
-                    selectedKey={selected}
-                    onSelectionChange={setSelected}
-                  >
-                    <Tab key="photos" title="Photos">
-                      {/* <Card>
-                        <CardBody>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit, sed do eiusmod tempor incididunt ut labore et
-                          dolore magna aliqua. Ut enim ad minim veniam, quis
-                          nostrud exercitation ullamco laboris nisi ut aliquip
-                          ex ea commodo consequat.
-                        </CardBody>
-                      </Card> */}
-                    </Tab>
-                    <Tab key="music" title="Music">
-                      {/* <Card>
-                        <CardBody>
-                          Ut enim ad minim veniam, quis nostrud exercitation
-                          ullamco laboris nisi ut aliquip ex ea commodo
-                          consequat. Duis aute irure dolor in reprehenderit in
-                          voluptate velit esse cillum dolore eu fugiat nulla
-                          pariatur.
-                        </CardBody>
-                      </Card> */}
-                    </Tab>
-                    <Tab key="videos" title="Videos">
-                      {/* <Card>
-                        <CardBody>
-                          Excepteur sint occaecat cupidatat non proident, sunt
-                          in culpa qui officia deserunt mollit anim id est
-                          laborum.
-                        </CardBody>
-                      </Card> */}
-                    </Tab>
-                  </Tabs>
-                  {/* <ul className="bg-green-100">
-                    <li className="px-8 py-4">
-                      <a href="javascript:">關於我們</a>
-                    </li>
-                    <li className="px-8 py-4">
-                      <a href="javascript:">服務項目</a>
-                    </li>
-                    <li className="px-8 py-4">
-                      <a href="javascript:">服務範圍</a>
-                    </li>
-                  </ul> */}
-                </section>
-                {/* 右側邊欄-切換顯示/隱藏 */}
-                {/* 關於我們 */}
-                <section className="w-3/4 hidden">
-                  <div>
-                    我們的宗旨：隨時隨地，為您帶來溫馨的花束和愛的訊息。
+                <div className="flex flex-row w-full">
+                  {/* Tabs */}
+                  <div className="flex flex-row ">
+                    <Tabs
+                      aria-label="Options"
+                      color="primary"
+                      variant="underlined"
+                      classNames={{
+                        tabList:
+                          'flex flex-col gap-6 w-[200px] relative rounded-none p-0 border-r border-divider',
+                        cursor: 'w-full bg-[#68A392]',
+                        tab: 'max-w-fit px-0 h-12',
+                        tabContent: 'group-data-[selected=true]:text-[#68A392]',
+                      }}
+                    >
+                      {/* 關於我們 */}
+                      <Tab
+                        key="information"
+                        title={
+                          <div className="flex items-center space-x-2">
+                            關於我們
+                          </div>
+                        }
+                      >
+                        {/* Tab Content */}
+                        <Card className="flex-grow p-4 ">
+                          <div>
+                            我們的宗旨：隨時隨地，為您帶來溫馨的花束和愛的訊息。
+                          </div>
+                          <div>
+                            {' '}
+                            在現代生活中，儀式感與溫馨情感的表達至關重要。然而，繁忙的生活節奏常使我們無法細心關懷。我們的目標是解決這一困擾。隨時隨地，我們帶來精心挑選的花束，為您傳達真摯情感。無論工作日或深夜驚喜，我們都在您身邊。讓我們的花束成為您生活中溫馨和愛的象徵。
+                          </div>
+                          <Image
+                            width={1000}
+                            height={600}
+                            // className="w-[1129px] h-[617px]"
+                            src="https://via.placeholder.com/1129x617"
+                          ></Image>
+                        </Card>
+                      </Tab>
+
+                      {/* 服務項目 */}
+                      <Tab
+                        key="service"
+                        title={
+                          <div className="flex items-center space-x-2">
+                            服務項目
+                          </div>
+                        }
+                      >
+                        {/* Tab Content */}
+                        <Card className="flex-grow p-4">
+                          {/* 服務項目 */}
+                          <div className="text-xl text-center">
+                            我們提供的服務項目
+                          </div>
+                          {/* 服務一 */}
+                          <div className="flex">
+                            <div>
+                              <div>代客送花 :</div>
+                              <div>
+                                我們提供專業的送花服務，讓您無論身在何處，都能隨時隨地為您的親朋好友送上心意。
+                              </div>
+                            </div>
+                            <Image
+                              width={622}
+                              height={538}
+                              className="w-[622px] h-[538px]"
+                              src="https://via.placeholder.com/622x538"
+                            ></Image>
+                          </div>
+                          {/* 服務二 */}
+                          <div className="flex">
+                            <Image
+                              width={622}
+                              height={538}
+                              className="w-[622px] h-[538px]"
+                              src="https://via.placeholder.com/622x538"
+                            ></Image>
+                            <div>
+                              <div>線上商城：</div>
+                              <div>
+                                在我們的線上商城，您可以輕鬆瀏覽各式各樣的花束和花材，選擇最適合您的款式和價格。{' '}
+                              </div>
+                            </div>
+                          </div>
+                          {/* 服務三 */}
+                          <div className="flex">
+                            <div>
+                              <div>合作課程：</div>
+                              <div>
+                                我們與各種花藝師和專業工作室合作，為您提供精彩的花藝課程和工作坊。
+                              </div>
+                            </div>
+                            <Image
+                              width={622}
+                              height={538}
+                              className="w-[622px] h-[538px]"
+                              src="https://via.placeholder.com/622x538"
+                            ></Image>
+                          </div>
+                        </Card>
+                      </Tab>
+                      {/* 服務範圍 */}
+                      <Tab
+                        key="service-area"
+                        title={
+                          <div className="flex items-center space-x-2">
+                            服務範圍
+                          </div>
+                        }
+                      >
+                        {/* Tab Content */}
+                        <Card className="flex-grow p-4">
+                          <div className="flex">
+                            <div>
+                              <div>服務範圍 :</div>
+                              <div>
+                                Bloomify
+                                提供的訂花、買花、送花服務範圍包括：台北、桃園、台中、高雄區域。
+                              </div>
+                              <div>店家列表</div>
+                            </div>
+                            <div className="text-center">
+                              <Image
+                                width={400}
+                                height={300}
+                                // className="w-[189px] h-[343px]"
+                                src="https://via.placeholder.com/189x343"
+                              ></Image>
+                            </div>
+                          </div>
+                        </Card>
+                      </Tab>
+                    </Tabs>
                   </div>
-                  <div>
-                    {' '}
-                    在現代生活中，儀式感與溫馨情感的表達至關重要。然而，繁忙的生活節奏常使我們無法細心關懷。我們的目標是解決這一困擾。隨時隨地，我們帶來精心挑選的花束，為您傳達真摯情感。無論工作日或深夜驚喜，我們都在您身邊。讓我們的花束成為您生活中溫馨和愛的象徵。
-                  </div>
-                  <Image
-                    width={1000}
-                    height={600}
-                    // className="w-[1129px] h-[617px]"
-                    src="https://via.placeholder.com/1129x617"
-                  ></Image>
-                </section>
-                <section className="w-3/4 hidden">
-                  {/* 服務項目 */}
-                  <div className="text-xl text-center">我們提供的服務項目</div>
-                  {/* 服務一 */}
-                  <div className="flex">
-                    <div>
-                      <div>代客送花 :</div>
-                      <div>
-                        我們提供專業的送花服務，讓您無論身在何處，都能隨時隨地為您的親朋好友送上心意。
-                      </div>
-                    </div>
-                    <Image
-                      width={622}
-                      height={538}
-                      className="w-[622px] h-[538px]"
-                      src="https://via.placeholder.com/622x538"
-                    ></Image>
-                  </div>
-                  {/* 服務二 */}
-                  <div className="flex">
-                    <Image
-                      width={622}
-                      height={538}
-                      className="w-[622px] h-[538px]"
-                      src="https://via.placeholder.com/622x538"
-                    ></Image>
-                    <div>
-                      <div>線上商城：</div>
-                      <div>
-                        在我們的線上商城，您可以輕鬆瀏覽各式各樣的花束和花材，選擇最適合您的款式和價格。{' '}
-                      </div>
-                    </div>
-                  </div>
-                  {/* 服務三 */}
-                  <div className="flex">
-                    <div>
-                      <div>合作課程：</div>
-                      <div>
-                        我們與各種花藝師和專業工作室合作，為您提供精彩的花藝課程和工作坊。
-                      </div>
-                    </div>
-                    <Image
-                      width={622}
-                      height={538}
-                      className="w-[622px] h-[538px]"
-                      src="https://via.placeholder.com/622x538"
-                    ></Image>
-                  </div>
-                </section>
-                {/* 服務範圍 */}
-                <section className="w-3/4 flex mb-8">
-                  {/* 店家列表 */}
-                  <div className="w-1/2">
-                    <div>
-                      <div>服務範圍：</div>
-                      <div>
-                        Bloomify
-                        提供的訂花、買花、送花服務範圍包括：台北、桃園、台中、高雄區域。
-                      </div>
-                      <div>店家列表</div>
-                    </div>
-                  </div>
-                  <div className="w-1/2 flex justify-center">
-                    <Image
-                      width={189}
-                      height={343}
-                      className="w-[189px] h-[343px]"
-                      src="https://via.placeholder.com/189x343"
-                    ></Image>
-                  </div>
-                </section>
+                </div>
               </div>
             </div>
           </main>

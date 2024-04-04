@@ -60,7 +60,7 @@ function ShopSlider() {
           <IoIosArrowBack />
         </Button>
 
-        <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-1 sm:grid-cols-4 w-full">
+        <div className="bg-white p-4 rounded-lg gap-2 grid grid-cols-1 sm:grid-cols-4 ">
           {productList.map((item, index) => (
             <Card
               shadow="sm"

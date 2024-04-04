@@ -85,7 +85,7 @@ export default function Custom() {
                 </div>
               </div>
 
-              <div className="py-4 text-center text-green-700 font-bold">
+              <div className="py-4 text-center text-primary font-bold">
                 為何選擇Bloomify
               </div>
               {/* 4 Card */}
