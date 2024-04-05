@@ -4,15 +4,7 @@ import CenterLayout from '@/components/layout/center-layout'
 import ShopSlider from '@/components/shop/shop-slider'
 import { MyButton } from '@/components/btn/mybutton'
 import { Button } from '@nextui-org/react'
-import {
-  Tabs,
-  Tab,
-  Card,
-  CardBody,
-  CardHeader,
-  Image,
-  CardFooter,
-} from '@nextui-org/react'
+import { Tabs, Tab, Card, Image, CardFooter } from '@nextui-org/react'
 import {
   Table,
   TableHeader,
@@ -165,7 +157,7 @@ export default function Cart() {
                                     variant="faded"
                                     className="border-transparent"
                                   >
-                                    +
+                                    -
                                   </Button>
                                   <div>1</div>
                                   <Button
@@ -173,7 +165,7 @@ export default function Cart() {
                                     variant="faded"
                                     className="border-transparent"
                                   >
-                                    -
+                                    +
                                   </Button>
                                 </div>
                               </TableCell>

@@ -996,6 +996,7 @@ export default function Shop() {
                           >
                             <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
                             <Image
+                              isZoomed
                               shadow="none"
                               radius="none"
                               width="100%"

@@ -3,155 +3,380 @@ import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Image } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-import ProductDetails from '../../../components/shop/details/product-details'
-import ProductReview from '../../../components/shop/details/product-reviews'
+// import ProductDetails from '../../../components/shop/details/product-details'
 import ShopSlider from '@/components/shop/shop-slider'
 import { BsFillStarFill, BsHeart } from 'react-icons/bs'
 import { LuShare2 } from 'react-icons/lu'
+import { Tabs, Tab, Card, Button } from '@nextui-org/react'
+import Subtitle from '@/components/common/subtitle'
+import { FaStar } from 'react-icons/fa'
+import { Pagination } from '@nextui-org/react'
 
-export default function Shop() {
+export default function Detail() {
   const [activePage, setActivePage] = useState('shop')
+
+  // images start
+  const productImages = [
+    { image: '/assets/shop/products/pink_Gladiola_0.jpg' },
+    { image: '/assets/shop/products/red_Amaryllis_3.jpg' },
+    { image: '/assets/shop/products/red_Snapdragon_1.jpg' },
+  ]
+  const [mainImageSrc, setMainImageSrc] = useState(productImages[0].image)
+  const handleThumbnailClick = (imageSrc) => {
+    setMainImageSrc(imageSrc)
+  }
+  // images end
+
+  // tags start
+  const productTags = [{ tag: '熱賣中' }, { tag: '鮮花類' }]
+  // tags end
+
+  //table樣式
+  const tableStyles = {
+    th: 'text-base', // 表頭
+    td: 'text-base', // 表格
+    wrapper: 'text-base', // 整個表格
+  }
+
+  //comment start
+  const comment = [
+    {
+      userName: '吉伊卡哇',
+      time: '2023.02.12',
+      star: '3',
+      message:
+        '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+    },
+    {
+      userName: '芙莉蓮',
+      time: '2024.04.05',
+      star: '4',
+      message:
+        '我們仍然需要對玫瑰花保持懷疑的態度。面對如此難題，我們必須設想周全。所謂玫瑰花，關鍵是玫瑰花需要如何解讀。我們不妨可以這樣來想: 每個人的一生中，幾乎可說碰到玫瑰花這件事，是必然會發生的。',
+    },
+    {
+      userName: '費倫',
+      time: '2024.05.05',
+      star: '2',
+      message:
+        '當你搞懂後就會明白了。而這些並不是完全重要，更加重要的問題是，這種事實對本人來說意義重大，相信對這個世界也是有一定意義的。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+    },
+  ]
+  //comment end
+
   return (
-    <DefaultLayout activePage={activePage}>
-      {
-        <>
-          <div className="mx-auto md:px-52 sm:24">
-            <div className="py-6">
+    <DefaultLayout
+      activePage={activePage}
+      className="flex flex-col justify-center items-center"
+    >
+      {/* 置中 & 背景色 */}
+      <main className="flex flex-col justify-center items-center bg-white">
+        {/* 主要容器 */}
+        <div className="bg-white container justify-center flex flex-col items-start columns-12 static">
+          {/* 麵包屑 */}
+          <div className="bg-white flex flex-col flex-wrap gap-4 py-6 w-full">
+            <div>
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
                 <BreadcrumbItem>線上商城</BreadcrumbItem>
-                <BreadcrumbItem>商品細節</BreadcrumbItem>
+                <BreadcrumbItem color="primary">商品細節</BreadcrumbItem>
               </Breadcrumbs>
             </div>
-            {/* product information start */}
-            <div className="sm:space-x-20 sm:flex ">
-              {/* imgs */}
-              <div className="sm:flex sm:space-x-4">
-                {/* aside imgs */}
-                <div className="hidden sm:flex sm:flex-col sm:gap-2 ">
-                  <div className="max-w-[100px] max-h-[100px] overflow-hidden rounded-lg mb-1">
-                    <Image
-                      alt=""
-                      className="object-fit w-full h-full rounded-none"
-                      src="https://i.pinimg.com/originals/86/90/14/869014ea87e157354d2326a5961b20e0.png"
-                    />
-                  </div>
-                  <div className="max-w-[100px] max-h-[100px] border border-gray-400 overflow-hidden rounded-lg">
-                    <Image
-                      alt=""
-                      className="object-fit w-full h-full rounded-none"
-                      src="/assets/shop/products/pink_Gladiola_0.jpg"
-                    />
-                  </div>
-                </div>
-                {/* main img */}
-                <div className="max-w-[700px] max-h-[700px] overflow-hidden rounded-lg mb-1">
-                  <Image
-                    alt=""
-                    className="object-fit w-full h-full rounded-none"
-                    src="/assets/shop/products/pink_Gladiola_0.jpg"
-                  />
-                </div>
-                {/* aside imgs */}
-                <div className="flex gap-2 sm:hidden">
-                  <div className="max-w-[100px] max-h-[100px] overflow-hidden rounded-lg mb-1">
-                    <Image
-                      alt=""
-                      className="object-fit w-full h-full rounded-none"
-                      src="https://i.pinimg.com/originals/86/90/14/869014ea87e157354d2326a5961b20e0.png"
-                    />
-                  </div>
-                  <div className="max-w-[100px] max-h-[100px] border border-gray-400 overflow-hidden rounded-lg">
-                    <Image
-                      alt=""
-                      className="object-fit w-full h-full rounded-none"
-                      src="/assets/shop/products/pink_Gladiola_0.jpg"
-                    />
-                  </div>
-                </div>
-              </div>
-              {/* info start*/}
-              <div className="space-y-4 sm:space-y-8">
-                <div className="space-y-2">
-                  <p className="text-4xl text-tertiary-black font-bold">
-                    嘩嘩嘩嘩
-                  </p>
-                  {/* rating start */}
-                  <div className="flex justify-between">
-                    <div className="flex items-center space-x-1 rtl:space-x-reverse">
-                      <BsFillStarFill className="text-secondary-100" />
-                      <BsFillStarFill className="text-secondary-100" />
-                      <BsFillStarFill className="text-secondary-100" />
-                      <BsFillStarFill className="text-secondary-100" />
-                      <BsFillStarFill className="text-secondary-100" />
-                      <div>
-                        <p className="text-tertiary-black">5.0</p>
-                      </div>
-                    </div>
-
-                    <div className="flex space-x-2">
-                      <BsHeart className="text-secondary-100" />
-                      <LuShare2 className="text-secondary-100" />
-                    </div>
-                  </div>
-                  {/* rating end */}
-                  {/* tag start */}
-                  <div>
-                    <span className="bg-primary text-secondary-300 text-base me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                      熱賣中
-                    </span>
-                    <span className="bg-primary text-secondary-300 text-base me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                      鮮花類
-                    </span>
-                  </div>
-                  {/* tag end */}
-                </div>
-
-                <div className="flex justify-start">
-                  <table>
-                    <tbody>
-                      <tr className="my-4">
-                        <td className="py-2">商品定價</td>
-                        <td className="px-4 py-2">NT$30</td>
-                      </tr>
-                      <tr className="my-4">
-                        <td className="py-2">商品庫存</td>
-                        <td className="px-4 py-2">300支</td>
-                      </tr>
-                      <tr className="my-4">
-                        <td className="py-2">累積購買數</td>
-                        <td className="px-4 py-2">30支</td>
-                      </tr>
-                      <tr className="my-4">
-                        <td className="py-2">購買數量</td>
-                        <td className="px-4 py-2">300支</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <div className="flex space-x-1 sm:space-x-2">
-                  <MyButton color="primary" size="xl" isOutline>
-                    加入購物車
-                  </MyButton>
-                  <MyButton color="primary" size="xl">
-                    立即購買
-                  </MyButton>
-                </div>
-              </div>
-              {/* info end*/}
-            </div>
-
-            {/* product information end */}
-            <div className="my-2 sm:my-8">
-              <ProductDetails />
-            </div>
-            <hr className="my-16" />
-            <ProductReview />
-            <hr className="my-16" />
-            <ShopSlider />
           </div>
-        </>
-      }
+
+          <div className="w-full flex justify-center">
+            {/* imgs start */}
+            <div className="flex">
+              <div className="space-y-2">
+                {productImages.map((item, index) => (
+                  <Image
+                    key={index}
+                    isZoomed
+                    width={100}
+                    alt=""
+                    src={item.image}
+                    onClick={() => handleThumbnailClick(item.image)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                ))}
+              </div>
+              <div className="ml-2 mr-8">
+                <Image width={500} alt="" src={mainImageSrc} />
+              </div>
+            </div>
+            {/* imgs  end*/}
+            {/* info start*/}
+            <div className="space-y-4 sm:space-y-8">
+              <div className="space-y-2">
+                <p className="text-4xl text-tertiary-black font-bold">
+                  粉色玫瑰
+                </p>
+                <div className="flex justify-between">
+                  <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <div>
+                      <p className="text-tertiary-black">5.0</p>
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <BsHeart className="text-secondary-100" />
+                    <LuShare2 className="text-secondary-100" />
+                  </div>
+                </div>
+                <div>
+                  {productTags.map((item, index) => (
+                    <span
+                      key={index}
+                      className="bg-primary text-secondary-300 text-base me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                    >
+                      {item.tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex justify-start">
+                <table>
+                  <tbody>
+                    <tr className="my-4">
+                      <td className="py-2">商品定價</td>
+                      <td className="px-4 py-2">NT$30</td>
+                    </tr>
+                    <tr className="my-4">
+                      <td className="py-2">商品庫存</td>
+                      <td className="px-4 py-2">300支</td>
+                    </tr>
+                    <tr className="my-4">
+                      <td className="py-2">累積購買數</td>
+                      <td className="px-4 py-2">30支</td>
+                    </tr>
+                    <tr className="my-4">
+                      <td className="py-2">購買數量</td>
+                      <td className="px-4 py-2">
+                        <div className="flex gap-4 items-center ">
+                          <Button
+                            isIconOnly
+                            variant="faded"
+                            className="border-transparent"
+                          >
+                            -
+                          </Button>
+                          <div>1</div>
+                          <Button
+                            isIconOnly
+                            variant="faded"
+                            className="border-transparent"
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="flex space-x-1 sm:space-x-2">
+                <MyButton color="primary" size="xl" isOutline>
+                  加入購物車
+                </MyButton>
+                <MyButton color="primary" size="xl">
+                  立即購買
+                </MyButton>
+              </div>
+            </div>
+            {/* info end*/}
+          </div>
+
+          <div className="flex w-full flex-col my-16">
+            <Tabs
+              aria-label="Options"
+              color="primary"
+              variant="underlined"
+              classNames={{
+                tabList:
+                  'gap-6 w-full relative rounded-none p-0 border-b border-divider',
+                cursor: 'w-full bg-[#68A392]',
+                tab: 'max-w-fit px-0 h-12',
+                tabContent: 'group-data-[selected=true]:text-[#68A392]',
+              }}
+            >
+              <Tab
+                key="information"
+                title={
+                  <div className="flex items-center text-base space-x-2">
+                    商品訊息
+                  </div>
+                }
+              >
+                <Card className="p-8 space-y-6">
+                  <p className="flex flex-col gap-3 text-xl">粉色玫瑰</p>
+                  <p className="flex flex-col gap-3">
+                    粉色玫瑰花是一種迷人的花朵，以其溫柔的粉色色調和迷人的花朵形狀而聞名。這種花象徵著柔美、愛情和浪漫情懷，常被用作表達愛意或祝福的花材。
+                    粉色玫瑰花在花束、花籃或作為室內裝飾的一部分都能營造出優雅和浪漫的氛圍。
+                  </p>
+                </Card>
+              </Tab>
+              {/* buy again */}
+              <Tab
+                key="store"
+                title={
+                  <div className="flex items-center text-base space-x-2">
+                    販售店家
+                  </div>
+                }
+              >
+                <Card className="p-8 space-y-6">
+                  <p className="flex flex-col gap-3 text-xl">販售店家</p>
+                  <p className="flex flex-col gap-3">
+                    {' '}
+                    世界上若沒有販售店家簡介，對於人類的改變可想而知。對販售店家簡介進行深入研究，在現今時代已經無法避免了。蔡鍔在過去曾經講過，沒有膽量就談不上傑出的統帥。這句話令我不禁感慨問題的迫切性。我認為，海西阿德曾說過，善於掌握自己時間的人，是真正偉大的人。這段話非常有意思。
+                  </p>
+                </Card>
+              </Tab>
+              <Tab
+                key="size"
+                title={
+                  <div className="flex items-center text-base space-x-2">
+                    商品尺寸
+                  </div>
+                }
+              >
+                <Card className="p-8 space-y-6">
+                  <p className="flex flex-col gap-3 text-xl">商品尺寸</p>
+                  <p className="flex flex-col gap-3">商品尺寸</p>
+                </Card>
+              </Tab>
+              <Tab
+                key="note"
+                title={
+                  <div className="flex items-center text-base space-x-2">
+                    注意事項
+                  </div>
+                }
+              >
+                <Card className="p-8 space-y-6">
+                  <p className="flex flex-col gap-3">注意事項</p>
+                </Card>
+              </Tab>
+            </Tabs>
+          </div>
+          {/* 商品評價 */}
+          <div className="flex flex-col gap-6">
+            <Subtitle text="商品評價" />
+            {/* 總評分 */}
+            <div className="flex flex-row gap-2">
+              <span className="text-2xl">4.0</span>
+              <span className="text-2xl">/</span>
+              <span className="text-2xl">5</span>
+              <div className="flex flex-row items-center text-secondary-100">
+                <FaStar />
+                <FaStar />
+                <FaStar />
+                <FaStar className="text-secondary-200" />
+                <FaStar className="text-secondary-200" />
+              </div>
+            </div>
+            {/* filter */}
+            <div>
+              <div className="flex flex-wrap gap-2 items-center">
+                <Button color="primary" variant="solid">
+                  全部(21)
+                </Button>
+                <Button color="white" variant="bordered">
+                  五星(10)
+                </Button>
+                <Button color="white" variant="bordered">
+                  四星(10)
+                </Button>
+                <Button color="white" variant="bordered">
+                  三星(10)
+                </Button>
+                <Button color="white" variant="bordered">
+                  二星(10)
+                </Button>
+                <Button color="white" variant="bordered">
+                  一星(10)
+                </Button>
+              </div>
+            </div>
+            {/* 評價 */}
+            <div>
+              {comment.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col gap-2 py-4 border-b-1 border-b-tertiary-gray-200 last:border-0"
+                >
+                  <p>
+                    {item.userName}
+                    <span className="ml-2 text-tertiary-gray-100">
+                      {item.time}
+                    </span>
+                  </p>
+                  <div className="flex flex-row items-center text-secondary-100">
+                    {item.star === '1' ? (
+                      <>
+                        <FaStar />
+                        <FaStar className="text-secondary-200" />
+                        <FaStar className="text-secondary-200" />
+                        <FaStar className="text-secondary-200" />
+                        <FaStar className="text-secondary-200" />
+                      </>
+                    ) : item.star === '2' ? (
+                      <>
+                        <FaStar />
+                        <FaStar />
+                        <FaStar className="text-secondary-200" />
+                        <FaStar className="text-secondary-200" />
+                        <FaStar className="text-secondary-200" />
+                      </>
+                    ) : item.star === '3' ? (
+                      <>
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                        <FaStar className="text-secondary-200" />
+                        <FaStar className="text-secondary-200" />
+                      </>
+                    ) : item.star === '4' ? (
+                      <>
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                        <FaStar className="text-secondary-200" />
+                      </>
+                    ) : (
+                      <>
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                        <FaStar />
+                      </>
+                    )}
+                  </div>
+                  <p>{item.message}</p>
+                </div>
+              ))}
+            </div>
+            <div>
+              <Pagination
+                color="secondary-100"
+                initialPage={3}
+                total={10}
+                className="flex justify-center"
+              />
+            </div>
+          </div>
+          <hr className="my-16" />
+          <ShopSlider />
+        </div>
+      </main>
     </DefaultLayout>
   )
 }
