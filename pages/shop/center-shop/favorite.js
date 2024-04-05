@@ -11,13 +11,13 @@ import {
   CardFooter,
   Image,
 } from '@nextui-org/react'
-import { MyButton } from '@/components/btn/mybutton'
 import { Select, SelectItem } from '@nextui-org/react'
-import { Input } from '@nextui-org/react'
-import { CiSearch } from 'react-icons/ci'
-import Link from 'next/link'
 import { BsFillStarFill } from 'react-icons/bs'
 import { BsHeartFill } from 'react-icons/bs'
+import Link from 'next/link'
+// 小組元件
+import { MyButton } from '@/components/btn/mybutton'
+import CourseSearch from '@/components/course/search'
 
 export default function Favorite() {
   const list = [
@@ -100,20 +100,9 @@ export default function Favorite() {
                 {/* search & select start */}
                 <div className="flex justify-between gap-4 py-4">
                   {/* searchbar */}
-                  <Input
-                    variant="bordered"
-                    placeholder="搜尋..."
-                    endContent={
-                      <button
-                        className="focus:outline-none"
-                        type="button"
-                        onClick={() => {}}
-                      >
-                        <CiSearch />
-                      </button>
-                    }
-                    className="max-w-xs"
-                  />
+                  <div>
+                    <CourseSearch />
+                  </div>
                   {/* filter */}
                   <div className="flex flex-cols items-center space-x-4">
                     <p className=" text-tertiary-black whitespace-nowrap">

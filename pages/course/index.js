@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
-import { Tabs, Tab } from '@nextui-org/react'
-
 import { Image } from '@nextui-org/react'
-import CardGroup from '@/components/course/card-group'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
-
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/common/subtitle'
+import SearchBtn from '@/components/course/search'
+import CardGroup from '@/components/course/card-group'
 
 export default function CourseIndex() {
   const [activePage, setActivePage] = useState('course')
@@ -75,20 +73,25 @@ export default function CourseIndex() {
               src="/assets/course/img_course_banner.png"
               className="rounded-2xl"
             />
-            {/* 加入我們 */}
-            <Card className="flex flex-row p-6 columns-2 m-4 md:m-10 absolute top-0 left-0 z-10 rounded-lg">
-              <CardBody className="p-0">
-                <div className="flex flex-col gap-2 items-start justify-between ">
-                  <p>與我們一起提供優質的線下課程，讓更多人愛上花藝</p>
-                  <Link
-                    href="/pages/join"
-                    className="text-primary-100 mb-1 border-b-1 border-primary-100"
-                  >
-                    加入我們
-                  </Link>
-                </div>
-              </CardBody>
-            </Card>
+
+            <div className="flex flex-col gap-2 md:w-3/12 md:ml-10 md:mt-10 absolute top-0 left-0 z-10 rounded-lg">
+              {/* 加入我們 */}
+              <Card className="flex flex-row p-4 w-full">
+                <CardBody className="p-0">
+                  <div className="flex flex-col gap-2 items-start justify-between ">
+                    <p>與我們一起提供優質的線下課程，讓更多人愛上花藝</p>
+                    <Link
+                      href="/pages/join"
+                      className="text-primary-100 mb-1 border-b-1 border-primary-100"
+                    >
+                      加入我們
+                    </Link>
+                  </div>
+                </CardBody>
+              </Card>
+              {/* 搜尋框 */}
+              <SearchBtn />
+            </div>
           </div>
 
           {/* 卡片群組 */}

@@ -1,9 +1,5 @@
 import { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
-import CenterLayout from '@/components/layout/center-layout'
-import Sidebar from '@/components/layout/sidebar'
-import Title from '@/components/common/title'
-import { Breadcrumbs, BreadcrumbItem, table } from '@nextui-org/react'
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import {
   Table,
@@ -13,12 +9,19 @@ import {
   TableRow,
   TableCell,
 } from '@nextui-org/react'
+import { useDisclosure } from '@nextui-org/react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { CiSearch } from 'react-icons/ci'
-import Link from 'next/link'
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
+import CenterLayout from '@/components/layout/center-layout'
+import Sidebar from '@/components/layout/sidebar'
+import Title from '@/components/common/title'
+import Review from '@/components/shop/center/review'
+import CourseSearch from '@/components/course/search'
 
 export default function CenterShop() {
   const imageList = [
@@ -49,7 +52,7 @@ export default function CenterShop() {
     trigger: ['px-0', 'py-1', 'pb-4'],
   }
 
-  //訂單明細 table樣式
+  //訂單明細 table 樣式
   const tableStyles = {
     base: ['text-tertiary-black'],
     th: ['text-base'], // 表頭
@@ -57,17 +60,15 @@ export default function CenterShop() {
     wrapper: ['text-base'], // 整個表格
   }
 
-  //商品列表 table樣式
+  //商品列表 table 樣式
   const tableStylesContent = {
     th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
     td: ['text-base'], // 表格
     wrapper: ['text-base', 'shadow-none', 'border-1'], // 整個表格
   }
 
-  //商品列表 table樣式
-  const tableStylesFooter = {
-    wrapper: ['bg-danger'], // 整個表格
-  }
+  // 評價 Modal 變數
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const [activePage, setActivePage] = useState('shop')
   return (
@@ -106,20 +107,9 @@ export default function CenterShop() {
                       {/* 搜尋框 */}
                       <div className="flex justify-between gap-4 pb-4">
                         {/* searchbar */}
-                        <Input
-                          variant="bordered"
-                          placeholder="搜尋..."
-                          endContent={
-                            <button
-                              className="focus:outline-none"
-                              type="button"
-                              onClick={() => {}}
-                            >
-                              <CiSearch />
-                            </button>
-                          }
-                          className="max-w-xs "
-                        />
+                        <div>
+                          <CourseSearch />
+                        </div>
                         {/* filter */}
                         <div className="flex flex-cols items-center space-x-4">
                           <p className=" text-tertiary-black whitespace-nowrap">
@@ -260,7 +250,9 @@ export default function CenterShop() {
                                           <MyButton
                                             color="primary"
                                             size="xs"
+                                            className="text-base"
                                             isOutline
+                                            onClick={onOpen}
                                           >
                                             去評價
                                           </MyButton>
@@ -294,6 +286,8 @@ export default function CenterShop() {
                                             color="primary"
                                             size="xs"
                                             isOutline
+                                            className="text-base"
+                                            onClick={onOpen}
                                           >
                                             去評價
                                           </MyButton>
@@ -302,8 +296,8 @@ export default function CenterShop() {
                                     </TableBody>
                                   </Table>
                                   {/* 付款資訊, 運送資訊 */}
-                                  <div className="flex flex-col pt-4 w-full">
-                                    <div className="flex w-full text-nowrap justify-between">
+                                  <div className="flex flex-col pt-4 items-end">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         付款方式
                                       </div>
@@ -311,25 +305,25 @@ export default function CenterShop() {
                                         Line Pay
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         寄送方式
                                       </div>
                                       <div className="py-1">7-ELEVEN 超商</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運送資訊
                                       </div>
                                       <div className="py-1">未取貨</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         發票種類
                                       </div>
                                       <div className="py-1">載具</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         送達時間
                                       </div>
@@ -337,20 +331,20 @@ export default function CenterShop() {
                                         2024-02-27 11:02:08
                                       </div>
                                     </div>
-                                    <hr className="my-1" />
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    {/* <hr className="my-1 w-full" /> */}
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         小計
                                       </div>
                                       <div className="py-1">NT$90</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運費
                                       </div>
                                       <div className="py-1">NT$60</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         折扣
                                       </div>
@@ -358,7 +352,7 @@ export default function CenterShop() {
                                         -NT$50
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         總計
                                       </div>
@@ -487,7 +481,9 @@ export default function CenterShop() {
                                           <MyButton
                                             color="primary"
                                             size="xs"
+                                            className="text-base"
                                             isOutline
+                                            onClick={onOpen}
                                           >
                                             去評價
                                           </MyButton>
@@ -521,6 +517,7 @@ export default function CenterShop() {
                                             color="primary"
                                             size="xs"
                                             isDisabled
+                                            className="text-base"
                                           >
                                             已評價
                                           </MyButton>
@@ -654,6 +651,13 @@ export default function CenterShop() {
                 </div>
               </div>
             </div>
+
+            {/* 評價 Modal */}
+            <Review
+              onOpen={onOpen}
+              isOpen={isOpen}
+              onOpenChange={onOpenChange}
+            />
           </CenterLayout>
         </>
       }

@@ -1,29 +1,26 @@
 import { React, useState, Fragment } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
-import { Input, link } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { RadioGroup, Radio } from '@nextui-org/react'
-import { FaCcMastercard } from 'react-icons/fa6'
-import { FaCcVisa } from 'react-icons/fa6'
-import { FaCcApplePay } from 'react-icons/fa6'
-import { MyButton } from '@/components/btn/mybutton'
+import { FaCcMastercard, FaCcVisa, FaCcApplePay } from 'react-icons/fa6'
 import { Stepper } from 'react-dynamic-stepper'
-import { Link } from '@nextui-org/react'
+import Link from 'next/link'
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
+import { MyButton } from '@/components/btn/mybutton'
+import FormTag from '@/components/common/tag-form'
 
 export default function FillOut() {
   // input 樣式
   const inputStyles = {
     label: 'text-base',
-    input: ['text-base', 'rounded-lg'],
+    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
   // select 樣式
   const selectStyles = {
     label: 'text-base',
-    base: 'text-base',
-    placeholder: 'text-base',
-    selected: 'text-base',
-    popoverContent: 'text-base',
+    value: ['text-base', 'text-tertiary-gray-100'],
   }
 
   const shippingMethods = [
@@ -165,7 +162,7 @@ export default function FillOut() {
           {/* 主要容器 */}
           <div className="bg-white container justify-center flex flex-col items-center columns-12 px-5 md:px-0 mb-10">
             {/* steps */}
-            <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 mt-6">
+            <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 mt-6 mb-4">
               <Stepper
                 steps={steps}
                 pallet={{
@@ -183,14 +180,10 @@ export default function FillOut() {
               />
             </div>
             {/* 主要內容 */}
-            <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14">
+            <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-12">
               {/*  buyer start */}
-              <div className="w-full justify-center max-w-3xl flex flex-col gap-4">
-                <div className="flex text-black border-b-2 border-primary-300">
-                  <span className="bg-primary-300 p-4 rounded-t-xl text-base">
-                    訂購人資訊
-                  </span>
-                </div>
+              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
+                <FormTag text="訂購人資訊" />
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
                   <Input
                     type="text"
@@ -224,11 +217,9 @@ export default function FillOut() {
               {/*  buyer end */}
 
               {/* shipping start */}
-              <div className="w-full justify-center max-w-3xl flex flex-col gap-4">
+              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                 <div className="flex text-black border-b-2 border-primary-300">
-                  <span className="bg-primary-300 p-4 rounded-t-xl text-base">
-                    運送資訊
-                  </span>
+                  <FormTag text="運送資訊" />
                 </div>
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
                   <Select
@@ -243,7 +234,6 @@ export default function FillOut() {
                       <SelectItem
                         key={shippingMethod.value}
                         value={shippingMethod.value}
-                        classNames={{ ...selectStyles }}
                       >
                         {shippingMethod.label}
                       </SelectItem>
@@ -266,7 +256,7 @@ export default function FillOut() {
                     classNames={{ ...inputStyles }}
                   />
                   <div className="w-full flex flex-col gap-1">
-                    <label htmlFor="pickup" className="block mb-1 text-sm">
+                    <label htmlFor="pickup" className="block mb-1 text-base">
                       取貨門市
                     </label>
                     <MyButton
@@ -295,6 +285,9 @@ export default function FillOut() {
                           <SelectItem
                             key={shippingMethod.value}
                             value={shippingMethod.value}
+                            classNames={{
+                              base: 'text-base',
+                            }}
                           >
                             {shippingMethod.label}
                           </SelectItem>
@@ -351,12 +344,8 @@ export default function FillOut() {
               {/* shipping end */}
 
               {/* coupon start*/}
-              <div className="w-full justify-center max-w-3xl flex flex-col gap-4">
-                <div className="flex text-black border-b-2 border-primary-300">
-                  <span className="bg-primary-300 p-4 rounded-t-xl text-base">
-                    優惠券
-                  </span>
-                </div>
+              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
+                <FormTag text="優惠券" />
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 bg-white border-1 rounded-lg">
                   <div className="w-full">
                     <Input
@@ -379,11 +368,9 @@ export default function FillOut() {
               {/* coupon end*/}
 
               {/* payment start*/}
-              <div className="w-full justify-center max-w-3xl flex flex-col gap-4">
+              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                 <div className="flex text-black border-b-2 border-primary-300">
-                  <span className="bg-primary-300 p-4 rounded-t-xl text-base">
-                    付款方式
-                  </span>
+                  <FormTag text="付款方式" />
                 </div>
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 bg-white border-1 rounded-lg">
                   <RadioGroup>
@@ -391,9 +378,9 @@ export default function FillOut() {
                       <label
                         key={index}
                         htmlFor={paymentMethod.value}
-                        className={`border-solid border-1 rounded-xl p-4 mb-2 cursor-pointer ${
+                        className={`border-solid border-1 rounded-xl px-4 py-3 mb-2 cursor-pointer hover:border-tertiary-gray-100 ${
                           selectedValue === paymentMethod.value
-                            ? 'border-tertiary-gray-100'
+                            ? 'border-primary-100'
                             : 'border-tertiary-gray-200'
                         }`}
                       >
@@ -422,11 +409,9 @@ export default function FillOut() {
               {/* payment end*/}
 
               {/* invoice start */}
-              <div className="w-full justify-center max-w-3xl flex flex-col gap-4">
+              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                 <div className="flex text-black border-b-2 border-primary-300">
-                  <span className="bg-primary-300 p-4 rounded-t-xl text-base">
-                    發票種類
-                  </span>
+                  <FormTag text="發票種類" />
                 </div>
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
                   <Select

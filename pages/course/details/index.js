@@ -1,19 +1,17 @@
-import { useState } from 'react'
-import React from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
-import { MyButton } from '@/components/btn/mybutton'
-import CardGroup from '@/components/course/card-group'
+import React, { useState } from 'react'
 import {
   Modal,
   ModalContent,
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
 } from '@nextui-org/react'
-
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
+import { BsChevronRight } from 'react-icons/bs'
+import { FaStar } from 'react-icons/fa'
+
+import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import CardNews from '@/components/course/card-news'
 import CardTime from '@/components/course/card-time'
@@ -25,9 +23,9 @@ import CourseMap from '@/components/course/course-map-card'
 import CourseSlider from '@/components/course/banner-silder'
 import CourseComment from '@/components/course/course-comment'
 import CourseRatingFilter from '@/components/course/filter-rating'
+import DefaultLayout from '@/components/layout/default-layout'
 
-import { BsChevronRight } from 'react-icons/bs'
-import { FaStar } from 'react-icons/fa'
+import CardGroup from '@/components/course/card-group'
 
 export default function CourseDetails() {
   const [activePage, setActivePage] = useState('course')
@@ -36,7 +34,7 @@ export default function CourseDetails() {
 
   // Modal 變數和方法
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [size, setSize] = React.useState('4xl') // 預設大小設定為 '4xl'
+  // const [size, setSize] = React.useState('4xl') // 預設大小設定為 '4xl'
 
   return (
     <DefaultLayout
@@ -187,26 +185,21 @@ export default function CourseDetails() {
           </div>
         </div>
 
-        {/* Modal */}
+        {/* 詳細介紹 Modal */}
         <>
           <Modal
-            size={size}
+            size="4xl"
             isOpen={isOpen}
             onClose={onClose}
             classNames={{
-              body: '',
-              backdrop: 'bg-[#262626]/50 backdrop-opacity-40',
               base: '',
-              header: '',
-              footer: '',
+              backdrop: 'bg-[#262626]/50 backdrop-opacity-40',
               closeButton: 'hover:bg-primary/5 active:bg-primary/10 mr-4 mt-4',
             }}
           >
-            <ModalContent>
-              <ModalHeader className="flex flex-col gap-1 px-8 pt-8 text-2xl">
-                詳細介紹
-              </ModalHeader>
-              <ModalBody className="px-8">
+            <ModalContent className="pb-8">
+              <ModalHeader className="px-8 pt-8 text-2xl">詳細介紹</ModalHeader>
+              <ModalBody className="px-8 py-0">
                 {/* Modal 的內容 */}
                 <p>
                   歡迎參加我們的韓系乾燥花束製作課程！這堂課將教導您如何選擇適合的花材，以及製作出擁有濃厚韓風風格的精美花束。我們將分享製作過程中的技巧和訣竅，包括花材的層次搭配、包裝技術等，讓您能輕鬆打造出獨一無二的乾燥花藝品。無論您是初學者還是有一定經驗的花藝愛好者，都能在這堂課中獲得滿足感和成就感。透過豐富多彩的花束，帶著層層美好，為生活增添一抹花香。我們將分享製作過程中的技巧和訣竅，包括花材的層次搭配、包裝技術等，讓您能輕鬆打造出獨一無二的乾燥花藝品。
@@ -216,25 +209,6 @@ export default function CourseDetails() {
                 </p>
                 {/* 更多內容 */}
               </ModalBody>
-              <ModalFooter className="flex gap-4 px-8 pb-8">
-                <MyButton
-                  color="primary"
-                  size="xl"
-                  isOutline
-                  className="w-full"
-                  onPress={onClose}
-                >
-                  取消
-                </MyButton>
-                <MyButton
-                  color="primary"
-                  size="xl"
-                  className="w-full"
-                  onPress={onClose}
-                >
-                  確認
-                </MyButton>
-              </ModalFooter>
             </ModalContent>
           </Modal>
         </>
