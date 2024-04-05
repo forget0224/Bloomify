@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
-import CenterLayout from '@/components/layout/center-layout'
 import ShopSlider from '@/components/shop/shop-slider'
 import { MyButton } from '@/components/btn/mybutton'
 import { Button, Input } from '@nextui-org/react'
@@ -14,8 +13,9 @@ import {
   TableCell,
 } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
-import { Select, SelectItem } from '@nextui-org/react'
 import Link from 'next/link.js'
+import { FaMinus } from 'react-icons/fa6'
+import { FaPlus } from 'react-icons/fa6'
 
 export default function Cart() {
   const [activePage, setActivePage] = useState('shop')
@@ -54,11 +54,18 @@ export default function Cart() {
   //   console.log('submitted')
   // }
 
-  //table樣式
+  //table 樣式
   const tableStyles = {
-    th: 'text-base', // 表頭
-    td: 'text-base', // 表格
-    wrapper: 'text-base', // 整個表格
+    base: ['text-tertiary-black'],
+    th: ['text-base', 'text-tertiary-gray-100'],
+    td: ['text-base', 'px-3', 'py-3'],
+    wrapper: [
+      'text-base',
+      'shadow-none',
+      'border-1',
+      'border-tertiary-100',
+      'rounded-xl',
+    ],
   }
 
   // cart content start
@@ -104,7 +111,7 @@ export default function Cart() {
           {/* 主要容器 */}
           <div className="bg-white container justify-center flex flex-col items-center columns-12 px-5 md:px-0 mb-10">
             {/* steps */}
-            <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 mt-6">
+            <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 mt-6 mb-4">
               <Stepper
                 steps={steps}
                 pallet={{
@@ -145,7 +152,7 @@ export default function Cart() {
                       </div>
                     }
                   >
-                    <Card className="p-4">
+                    <Card className="shadow-none border-1 border-tertiary-gray-200 rounded-xl p-4">
                       <div className="flex flex-col gap-3">
                         <Table
                           selectionMode="single"
@@ -190,10 +197,10 @@ export default function Cart() {
                                     <Button
                                       isIconOnly
                                       variant="faded"
-                                      className="border-transparent"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
                                       onClick={handleDecrement}
                                     >
-                                      -
+                                      <FaMinus />
                                     </Button>
                                     <Input
                                       type="text"
@@ -206,10 +213,10 @@ export default function Cart() {
                                     <Button
                                       isIconOnly
                                       variant="faded"
-                                      className="border-transparent"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
                                       onClick={handleIncrement}
                                     >
-                                      +
+                                      <FaPlus />
                                     </Button>
                                   </div>
                                 </TableCell>
@@ -250,129 +257,102 @@ export default function Cart() {
                   </Tab>
                   {/* buy again */}
                   <Tab
-                    key="store"
+                    key="maybe"
                     title={
                       <div className="flex items-center text-base space-x-2">
                         下次再買
                       </div>
                     }
                   >
-                    <Card>
+                    <Card className="shadow-none border-1 border-tertiary-gray-200 rounded-xl p-4">
                       <div className="flex flex-col gap-3">
                         <Table
                           selectionMode="single"
                           defaultSelectedKeys={['2']}
                           aria-label="Example static collection table"
+                          removeWrapper
                           classNames={tableStyles}
                         >
                           <TableHeader>
-                            <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4">
+                            <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
                               商品
                             </TableColumn>
-                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6">
+                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
                               單價
                             </TableColumn>
-                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6">
+                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
                               數量
                             </TableColumn>
-                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6">
+                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
                               小計
                             </TableColumn>
-                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6">
+                            <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
                               變更
                             </TableColumn>
                           </TableHeader>
                           <TableBody>
-                            <TableRow key="1">
-                              <TableCell>
-                                <div className="flex flex-row items-center space-x-6">
-                                  <Image
-                                    src={
-                                      '/assets/shop/products/pink_Gladiola_0.jpg'
-                                    }
-                                    alt=""
-                                    className="w-6 h-6 md:w-24 md:h-24 mx-auto"
-                                  />
-                                  <p>花的名稱</p>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex gap-4 items-center ">
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    -
-                                  </Button>
-                                  <div>1</div>
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    +
-                                  </Button>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex flex-col space-y-2">
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    下次再買
-                                  </MyButton>
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    移除商品
-                                  </MyButton>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow key="2">
-                              <TableCell>
-                                <div className="flex flex-row items-center space-x-6">
-                                  <Image
-                                    src={
-                                      '/assets/shop/products/pink_Gladiola_0.jpg'
-                                    }
-                                    alt=""
-                                    className="w-6 h-6 md:w-24 md:h-24 mx-auto"
-                                  />
-                                  <p>花的名稱</p>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex gap-4 items-center ">
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    -
-                                  </Button>
-                                  <div>1</div>
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    +
-                                  </Button>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex flex-col space-y-2">
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    下次再買
-                                  </MyButton>
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    移除商品
-                                  </MyButton>
-                                </div>
-                              </TableCell>
-                            </TableRow>
+                            {cartContent.map((item, index) => (
+                              <TableRow key={index}>
+                                <TableCell>
+                                  <div className="flex flex-row items-center space-x-6">
+                                    <Image
+                                      src={item.image}
+                                      alt=""
+                                      className="w-6 h-6 md:w-24 md:h-24 mx-auto"
+                                    />
+                                    <p>{item.name}</p>
+                                  </div>
+                                </TableCell>
+                                <TableCell>NT${item.price}</TableCell>
+                                <TableCell>
+                                  <div className="flex gap-4 items-center ">
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                      onClick={handleDecrement}
+                                    >
+                                      <FaMinus />
+                                    </Button>
+                                    <Input
+                                      type="text"
+                                      value={quantity}
+                                      onChange={handleChange}
+                                      min="1"
+                                      className="max-w-20 w-full rounded-md p-1 text-center"
+                                      style={{ textAlign: 'center' }}
+                                    />
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                      onClick={handleIncrement}
+                                    >
+                                      <FaPlus />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                                <TableCell>NT$30</TableCell>
+                                <TableCell>
+                                  <div className="flex flex-col space-y-2">
+                                    <MyButton
+                                      color="primary"
+                                      size="xl"
+                                      isOutline
+                                    >
+                                      加入購物車
+                                    </MyButton>
+                                    <MyButton
+                                      color="primary"
+                                      size="xl"
+                                      isOutline
+                                    >
+                                      移除商品
+                                    </MyButton>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ))}
                           </TableBody>
                         </Table>
                       </div>
