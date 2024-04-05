@@ -64,6 +64,28 @@ export default function Detail() {
   ]
   //comment end
 
+  // calculate start
+  const [quantity, setQuantity] = useState(1)
+
+  const handleIncrement = () => {
+    setQuantity(quantity + 1)
+  }
+
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1)
+    }
+  }
+
+  const handleChange = (event) => {
+    const newQuantity = parseInt(event.target.value)
+
+    if (!isNaN(newQuantity) && newQuantity >= 1) {
+      setQuantity(newQuantity)
+    }
+  }
+  // calculate end
+
   return (
     <DefaultLayout
       activePage={activePage}
@@ -84,9 +106,9 @@ export default function Detail() {
             </div>
           </div>
 
-          <div className="w-full flex justify-center">
+          <div className="w-full sm:flex sm:justify-center">
             {/* imgs start */}
-            <div className="flex">
+            <div className="hidden sm:block sm:flex">
               <div className="space-y-2">
                 {productImages.map((item, index) => (
                   <Image
@@ -105,6 +127,26 @@ export default function Detail() {
               </div>
             </div>
             {/* imgs  end*/}
+            {/* RWD imgs start */}
+            <div className="sm:hidden">
+              <div className="">
+                <Image width={350} alt="" src={mainImageSrc} />
+              </div>
+              <div className="flex space-x-2 my-2">
+                {productImages.map((item, index) => (
+                  <Image
+                    key={index}
+                    isZoomed
+                    width={50}
+                    alt=""
+                    src={item.image}
+                    onClick={() => handleThumbnailClick(item.image)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                ))}
+              </div>
+            </div>
+            {/* RWD imgs  end*/}
             {/* info start*/}
             <div className="space-y-4 sm:space-y-8">
               <div className="space-y-2">
@@ -158,19 +200,28 @@ export default function Detail() {
                     <tr className="my-4">
                       <td className="py-2">購買數量</td>
                       <td className="px-4 py-2">
-                        <div className="flex gap-4 items-center ">
+                        <div className="flex gap-4 items-center">
                           <Button
                             isIconOnly
                             variant="faded"
                             className="border-transparent"
+                            onClick={handleDecrement}
                           >
                             -
                           </Button>
-                          <div>1</div>
+                          {/* <div>{quantity}</div> */}
+                          <input
+                            type="text"
+                            value={quantity}
+                            onChange={handleChange}
+                            min="1"
+                            className="w-12 border border-gray-300 rounded-md p-1 text-center"
+                          />
                           <Button
                             isIconOnly
                             variant="faded"
                             className="border-transparent"
+                            onClick={handleIncrement}
                           >
                             +
                           </Button>
