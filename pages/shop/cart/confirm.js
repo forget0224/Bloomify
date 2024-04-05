@@ -13,6 +13,7 @@ import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
 import { Checkbox } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
+import { Link } from '@nextui-org/react'
 
 export default function Confirm() {
   const [activePage, setActivePage] = useState('shop')
@@ -233,12 +234,16 @@ export default function Confirm() {
                 </div>
 
                 <div className="w-full flex justify-center gap-4">
-                  <MyButton color="primary" size="xl" isOutline>
-                    上一步
-                  </MyButton>
-                  <MyButton color="primary" size="xl">
-                    確認，進行付款
-                  </MyButton>
+                  <Link href="/shop/cart/fill-out">
+                    <MyButton color="primary" size="xl" isOutline>
+                      上一步
+                    </MyButton>
+                  </Link>
+                  <Link href="/shop/cart/payment-successful">
+                    <MyButton color="primary" size="xl">
+                      確認，進行付款
+                    </MyButton>
+                  </Link>
                 </div>
               </div>
             </div>

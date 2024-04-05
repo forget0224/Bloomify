@@ -1,6 +1,6 @@
 import { React, useState, Fragment } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
-import { Input } from '@nextui-org/react'
+import { Input, link } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { RadioGroup, Radio } from '@nextui-org/react'
@@ -9,6 +9,7 @@ import { FaCcVisa } from 'react-icons/fa6'
 import { FaCcApplePay } from 'react-icons/fa6'
 import { MyButton } from '@/components/btn/mybutton'
 import { Stepper } from 'react-dynamic-stepper'
+import { Link } from '@nextui-org/react'
 
 export default function FillOut() {
   // input 樣式
@@ -290,7 +291,7 @@ export default function FillOut() {
                         isRequired
                         classNames={{ ...selectStyles }}
                       >
-                        {shippingMethods.map((shippingMethod) => (
+                        {cities.map((shippingMethod) => (
                           <SelectItem
                             key={shippingMethod.value}
                             value={shippingMethod.value}
@@ -307,7 +308,7 @@ export default function FillOut() {
                         isRequired
                         classNames={{ ...selectStyles }}
                       >
-                        {shippingMethods.map((shippingMethod) => (
+                        {townships.map((shippingMethod) => (
                           <SelectItem
                             key={shippingMethod.value}
                             value={shippingMethod.value}
@@ -324,7 +325,7 @@ export default function FillOut() {
                         isRequired
                         classNames={{ ...selectStyles }}
                       >
-                        {shippingMethods.map((shippingMethod) => (
+                        {postalCodes.map((shippingMethod) => (
                           <SelectItem
                             key={shippingMethod.value}
                             value={shippingMethod.value}
@@ -460,17 +461,21 @@ export default function FillOut() {
 
               {/* button */}
               <div className="w-full flex justify-center gap-4">
-                <MyButton
-                  color="primary"
-                  size="xl"
-                  isOutline
-                  className="w-full"
-                >
-                  上一步
-                </MyButton>
-                <MyButton color="primary" size="xl" className="w-full">
-                  下一步
-                </MyButton>
+                <Link href="/shop/cart">
+                  <MyButton
+                    color="primary"
+                    size="xl"
+                    isOutline
+                    className="w-full"
+                  >
+                    上一步
+                  </MyButton>
+                </Link>
+                <Link href="/shop/cart/confirm">
+                  <MyButton color="primary" size="xl" className="w-full">
+                    下一步
+                  </MyButton>
+                </Link>
               </div>
             </div>
           </div>

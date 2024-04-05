@@ -3,7 +3,7 @@ import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import ShopSlider from '@/components/shop/shop-slider'
 import { MyButton } from '@/components/btn/mybutton'
-import { Button } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { Tabs, Tab, Card, Image, CardFooter } from '@nextui-org/react'
 import {
   Table,
@@ -15,6 +15,7 @@ import {
 } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
 import { Select, SelectItem } from '@nextui-org/react'
+import Link from 'next/link.js'
 
 export default function Cart() {
   const [activePage, setActivePage] = useState('shop')
@@ -59,6 +60,41 @@ export default function Cart() {
     td: 'text-base', // 表格
     wrapper: 'text-base', // 整個表格
   }
+
+  // cart content start
+  const cartContent = [
+    {
+      image: '/assets/shop/products/pink_Gladiola_0.jpg',
+      name: '玫瑰花',
+      price: '30',
+    },
+    {
+      image: '/assets/shop/products/red_Snapdragon_1.jpg',
+      name: '太陽花',
+      price: '60',
+    },
+  ]
+  // cart content end
+
+  // calculate start
+  const [quantity, setQuantity] = useState(1)
+  const handleIncrement = () => {
+    setQuantity(quantity + 1)
+  }
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1)
+    }
+  }
+  const handleChange = (event) => {
+    const newQuantity = parseInt(event.target.value)
+    if (!isNaN(newQuantity) && newQuantity >= 1) {
+      setQuantity(newQuantity)
+    } else if (event.target.value === '') {
+      setQuantity(1)
+    }
+  }
+  // calculate end
 
   return (
     <>
@@ -136,96 +172,68 @@ export default function Cart() {
                             </TableColumn>
                           </TableHeader>
                           <TableBody>
-                            <TableRow key="1">
-                              <TableCell>
-                                <div className="flex flex-row items-center space-x-6">
-                                  <Image
-                                    src={
-                                      '/assets/shop/products/pink_Gladiola_0.jpg'
-                                    }
-                                    alt=""
-                                    className="w-6 h-6 md:w-24 md:h-24 mx-auto"
-                                  />
-                                  <p>花的名稱</p>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex gap-4 items-center ">
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    -
-                                  </Button>
-                                  <div>1</div>
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    +
-                                  </Button>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex flex-col space-y-2">
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    下次再買
-                                  </MyButton>
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    移除商品
-                                  </MyButton>
-                                </div>
-                              </TableCell>
-                            </TableRow>
-                            <TableRow key="2">
-                              <TableCell>
-                                <div className="flex flex-row items-center space-x-6">
-                                  <Image
-                                    src={
-                                      '/assets/shop/products/pink_Gladiola_0.jpg'
-                                    }
-                                    alt=""
-                                    className="w-6 h-6 md:w-24 md:h-24 mx-auto"
-                                  />
-                                  <p>花的名稱</p>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex gap-4 items-center ">
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    +
-                                  </Button>
-                                  <div>1</div>
-                                  <Button
-                                    isIconOnly
-                                    variant="faded"
-                                    className="border-transparent"
-                                  >
-                                    -
-                                  </Button>
-                                </div>
-                              </TableCell>
-                              <TableCell>NT$30</TableCell>
-                              <TableCell>
-                                <div className="flex flex-col space-y-2">
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    下次再買
-                                  </MyButton>
-                                  <MyButton color="primary" size="xl" isOutline>
-                                    移除商品
-                                  </MyButton>
-                                </div>
-                              </TableCell>
-                            </TableRow>
+                            {cartContent.map((item, index) => (
+                              <TableRow key={index}>
+                                <TableCell>
+                                  <div className="flex flex-row items-center space-x-6">
+                                    <Image
+                                      src={item.image}
+                                      alt=""
+                                      className="w-6 h-6 md:w-24 md:h-24 mx-auto"
+                                    />
+                                    <p>{item.name}</p>
+                                  </div>
+                                </TableCell>
+                                <TableCell>NT${item.price}</TableCell>
+                                <TableCell>
+                                  <div className="flex gap-4 items-center ">
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="border-transparent"
+                                      onClick={handleDecrement}
+                                    >
+                                      -
+                                    </Button>
+                                    <Input
+                                      type="text"
+                                      value={quantity}
+                                      onChange={handleChange}
+                                      min="1"
+                                      className="max-w-20 w-full rounded-md p-1 text-center"
+                                      style={{ textAlign: 'center' }}
+                                    />
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="border-transparent"
+                                      onClick={handleIncrement}
+                                    >
+                                      +
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                                <TableCell>NT$30</TableCell>
+                                <TableCell>
+                                  <div className="flex flex-col space-y-2">
+                                    <MyButton
+                                      color="primary"
+                                      size="xl"
+                                      isOutline
+                                    >
+                                      下次再買
+                                    </MyButton>
+                                    <MyButton
+                                      color="primary"
+                                      size="xl"
+                                      isOutline
+                                    >
+                                      移除商品
+                                    </MyButton>
+                                  </div>
+                                </TableCell>
+                              </TableRow>
+                            ))}
                           </TableBody>
                         </Table>
                       </div>
@@ -296,7 +304,7 @@ export default function Cart() {
                                     variant="faded"
                                     className="border-transparent"
                                   >
-                                    +
+                                    -
                                   </Button>
                                   <div>1</div>
                                   <Button
@@ -304,7 +312,7 @@ export default function Cart() {
                                     variant="faded"
                                     className="border-transparent"
                                   >
-                                    -
+                                    +
                                   </Button>
                                 </div>
                               </TableCell>
@@ -341,7 +349,7 @@ export default function Cart() {
                                     variant="faded"
                                     className="border-transparent"
                                   >
-                                    +
+                                    -
                                   </Button>
                                   <div>1</div>
                                   <Button
@@ -349,7 +357,7 @@ export default function Cart() {
                                     variant="faded"
                                     className="border-transparent"
                                   >
-                                    -
+                                    +
                                   </Button>
                                 </div>
                               </TableCell>
@@ -374,12 +382,16 @@ export default function Cart() {
               </div>
               {/* cart content end */}
               <div className="flex justify-center space-x-10 py-10">
-                <MyButton color="primary" size="xl" isOutline>
-                  繼續購物
-                </MyButton>
-                <MyButton color="primary" size="xl">
-                  下一步
-                </MyButton>
+                <Link href="/shop">
+                  <MyButton color="primary" size="xl" isOutline>
+                    繼續購物
+                  </MyButton>
+                </Link>
+                <Link href="/shop/cart/fill-out">
+                  <MyButton color="primary" size="xl">
+                    下一步
+                  </MyButton>
+                </Link>
               </div>
             </div>
 

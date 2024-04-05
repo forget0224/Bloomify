@@ -7,10 +7,12 @@ import { MyButton } from '@/components/btn/mybutton'
 import ShopSlider from '@/components/shop/shop-slider'
 import { BsFillStarFill, BsHeart } from 'react-icons/bs'
 import { LuShare2 } from 'react-icons/lu'
-import { Tabs, Tab, Card, Button } from '@nextui-org/react'
+import { Tabs, Tab, Card, Button, Input } from '@nextui-org/react'
 import Subtitle from '@/components/common/subtitle'
 import { FaStar } from 'react-icons/fa'
 import { Pagination } from '@nextui-org/react'
+import Link from 'next/link.js'
+import toast, { Toaster } from 'react-hot-toast'
 
 export default function Detail() {
   const [activePage, setActivePage] = useState('shop')
@@ -66,25 +68,28 @@ export default function Detail() {
 
   // calculate start
   const [quantity, setQuantity] = useState(1)
-
   const handleIncrement = () => {
     setQuantity(quantity + 1)
   }
-
   const handleDecrement = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1)
     }
   }
-
   const handleChange = (event) => {
     const newQuantity = parseInt(event.target.value)
-
     if (!isNaN(newQuantity) && newQuantity >= 1) {
       setQuantity(newQuantity)
+    } else if (event.target.value === '') {
+      setQuantity(1)
     }
   }
+
   // calculate end
+
+  // toaster start
+  const notify = () => toast.success('已成功加入購物車')
+  // toaster end
 
   return (
     <DefaultLayout
@@ -186,19 +191,19 @@ export default function Detail() {
                 <table>
                   <tbody>
                     <tr className="my-4">
-                      <td className="py-2">商品定價</td>
+                      <td className="py-2 whitespace-nowrap">商品定價</td>
                       <td className="px-4 py-2">NT$30</td>
                     </tr>
                     <tr className="my-4">
-                      <td className="py-2">商品庫存</td>
+                      <td className="py-2 whitespace-nowrap">商品庫存</td>
                       <td className="px-4 py-2">300支</td>
                     </tr>
                     <tr className="my-4">
-                      <td className="py-2">累積購買數</td>
+                      <td className="py-2 whitespace-nowrap">累積購買數</td>
                       <td className="px-4 py-2">30支</td>
                     </tr>
                     <tr className="my-4">
-                      <td className="py-2">購買數量</td>
+                      <td className="py-2 whitespace-nowrap">購買數量</td>
                       <td className="px-4 py-2">
                         <div className="flex gap-4 items-center">
                           <Button
@@ -209,13 +214,13 @@ export default function Detail() {
                           >
                             -
                           </Button>
-                          {/* <div>{quantity}</div> */}
-                          <input
+                          <Input
                             type="text"
                             value={quantity}
                             onChange={handleChange}
                             min="1"
-                            className="w-12 border border-gray-300 rounded-md p-1 text-center"
+                            className="max-w-20 w-full rounded-md p-1 text-center"
+                            style={{ textAlign: 'center' }}
                           />
                           <Button
                             isIconOnly
@@ -232,12 +237,15 @@ export default function Detail() {
                 </table>
               </div>
               <div className="flex space-x-1 sm:space-x-2">
-                <MyButton color="primary" size="xl" isOutline>
+                <MyButton color="primary" size="xl" onClick={notify} isOutline>
                   加入購物車
                 </MyButton>
-                <MyButton color="primary" size="xl">
-                  立即購買
-                </MyButton>
+                <Toaster />
+                <Link href="/shop/cart">
+                  <MyButton color="primary" size="xl">
+                    立即購買
+                  </MyButton>
+                </Link>
               </div>
             </div>
             {/* info end*/}
