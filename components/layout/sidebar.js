@@ -68,16 +68,16 @@ export default function Sidebar() {
             課程訂單
           </Link>
           <Link
-            href="/course/center-course/calendar"
-            className="hover:text-primary-100"
-          >
-            我的課表
-          </Link>
-          <Link
             href="/course/center-course/favorite"
             className="hover:text-primary-100"
           >
             收藏課程
+          </Link>
+          <Link
+            href="/course/center-course/calendar"
+            className="hover:text-primary-100"
+          >
+            我的課表
           </Link>
         </div>
         {/* course end */}

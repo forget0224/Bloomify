@@ -54,7 +54,7 @@ export default function CenterShop() {
                 <Breadcrumbs underline={u}>
                   <BreadcrumbItem href="/">首頁</BreadcrumbItem>
                   <BreadcrumbItem>會員中心</BreadcrumbItem>
-                  <BreadcrumbItem>課程</BreadcrumbItem>
+                  <BreadcrumbItem>合作課程</BreadcrumbItem>
                   <BreadcrumbItem color="primary">我的課表</BreadcrumbItem>
                 </Breadcrumbs>
               </div>

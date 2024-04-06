@@ -10,6 +10,7 @@ import {
 } from '@nextui-org/react'
 import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
+import { Link } from '@nextui-org/react'
 
 export default function Confirm() {
   const [activePage, setActivePage] = useState('shop')
@@ -85,18 +86,16 @@ export default function Confirm() {
                     <TableCell>付款狀態</TableCell>
                     <TableCell className="text-danger">待付款</TableCell>
                   </TableRow>
-                  <TableRow key="6">
-                    <TableCell>發票</TableCell>
-                    <TableCell>載具</TableCell>
-                  </TableRow>
                 </TableBody>
               </Table>
             </div>
             {/* 按鈕群組 */}
             <div className="w-full md:w-6/12 lg:w-4/12 flex justify-center gap-4 mt-8">
-              <MyButton color="primary" size="xl" isOutline>
-                查看訂單
-              </MyButton>
+              <Link href="/course/center-course">
+                <MyButton color="primary" size="xl" isOutline>
+                  查看訂單
+                </MyButton>
+              </Link>
             </div>
           </div>
         </main>

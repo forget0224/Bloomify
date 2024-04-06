@@ -21,7 +21,9 @@ export default function CourseSearch() {
             {/* 頁面標題 */}
             <Title text="課程搜尋" />
             {/* 搜尋框 */}
-            <SearchBtn />
+            <div>
+              <SearchBtn />
+            </div>
             {/* 篩選與排序 */}
             <CourseSearchFilter className="relative" />
           </div>

@@ -90,7 +90,9 @@ export default function CourseIndex() {
                 </CardBody>
               </Card>
               {/* 搜尋框 */}
-              <SearchBtn />
+              <Link href="/course/search">
+                <SearchBtn />
+              </Link>
             </div>
           </div>
 
