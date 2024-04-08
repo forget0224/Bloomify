@@ -21,7 +21,7 @@ import {
 } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 
-export default function Custom() {
+export default function About() {
   const [activePage, setActivePage] = useState('about')
 
   const [selected, setSelected] = useState('photos')
@@ -80,7 +80,8 @@ export default function Custom() {
                             width={1000}
                             height={600}
                             // className="w-[1129px] h-[617px]"
-                            src="https://via.placeholder.com/1129x617"
+                            // src="https://via.placeholder.com/1129x617"
+                            src="/assets/about/store/store01.jpg"
                           ></Image>
                         </Card>
                       </Tab>
@@ -112,7 +113,7 @@ export default function Custom() {
                               width={622}
                               height={538}
                               className="w-[622px] h-[538px]"
-                              src="https://via.placeholder.com/622x538"
+                              src="/assets/about/service-project/service-custom.png"
                             ></Image>
                           </div>
                           {/* 服務二 */}
@@ -121,7 +122,8 @@ export default function Custom() {
                               width={622}
                               height={538}
                               className="w-[622px] h-[538px]"
-                              src="https://via.placeholder.com/622x538"
+                              // src="https://via.placeholder.com/622x538"
+                              src="/assets/about/service-project/service-shop.png"
                             ></Image>
                             <div>
                               <div>線上商城：</div>
@@ -142,7 +144,7 @@ export default function Custom() {
                               width={622}
                               height={538}
                               className="w-[622px] h-[538px]"
-                              src="https://via.placeholder.com/622x538"
+                              src="/assets/about/service-project/service-course.png"
                             ></Image>
                           </div>
                         </Card>
@@ -172,7 +174,7 @@ export default function Custom() {
                                 width={400}
                                 height={300}
                                 // className="w-[189px] h-[343px]"
-                                src="https://via.placeholder.com/189x343"
+                                src="/assets/about/service-area/map00.gif"
                               ></Image>
                             </div>
                           </div>

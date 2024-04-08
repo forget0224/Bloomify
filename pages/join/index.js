@@ -11,9 +11,8 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react'
-<<<<<<< HEAD:pages/join/index.js
 import Process from '@/components/join/process'
-=======
+
 import { Input } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
 
@@ -23,10 +22,7 @@ import { Textarea } from '@nextui-org/react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 
-import Process from '@/components/store/process'
->>>>>>> store:pages/store/index.js
-
-export default function Custom() {
+export default function Join() {
   const [activePage, setActivePage] = useState('store')
 
   // input 樣式
