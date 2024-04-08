@@ -38,7 +38,7 @@ export default function Custom() {
               <div className="py-6">
                 <Breadcrumbs>
                   <BreadcrumbItem>首頁</BreadcrumbItem>
-                  <BreadcrumbItem>關於我們</BreadcrumbItem>
+                  <BreadcrumbItem color="primary">關於我們</BreadcrumbItem>
                 </Breadcrumbs>
               </div>
               <div className="container flex justify-center">
