@@ -429,8 +429,7 @@ export default function Shop() {
                                 關鍵字搜尋
                               </ModalHeader>
                               <ModalBody>
-                                <div>
-                                  {/* searchbar */}
+                                {/* <div>
                                   <Input
                                     variant="bordered"
                                     placeholder="搜尋..."
@@ -445,6 +444,9 @@ export default function Shop() {
                                     }
                                     className="max-w-xs"
                                   />
+                                </div> */}
+                                <div className="sm:hidden block">
+                                  <SearchBtn />
                                 </div>
                                 <div className="flex space-x-2">
                                   <p className="text-primary">HOT</p>
