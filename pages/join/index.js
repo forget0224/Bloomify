@@ -11,7 +11,7 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react'
-import Process from '@/components/store/process'
+import Process from '@/components/join/process'
 
 export default function Custom() {
   const [activePage, setActivePage] = useState('store')
