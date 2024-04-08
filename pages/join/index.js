@@ -35,19 +35,19 @@ export default function Join() {
   const list = [
     {
       title: '接觸更多客戶',
-      img: '/images/fruit-1.jpeg',
+      img: '/assets/join/image01.png',
     },
     {
       title: '提高店家知名度',
-      img: '/images/fruit-2.jpeg',
+      img: '/assets/join/image02.png',
     },
     {
       title: '節省時間、成本',
-      img: '/images/fruit-3.jpeg',
+      img: '/assets/join/image03.png',
     },
     {
       title: '專員即時聯繫 ',
-      img: '/images/fruit-4.jpeg',
+      img: '/assets/join/image04.png',
     },
   ]
 
@@ -118,7 +118,7 @@ export default function Join() {
                         radius="lg"
                         width="100%"
                         alt={item.title}
-                        className="w-full object-cover h-[140px]"
+                        className="w-full "
                         src={item.img}
                       />
                     </CardBody>
@@ -130,8 +130,8 @@ export default function Join() {
               </div>
               {/* Modal   button */}
               <div className="text-center">
-                <Button onPress={onOpen} className="mt-6">
-                  Open Modal
+                <Button onPress={onOpen} className="mt-6 bg-secondary-100">
+                  立即加入我們
                 </Button>
                 <Modal size={size} isOpen={isOpen} onClose={onClose}>
                   <ModalContent>

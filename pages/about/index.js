@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
+
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Image from 'next/image'
 import {
@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardFooter,
 } from '@nextui-org/react'
-import { Button } from '@nextui-org/react'
 import {
   Table,
   TableHeader,
@@ -19,12 +18,13 @@ import {
   TableRow,
   TableCell,
 } from '@nextui-org/react'
-import { MyButton } from '@/components/btn/mybutton'
+
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
 
 export default function About() {
   const [activePage, setActivePage] = useState('about')
 
-  const [selected, setSelected] = useState('photos')
   return (
     // navbar + footer
     <DefaultLayout activePage={activePage}>
