@@ -20,7 +20,7 @@ function ShopSlider() {
   const [isRightDisabled, setIsRightDisabled] = useState(false)
   const productList = [
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Avocado',
       starCount: '5.0',
       shop: 'shop1',
@@ -28,7 +28,7 @@ function ShopSlider() {
       price: '$15.70',
     },
     {
-      img: '/assets/shop/products/red_Amaryllis_3.jpg',
+      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
       title: 'Watermelon',
       starCount: '4.0',
       shop: 'shop2',
@@ -36,7 +36,7 @@ function ShopSlider() {
       price: '$8.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Apple',
       starCount: '3.0',
       shop: 'shop3',
@@ -44,7 +44,7 @@ function ShopSlider() {
       price: '$44.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Orange',
       starCount: '5.0',
       shop: 'shop4',
@@ -52,7 +52,7 @@ function ShopSlider() {
       price: '$78.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Orange',
       starCount: '5.0',
       shop: 'shop4',
@@ -60,7 +60,7 @@ function ShopSlider() {
       price: '$78.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Orange',
       starCount: '5.0',
       shop: 'shop4',
@@ -68,7 +68,7 @@ function ShopSlider() {
       price: '$78.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Orange',
       starCount: '5.0',
       shop: 'shop4',
@@ -76,7 +76,7 @@ function ShopSlider() {
       price: '$78.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Orange',
       starCount: '5.0',
       shop: 'shop4',

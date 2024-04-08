@@ -45,15 +45,15 @@ export default function Shop() {
   const [page, setPage] = useState(0)
   const banners = [
     {
-      banner: '/assets/shop/products/pink_Gladiola_0.jpg',
+      banner: '/assets/shop/products/flowers/blue_False_Indigoit_0.jpg',
       title: 'a banner',
     },
     {
-      banner: '/assets/shop/products/red_Amaryllis_3.jpg',
+      banner: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
       title: 'a banner',
     },
     {
-      banner: '/assets/shop/products/red_Snapdragon_1.jpg',
+      banner: '/assets/shop/products/flowers/red_Snapdragon_1.jpg',
       title: 'a banner',
     },
   ]
@@ -109,7 +109,7 @@ export default function Shop() {
   // products start
   const productList = [
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Avocado',
       starCount: '5.0',
       shop: 'shop1',
@@ -117,7 +117,7 @@ export default function Shop() {
       price: '$15.70',
     },
     {
-      img: '/assets/shop/products/red_Amaryllis_3.jpg',
+      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
       title: 'Watermelon',
       starCount: '4.0',
       shop: 'shop2',
@@ -125,7 +125,7 @@ export default function Shop() {
       price: '$8.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Avocado',
       starCount: '5.0',
       shop: 'shop1',
@@ -133,7 +133,7 @@ export default function Shop() {
       price: '$15.70',
     },
     {
-      img: '/assets/shop/products/red_Amaryllis_3.jpg',
+      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
       title: 'Watermelon',
       starCount: '4.0',
       shop: 'shop2',
@@ -141,7 +141,7 @@ export default function Shop() {
       price: '$8.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Avocado',
       starCount: '5.0',
       shop: 'shop1',
@@ -149,7 +149,7 @@ export default function Shop() {
       price: '$15.70',
     },
     {
-      img: '/assets/shop/products/red_Amaryllis_3.jpg',
+      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
       title: 'Watermelon',
       starCount: '4.0',
       shop: 'shop2',
@@ -157,7 +157,7 @@ export default function Shop() {
       price: '$8.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/purple_Crocus_1.jpg',
       title: 'Apple',
       starCount: '3.0',
       shop: 'shop3',
@@ -165,7 +165,7 @@ export default function Shop() {
       price: '$44.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Orange',
       starCount: '5.0',
       shop: 'shop4',
@@ -173,7 +173,7 @@ export default function Shop() {
       price: '$78.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/purple_Gloxinia_1.jpg',
       title: 'Peach',
       starCount: '2.5',
       shop: 'shop5',
@@ -181,7 +181,7 @@ export default function Shop() {
       price: '$24.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Sweet_Pea_0.jpg',
       title: 'Avocado1',
       starCount: '4.0',
       shop: 'shop6',
@@ -189,7 +189,7 @@ export default function Shop() {
       price: '$5.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/yellow_Coreopsis_0.jpg',
       title: 'Avocado2',
       starCount: '4.5',
       shop: 'shop7',
@@ -197,7 +197,7 @@ export default function Shop() {
       price: '$28.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Avocado3',
       starCount: '5.0',
       shop: 'shop8',
@@ -205,7 +205,7 @@ export default function Shop() {
       price: '$35.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Avocado4',
       starCount: '5.0',
       shop: 'shop9',
@@ -213,7 +213,7 @@ export default function Shop() {
       price: '$45.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/white_Apple_Blossoms_0.jpg',
       title: 'Avocado5',
       starCount: '3.0',
       shop: 'shop10',
@@ -221,7 +221,7 @@ export default function Shop() {
       price: '$35.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/red_Camellia__3.jpg',
       title: 'Avocado6',
       starCount: '4.5',
       shop: 'shop11',
@@ -229,7 +229,7 @@ export default function Shop() {
       price: '$10.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/blue_Trumpet_Gentian_1.jpg',
       title: 'Avocado7',
       starCount: '2.0',
       shop: 'shop12',
@@ -294,7 +294,7 @@ export default function Shop() {
           {/* 置中 & 背景色 */}
           <main className="flex flex-col justify-center items-center bg-white">
             {/* 主要容器 */}
-            <div className="container justify-center flex flex-col items-start columns-12 mb-20">
+            <div className="container justify-center flex flex-col items-start columns-12 mb-20 px-5 md:px-0">
               <div
               // style={{
               //   maxHeight: 'calc(100vh - 50px)',
@@ -979,7 +979,7 @@ export default function Shop() {
                 </div>
                 {/* filter end */}
                 {/* products starts */}
-                <div className="w-10/12">
+                <div className="sm:w-10/12">
                   <div className="bg-white p-4 rounded-lg gap-2 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
                     {slicedProductList.map((item, index) => (
                       <Card
