@@ -54,6 +54,7 @@ export default function CardGroup() {
           <Link href="/course/details" key={index} className="block relative">
             <CardBody className="relative overflow-visible p-0">
               <Image
+                isZoomed
                 shadow="none"
                 radius="none"
                 width="100%"

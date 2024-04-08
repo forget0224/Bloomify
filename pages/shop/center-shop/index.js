@@ -294,8 +294,8 @@ export default function CenterShop() {
                                     </TableBody>
                                   </Table>
                                   {/* 付款資訊, 運送資訊 */}
-                                  <div className="flex flex-col pt-4 items-end">
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                  <div className="flex flex-col pt-4 w-full">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         付款方式
                                       </div>
@@ -303,25 +303,25 @@ export default function CenterShop() {
                                         Line Pay
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         寄送方式
                                       </div>
                                       <div className="py-1">7-ELEVEN 超商</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運送資訊
                                       </div>
-                                      <div className="py-1">未取貨</div>
+                                      <div className="py-1">已取貨</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         發票種類
                                       </div>
                                       <div className="py-1">載具</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         送達時間
                                       </div>
@@ -329,20 +329,20 @@ export default function CenterShop() {
                                         2024-02-27 11:02:08
                                       </div>
                                     </div>
-                                    {/* <hr className="my-1 w-full" /> */}
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <hr className="my-1" />
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         小計
                                       </div>
                                       <div className="py-1">NT$90</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運費
                                       </div>
                                       <div className="py-1">NT$60</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         折扣
                                       </div>
@@ -350,7 +350,7 @@ export default function CenterShop() {
                                         -NT$50
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap items-center">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         總計
                                       </div>
@@ -525,7 +525,7 @@ export default function CenterShop() {
                                   </Table>
                                   {/* 付款資訊, 運送資訊 */}
                                   <div className="flex flex-col pt-4 w-full">
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         付款方式
                                       </div>
@@ -533,25 +533,25 @@ export default function CenterShop() {
                                         Line Pay
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         寄送方式
                                       </div>
                                       <div className="py-1">7-ELEVEN 超商</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運送資訊
                                       </div>
                                       <div className="py-1">已取貨</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         發票種類
                                       </div>
                                       <div className="py-1">載具</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         送達時間
                                       </div>
@@ -560,19 +560,19 @@ export default function CenterShop() {
                                       </div>
                                     </div>
                                     <hr className="my-1" />
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         小計
                                       </div>
                                       <div className="py-1">NT$90</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運費
                                       </div>
                                       <div className="py-1">NT$60</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         折扣
                                       </div>
@@ -580,7 +580,7 @@ export default function CenterShop() {
                                         -NT$50
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap items-center">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         總計
                                       </div>

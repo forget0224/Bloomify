@@ -47,7 +47,7 @@ export default function CenterCourse() {
     base: ['p-0', 'text-tertiary-black'], // 訂單明細
     content: ['p-0'], // 商品列表
     title: ['text-tertiary-black'],
-    trigger: ['px-0', 'py-1', 'pb-4'],
+    trigger: ['px-0', 'py-1'],
   }
 
   //訂單明細 table 樣式
@@ -179,19 +179,6 @@ export default function CenterCourse() {
                                         </TableRow>
                                       </TableBody>
                                     </Table>
-
-                                    <div className="flex gap-2">
-                                      {imageList.map((image, index) => (
-                                        <Image
-                                          key={index}
-                                          src={
-                                            '/assets/shop/products/pink_Gladiola_0.jpg'
-                                          }
-                                          alt=""
-                                          className="w-6 h-6 md:w-24 md:h-24 rounded-md md:rounded-xl"
-                                        />
-                                      ))}
-                                    </div>
                                   </div>
                                 }
                               >
@@ -224,13 +211,6 @@ export default function CenterCourse() {
                                       <TableRow key="1">
                                         <TableCell>
                                           <div className="flex flex-row items-center gap-10">
-                                            <Image
-                                              src={
-                                                '/assets/shop/products/pink_Gladiola_0.jpg'
-                                              }
-                                              alt=""
-                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
-                                            />
                                             <div className="flex flex-col">
                                               <p className="text-nowrap">
                                                 花的名稱
@@ -259,13 +239,6 @@ export default function CenterCourse() {
                                       <TableRow key="2">
                                         <TableCell>
                                           <div className="flex flex-row items-center gap-10">
-                                            <Image
-                                              src={
-                                                '/assets/shop/products/pink_Gladiola_0.jpg'
-                                              }
-                                              alt=""
-                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
-                                            />
                                             <div className="flex flex-col">
                                               <p className="text-nowrap">
                                                 花的名稱
@@ -294,8 +267,8 @@ export default function CenterCourse() {
                                     </TableBody>
                                   </Table>
                                   {/* 付款資訊, 運送資訊 */}
-                                  <div className="flex flex-col pt-4 items-end">
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                  <div className="flex flex-col pt-4 w-full">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         付款方式
                                       </div>
@@ -303,25 +276,25 @@ export default function CenterCourse() {
                                         Line Pay
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         寄送方式
                                       </div>
                                       <div className="py-1">7-ELEVEN 超商</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運送資訊
                                       </div>
-                                      <div className="py-1">未取貨</div>
+                                      <div className="py-1">已取貨</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         發票種類
                                       </div>
                                       <div className="py-1">載具</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         送達時間
                                       </div>
@@ -329,20 +302,20 @@ export default function CenterCourse() {
                                         2024-02-27 11:02:08
                                       </div>
                                     </div>
-                                    {/* <hr className="my-1 w-full" /> */}
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <hr className="my-1" />
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         小計
                                       </div>
                                       <div className="py-1">NT$90</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運費
                                       </div>
                                       <div className="py-1">NT$60</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         折扣
                                       </div>
@@ -350,7 +323,7 @@ export default function CenterCourse() {
                                         -NT$50
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap items-center">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         總計
                                       </div>
@@ -412,17 +385,6 @@ export default function CenterCourse() {
                                         </TableRow>
                                       </TableBody>
                                     </Table>
-
-                                    <div className="flex gap-2">
-                                      {imageList.map((image, index) => (
-                                        <Image
-                                          key={index}
-                                          src={image.src}
-                                          alt=""
-                                          className="w-6 h-6 md:w-24 md:h-24 rounded-md md:rounded-xl"
-                                        />
-                                      ))}
-                                    </div>
                                   </div>
                                 }
                               >
@@ -490,13 +452,6 @@ export default function CenterCourse() {
                                       <TableRow key="2">
                                         <TableCell>
                                           <div className="flex flex-row items-center gap-4">
-                                            <Image
-                                              src={
-                                                '/assets/shop/products/pink_Gladiola_0.jpg'
-                                              }
-                                              alt=""
-                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl hidden lg:block"
-                                            />
                                             <div className="flex flex-col">
                                               <p className="text-nowrap">
                                                 花的名稱
@@ -525,7 +480,7 @@ export default function CenterCourse() {
                                   </Table>
                                   {/* 付款資訊, 運送資訊 */}
                                   <div className="flex flex-col pt-4 w-full">
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         付款方式
                                       </div>
@@ -533,25 +488,25 @@ export default function CenterCourse() {
                                         Line Pay
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         寄送方式
                                       </div>
                                       <div className="py-1">7-ELEVEN 超商</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運送資訊
                                       </div>
                                       <div className="py-1">已取貨</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         發票種類
                                       </div>
                                       <div className="py-1">載具</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         送達時間
                                       </div>
@@ -560,19 +515,19 @@ export default function CenterCourse() {
                                       </div>
                                     </div>
                                     <hr className="my-1" />
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         小計
                                       </div>
                                       <div className="py-1">NT$90</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運費
                                       </div>
                                       <div className="py-1">NT$60</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         折扣
                                       </div>
@@ -580,7 +535,7 @@ export default function CenterCourse() {
                                         -NT$50
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between">
+                                    <div className="flex w-full text-nowrap items-center">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         總計
                                       </div>
