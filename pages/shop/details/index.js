@@ -3,11 +3,10 @@ import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Image } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-// import ProductDetails from '../../../components/shop/details/product-details'
 import ShopSlider from '@/components/shop/shop-slider'
 import { BsFillStarFill, BsHeart } from 'react-icons/bs'
 import { LuShare2 } from 'react-icons/lu'
-import { Tabs, Tab, Card, Button, Input } from '@nextui-org/react'
+import { Tabs, Tab, Card, CardBody, Button, Input } from '@nextui-org/react'
 import Subtitle from '@/components/common/subtitle'
 import { FaStar } from 'react-icons/fa'
 import { Pagination } from '@nextui-org/react'
@@ -19,9 +18,9 @@ export default function Detail() {
 
   // images start
   const productImages = [
-    { image: '/assets/shop/products/pink_Gladiola_0.jpg' },
-    { image: '/assets/shop/products/red_Amaryllis_3.jpg' },
-    { image: '/assets/shop/products/red_Snapdragon_1.jpg' },
+    { image: '/assets/shop/products/flowers/pink_Gladiola_0.jpg' },
+    { image: '/assets/shop/products/flowers/red_Amaryllis_3.jpg' },
+    { image: '/assets/shop/products/flowers/red_Snapdragon_1.jpg' },
   ]
   const [mainImageSrc, setMainImageSrc] = useState(productImages[0].image)
   const handleThumbnailClick = (imageSrc) => {
@@ -41,29 +40,29 @@ export default function Detail() {
   }
 
   //comment start
-  const comment = [
-    {
-      userName: '吉伊卡哇',
-      time: '2023.02.12',
-      star: '3',
-      message:
-        '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
-    },
-    {
-      userName: '芙莉蓮',
-      time: '2024.04.05',
-      star: '4',
-      message:
-        '我們仍然需要對玫瑰花保持懷疑的態度。面對如此難題，我們必須設想周全。所謂玫瑰花，關鍵是玫瑰花需要如何解讀。我們不妨可以這樣來想: 每個人的一生中，幾乎可說碰到玫瑰花這件事，是必然會發生的。',
-    },
-    {
-      userName: '費倫',
-      time: '2024.05.05',
-      star: '2',
-      message:
-        '當你搞懂後就會明白了。而這些並不是完全重要，更加重要的問題是，這種事實對本人來說意義重大，相信對這個世界也是有一定意義的。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
-    },
-  ]
+  // const comment = [
+  //   {
+  //     userName: '吉伊卡哇',
+  //     time: '2023.02.12',
+  //     star: '3',
+  //     message:
+  //       '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+  //   },
+  //   {
+  //     userName: '芙莉蓮',
+  //     time: '2024.04.05',
+  //     star: '4',
+  //     message:
+  //       '我們仍然需要對玫瑰花保持懷疑的態度。面對如此難題，我們必須設想周全。所謂玫瑰花，關鍵是玫瑰花需要如何解讀。我們不妨可以這樣來想: 每個人的一生中，幾乎可說碰到玫瑰花這件事，是必然會發生的。',
+  //   },
+  //   {
+  //     userName: '費倫',
+  //     time: '2024.05.05',
+  //     star: '2',
+  //     message:
+  //       '當你搞懂後就會明白了。而這些並不是完全重要，更加重要的問題是，這種事實對本人來說意義重大，相信對這個世界也是有一定意義的。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+  //   },
+  // ]
   //comment end
 
   // calculate start
@@ -84,8 +83,76 @@ export default function Detail() {
       setQuantity(1)
     }
   }
-
   // calculate end
+
+  // tabs start
+  let tabs = [
+    {
+      id: 'all',
+      label: '全部(21)',
+      content: [
+        {
+          userName: '吉伊卡哇',
+          time: '2023.02.12',
+          star: '3',
+          comment:
+            '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+        },
+        {
+          userName: '吉伊卡哇',
+          time: '2023.02.12',
+          star: '3',
+          comment:
+            '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+        },
+      ],
+    },
+    {
+      id: 'five-stars',
+      label: '五星(10)',
+      content: [
+        {
+          userName: '哈哈哈哈',
+          time: '2023.02.12',
+          star: '3',
+          comment:
+            '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+        },
+        {
+          userName: '哈哈哈哈',
+          time: '2023.02.12',
+          star: '3',
+          comment:
+            '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
+        },
+      ],
+    },
+    {
+      id: 'four-stars',
+      label: '四星(10)',
+      content:
+        'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    },
+    {
+      id: 'three-stars',
+      label: '三星(10)',
+      content:
+        'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    },
+    {
+      id: 'two-stars',
+      label: '二星(10)',
+      content:
+        'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    },
+    {
+      id: 'one-star',
+      label: '一星(10)',
+      content:
+        'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    },
+  ]
+  // tabs end
 
   // toaster start
   const notify = () => toast.success('已成功加入購物車')
@@ -99,7 +166,7 @@ export default function Detail() {
       {/* 置中 & 背景色 */}
       <main className="flex flex-col justify-center items-center bg-white">
         {/* 主要容器 */}
-        <div className="bg-white container justify-center flex flex-col items-start columns-12 static">
+        <div className="bg-white container justify-center flex flex-col items-start columns-12 static px-5 md:px-0">
           {/* 麵包屑 */}
           <div className="bg-white flex flex-col flex-wrap gap-4 py-6 w-full">
             <div>
@@ -236,16 +303,22 @@ export default function Detail() {
                   </tbody>
                 </table>
               </div>
-              <div className="flex space-x-1 sm:space-x-2">
-                <MyButton color="primary" size="xl" onClick={notify} isOutline>
+
+              <div className="flex space-x-1.5 sm:space-x-10">
+                <MyButton
+                  color="primary"
+                  size="xl"
+                  onClick={notify}
+                  isOutline
+                  className="w-full"
+                >
                   加入購物車
                 </MyButton>
                 <Toaster />
-                <Link href="/shop/cart">
-                  <MyButton color="primary" size="xl">
-                    立即購買
-                  </MyButton>
-                </Link>
+
+                <MyButton color="primary" size="xl" className="w-full">
+                  <Link href="/shop/cart">立即購買</Link>
+                </MyButton>
               </div>
             </div>
             {/* info end*/}
@@ -325,9 +398,8 @@ export default function Detail() {
             </Tabs>
           </div>
           {/* 商品評價 */}
-          <div className="flex flex-col gap-6">
+          <div className="space-y-2 container">
             <Subtitle text="商品評價" />
-            {/* 總評分 */}
             <div className="flex flex-row gap-2">
               <span className="text-2xl">4.0</span>
               <span className="text-2xl">/</span>
@@ -340,96 +412,97 @@ export default function Detail() {
                 <FaStar className="text-secondary-200" />
               </div>
             </div>
-            {/* filter */}
-            <div>
-              <div className="flex flex-wrap gap-2 items-center">
-                <Button color="primary" variant="solid">
-                  全部(21)
-                </Button>
-                <Button color="white" variant="bordered">
-                  五星(10)
-                </Button>
-                <Button color="white" variant="bordered">
-                  四星(10)
-                </Button>
-                <Button color="white" variant="bordered">
-                  三星(10)
-                </Button>
-                <Button color="white" variant="bordered">
-                  二星(10)
-                </Button>
-                <Button color="white" variant="bordered">
-                  一星(10)
-                </Button>
-              </div>
-            </div>
-            {/* 評價 */}
-            <div>
-              {comment.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col gap-2 py-4 border-b-1 border-b-tertiary-gray-200 last:border-0"
-                >
-                  <p>
-                    {item.userName}
-                    <span className="ml-2 text-tertiary-gray-100">
-                      {item.time}
-                    </span>
-                  </p>
-                  <div className="flex flex-row items-center text-secondary-100">
-                    {item.star === '1' ? (
-                      <>
-                        <FaStar />
-                        <FaStar className="text-secondary-200" />
-                        <FaStar className="text-secondary-200" />
-                        <FaStar className="text-secondary-200" />
-                        <FaStar className="text-secondary-200" />
-                      </>
-                    ) : item.star === '2' ? (
-                      <>
-                        <FaStar />
-                        <FaStar />
-                        <FaStar className="text-secondary-200" />
-                        <FaStar className="text-secondary-200" />
-                        <FaStar className="text-secondary-200" />
-                      </>
-                    ) : item.star === '3' ? (
-                      <>
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar className="text-secondary-200" />
-                        <FaStar className="text-secondary-200" />
-                      </>
-                    ) : item.star === '4' ? (
-                      <>
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar className="text-secondary-200" />
-                      </>
-                    ) : (
-                      <>
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                        <FaStar />
-                      </>
-                    )}
-                  </div>
-                  <p>{item.message}</p>
-                </div>
-              ))}
-            </div>
-            <div>
-              <Pagination
-                color="secondary-100"
-                initialPage={3}
-                total={10}
-                className="flex justify-center"
-              />
+            <div className="flex w-full flex-col bg-transparent">
+              <Tabs
+                aria-label="Dynamic tabs"
+                items={tabs}
+                classNames={{
+                  tabList: 'bg-transparent',
+                  tabContent: 'group-data-[selected=true]:text-[#68A392]',
+                }}
+              >
+                {(item) => (
+                  <Tab
+                    key={item.id}
+                    title={
+                      <div className="flex items-center text-base space-x-2">
+                        {item.label}
+                      </div>
+                    }
+                  >
+                    <Card>
+                      {Array.isArray(item.content) ? (
+                        item.content.map((commentItem, index) => (
+                          <CardBody key={index} className="space-y-2 p-6">
+                            <div className="flex space-x-2 items-center">
+                              <p className="text-xl">{commentItem.userName}</p>
+                              <p className="text-tertiary-gray-100">
+                                {commentItem.time}
+                              </p>
+                            </div>
+                            <div className="flex flex-row items-center text-secondary-100">
+                              {commentItem.star === '1' ? (
+                                <>
+                                  <FaStar />
+                                  <FaStar className="text-secondary-200" />
+                                  <FaStar className="text-secondary-200" />
+                                  <FaStar className="text-secondary-200" />
+                                  <FaStar className="text-secondary-200" />
+                                </>
+                              ) : commentItem.star === '2' ? (
+                                <>
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar className="text-secondary-200" />
+                                  <FaStar className="text-secondary-200" />
+                                  <FaStar className="text-secondary-200" />
+                                </>
+                              ) : commentItem.star === '3' ? (
+                                <>
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar className="text-secondary-200" />
+                                  <FaStar className="text-secondary-200" />
+                                </>
+                              ) : commentItem.star === '4' ? (
+                                <>
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar className="text-secondary-200" />
+                                </>
+                              ) : (
+                                <>
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                  <FaStar />
+                                </>
+                              )}
+                            </div>
+                            <div>{commentItem.comment}</div>
+                          </CardBody>
+                        ))
+                      ) : (
+                        <CardBody>
+                          <div>Content not available</div>
+                        </CardBody>
+                      )}
+                    </Card>
+                    <div className="mt-6">
+                      <Pagination
+                        color="secondary-100"
+                        initialPage={3}
+                        total={10}
+                        className="flex justify-center"
+                      />
+                    </div>
+                  </Tab>
+                )}
+              </Tabs>
             </div>
           </div>
           <hr className="my-16" />
