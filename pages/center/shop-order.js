@@ -21,7 +21,7 @@ import Title from '@/components/common/title'
 import Review from '@/components/shop/center/review'
 import CourseSearch from '@/components/course/search'
 
-export default function CenterCourse() {
+export default function CenterShop() {
   const imageList = [
     {
       src: '/assets/shop/products/pink_Gladiola_0.jpg',
@@ -68,19 +68,19 @@ export default function CenterCourse() {
   // 評價 Modal 變數
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
-  const [activePage, setActivePage] = useState('course')
+  const [activePage, setActivePage] = useState('shop')
   return (
     <DefaultLayout activePage={activePage}>
       {
         <>
           <CenterLayout>
             {/* 麵包屑 */}
-            <div className="w-full py-6 invisible md:visible">
+            <div className="w-full py-6">
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
                 <BreadcrumbItem>會員中心</BreadcrumbItem>
-                <BreadcrumbItem>合作課程</BreadcrumbItem>
-                <BreadcrumbItem>我的課程</BreadcrumbItem>
+                <BreadcrumbItem>線上商城</BreadcrumbItem>
+                <BreadcrumbItem>商品訂單</BreadcrumbItem>
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
@@ -91,7 +91,7 @@ export default function CenterCourse() {
               {/* 歷史訂單 */}
               <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
                 {/* 訂單明細 */}
-                <Title text="我的課程" />
+                <Title text="商品訂單" />
                 <div className="flex w-full flex-col">
                   <Tabs
                     key={''}
@@ -195,11 +195,107 @@ export default function CenterCourse() {
                                   </div>
                                 }
                               >
-                                {/* (手風琴內容) */}
+                                {/* 商品列表(手風琴內容) */}
                                 <div className="flex flex-col">
+                                  <Table
+                                    selectionMode="single"
+                                    defaultSelectedKeys={['2']}
+                                    aria-label="Example static collection table"
+                                    classNames={tableStylesContent}
+                                  >
+                                    <TableHeader className="bg-secondary-200">
+                                      <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
+                                        商品
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        單價
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        數量
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        小計
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        評價
+                                      </TableColumn>
+                                    </TableHeader>
+                                    <TableBody>
+                                      <TableRow key="1">
+                                        <TableCell>
+                                          <div className="flex flex-row items-center gap-10">
+                                            <Image
+                                              src={
+                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                              }
+                                              alt=""
+                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
+                                            />
+                                            <div className="flex flex-col">
+                                              <p className="text-nowrap">
+                                                花的名稱
+                                              </p>
+                                              <p className="text-nowrap hidden md:contents">
+                                                店家名稱
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </TableCell>
+                                        <TableCell>NT$30</TableCell>
+                                        <TableCell>3</TableCell>
+                                        <TableCell>NT$90</TableCell>
+                                        <TableCell>
+                                          <MyButton
+                                            color="primary"
+                                            size="xs"
+                                            className="text-base"
+                                            isOutline
+                                            onClick={onOpen}
+                                          >
+                                            去評價
+                                          </MyButton>
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow key="2">
+                                        <TableCell>
+                                          <div className="flex flex-row items-center gap-10">
+                                            <Image
+                                              src={
+                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                              }
+                                              alt=""
+                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
+                                            />
+                                            <div className="flex flex-col">
+                                              <p className="text-nowrap">
+                                                花的名稱
+                                              </p>
+                                              <p className="text-nowrap hidden md:contents">
+                                                店家名稱
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </TableCell>
+                                        <TableCell>NT$30</TableCell>
+                                        <TableCell>3</TableCell>
+                                        <TableCell>NT$90</TableCell>
+                                        <TableCell>
+                                          <MyButton
+                                            color="primary"
+                                            size="xs"
+                                            isOutline
+                                            className="text-base"
+                                            onClick={onOpen}
+                                          >
+                                            去評價
+                                          </MyButton>
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableBody>
+                                  </Table>
                                   {/* 付款資訊, 運送資訊 */}
-                                  <div className="flex flex-col pt-4 items-start">
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                  <div className="flex flex-col pt-4 w-full">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         付款方式
                                       </div>
@@ -207,25 +303,25 @@ export default function CenterCourse() {
                                         Line Pay
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         寄送方式
                                       </div>
                                       <div className="py-1">7-ELEVEN 超商</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運送資訊
                                       </div>
-                                      <div className="py-1">未取貨</div>
+                                      <div className="py-1">已取貨</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         發票種類
                                       </div>
                                       <div className="py-1">載具</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         送達時間
                                       </div>
@@ -233,20 +329,20 @@ export default function CenterCourse() {
                                         2024-02-27 11:02:08
                                       </div>
                                     </div>
-                                    {/* <hr className="my-1 w-full" /> */}
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <hr className="my-1" />
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         小計
                                       </div>
                                       <div className="py-1">NT$90</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         運費
                                       </div>
                                       <div className="py-1">NT$60</div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         折扣
                                       </div>
@@ -254,7 +350,7 @@ export default function CenterCourse() {
                                         -NT$50
                                       </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap justify-between w-full md:w-1/3">
+                                    <div className="flex w-full text-nowrap items-center">
                                       <div className="py-1 mr-2 text-tertiary-gray-100">
                                         總計
                                       </div>
@@ -330,9 +426,169 @@ export default function CenterCourse() {
                                   </div>
                                 }
                               >
-                                {/* (手風琴內容) */}
+                                {/* 商品列表(手風琴內容) */}
                                 <div className="flex flex-col">
+                                  <Table
+                                    selectionMode="single"
+                                    defaultSelectedKeys={['2']}
+                                    aria-label="Example static collection table"
+                                    classNames={tableStylesContent}
+                                  >
+                                    <TableHeader className="bg-secondary-200">
+                                      <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
+                                        商品
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        單價
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        數量
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        小計
+                                      </TableColumn>
+                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                        評價
+                                      </TableColumn>
+                                    </TableHeader>
+                                    <TableBody>
+                                      <TableRow key="1">
+                                        <TableCell>
+                                          <div className="flex flex-row items-center gap-4">
+                                            <Image
+                                              src={
+                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                              }
+                                              alt=""
+                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
+                                            />
+                                            <div className="flex flex-col">
+                                              <p className="text-nowrap">
+                                                花的名稱
+                                              </p>
+                                              <p className="text-nowrap hidden md:contents">
+                                                店家名稱
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </TableCell>
+                                        <TableCell>NT$30</TableCell>
+                                        <TableCell>3</TableCell>
+                                        <TableCell>NT$90</TableCell>
+                                        <TableCell>
+                                          <MyButton
+                                            color="primary"
+                                            size="xs"
+                                            className="text-base"
+                                            isOutline
+                                            onClick={onOpen}
+                                          >
+                                            去評價
+                                          </MyButton>
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow key="2">
+                                        <TableCell>
+                                          <div className="flex flex-row items-center gap-4">
+                                            <Image
+                                              src={
+                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                              }
+                                              alt=""
+                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl hidden lg:block"
+                                            />
+                                            <div className="flex flex-col">
+                                              <p className="text-nowrap">
+                                                花的名稱
+                                              </p>
+                                              <p className="text-nowrap hidden md:contents">
+                                                店家名稱
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </TableCell>
+                                        <TableCell>NT$30</TableCell>
+                                        <TableCell>3</TableCell>
+                                        <TableCell>NT$90</TableCell>
+                                        <TableCell>
+                                          <MyButton
+                                            color="primary"
+                                            size="xs"
+                                            isDisabled
+                                            className="text-base"
+                                          >
+                                            已評價
+                                          </MyButton>
+                                        </TableCell>
+                                      </TableRow>
+                                    </TableBody>
+                                  </Table>
                                   {/* 付款資訊, 運送資訊 */}
+                                  <div className="flex flex-col pt-4 w-full">
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        付款方式
+                                      </div>
+                                      <div className="py-1 text-nowrap">
+                                        Line Pay
+                                      </div>
+                                    </div>
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        寄送方式
+                                      </div>
+                                      <div className="py-1">7-ELEVEN 超商</div>
+                                    </div>
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        運送資訊
+                                      </div>
+                                      <div className="py-1">已取貨</div>
+                                    </div>
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        發票種類
+                                      </div>
+                                      <div className="py-1">載具</div>
+                                    </div>
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        送達時間
+                                      </div>
+                                      <div className="py-1">
+                                        2024-02-27 11:02:08
+                                      </div>
+                                    </div>
+                                    <hr className="my-1" />
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        小計
+                                      </div>
+                                      <div className="py-1">NT$90</div>
+                                    </div>
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        運費
+                                      </div>
+                                      <div className="py-1">NT$60</div>
+                                    </div>
+                                    <div className="flex w-full text-nowrap">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        折扣
+                                      </div>
+                                      <div className="py-1 text-primary-100">
+                                        -NT$50
+                                      </div>
+                                    </div>
+                                    <div className="flex w-full text-nowrap items-center">
+                                      <div className="py-1 mr-2 text-tertiary-gray-100">
+                                        總計
+                                      </div>
+                                      <div className="py-1 text-lg font-medium">
+                                        NT$100
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </AccordionItem>
                             </Accordion>

@@ -58,17 +58,17 @@ export default function Sidebar() {
             線上商城
           </p>
           <Link
-            href="/shop/center-shop/"
+            href="/center/shop-order"
             className={`hover:text-primary-100 ${
-              isActive('/shop/center-shop/') ? 'text-primary-100' : ''
+              isActive('/center/shop-order') ? 'text-primary-100' : ''
             }`}
           >
             商品訂單
           </Link>
           <Link
-            href="/shop/center-shop/favorite"
+            href="/center/shop-favorite"
             className={`hover:text-primary-100 ${
-              isActive('/shop/center-shop/favorite') ? 'text-primary-100' : ''
+              isActive('/center/shop-favorite') ? 'text-primary-100' : ''
             }`}
           >
             收藏商品
@@ -82,31 +82,25 @@ export default function Sidebar() {
             合作課程
           </p>
           <Link
-            href="/course/center-course/course-order"
+            href="/center/course-order"
             className={`hover:text-primary-100 ${
-              isActive('/course/center-course/course-order')
-                ? 'text-primary-100'
-                : ''
+              isActive('/center/course-order') ? 'text-primary-100' : ''
             }`}
           >
             課程訂單
           </Link>
           <Link
-            href="/course/center-course/my-class"
+            href="/center/my-course"
             className={`hover:text-primary-100 ${
-              isActive('/course/center-course/my-class')
-                ? 'text-primary-100'
-                : ''
+              isActive('/center/my-course') ? 'text-primary-100' : ''
             }`}
           >
             我的課程
           </Link>
           <Link
-            href="/course/center-course/favorite"
+            href="/center/course-favorite"
             className={`hover:text-primary-100 ${
-              isActive('/course/center-course/favorite')
-                ? 'text-primary-100'
-                : ''
+              isActive('/center/course-favorite') ? 'text-primary-100' : ''
             }`}
           >
             收藏課程
@@ -120,9 +114,9 @@ export default function Sidebar() {
             花占卜
           </p>
           <Link
-            href="#"
+            href="/center/game-history"
             className={`hover:text-primary-100 ${
-              isActive('#') ? 'text-primary-100' : ''
+              isActive('/center/game-history') ? 'text-primary-100' : ''
             }`}
           >
             占卜紀錄
@@ -136,17 +130,17 @@ export default function Sidebar() {
             我的帳戶
           </p>
           <Link
-            href="#"
+            href="/center/profile"
             className={`hover:text-primary-100 ${
-              isActive('#') ? 'text-primary-100' : ''
+              isActive('/center/profile') ? 'text-primary-100' : ''
             }`}
           >
             個人資料
           </Link>
           <Link
-            href="#"
+            href="/center/coupon"
             className={`hover:text-primary-100 ${
-              isActive('#') ? 'text-primary-100' : ''
+              isActive('/center/coupon') ? 'text-primary-100' : ''
             }`}
           >
             優惠券

@@ -11,7 +11,7 @@ import {
 import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
 
-export default function Confirm() {
+export default function PaymentFailed() {
   const [activePage, setActivePage] = useState('cart')
 
   //table樣式
