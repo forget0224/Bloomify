@@ -35,9 +35,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
   useDisclosure,
 } from '@nextui-org/react'
+import SearchBtn from '@/components/course/search'
 // import { useWindowSize } from 'react-use'
 
 export default function Shop() {
@@ -378,27 +378,16 @@ export default function Shop() {
                 {/* select categories end */}
 
                 {/* search & select start */}
-                <div className="flex py-6 justify-between w-full">
+                <div className="flex justify-between py-6">
                   {/* searchbar */}
-                  <Input
-                    variant="bordered"
-                    placeholder="搜尋..."
-                    endContent={
-                      <button
-                        className="focus:outline-none"
-                        type="button"
-                        onClick={() => {}}
-                      >
-                        <CiSearch />
-                      </button>
-                    }
-                    className="hidden sm:max-w-xs sm:block"
-                  />
+                  <div className="hidden sm:block sm:w-3/12">
+                    <SearchBtn />
+                  </div>
                   {/* filter */}
                   {/* RWD start*/}
                   <p className="text-tertiary-black sm:hidden">共 100 項結果</p>
                   {/* RWD end*/}
-                  <div className="flex flex-cols items-center space-x-4">
+                  <div className="flex items-center space-x-4">
                     <p className="hidden sm:block sm:text-xl sm:text-tertiary-black sm:whitespace-nowrap">
                       排序
                     </p>
@@ -418,18 +407,21 @@ export default function Shop() {
                     </Select>
 
                     {/* RWD start */}
-                    <div className="flex flex-row space-x-2 sm:hidden">
+                    <div className="flex flex-row space-x-3 sm:hidden">
                       <div className="flex gap-2 items-center text-xl hover:text-primary">
                         <SlMagnifier
                           onClick={onMagnifierOpen}
                           style={{ cursor: 'pointer' }}
+                          className="text-xl"
                         />
                         <Modal
                           isOpen={isMagnifierOpen}
                           placement={modalPlacement}
                           onOpenChange={onMagnifierOpenChange}
-                          className="mx-0 my-0"
-                          style={{ borderRadius: '4% 4% 0% 0%' }}
+                          className="mx-0 my-0 "
+                          style={{
+                            borderRadius: '4% 4% 0% 0%',
+                          }}
                         >
                           <ModalContent>
                             <>
@@ -486,6 +478,7 @@ export default function Shop() {
                         <IoFilterCircleOutline
                           onClick={onFilterOpen}
                           style={{ cursor: 'pointer' }}
+                          className="text-2xl"
                         />
                         <Modal
                           isOpen={isFilterOpen}
@@ -808,7 +801,6 @@ export default function Shop() {
                     </div>
                     {/* RWD end */}
                   </div>
-
                   {/* search & select end */}
                 </div>
                 {/* search & select end */}
