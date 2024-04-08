@@ -64,12 +64,12 @@ export default function Cart() {
   // cart content start
   const cartContent = [
     {
-      image: '/assets/shop/products/pink_Gladiola_0.jpg',
+      image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
       name: '玫瑰花',
       price: '30',
     },
     {
-      image: '/assets/shop/products/red_Snapdragon_1.jpg',
+      image: '/assets/shop/products/blue_Clematis_0.jpg',
       name: '太陽花',
       price: '60',
     },
