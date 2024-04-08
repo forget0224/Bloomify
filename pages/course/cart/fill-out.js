@@ -3,7 +3,7 @@ import { Input } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { RadioGroup, Radio } from '@nextui-org/react'
-import { FaCcMastercard, FaCcVisa, FaCcApplePay } from 'react-icons/fa6'
+import { FaCcMastercard, FaCcVisa } from 'react-icons/fa6'
 import { Stepper } from 'react-dynamic-stepper'
 import Link from 'next/link'
 // 小組元件

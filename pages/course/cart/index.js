@@ -1,7 +1,4 @@
 import React, { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
-import ShopSlider from '@/components/shop/shop-slider'
-import { MyButton } from '@/components/btn/mybutton'
 import { Button, Input } from '@nextui-org/react'
 import { Tabs, Tab, Card, Image, CardFooter } from '@nextui-org/react'
 import {
@@ -16,6 +13,10 @@ import { Stepper } from 'react-dynamic-stepper'
 import Link from 'next/link.js'
 import { FaMinus } from 'react-icons/fa6'
 import { FaPlus } from 'react-icons/fa6'
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
+import ShopSlider from '@/components/shop/shop-slider'
+import { MyButton } from '@/components/btn/mybutton'
 
 export default function Cart() {
   const [activePage, setActivePage] = useState('course')

@@ -17,7 +17,6 @@ export default function CourseSearch() {
           <button className="bg-primary-100 w-12 flex justify-center items-center rounded-r-xl hover:bg-primary-200">
             <CiSearch fill="white" className="w-6 h-6" />
           </button>
-          {/* <div className="text-sm text-danger pt-1">我是提示訊息</div> */}
         </div>
       </div>
     </>

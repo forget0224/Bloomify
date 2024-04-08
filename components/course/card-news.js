@@ -6,8 +6,16 @@ export default function CardNews() {
     '探索新知識，啟迪新思維！我們興奮地宣布，全新課程現已上線！無論您是想學習一項新技能，深入了解特定主題，還是提升個人成長，我們的課程都能滿足您的需求。從實踐操作到專家分享，我們的課程內容豐富多彩，適合各種學習風格和興趣愛好。無論您是初學者還是專家，我們都歡迎您的加入！立即探索我們的課程，啟程開啟新的學習旅程！'
   const newsTime = '2023.01.01'
 
+  //外層手風琴樣式
+  const accordionStyle = {
+    base: ['p-0', 'text-tertiary-black'],
+    content: ['p-0', 'text-tertiary-black'],
+    title: ['text-tertiary-black'],
+    trigger: [''],
+  }
+
   return (
-    <Accordion variant="splitted">
+    <Accordion variant="splitted" itemClasses={accordionStyle}>
       <AccordionItem
         key="1"
         style={{ padding: '8px 24px' }}

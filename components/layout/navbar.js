@@ -33,7 +33,7 @@ export default function HomeNav({ activePage }) {
     },
     {
       name: 'course',
-      chineseName: '課程預約',
+      chineseName: '合作課程',
       href: '',
       subMenu: [],
     },

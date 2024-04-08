@@ -7,7 +7,7 @@ import {
   Link,
   Image,
 } from '@nextui-org/react'
-import CircleBtn from './btn-circle'
+import CircleBtn from './btn-add-to-cart'
 import { MyButton } from '../btn/mybutton'
 
 export default function CourseTime() {
@@ -20,7 +20,7 @@ export default function CourseTime() {
           <p>6:00 am - 8:00 am</p>
         </div>
         <p className="text-tertiary-gray-100">尚餘3個名額</p>
-        <div className="flex gap-2 mt-2 lg:mt-0">
+        <div className="flex gap-4 mt-2 lg:mt-0">
           <CircleBtn />
           <MyButton color="primary" size="xl" className="w-full">
             直接購買

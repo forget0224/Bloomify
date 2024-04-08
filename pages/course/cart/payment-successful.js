@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
 import {
   Table,
   TableHeader,
@@ -8,9 +7,11 @@ import {
   TableRow,
   TableCell,
 } from '@nextui-org/react'
+import { Link } from '@nextui-org/react'
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
 import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
-import { Link } from '@nextui-org/react'
 
 export default function Confirm() {
   const [activePage, setActivePage] = useState('shop')

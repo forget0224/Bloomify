@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
 import { Image } from '@nextui-org/react'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
 import Subtitle from '@/components/common/subtitle'
 import SearchBtn from '@/components/course/search'
 import CardGroup from '@/components/course/card-group'
 
 export default function CourseIndex() {
   const [activePage, setActivePage] = useState('course')
-  const underlines = ['none']
   const list = [
     {
       title: '課程一',
@@ -54,15 +54,11 @@ export default function CourseIndex() {
         {/* 主要容器 */}
         <div className="bg-white container justify-center flex flex-col items-start columns-12 static">
           {/* 麵包屑 */}
-          <div className="bg-white flex flex-col flex-wrap gap-4 py-6 w-full">
-            {underlines.map((u) => (
-              <div key={u}>
-                <Breadcrumbs underline={u}>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
-                  <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>
-                </Breadcrumbs>
-              </div>
-            ))}
+          <div className="w-full py-6 invisible md:visible">
+            <Breadcrumbs>
+              <BreadcrumbItem>首頁</BreadcrumbItem>
+              <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>
+            </Breadcrumbs>
           </div>
 
           {/* banner圖 & 加入我們 */}
