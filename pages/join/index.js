@@ -1,5 +1,5 @@
 import { useState, React } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
+
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import {
@@ -11,27 +11,46 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react'
+<<<<<<< HEAD:pages/join/index.js
 import Process from '@/components/join/process'
+=======
+import { Input } from '@nextui-org/react'
+import { Textarea } from '@nextui-org/react'
+
+// icon
+
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
+import { MyButton } from '@/components/btn/mybutton'
+
+import Process from '@/components/store/process'
+>>>>>>> store:pages/store/index.js
 
 export default function Custom() {
   const [activePage, setActivePage] = useState('store')
 
+  // input 樣式
+  const inputStyles = {
+    label: 'text-base',
+    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
+  }
+
   // 4 張卡片
   const list = [
     {
-      title: 'Orange',
+      title: '接觸更多客戶',
       img: '/images/fruit-1.jpeg',
     },
     {
-      title: 'Tangerine',
+      title: '提高店家知名度',
       img: '/images/fruit-2.jpeg',
     },
     {
-      title: 'Raspberry',
+      title: '節省時間、成本',
       img: '/images/fruit-3.jpeg',
     },
     {
-      title: 'Lemon',
+      title: '專員即時聯繫 ',
       img: '/images/fruit-4.jpeg',
     },
   ]
@@ -53,7 +72,7 @@ export default function Custom() {
               <div className="py-6">
                 <Breadcrumbs>
                   <BreadcrumbItem>首頁</BreadcrumbItem>
-                  <BreadcrumbItem>加入我們</BreadcrumbItem>
+                  <BreadcrumbItem color="primary">加入我們</BreadcrumbItem>
                 </Breadcrumbs>
               </div>
               {/* banner */}
@@ -135,89 +154,82 @@ export default function Custom() {
                             // onSubmit={submitHandler}
                             className="border border-orange-200 flex flex-col "
                           >
-                            <div className="flex flex-col  mx-auto">
-                              {/* input 輸入框 */}
-                              <div className={'mb-3'}>
-                                <label htmlFor="name" className="">
-                                  姓名
-                                </label>
-                                <br />
-                                <input
-                                  type="text"
-                                  className="border border-black"
-                                  id="name"
-                                  name="name"
-                                  // value={myForm.name}
-                                  // onChange={changeHandler}
-                                  // value = ""  不能是空字串
-                                  // value 改變 => useState改變
-                                  // value 這邊需要有onChange{}做狀態監聽
-                                />
-                                {/* <div className="form-text">{errors.name}</div> */}
-                              </div>
-                              <div className={'mb-3'}>
-                                <label htmlFor="email" className="">
-                                  email
-                                </label>
-                                <br />
-                                <input
-                                  type="text"
-                                  className="border border-black"
-                                  id="email"
-                                  name="email"
-                                  // value={myForm.email}
-                                  // onChange={changeHandler}
-                                />
-                                {/* <div className="form-text">{errors.email}</div> */}
-                              </div>
-                              <div className="mb-3">
-                                <label htmlFor="mobile" className="">
-                                  mobile
-                                </label>
-                                <br />
-                                <input
-                                  type="text"
-                                  className="border border-black"
-                                  id="mobile"
-                                  name="mobile"
-                                  // value={myForm.mobile}
-                                  // onChange={changeHandler}
-                                />
-                                <div className="form-text"></div>
-                              </div>
-                              <div className="mb-3">
-                                <label htmlFor="birthday" className="">
-                                  birthday
-                                </label>
-                                <br />
-                                <input
-                                  type="date"
-                                  className="border border-black"
-                                  id="birthday"
-                                  name="birthday"
-                                  // value={myForm.birthday}
-                                  // onChange={changeHandler}
-                                />
-                                <div className="form-text"></div>
-                              </div>
-                              <div className="mb-3">
-                                <label htmlFor="address" className="">
-                                  address
-                                </label>
-                                <br />
-                                <textarea
-                                  className="border border-black"
-                                  name="address"
-                                  id="address"
-                                  cols="30"
-                                  rows="3"
-                                  // value={myForm.address}
-                                  // onChange={changeHandler}
-                                ></textarea>
-                              </div>
+                            <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
+                              <Input
+                                type="text"
+                                label="店家名稱"
+                                placeholder="請輸入店家名稱"
+                                labelPlacement="outside"
+                                isRequired
+                                classNames={{ ...inputStyles }}
+                              />
+                              <Input
+                                type="text"
+                                label="帳號"
+                                placeholder="請輸入帳號"
+                                labelPlacement="outside"
+                                isRequired
+                                classNames={{ ...inputStyles }}
+                              />
+                              <Input
+                                type="password"
+                                label="密碼"
+                                placeholder="請輸入密碼"
+                                labelPlacement="outside"
+                                isRequired
+                                classNames={{ ...inputStyles }}
+                              />
+                              <Input
+                                type="number"
+                                label="電話"
+                                placeholder="請輸入手機號碼"
+                                labelPlacement="outside"
+                                isRequired
+                                classNames={{ ...inputStyles }}
+                              />
+                              <Input
+                                type="email"
+                                label="電子信箱"
+                                placeholder="請輸入電子信箱 "
+                                labelPlacement="outside"
+                                isRequired
+                                classNames={{ ...inputStyles }}
+                              />
+                              <Input
+                                type="email"
+                                label="電子信箱"
+                                placeholder="請輸入電子信箱 "
+                                labelPlacement="outside"
+                                isRequired
+                                classNames={{ ...inputStyles }}
+                              />
+                              <Textarea
+                                isRequired
+                                label="店家介紹"
+                                labelPlacement="outside"
+                                placeholder="請輸入店家介紹"
+                                className="w-full"
+                              />
                             </div>
-
-                            <Button>註冊</Button>
+                            {/* button */}
+                            <div className="w-full flex justify-center gap-4">
+                              {' '}
+                              <MyButton
+                                color="primary"
+                                size="xl"
+                                isOutline
+                                className="w-full"
+                              >
+                                取消
+                              </MyButton>
+                              <MyButton
+                                color="primary"
+                                size="xl"
+                                className="w-full"
+                              >
+                                註冊
+                              </MyButton>
+                            </div>
                           </form>
                         </ModalBody>
                         <ModalFooter></ModalFooter>
@@ -234,19 +246,19 @@ export default function Custom() {
                   <div>243532</div>
                   <div>會員註冊</div>
                 </div>
-                <div className="">
+                <div className="my-4">
                   <div>1562</div>
                   <div>線上課程</div>
                 </div>
-                <div className="">
+                <div className="my-4">
                   <div>20158</div>
                   <div>商品種類</div>
                 </div>
-                <div className="">
+                <div className="my-4">
                   <div>256</div>
                   <div>花束範本</div>
                 </div>
-                <div className="">
+                <div className="my-4">
                   <div>3568</div>
                   <div>合作店家</div>
                 </div>
