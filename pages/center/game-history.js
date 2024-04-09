@@ -23,7 +23,7 @@ export default function Profile() {
           <div className="flex flex-row w-full justify-center">
             <Sidebar />
             <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
-              <Title text="個人資料" />
+              <Title text="花占卜" />
             </div>
           </div>
         </CenterLayout>
