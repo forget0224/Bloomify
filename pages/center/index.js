@@ -20,7 +20,7 @@ export default function Index() {
         <>
           <CenterLayout>
             {/* 麵包屑 */}
-            <div className="w-full py-6">
+            <div className="hidden sm:block sm:w-full sm:py-6">
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
                 <BreadcrumbItem color="primary">會員中心</BreadcrumbItem>
@@ -36,7 +36,7 @@ export default function Index() {
             </div>
 
             {/* RWD start */}
-            <div className="w-8/12 h-fit p-10 border-1 rounded-xl border-tertiary-gray-200 space-y-5 sm:hidden">
+            <div className="w-full h-fit px-5 mt-12 space-y-6 sm:hidden">
               {/* 會員資訊 start */}
               <div className="flex flex-row gap-2 items-center justify-center">
                 <Image
