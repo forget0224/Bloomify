@@ -43,8 +43,8 @@ export default function Cart() {
   //   console.log('submitted')
   // }
 
-  // Tab
-  const [selected, setSelected] = React.useState('shop')
+  // // Tab
+  // const [selected, setSelected] = React.useState('shop')
 
   return (
     <>
@@ -69,54 +69,52 @@ export default function Cart() {
             />
           </div>
           {/* Tab */}
-          <Tabs
-            aria-label="Options"
-            selectedKey={selected}
-            onSelectionChange={setSelected}
-            onSelect
-            color="primary"
-            variant="bordered"
-          >
-            <Tab
-              key="shop"
-              title={
-                <div className="flex items-center space-x-2">
-                  <span>線上商城</span>
-                </div>
-              }
+          <div className="flex w-screen  flex-col bg-white items-center">
+            <Tabs
+              aria-label="Options"
+              color="primary"
+              variant="underlined"
+              classNames={{
+                tabList:
+                  'gap-6 max-w-[1024px]  relative  rounded-none p-0 border-b border-divider',
+                cursor: 'bg-primary w-full',
+                tab: 'w-[400px] px-0 h-12  ',
+                tabContent: 'group-data-[selected=true]:text-primary',
+              }}
             >
-              {/* 線上商城內容 */}
-              <div className="flex flex-col w-full lg:w-10/12 gap-14">
-                <p className="text-nowrap">線上商城</p>
-              </div>
-            </Tab>
-            <Tab
-              key="custom"
-              title={
-                <div className="flex items-center space-x-2">
-                  <span>代客送花</span>
-                </div>
-              }
-            >
-              {/* 代客送花內容 */}
-              <div className="flex flex-col w-full lg:w-10/12 gap-14">
-                <p className="text-nowrap">代客送花</p>
-              </div>
-            </Tab>
-            <Tab
-              key="course"
-              title={
-                <div className="flex items-center space-x-2">
-                  <span>合作課程</span>
-                </div>
-              }
-            >
-              {/* 合作課程內容 */}
-              <div className="flex flex-col w-full lg:w-10/12 gap-14">
-                <p className="text-nowrap">合作課程</p>
-              </div>
-            </Tab>
-          </Tabs>
+              <Tab
+                key="shop"
+                title={
+                  <div className="flex items-center space-x-2">代客送花</div>
+                }
+              >
+                <Card>
+                  <p>代客送花</p>
+                </Card>
+              </Tab>
+
+              <Tab
+                key="custom"
+                title={
+                  <div className="flex items-center space-x-2">線上商城</div>
+                }
+              >
+                <Card>
+                  <p>線上商城</p>
+                </Card>
+              </Tab>
+              <Tab
+                key="course"
+                title={
+                  <div className="flex items-center space-x-2">合作課程</div>
+                }
+              >
+                <Card>
+                  <p>合作課程</p>
+                </Card>
+              </Tab>
+            </Tabs>
+          </div>
 
           {/* 按鈕 */}
           <div className="flex justify-center space-x-10 pt-10">
