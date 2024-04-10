@@ -1,116 +1,149 @@
-// 這是原本遊戲 index.html的head
-
-//TODO:
-{
-  /* <meta charSet="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./css/index.css" />
-  <title>發牌、選牌與翻牌動態</title> */
-}
-
 import { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
 import styles from '../custom/custom.module.css'
 import Image from 'next/image'
-import bannerFlower from '@/assets/banner-flower.jpg'
+import { MyButton } from '@/components/btn/mybutton'
+import Link from 'next/link';
+
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from '@nextui-org/react'
+
 export default function Custom() {
   const [activePage, setActivePage] = useState('custom')
+  // 控制 Modal Button
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const size = ['base']
   return (
-    <DefaultLayout activePage={activePage}>
-      {
-        <>
-          {/* main的東西 */}
-          <div className="w-screen h-screen bg-orange-100 text-2xl text-black">
-            代客送花 建立custom branch
-          </div>
-          {/* 遊戲 index.html */}
-          <div className="game">
-            <div className="tip">click and start</div>
-            <div className="card card1">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card2">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card3">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card4">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card5">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card6">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card7">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card8">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card9">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-            <div className="card card10">
-              <div className="content">
-                <div className="front" />
-                <div className="back" />
-              </div>
-            </div>
-          </div>
+    <>
+      <div className="bg-[url('/assets/intro/vintage_speckles.png')] h-screen flex flex-col items-center">
+        <div className=" z-10 text-center text-black absolute inset-x-0 top-10">
+          {/* <p>~</p> */}
+          <p>
+            <span className="bg-gray-100">以盛開的雛菊，</span>
+          </p>
+          <p>
+            <span className="bg-gray-100">為你解開疑惑。</span>
+          </p>
+          <p className="mt-1">
+            <span className="bg-gray-100">
+              In a garden where daisies bloom,
+            </span>
+          </p>
+          <p>
+            <span className="bg-gray-100">
+              A fortune teller lifts the gloom.
+            </span>
+          </p>
+        </div>
+        <div className="w-full justify-start flex">
+          <img
+            className="w-2/5 h-auto"
+            src="/assets/intro/cloud1.png"
+            alt="cloud1"
+          />
+        </div>
+        <div className="w-full flex justify-end">
+          <img
+            className="w-2/5 h-auto "
+            src="/assets/intro/cloud2.png"
+            alt="cloud2"
+          />
+        </div>
+        <div className="absolute bottom-0 mb-0">
+          <img
+            className="w-auto h-1/3 max-w-xs h-auto"
+            src="/assets/intro/daisy2.png"
+            alt="daisy2"
+          />
+        </div>
+      </div>
 
-          <div></div>
+      <div className="fixed bottom-0 right-0 mr-4 mb-4 p-3 rounded-full flex items-center justify-center">
+        <Link href="/">
+          <MyButton
+            isIconOnly
+            isOutline
+            color="primary"
+            variant="faded"
+            aria-label="back to index"
+            className="w-16 h-16 rounded-full border-1 border-primary-100 bg-primary text-white"
+          >
+            回首頁
+          </MyButton>
+        </Link>
+      </div>
 
-          <div className={styles['foo']}>代客送花 建立custom branch</div>
-          <div className="w-screen h-screen bg-blue-100  text-black flex flex-col  justify-center items-center">
-            <div className="border-1 border-pink w-[1000px] h-[400px] flex flex-row">
-              <div className="w-full flex flex-col bg-white justify-center items-center text-center">
-                <h1 className="text-2xl my-3">情人節活動</h1>
-                <p className="my-3 px-4">
-                  無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。
-                </p>
-                <div className="w-full text-right px-4 my-3">
-                  <a href="#" className="text-black ">
-                    More
-                  </a>
-                </div>
-              </div>
-              <div className="w-full">
-                <Image src={bannerFlower} alt="" className="w-[500px] h-full" />
-              </div>
-            </div>
+      <div className="absolute top-40 left-1/2 transform -translate-x-1/2 mb-4 p-3 rounded-full justify-center">
+        <MyButton color="primary" size="xl" onPress={onOpen} className="mt-6">
+          開始占卜
+        </MyButton>
+      </div>
+      {/* Modal   視窗 */}
+      <div>
+        <Modal
+          className="bg-secondary"
+          size={size}
+          isOpen={isOpen}
+          onClose={onClose}
+        >
+          <div>
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <div>
+                    <ModalHeader className="flex flex-col gap-0"></ModalHeader>
+                    <ModalBody className="flex flex-col gap-0">
+                      {/* 說明區域 */}
+                      <div className="justify-center flex flex-wrap bg-white rounded-lg p-4 ">
+                        <p className="justify-center flex flex-wrap bg-white text-2xl mb-3">
+                          <strong>遊戲規則</strong>
+                        </p>
+                        <p>
+                          親愛的使用者，
+                          <br />
+                          歡迎您遊玩我們所提供的花占卜服務。提醒您一些重要的事項，以確保您能夠正確理解並適當使用我們提供的遊戲服務。
+                          <ul className="list-disc list-inside">
+                            <li>
+                              <strong>隨機抽卡-</strong>
+                              我們將花語卡牌洗好提供您挑選，相同的問題可能會產生不同的結果，短期間內一事不二占為占卜原則。
+                            </li>
+                            <li>
+                              <strong>占卜方式-</strong>
+                              將抽出三張卡牌，可自由設定三張牌所代表的含意，如「過去、現在、未來」或「問題、結果、建議」，並依當下直覺解釋。
+                            </li>
+                            <li>
+                              <strong>謹慎使用-</strong>
+                              請將解牌結果作為娛樂用途，如果您有任何真實生活中的困惑，請尋求專業的意見和協助。
+                            </li>
+                            最後，我們希望您玩的開心。祝您好運！
+                          </ul>
+                        </p>
+                      </div>
+                    </ModalBody>
+                    <ModalFooter className="justify-center">
+                      <a href="/game.html">
+                        <MyButton
+                          className="bg-[#FFC1B4]"
+                          color="secondary"
+                          size="xs"
+                        >
+                          我已瞭解
+                        </MyButton>
+                      </a>
+                    </ModalFooter>
+                  </div>
+                </>
+              )}
+            </ModalContent>
           </div>
-        </>
-      }
-    </DefaultLayout>
+        </Modal>
+      </div>
+    </>
   )
 }
