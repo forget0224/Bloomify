@@ -16,7 +16,7 @@ export default function Custom() {
 
           {/* main的東西 */}
           <div className={variables.title}>
-            霹靂卡霹靂拉拉波波力那貝貝魯多
+            霹靂卡霹靂拉拉波波力那貝貝魯
           </div>
   
           <div className={styles['foo']}>代客送花 建立custom branch</div>
