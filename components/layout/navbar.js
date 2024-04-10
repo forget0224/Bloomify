@@ -41,7 +41,7 @@ export default function HomeNav({ activePage }) {
       name: 'intro',
       chineseName: '花與遊戲',
       subMenu: [
-        { href: 'flower', chineseName: '花圖鑑' },
+        { href: '', chineseName: '花圖鑑' },
         { href: 'game', chineseName: '花占卜' },
       ],
     },
