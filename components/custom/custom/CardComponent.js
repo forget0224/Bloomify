@@ -1,25 +1,9 @@
 import React, { useState } from 'react'
-import { motion, useMotionValue } from 'framer-motion'
-import ColorSelector from './ColorSelector'
-import Image from 'next/image'
+import ColorSelector from '../common/ColorSelector'
 import DraggableBar from './DraggableBar'
-import { BsSignStopLights } from 'react-icons/bs'
-import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci'
 import ChangeComponent from './ChangeComponent'
-const AccentFlowerComponent = ({ onNext, onPrev }) => {
+const CardComponent = ({ onNext, onPrev }) => {
   const [selectedFlower, setSelectedFlower] = useState(null)
-  const [dragging, setDragging] = useState(false)
-  const [imgIndex, setImgIndex] = useState(0)
-  const dragY = useMotionValue(0)
-  const DRAG_BUFFER = 50
-  const ITEM_HEIGHT = 160 // 每个花朵项的高度，包括间距
-  const SPRING_OPTIONS = {
-    type: 'spring',
-    mass: 9,
-    stiffness: 400,
-    damping: 50,
-  }
-
   const flowers = [
     {
       id: 1,
@@ -55,7 +39,7 @@ const AccentFlowerComponent = ({ onNext, onPrev }) => {
 
   const handleSelectColor = (color) => {
     console.log(`選擇的顏色是: ${color}`)
-    setSelectedFlower(color) // 返回到花朵選擇
+    setSelectedFlower(null)
   }
 
   return (
@@ -67,11 +51,11 @@ const AccentFlowerComponent = ({ onNext, onPrev }) => {
           onConfirm={handleSelectColor}
         />
       ) : (
-        <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center ">
+        <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center">
           <div className="text-center min-h-[95px]">
-            <h1 className="text-3xl py-2">配花</h1>
+            <h1 className="text-3xl py-2">卡片</h1>
             <p className="text-tertiary-gray-100 text-sm px-4 inline-block h-auto">
-              花束中用來點綴和裝飾的次要花材，通常是形狀或顏色上與主花相配的花朵。
+              請選擇您喜歡的主花，然後選擇顏色。
             </p>
           </div>
           <div className="w-full h-full relative">
@@ -81,7 +65,7 @@ const AccentFlowerComponent = ({ onNext, onPrev }) => {
               itemHeight={35}
               dragBuffer={50}
               className="w-[150px] h-[580px] mx-auto pt-2"
-            />
+            />{' '}
             <ChangeComponent onNext={onNext} onPrev={onPrev} />
           </div>
         </div>
@@ -90,4 +74,4 @@ const AccentFlowerComponent = ({ onNext, onPrev }) => {
   )
 }
 
-export default AccentFlowerComponent
+export default CardComponent

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { MyButton } from '@/components/btn/mybutton'
 import { RadioGroup, Radio, Checkbox, CheckboxGroup } from '@nextui-org/react'
 
-import CustomCheckbox from '../CustomCheckbox'
+import CustomCheckbox from '../common/CustomCheckbox'
 
 const colors = [
   { zhName: '紅色', name: 'red', color: '#FF0000' },
@@ -140,7 +140,21 @@ export default function FilterContent() {
                   <div className="grid grid-cols-3 ">
                     {colors.map(({ color, zhName }, index) => (
                       <div key={index} className="flex flex-col items-center ">
-                        <CustomCheckbox value={zhName} bgColor={color} />
+                        <CustomCheckbox
+                          value={zhName}
+                          bgColor={color}
+                          checked={selected.includes(zhName)}
+                          onChange={(isChecked) => {
+                            if (isChecked) {
+                              setSelected((prev) => [...prev, zhName])
+                            } else {
+                              setSelected((prev) =>
+                                prev.filter((item) => item !== zhName)
+                              )
+                            }
+                          }}
+                          isMultiple={false}
+                        />
                         <p className="text-sm">{zhName}</p>
                       </div>
                     ))}

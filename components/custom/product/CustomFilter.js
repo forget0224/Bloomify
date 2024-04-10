@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Checkbox, CheckboxGroup } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-import CustomCheckbox from '../CustomCheckbox'
+import CustomCheckbox from '../common/CustomCheckbox'
 export default function CustomFilter() {
   const colors = [
     { zhName: '紅色', name: 'red', color: '#FF0000' },

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CiCircleCheck, CiCircleChevLeft } from 'react-icons/ci'
-import CustomCheckbox from '../../components/custom/CustomCheckbox'
+import CustomCheckbox from './CustomCheckbox'
 const colorMap = [
   { zhName: '紅色', name: 'red', color: '#FF0000' },
   { zhName: '橙色', name: 'orange', color: '#FFA500' },
@@ -13,7 +13,12 @@ const colorMap = [
   { zhName: '灰色', name: 'gary', color: '#808080' },
   { zhName: '黑色', name: 'black', color: '#000000' },
   { zhName: '白色', name: 'white', color: '#FFFFFF' },
-  { zhName: '其他', name: 'other', color: '???' },
+  {
+    zhName: '其他',
+    name: 'other',
+    color:
+      'linear-gradient(90deg, rgba(255,0,0,1) 0%, rgba(255,255,0,1) 50%, rgba(0,128,0,1) 100%)',
+  },
 ]
 
 const ColorSelector = ({ itemName, itemColors, onConfirm }) => {
@@ -25,7 +30,7 @@ const ColorSelector = ({ itemName, itemColors, onConfirm }) => {
   })
 
   const handleColorSelect = (colorName) => {
-    setSelectedColor(colorName) // 设置选中的颜色
+    setSelectedColor(colorName)
   }
   return (
     <div className="text-tertiary-black h-full flex flex-col items-center relative">
@@ -39,7 +44,7 @@ const ColorSelector = ({ itemName, itemColors, onConfirm }) => {
             <div
               key={index}
               className="flex flex-col items-center cursor-pointer"
-              onClick={() => handleColorSelect(zhName)} // 修正：点击时传递 zhName 而不是 color
+              onClick={() => handleColorSelect(zhName)}
             >
               <CustomCheckbox
                 value={zhName}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import SwiperCarousel from './SwiperCarousel'
 import { Tabs, Tab, Card, CardBody, CardHeader } from '@nextui-org/react'
-import ColorSelector from './ColorSelector'
+import ColorSelector from '../common/ColorSelector'
 const productList2022 = [
   {
     id: 202201,
@@ -175,21 +175,13 @@ const productList01 = [
   },
 ]
 export default function FlowerContent() {
-  const [selected, setSelected] = useState('photos')
+  const [selected, setSelected] = useState('mainFlower')
   const [selectedFlower, setSelectedFlower] = useState(null)
   const handleSelectColor = (color) => {
     console.log(`選擇的顏色是: ${color}`)
-    setSelectedFlower(null) // 返回到花朵選擇
+    setSelectedFlower(null)
   }
   return (
-    // <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center">
-    //   <div className="text-tertiary-gray-100 w-60 text-center py-4">
-    //     <p className="text-xs">
-    //       花束中的主要花材，通常是最大、最鮮豔的花朵，用來突顯整束花的主題和風格。
-    //     </p>
-    //   </div>
-    //   <SwiperCarousel />
-    // </div>
     <>
       {selectedFlower ? (
         <ColorSelector
@@ -198,7 +190,7 @@ export default function FlowerContent() {
           onConfirm={handleSelectColor}
         />
       ) : (
-        <div className="flex w-full flex-col items-center py-2">
+        <div className="flex flex-col items-center py-2 ">
           <Tabs
             aria-label="Options"
             selectedKey={selected}
@@ -207,7 +199,7 @@ export default function FlowerContent() {
             <Tab key="mainFlower" title="主花" className="justify-center">
               <Card>
                 <CardBody>
-                  <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center">
+                  <div className="text-tertiary-black w-screen  h-full flex flex-col  items-center">
                     <div className="text-tertiary-gray-100 w-60 text-center py-4">
                       <p className="text-xs">
                         花束中的主要花材，通常是最大、最鮮豔的花朵，用來突顯整束花的主題和風格。
@@ -224,7 +216,7 @@ export default function FlowerContent() {
             <Tab key="accentFlower" title="配花">
               <Card>
                 <CardBody>
-                  <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center">
+                  <div className="text-tertiary-black w-screen  h-full flex flex-col justify-center items-center">
                     <div className="text-tertiary-gray-100 w-60 text-center py-4">
                       <p className="text-xs">
                         花束中用來點綴和裝飾的次要花材，通常是形狀或顏色上與主花相配的花朵。

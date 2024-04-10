@@ -1,20 +1,22 @@
 import React, { useState } from 'react'
 import { motion, useMotionValue } from 'framer-motion'
-import ColorSelector from './ColorSelector'
-import Image from 'next/image'
-const MainFlowerComponent = () => {
+import ColorSelector from '../common/ColorSelector'
+import DraggableBar from './DraggableBar'
+import ChangeComponent from './ChangeComponent'
+const LeafComponent = ({ onNext, onPrev }) => {
   const [selectedFlower, setSelectedFlower] = useState(null)
   const [dragging, setDragging] = useState(false)
   const [imgIndex, setImgIndex] = useState(0)
   const dragY = useMotionValue(0)
   const DRAG_BUFFER = 50
-  const ITEM_HEIGHT = 160 // 每个花朵项的高度，包括间距
+  const ITEM_HEIGHT = 160
   const SPRING_OPTIONS = {
     type: 'spring',
     mass: 9,
     stiffness: 400,
     damping: 50,
   }
+
   const flowers = [
     {
       id: 1,
@@ -50,7 +52,7 @@ const MainFlowerComponent = () => {
 
   const handleSelectColor = (color) => {
     console.log(`選擇的顏色是: ${color}`)
-    setSelectedFlower(null) // 返回到花朵選擇
+    setSelectedFlower(null)
   }
 
   const onDragStart = () => {
@@ -74,44 +76,22 @@ const MainFlowerComponent = () => {
           onConfirm={handleSelectColor}
         />
       ) : (
-        <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center gap-3">
-          <div className="text-center">
-            <h1 className="text-3xl py-2">主花</h1>
-            <p className="text-tertiary-gray-100">
-              請選擇您喜歡的主花，然後選擇顏色。
+        <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center">
+          <div className="text-center min-h-[95px]">
+            <h1 className="text-3xl py-2">葉材</h1>
+            <p className="text-tertiary-gray-100 text-sm px-16 inline-block h-auto">
+              花束中的葉子或綠色植物部分，用來填補和增加整束花的層次感和豐富度。
             </p>
           </div>
-          <div className="w-full h-full">
-            <div className=" w-[150px] h-[580px] overflow-hidden mx-auto pt-4">
-              <motion.div
-                transition={SPRING_OPTIONS}
-                style={{ y: dragY }}
-                drag="y"
-                onDragEnd={onDragEnd}
-                animate={{
-                  translateY: `-${imgIndex * 35}%`,
-                }}
-                dragConstraints={{ top: 0, bottom: 0 }} // 調整拖動範圍
-                className="flex flex-col justify-around  items-center h-full  gap-2 "
-              >
-                {flowers.map((flower) => (
-                  <>
-                    <div
-                      key={flower.id}
-                      className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
-                    >
-                      <div
-                        onClick={() => setSelectedFlower(flower)}
-                        style={{ backgroundImage: `url(${flower.src})` }}
-                        className="bg-cover bg-center aspect-square w-[150px] rounded-xl object-cover cursor-pointer"
-                        src={flower.src}
-                      ></div>
-                      <p className="text-center">{flower.name}</p>
-                    </div>
-                  </>
-                ))}
-              </motion.div>
-            </div>
+          <div className="w-full h-full relative">
+            <DraggableBar
+              items={flowers}
+              onItemSelect={setSelectedFlower}
+              itemHeight={35}
+              dragBuffer={50}
+              className="w-[150px] h-[580px] mx-auto pt-2"
+            />
+            <ChangeComponent onNext={onNext} onPrev={onPrev} />
           </div>
         </div>
       )}
@@ -119,4 +99,4 @@ const MainFlowerComponent = () => {
   )
 }
 
-export default MainFlowerComponent
+export default LeafComponent

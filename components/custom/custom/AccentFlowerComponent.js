@@ -1,24 +1,9 @@
 import React, { useState } from 'react'
-import { motion, useMotionValue } from 'framer-motion'
-import ColorSelector from './ColorSelector'
-import Image from 'next/image'
+import ColorSelector from '../common/ColorSelector'
 import DraggableBar from './DraggableBar'
-import { BsSignStopLights } from 'react-icons/bs'
-import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci'
 import ChangeComponent from './ChangeComponent'
-const LeafComponent = ({ onNext, onPrev }) => {
+const AccentFlowerComponent = ({ onNext, onPrev }) => {
   const [selectedFlower, setSelectedFlower] = useState(null)
-  const [dragging, setDragging] = useState(false)
-  const [imgIndex, setImgIndex] = useState(0)
-  const dragY = useMotionValue(0)
-  const DRAG_BUFFER = 50
-  const ITEM_HEIGHT = 160 // 每个花朵项的高度，包括间距
-  const SPRING_OPTIONS = {
-    type: 'spring',
-    mass: 9,
-    stiffness: 400,
-    damping: 50,
-  }
 
   const flowers = [
     {
@@ -52,24 +37,10 @@ const LeafComponent = ({ onNext, onPrev }) => {
       colors: ['pink', 'yellow', 'red', 'purple', 'white', 'green'],
     },
   ]
-
   const handleSelectColor = (color) => {
     console.log(`選擇的顏色是: ${color}`)
-    setSelectedFlower(null) // 返回到花朵選擇
+    setSelectedFlower(color)
   }
-
-  const onDragStart = () => {
-    setDragging(true)
-  }
-  const onDragEnd = () => {
-    const y = dragY.get()
-    if (y <= -DRAG_BUFFER && imgIndex < flowers.length - 3) {
-      setImgIndex((prevIndex) => prevIndex + 1)
-    } else if (y >= DRAG_BUFFER && imgIndex > 0) {
-      setImgIndex((prevIndex) => prevIndex - 1)
-    }
-  }
-
   return (
     <>
       {selectedFlower ? (
@@ -79,11 +50,11 @@ const LeafComponent = ({ onNext, onPrev }) => {
           onConfirm={handleSelectColor}
         />
       ) : (
-        <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center">
+        <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center ">
           <div className="text-center min-h-[95px]">
-            <h1 className="text-3xl py-2">葉材</h1>
-            <p className="text-tertiary-gray-100 text-sm px-16 inline-block h-auto">
-              花束中的葉子或綠色植物部分，用來填補和增加整束花的層次感和豐富度。
+            <h1 className="text-3xl py-2">配花</h1>
+            <p className="text-tertiary-gray-100 text-sm px-4 inline-block h-auto">
+              花束中用來點綴和裝飾的次要花材，通常是形狀或顏色上與主花相配的花朵。
             </p>
           </div>
           <div className="w-full h-full relative">
@@ -102,4 +73,4 @@ const LeafComponent = ({ onNext, onPrev }) => {
   )
 }
 
-export default LeafComponent
+export default AccentFlowerComponent
