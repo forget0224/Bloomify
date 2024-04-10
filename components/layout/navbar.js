@@ -21,8 +21,8 @@ export default function HomeNav({ activePage }) {
       name: 'custom',
       chineseName: '代客送花',
       subMenu: [
-        { href: 'custom', chineseName: '快速選購' },
-        { href: 'custom2', chineseName: '客製化' },
+        { href: 'product', chineseName: '快速選購' },
+        { href: 'custom', chineseName: '客製化' },
       ],
     },
     {
