@@ -95,22 +95,17 @@ export default function PaymentFailed() {
               </Table>
             </div>
             {/* 按鈕群組 */}
-            <div className="w-full md:w-6/12 lg:w-4/12 flex justify-center gap-4 mt-8">
-              <Link href="/shop/center-shop">
-                <MyButton
-                  color="primary"
-                  size="xl"
-                  isOutline
-                  className="w-full"
-                >
-                  查看訂單
+            <div className="container flex justify-center my-10">
+              <div className="w-full md:w-6/12 lg:w-4/12 flex justify-between gap-2 sm:gap-4">
+                <MyButton color="primary" size="xl" isOutline>
+                  <Link href="/center">查看訂單</Link>
                 </MyButton>
-              </Link>
-              <Link href="/shop">
-                <MyButton color="primary" size="xl" className="w-full">
-                  繼續購物
+                <MyButton color="primary" size="xl">
+                  <Link href="/" className="text-white">
+                    回首頁
+                  </Link>
                 </MyButton>
-              </Link>
+              </div>
             </div>
           </div>
         </main>

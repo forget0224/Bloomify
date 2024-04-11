@@ -24,10 +24,10 @@ import CourseSearch from '@/components/course/search'
 export default function CenterShop() {
   const imageList = [
     {
-      src: '/assets/shop/products/pink_Gladiola_0.jpg',
+      src: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
     },
     {
-      src: '/assets/shop/products/pink_Gladiola_0.jpg',
+      src: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
     },
   ]
   const list = [
@@ -75,7 +75,7 @@ export default function CenterShop() {
         <>
           <CenterLayout>
             {/* 麵包屑 */}
-            <div className="w-full py-6">
+            <div className="hidden sm:block w-full py-6">
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
                 <BreadcrumbItem>會員中心</BreadcrumbItem>
@@ -103,7 +103,7 @@ export default function CenterShop() {
                     {/* all order start */}
                     <Tab key="all" title="全部訂單">
                       {/* 搜尋框 */}
-                      <div className="flex justify-between gap-4 pb-4">
+                      <div className="space-y-4 flex flex-col justify-center sm:flex sm:justify-between sm:gap-4 pb-4">
                         {/* searchbar */}
                         <div>
                           <CourseSearch />
@@ -184,11 +184,9 @@ export default function CenterShop() {
                                       {imageList.map((image, index) => (
                                         <Image
                                           key={index}
-                                          src={
-                                            '/assets/shop/products/pink_Gladiola_0.jpg'
-                                          }
+                                          src={image.src}
                                           alt=""
-                                          className="w-6 h-6 md:w-24 md:h-24 rounded-md md:rounded-xl"
+                                          className="w-24 h-24 rounded-md md:rounded-xl"
                                         />
                                       ))}
                                     </div>
@@ -223,19 +221,19 @@ export default function CenterShop() {
                                     <TableBody>
                                       <TableRow key="1">
                                         <TableCell>
-                                          <div className="flex flex-row items-center gap-10">
+                                          <div className="flex flex-row items-center sm:gap-4">
                                             <Image
                                               src={
-                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
                                               }
                                               alt=""
-                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
+                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
                                             />
-                                            <div className="flex flex-col">
+                                            <div>
                                               <p className="text-nowrap">
                                                 花的名稱
                                               </p>
-                                              <p className="text-nowrap hidden md:contents">
+                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
                                                 店家名稱
                                               </p>
                                             </div>
@@ -258,19 +256,19 @@ export default function CenterShop() {
                                       </TableRow>
                                       <TableRow key="2">
                                         <TableCell>
-                                          <div className="flex flex-row items-center gap-10">
+                                          <div className="flex flex-row items-center sm:gap-4">
                                             <Image
                                               src={
-                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
                                               }
                                               alt=""
-                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
+                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
                                             />
-                                            <div className="flex flex-col">
+                                            <div>
                                               <p className="text-nowrap">
                                                 花的名稱
                                               </p>
-                                              <p className="text-nowrap hidden md:contents">
+                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
                                                 店家名稱
                                               </p>
                                             </div>
@@ -419,7 +417,7 @@ export default function CenterShop() {
                                           key={index}
                                           src={image.src}
                                           alt=""
-                                          className="w-6 h-6 md:w-24 md:h-24 rounded-md md:rounded-xl"
+                                          className="w-24 h-24 rounded-md md:rounded-xl"
                                         />
                                       ))}
                                     </div>
@@ -454,19 +452,19 @@ export default function CenterShop() {
                                     <TableBody>
                                       <TableRow key="1">
                                         <TableCell>
-                                          <div className="flex flex-row items-center gap-4">
+                                          <div className="flex flex-row items-center sm:gap-4">
                                             <Image
                                               src={
-                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
                                               }
                                               alt=""
-                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl"
+                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
                                             />
-                                            <div className="flex flex-col">
+                                            <div>
                                               <p className="text-nowrap">
                                                 花的名稱
                                               </p>
-                                              <p className="text-nowrap hidden md:contents">
+                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
                                                 店家名稱
                                               </p>
                                             </div>
@@ -489,19 +487,19 @@ export default function CenterShop() {
                                       </TableRow>
                                       <TableRow key="2">
                                         <TableCell>
-                                          <div className="flex flex-row items-center gap-4">
+                                          <div className="flex flex-row items-center sm:gap-4">
                                             <Image
                                               src={
-                                                '/assets/shop/products/pink_Gladiola_0.jpg'
+                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
                                               }
                                               alt=""
-                                              className="w-6 h-6 md:w-16 md:h-16 mx-auto rounded-xl hidden lg:block"
+                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
                                             />
-                                            <div className="flex flex-col">
+                                            <div>
                                               <p className="text-nowrap">
                                                 花的名稱
                                               </p>
-                                              <p className="text-nowrap hidden md:contents">
+                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
                                                 店家名稱
                                               </p>
                                             </div>

@@ -16,7 +16,6 @@ import {
   Radio,
 } from '@nextui-org/react'
 import { BsFillStarFill, BsHeart } from 'react-icons/bs'
-import { CiSearch } from 'react-icons/ci'
 import { MyButton } from '@/components/btn/mybutton'
 import ShopSlider from '../../components/shop/shop-slider.js'
 import Subtitle from '@/components/common/subtitle.js'
