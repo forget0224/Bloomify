@@ -132,9 +132,9 @@ export default function HomeNav({ activePage }) {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
+          <Link href="/member/login">
+            <IoPersonCircleOutline className="w-8 h-8" />
+          </Link>
         </NavbarItem>
       </NavbarContent>
 
