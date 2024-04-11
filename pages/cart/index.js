@@ -143,7 +143,7 @@ export default function Cart() {
               variant="underlined"
               classNames={{
                 tabList:
-                  'gap-6 max-w-[1024px]  relative  rounded-none p-0 border-b border-divider',
+                  'gap-6 sm:max-w-[1024px] w-screen relative  rounded-none p-0 border-b border-divider',
                 cursor: 'bg-primary w-full',
                 tab: 'w-[400px] px-0 h-12  ',
                 tabContent: 'group-data-[selected=true]:text-primary',
