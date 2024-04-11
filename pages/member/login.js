@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
-import { Button } from '@nextui-org/react'
+import { MyButton } from '@nextui-org/react'
 
 // icon
 import { CiMail } from 'react-icons/ci'
@@ -61,9 +61,9 @@ export default function LoginTest() {
                       </button>
                     }
                   />
-                  <Button className="bg-primary-100 text-white" type="submit">
+                  <MyButton className="bg-primary-100 text-white" type="submit">
                     登入
-                  </Button>
+                  </MyButton>
                 </form>
                 <p className="mt-8 text-tertiary-gray-100">
                   尚未成為會員嗎？
