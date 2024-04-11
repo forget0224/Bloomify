@@ -208,7 +208,7 @@ export default function Cart() {
                   <div className="flex items-center space-x-2">代客送花</div>
                 }
               >
-                <div className="w-screen sm:max-w-[800px] sm:h-full flex flex-col px-5 gap-2 relative  mt-4">
+                <div className="w-screen sm:max-w-[600px] sm:h-full flex flex-col px-5 gap-2 relative  mt-4">
                   <h1 className="sm:text-2xl text-xl sm:text-left text-center">
                     {cartCustomContent.store}
                   </h1>
@@ -219,15 +219,15 @@ export default function Cart() {
                     }}
                   ></div>
                   <div className="flex flex-col w-full gap-2   overflow-auto sm:overflow-visible">
-                    <div className="flex flex-col gap-2 sm:h-auto h-[250px]">
+                    <div className="flex flex-col gap-3 sm:h-auto h-[250px]">
                       {cartCustomContent.cartList.map((item, itemIndex) => (
                         <div
                           key={itemIndex}
-                          className="flex flex-row items-center justify-between w-full bg-primary-300 rounded-md"
+                          className="flex flex-row items-center sm:h-[70px] justify-between w-full border-1  rounded-md text-sm shadow-md"
                         >
                           <div className="flex-grow">
                             <div
-                              className="bg-secondary-200 w-[100px] m-auto aspect-square  bg-center bg-contain"
+                              className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
                               style={{
                                 backgroundImage: `url(${item.image})`,
                               }}
@@ -238,10 +238,10 @@ export default function Cart() {
                             <div className="sm:w-[80px] text-center">
                               {item.name}
                             </div>
-                            <div className="sm:w-[80px] text-center sm:text-base text-sm sm:text-tertiary-black text-tertiary-gray-100">
+                            <div className="sm:w-[80px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
                               {item.option}
                             </div>
-                            <div className="sm:w-[80px] text-center sm:text-base text-sm sm:text-tertiary-black text-tertiary-gray-100">
+                            <div className="sm:w-[80px] text-center sm:text-sm  text-xs sm:text-tertiary-black text-tertiary-gray-100">
                               {item.count} {item.category === 'flower' && '朵'}
                               {item.category === 'card' && '張'}
                               {item.category === 'package' && '個'}
