@@ -30,7 +30,7 @@ export default function Sidebar() {
             代客送花
           </p>
           <Link
-            href="/custom/center-custom/custom-order"
+            href="/center/custom-order"
             className={`hover:text-primary-100 ${
               isActive('/custom/center-custom/custom-order')
                 ? 'text-primary-100'
@@ -40,7 +40,7 @@ export default function Sidebar() {
             我的訂單
           </Link>
           <Link
-            href="/custom/center-custom/favorite"
+            href="/center/favorite"
             className={`hover:text-primary-100 ${
               isActive('/custom/center-custom/favorite')
                 ? 'text-primary-100'

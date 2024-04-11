@@ -111,13 +111,66 @@ export default function Cart() {
   }
   // calculate end
   // shop end
+  // ----------------------------custom----------------------
+  const cartCustomContent = {
+    store: '花疫室',
+    image: '/assets/course/img_course_card_04.png',
+    card: '生日快樂!祝你天天開心、賺大錢',
+    cartList: [
+      {
+        image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
+        name: '玫瑰花',
+        category: 'flower',
+        price: '30',
+        option: '粉紅色',
+        count: 2,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '向日葵',
+        category: 'flower',
+        price: '60',
+        option: '黃色',
+        count: 1,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '玫瑰花',
+        category: 'flower',
+        price: '60',
+        option: '黃色',
+        count: 3,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '包裝',
+        category: 'package',
+        price: '60',
+        option: '櫥窗提盒',
+        count: 1,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '卡片',
+        category: 'card',
+        price: '25',
+        option: '生日卡',
+        count: 1,
+      },
+    ],
+  }
 
+  const totalPrice = cartCustomContent.cartList.reduce((total, item) => {
+    return total + item.price * item.count
+  }, 0)
+
+  // ----------------------------customend-------------------
   return (
     <>
       <DefaultLayout activePage={activePage}>
         <CenterLayout>
           {/* steps */}
-          <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 mt-6 mb-4">
+          <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 my-4 sm:mt-6 sm:mb-4">
             <Stepper
               steps={steps}
               pallet={{
@@ -136,7 +189,7 @@ export default function Cart() {
             />
           </div>
           {/* Tab */}
-          <div className="flex w-screen flex-col bg-white items-center">
+          <div className="flex w-screen flex-col bg-white items-center justify-around">
             <Tabs
               aria-label="Options"
               color="primary"
@@ -155,9 +208,76 @@ export default function Cart() {
                   <div className="flex items-center space-x-2">代客送花</div>
                 }
               >
-                <Card>
-                  <p>代客送花</p>
-                </Card>
+                <div className="w-screen sm:max-w-[800px] sm:h-full flex flex-col px-5 gap-2 relative  mt-4">
+                  <h1 className="sm:text-2xl text-xl sm:text-left text-center">
+                    {cartCustomContent.store}
+                  </h1>
+                  <div
+                    className=" w-[300px] h-[180px] mx-auto bg-no-repeat bg-center bg-contain"
+                    style={{
+                      backgroundImage: `url(${cartCustomContent.image})`,
+                    }}
+                  ></div>
+                  <div className="flex flex-col w-full gap-2   overflow-auto sm:overflow-visible">
+                    <div className="flex flex-col gap-2 sm:h-auto h-[250px]">
+                      {cartCustomContent.cartList.map((item, itemIndex) => (
+                        <div
+                          key={itemIndex}
+                          className="flex flex-row items-center justify-between w-full bg-primary-300 rounded-md"
+                        >
+                          <div className="flex-grow">
+                            <div
+                              className="bg-secondary-200 w-[100px] m-auto aspect-square  bg-center bg-contain"
+                              style={{
+                                backgroundImage: `url(${item.image})`,
+                              }}
+                            ></div>
+                          </div>
+
+                          <div className="flex sm:flex-row sm:gap-2 sm:justify-between flex-grow flex-col items-center gap-1">
+                            <div className="sm:w-[80px] text-center">
+                              {item.name}
+                            </div>
+                            <div className="sm:w-[80px] text-center sm:text-base text-sm sm:text-tertiary-black text-tertiary-gray-100">
+                              {item.option}
+                            </div>
+                            <div className="sm:w-[80px] text-center sm:text-base text-sm sm:text-tertiary-black text-tertiary-gray-100">
+                              {item.count} {item.category === 'flower' && '朵'}
+                              {item.category === 'card' && '張'}
+                              {item.category === 'package' && '個'}
+                            </div>
+                          </div>
+
+                          <div className="flex-grow text-center ">
+                            <p>${item.price}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>{' '}
+                  </div>
+                  <div className="sm:static sticky bottom-0 left-0 bg-white">
+                    <hr className="w-full mt-2" />
+                    <div className="flex justify-end w-full p-3">
+                      <div className="flex justify-between items-center sm:w-[180px]">
+                        <span className="px-3">小計</span>
+                        <div className="flex items-center">
+                          <span className="text-primary">NT$</span>
+                          <span className="text-primary pl-1">
+                            {totalPrice}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
+                      <MyButton color="primary" size="xl" isOutline>
+                        <Link href="/">上一步</Link>
+                      </MyButton>
+                      <MyButton color="primary" size="xl">
+                        <Link href="/cart/fill-out">下一步</Link>
+                      </MyButton>
+                    </div>
+                  </div>
+                </div>
               </Tab>
 
               <Tab
@@ -569,14 +689,14 @@ export default function Cart() {
           </div>
 
           {/* 按鈕 */}
-          <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
+          {/* <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
             <MyButton color="primary" size="xl" isOutline>
               <Link href="/">上一步</Link>
             </MyButton>
             <MyButton color="primary" size="xl">
               <Link href="/cart/fill-out">下一步</Link>
             </MyButton>
-          </div>
+          </div> */}
         </CenterLayout>
       </DefaultLayout>
     </>
