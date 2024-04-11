@@ -74,6 +74,23 @@ export default function Confirm() {
     wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
   }
 
+  // cart content start
+  const cartContent = [
+    {
+      image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
+      store: '花店名稱1',
+      name: '玫瑰花',
+      price: '30',
+    },
+    {
+      image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+      store: '花店名稱2',
+      name: '太陽花',
+      price: '60',
+    },
+  ]
+  // cart content end
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -99,7 +116,7 @@ export default function Confirm() {
                 />
               </div>
               {/* 提示訊息 */}
-              <p className="flex flex-row w-full justify-center lg:w-8/12 py-10">
+              <p className="sm:flex sm:flex-row sm:w-full sm:justify-center lg:w-8/12 py-10">
                 用戶 <span className="text-primary px-2">訂購人姓名</span>
                 您好，請確認您的購物資訊無誤
               </p>
@@ -131,24 +148,30 @@ export default function Confirm() {
                         </TableColumn>
                       </TableHeader>
                       <TableBody>
-                        <TableRow key="1">
-                          <TableCell>
-                            <div className="flex flex-row items-center space-x-6">
-                              <Image
-                                src={
-                                  '/assets/shop/products/pink_Gladiola_0.jpg'
-                                }
-                                alt=""
-                                className="w-6 h-6 md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
-                              />
-                              <p>花的名稱</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>NT$30</TableCell>
-                          <TableCell>3</TableCell>
-                          <TableCell>NT$30</TableCell>
-                        </TableRow>
-                        <TableRow key="2">
+                        {cartContent.map((item, index) => (
+                          <TableRow key="index">
+                            <TableCell key={index}>
+                              <div className="sm:flex sm:flex-row sm:items-center sm:space-x-6">
+                                <Image
+                                  src={item.image}
+                                  alt=""
+                                  className="hidden sm:block md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
+                                />
+                                <div>
+                                  <p>{item.name}</p>
+                                  <p className="text-tertiary-gray-100">
+                                    {item.store}
+                                  </p>
+                                </div>
+                              </div>
+                            </TableCell>
+                            <TableCell>NT${item.price}</TableCell>
+                            <TableCell>3</TableCell>
+                            <TableCell>NT$30</TableCell>
+                          </TableRow>
+                        ))}
+
+                        {/* <TableRow key="2">
                           <TableCell>
                             <div className="flex flex-row items-center space-x-6">
                               <Image
@@ -164,7 +187,7 @@ export default function Confirm() {
                           <TableCell>NT$30</TableCell>
                           <TableCell>3</TableCell>
                           <TableCell>NT$30</TableCell>
-                        </TableRow>
+                        </TableRow> */}
                       </TableBody>
                     </Table>
                   </div>
@@ -209,7 +232,6 @@ export default function Confirm() {
                   </div>
                 </div>
                 {/* order-detail end */}
-
                 {/* shipping & payment detail start*/}
                 <div className="flex flex-col justify-center w-full gap-6">
                   <Subtitle text="配送/付款明細" />
@@ -273,24 +295,25 @@ export default function Confirm() {
                   </Table>
                 </div>
                 {/* shipping & payment detail end*/}
-
                 <div className="w-full flex justify-center">
                   <Checkbox defaultSelected>
                     我同意辦理退貨時，由floral_shop代為處理發票及銷貨退回證明單，以加速退貨退款作業。
                   </Checkbox>
                 </div>
 
-                <div className="w-full flex justify-center gap-4">
-                  <Link href="/shop/cart/fill-out">
-                    <MyButton color="primary" size="xl" isOutline>
-                      上一步
-                    </MyButton>
-                  </Link>
-                  <Link href="/shop/cart/payment-successful">
-                    <MyButton color="primary" size="xl">
+                <div className="w-full gap-2 flex justify-center sm:gap-4 ">
+                  <MyButton color="primary" size="xl" isOutline>
+                    <Link href="/shop/cart/fill-out">上一步</Link>
+                  </MyButton>
+
+                  <MyButton color="primary" size="xl">
+                    <Link
+                      href="/shop/cart/payment-successful"
+                      className="text-white"
+                    >
                       確認，進行付款
-                    </MyButton>
-                  </Link>
+                    </Link>
+                  </MyButton>
                 </div>
               </div>
             </div>

@@ -272,7 +272,7 @@ export default function FillOut() {
                   </div>
                   {/* address */}
                   <div className="flex flex-col gap-3">
-                    <div className="flex gap-3">
+                    <div className="space-y-3 sm:flex sm:gap-3 ">
                       <Select
                         label="配送地址"
                         placeholder="請選擇城市"
@@ -446,21 +446,18 @@ export default function FillOut() {
 
               {/* button */}
               <div className="w-full flex justify-center gap-4">
-                <Link href="/shop/cart">
-                  <MyButton
-                    color="primary"
-                    size="xl"
-                    isOutline
-                    className="w-full"
-                  >
-                    上一步
-                  </MyButton>
-                </Link>
-                <Link href="/shop/cart/confirm">
-                  <MyButton color="primary" size="xl" className="w-full">
-                    下一步
-                  </MyButton>
-                </Link>
+                <MyButton
+                  color="primary"
+                  size="xl"
+                  isOutline
+                  className="w-full"
+                >
+                  <Link href="/shop/cart">上一步</Link>
+                </MyButton>
+
+                <MyButton color="primary" size="xl" className="w-full">
+                  <Link href="/shop/cart/confirm">下一步</Link>
+                </MyButton>
               </div>
             </div>
           </div>
