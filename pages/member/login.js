@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
-import { MyButton } from '@nextui-org/react'
+import { MyButton } from '@/components/btn/mybutton'
 
 // icon
 import { CiMail } from 'react-icons/ci'
