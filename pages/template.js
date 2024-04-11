@@ -82,7 +82,7 @@ export default function Custom() {
           </div>
 
           <div className="w-[300px] h-[300px] m-auto">
-            <Card className="py-4 py-[100px] bg-[#eeff88]">
+            <Card className="py-4  bg-[#eeff88] w-full h-full">
               <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
                 <p className="text-tiny uppercase font-bold">Daily Mix</p>
                 <small className="text-default-500">12 Tracks</small>
