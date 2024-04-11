@@ -95,22 +95,16 @@ export default function Confirm() {
               </Table>
             </div>
             {/* 按鈕群組 */}
-            <div className="w-full md:w-6/12 lg:w-4/12 flex justify-center gap-4 mt-8">
-              <Link href="/shop/center-shop">
-                <MyButton
-                  color="primary"
-                  size="xl"
-                  isOutline
-                  className="w-full"
-                >
-                  查看訂單
-                </MyButton>
-              </Link>
-              <Link href="/shop">
-                <MyButton color="primary" size="xl" className="w-full">
+            <div className="w-full gap-2 md:w-6/12 lg:w-4/12 flex justify-center sm:gap-4 mt-8">
+              <MyButton color="primary" size="xl" isOutline className="w-full">
+                <Link href="/shop/center-shop">查看訂單</Link>
+              </MyButton>
+
+              <MyButton color="primary" size="xl" className="w-full">
+                <Link href="/shop" className="text-white">
                   繼續購物
-                </MyButton>
-              </Link>
+                </Link>
+              </MyButton>
             </div>
           </div>
         </main>

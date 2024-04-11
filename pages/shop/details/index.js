@@ -304,7 +304,7 @@ export default function Detail() {
                 </table>
               </div>
 
-              <div className="flex space-x-1.5 sm:space-x-10">
+              <div className="flex gap-2 sm:gap-4">
                 <MyButton
                   color="primary"
                   size="xl"
@@ -317,7 +317,7 @@ export default function Detail() {
                 <Toaster />
 
                 <MyButton color="primary" size="xl" className="w-full">
-                  <Link href="/shop/cart">立即購買</Link>
+                  <Link href="/cart">立即購買</Link>
                 </MyButton>
               </div>
             </div>

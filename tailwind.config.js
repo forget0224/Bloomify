@@ -18,6 +18,27 @@ module.exports = {
   },
   darkMode: 'class',
   plugins: [
+    require('tailwind-scrollbar-variants'),
+    require('@gradin/tailwindcss-scrollbar')({
+      size: '5px', // width or height, default '5px'
+      // track: {
+      //   background: 'white', // default '#f1f1f1'
+      //   // add other css attributes here,
+      //   // will be merged to ::-webkit-scrollbar-track
+      // },
+      // thumb: {
+      //   background: '#272727', // default '#c1c1c1'
+      //   borderRadius: '5px',
+      //   // add other css attributes here,
+      //   // will be merged to ::-webkit-scrollbar-thumb
+      // },
+      // hover: {
+      //   background: '#272727', // default '#a8a8a8'
+      //   borderRadius: '5px',
+      //   // add other css attributes here,
+      //   // will be merged to ::-webkit-scrollbar-thumb:hover
+      // },
+    }),
     nextui({
       defaultTheme: 'light',
       themes: {

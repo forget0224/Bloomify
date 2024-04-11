@@ -12,8 +12,7 @@ import {
   Image,
 } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
-import { BsFillStarFill } from 'react-icons/bs'
-import { BsHeartFill } from 'react-icons/bs'
+import { BsFillStarFill, BsHeartFill, BsHeart } from 'react-icons/bs'
 import Link from 'next/link'
 // 小組元件
 import { MyButton } from '@/components/btn/mybutton'
@@ -33,7 +32,7 @@ export default function Favorite() {
   ]
   const productList = [
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Avocado',
       starCount: '5.0',
       shop: 'shop1',
@@ -41,7 +40,7 @@ export default function Favorite() {
       price: '$15.70',
     },
     {
-      img: '/assets/shop/products/red_Amaryllis_3.jpg',
+      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
       title: 'Watermelon',
       starCount: '4.0',
       shop: 'shop2',
@@ -49,7 +48,7 @@ export default function Favorite() {
       price: '$8.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Apple',
       starCount: '3.0',
       shop: 'shop3',
@@ -57,7 +56,7 @@ export default function Favorite() {
       price: '$44.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Orange',
       starCount: '5.0',
       shop: 'shop4',
@@ -65,7 +64,7 @@ export default function Favorite() {
       price: '$78.70',
     },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
+      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
       title: 'Peach',
       starCount: '2.5',
       shop: 'shop5',
@@ -80,7 +79,7 @@ export default function Favorite() {
         <>
           <CenterLayout>
             {/* 麵包屑 */}
-            <div className="w-full py-6">
+            <div className="hidden sm:block sm:w-full sm:py-6">
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
                 <BreadcrumbItem>會員中心</BreadcrumbItem>
@@ -89,16 +88,16 @@ export default function Favorite() {
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
-            <div className="flex flex-row w-full">
+            <div className="flex flex-row w-full justify-center mt-10 sm:mt-0">
               {/* 側邊欄 */}
               <Sidebar />
 
               {/* order content start */}
-              <div className="w-10/12 pl-10">
+              <div className="md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
                 <Title text="收藏商品" />
 
                 {/* search & select start */}
-                <div className="flex justify-between gap-4 py-4">
+                <div className="space-y-4 mt-4 mt-0 sm:space-y-0 sm:flex sm:justify-between pb-4 ">
                   {/* searchbar */}
                   <div>
                     <CourseSearch />
@@ -127,48 +126,52 @@ export default function Favorite() {
                 {/* search & select end */}
 
                 {/* 卡片 */}
-                <div className="flex w-full flex-col rounded-lg gap-4 grid grid-cols-3 sm:grid-cols-3">
-                  {productList.map((item, index) => (
-                    <Card
-                      shadow="sm"
-                      key={index}
-                      isPressable
-                      onPress={() => console.log('item pressed')}
-                    >
-                      <CardBody className="relative overflow-visible p-0">
-                        <Link
-                          href="/shop/details"
-                          key={index}
-                          className="block relative"
-                        >
-                          <BsHeartFill className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                          <Image
-                            shadow="none"
-                            radius="none"
-                            width="100%"
-                            alt={item.title}
-                            className="w-full object-cover h-[140px] z-0"
-                            src={item.img}
-                          />
-                        </Link>
-                      </CardBody>
-                      <CardHeader className="block text-left">
-                        <div className="flex justify-between">
-                          <p className="text-xl truncate">{item.title}</p>
-                          <p className="text-base flex items-center space-x-1">
-                            <BsFillStarFill className="text-secondary-100" />
-                            {item.star}
-                            <span>{item.starCount}</span>
-                          </p>
-                        </div>
-                        <p className="text-base">{item.shop}</p>
-                      </CardHeader>
-                      <CardFooter className="text-small justify-between">
-                        <p className="text-xl truncate">{item.price}</p>
-                      </CardFooter>
-                    </Card>
-                  ))}
+                <div className="sm:w-10/12">
+                  <div className="bg-white p-4 rounded-lg gap-2 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
+                    {productList.map((item, index) => (
+                      <Card
+                        shadow="sm"
+                        key={index}
+                        isPressable
+                        onPress={() => console.log('item pressed')}
+                      >
+                        <CardBody className="relative overflow-visible p-0">
+                          <Link
+                            href="/shop/details"
+                            key={index}
+                            className="block relative"
+                          >
+                            <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                            <Image
+                              isZoomed
+                              shadow="none"
+                              radius="none"
+                              width="100%"
+                              alt={item.title}
+                              className="w-full object-cover h-[250px] z-0"
+                              src={item.img}
+                            />
+                          </Link>
+                        </CardBody>
+                        <CardHeader className="block text-left">
+                          <div className="flex justify-between">
+                            <p className="text-xl truncate">{item.title}</p>
+                            <p className="text-base flex items-center space-x-1">
+                              <BsFillStarFill className="text-secondary-100" />
+                              {item.star}
+                              <span>{item.starCount}</span>
+                            </p>
+                          </div>
+                          <p className="text-base">{item.shop}</p>
+                        </CardHeader>
+                        <CardFooter className="text-small justify-between">
+                          <p className="text-xl truncate">{item.price}</p>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
+                {/* products end */}
 
                 {/* 按鈕群組 */}
                 <div className="flex justify-center space-x-10 py-10">

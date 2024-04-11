@@ -15,14 +15,17 @@ import {
   NavbarMenuToggle,
 } from '@nextui-org/react'
 
+// icon
+import { IoPersonCircleOutline } from 'react-icons/io5'
+
 export default function HomeNav({ activePage }) {
   const menuItems = [
     {
       name: 'custom',
       chineseName: '代客送花',
       subMenu: [
-        { href: 'custom', chineseName: '快速選購' },
-        { href: 'custom2', chineseName: '客製化' },
+        { href: 'product', chineseName: '快速選購' },
+        { href: 'custom', chineseName: '客製化' },
       ],
     },
     {
@@ -124,7 +127,9 @@ export default function HomeNav({ activePage }) {
         // style={{ backgroundColor: 'blue', padding: '10px' }}
       >
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link href="/member/login">
+            <IoPersonCircleOutline className="w-8 h-8" />
+          </Link>
         </NavbarItem>
         <NavbarItem>
           <Button as={Link} color="primary" href="#" variant="flat">

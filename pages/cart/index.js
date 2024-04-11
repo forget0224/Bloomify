@@ -1,10 +1,26 @@
 import React, { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
-import { Tabs, Tab, Card, Image, CardFooter } from '@nextui-org/react'
+import {
+  Tabs,
+  Tab,
+  Card,
+  Image,
+  CardBody,
+  CardFooter,
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  Button,
+  Input,
+} from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
 import { MyButton } from '@/components/btn/mybutton'
 import Link from 'next/link.js'
+import { FaMinus, FaPlus } from 'react-icons/fa6'
 
 export default function Cart() {
   const [activePage, setActivePage] = useState('cart')
@@ -39,12 +55,62 @@ export default function Cart() {
       isComplete: false,
     },
   ]
+
+  //table 樣式
+  const tableStyles = {
+    base: ['text-tertiary-black'],
+    th: ['text-base', 'text-tertiary-gray-100'],
+    td: ['text-base', 'px-3', 'py-3'],
+    wrapper: [
+      'text-base',
+      'shadow-none',
+      'border-1',
+      'border-tertiary-100',
+      'rounded-xl',
+    ],
+  }
   // const submitStepper = () => {
   //   console.log('submitted')
   // }
 
-  // Tab
-  const [selected, setSelected] = React.useState('shop')
+  // // Tab
+  // const [selected, setSelected] = React.useState('shop')
+
+  // shop start
+  const cartContent = [
+    {
+      image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
+      store: '花店名稱1',
+      name: '玫瑰花',
+      price: '30',
+    },
+    {
+      image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+      store: '花店名稱2',
+      name: '太陽花',
+      price: '60',
+    },
+  ]
+  // calculate start
+  const [quantity, setQuantity] = useState(1)
+  const handleIncrement = () => {
+    setQuantity(quantity + 1)
+  }
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1)
+    }
+  }
+  const handleChange = (event) => {
+    const newQuantity = parseInt(event.target.value)
+    if (!isNaN(newQuantity) && newQuantity >= 1) {
+      setQuantity(newQuantity)
+    } else if (event.target.value === '') {
+      setQuantity(1)
+    }
+  }
+  // calculate end
+  // shop end
 
   return (
     <>
@@ -66,70 +132,450 @@ export default function Cart() {
                 nextBtnClassName: 'hidden',
                 submitBtnClassName: 'hidden',
               }}
+              // tabList={{ display: 'none' }}
             />
           </div>
           {/* Tab */}
-          <Tabs
-            aria-label="Options"
-            selectedKey={selected}
-            onSelectionChange={setSelected}
-            onSelect
-            color="primary"
-            variant="bordered"
-          >
-            <Tab
-              key="shop"
-              title={
-                <div className="flex items-center space-x-2">
-                  <span>線上商城</span>
-                </div>
-              }
+          <div className="flex w-screen flex-col bg-white items-center">
+            <Tabs
+              aria-label="Options"
+              color="primary"
+              variant="underlined"
+              classNames={{
+                tabList:
+                  'gap-6 max-w-[1024px]  relative  rounded-none p-0 border-b border-divider',
+                cursor: 'bg-primary w-full',
+                tab: 'w-[400px] px-0 h-12  ',
+                tabContent: 'group-data-[selected=true]:text-primary',
+              }}
             >
-              {/* 線上商城內容 */}
-              <div className="flex flex-col w-full lg:w-10/12 gap-14">
-                <p className="text-nowrap">線上商城</p>
-              </div>
-            </Tab>
-            <Tab
-              key="custom"
-              title={
-                <div className="flex items-center space-x-2">
-                  <span>代客送花</span>
-                </div>
-              }
-            >
-              {/* 代客送花內容 */}
-              <div className="flex flex-col w-full lg:w-10/12 gap-14">
-                <p className="text-nowrap">代客送花</p>
-              </div>
-            </Tab>
-            <Tab
-              key="course"
-              title={
-                <div className="flex items-center space-x-2">
-                  <span>合作課程</span>
-                </div>
-              }
-            >
-              {/* 合作課程內容 */}
-              <div className="flex flex-col w-full lg:w-10/12 gap-14">
-                <p className="text-nowrap">合作課程</p>
-              </div>
-            </Tab>
-          </Tabs>
+              <Tab
+                key="shop"
+                title={
+                  <div className="flex items-center space-x-2">代客送花</div>
+                }
+              >
+                <Card>
+                  <p>代客送花</p>
+                </Card>
+              </Tab>
+
+              <Tab
+                key="custom"
+                title={
+                  <div className="flex items-center space-x-2">線上商城</div>
+                }
+              >
+                <Card>
+                  {/* 主要內容 start */}
+
+                  {/* cart content start*/}
+                  <div className="flex w-full flex-col">
+                    <Tabs
+                      aria-label="Options"
+                      color="primary"
+                      variant="underlined"
+                      classNames={{
+                        tabList:
+                          'gap-6 w-full relative rounded-none p-0 border-b border-divider',
+                        cursor: 'w-full bg-[#68A392]',
+                        tab: 'max-w-fit px-0 h-12',
+                        tabContent: 'group-data-[selected=true]:text-[#68A392]',
+                      }}
+                    >
+                      <Tab
+                        key="information"
+                        title={
+                          <div className="flex items-center text-base space-x-2">
+                            購物車
+                          </div>
+                        }
+                      >
+                        <Card className="shadow-none border-1 border-tertiary-gray-200 rounded-xl p-4">
+                          <div className="flex flex-col gap-3">
+                            <Table
+                              selectionMode="single"
+                              defaultSelectedKeys={['2']}
+                              aria-label="Example static collection table"
+                              removeWrapper
+                              classNames={tableStyles}
+                            >
+                              <TableHeader>
+                                <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
+                                  商品
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  單價
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  數量
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  小計
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  變更
+                                </TableColumn>
+                              </TableHeader>
+                              <TableBody>
+                                {cartContent.map((item, index) => (
+                                  <TableRow key={index}>
+                                    <TableCell>
+                                      <div className="flex flex-row items-center space-x-6">
+                                        <Image
+                                          src={item.image}
+                                          alt=""
+                                          className="w-6 h-6 md:w-24 md:h-24 mx-auto"
+                                        />
+                                        <div className="flex flex-col">
+                                          <p>{item.name}</p>
+                                          <p className="text-tertiary-gray-100">
+                                            {item.store}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell>NT${item.price}</TableCell>
+                                    <TableCell>
+                                      <div className="flex gap-4 items-center ">
+                                        <Button
+                                          isIconOnly
+                                          variant="faded"
+                                          className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                          onClick={handleDecrement}
+                                        >
+                                          <FaMinus />
+                                        </Button>
+                                        <Input
+                                          type="text"
+                                          value={quantity}
+                                          onChange={handleChange}
+                                          min="1"
+                                          className="max-w-20 w-full rounded-md p-1 text-center"
+                                          style={{ textAlign: 'center' }}
+                                        />
+                                        <Button
+                                          isIconOnly
+                                          variant="faded"
+                                          className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                          onClick={handleIncrement}
+                                        >
+                                          <FaPlus />
+                                        </Button>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell>NT$30</TableCell>
+                                    <TableCell>
+                                      <div className="flex flex-col space-y-2">
+                                        <MyButton
+                                          color="primary"
+                                          size="xl"
+                                          isOutline
+                                        >
+                                          下次再買
+                                        </MyButton>
+                                        <MyButton
+                                          color="primary"
+                                          size="xl"
+                                          isOutline
+                                        >
+                                          移除商品
+                                        </MyButton>
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </div>
+                          <CardFooter className="flex justify-end pr-6">
+                            <div className="flex flex-col space-y-2">
+                              <div>共 2 項商品，數量 6 個</div>
+                              <div className="flex justify-end space-x-6">
+                                <span>小計</span>
+                                <span className="text-primary">NT$90</span>
+                              </div>
+                            </div>
+                          </CardFooter>
+                        </Card>
+                      </Tab>
+                      {/* buy again */}
+                      <Tab
+                        key="maybe"
+                        title={
+                          <div className="flex items-center text-base space-x-2">
+                            下次再買
+                          </div>
+                        }
+                      >
+                        <Card className="shadow-none border-1 border-tertiary-gray-200 rounded-xl p-4">
+                          <div className="flex flex-col gap-3">
+                            <Table
+                              selectionMode="single"
+                              defaultSelectedKeys={['2']}
+                              aria-label="Example static collection table"
+                              removeWrapper
+                              classNames={tableStyles}
+                            >
+                              <TableHeader>
+                                <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
+                                  商品
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  單價
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  數量
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  小計
+                                </TableColumn>
+                                <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
+                                  變更
+                                </TableColumn>
+                              </TableHeader>
+                              <TableBody>
+                                {cartContent.map((item, index) => (
+                                  <TableRow key={index}>
+                                    <TableCell>
+                                      <div className="flex flex-row items-center space-x-6">
+                                        <Image
+                                          src={item.image}
+                                          alt=""
+                                          className="w-6 h-6 md:w-24 md:h-24 mx-auto"
+                                        />
+                                        <div className="flex flex-col">
+                                          <p>{item.name}</p>
+                                          <p className="text-tertiary-gray-100">
+                                            {item.store}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell>NT${item.price}</TableCell>
+                                    <TableCell>
+                                      <div className="flex gap-4 items-center ">
+                                        <Button
+                                          isIconOnly
+                                          variant="faded"
+                                          className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                          onClick={handleDecrement}
+                                        >
+                                          <FaMinus />
+                                        </Button>
+                                        <Input
+                                          type="text"
+                                          value={quantity}
+                                          onChange={handleChange}
+                                          min="1"
+                                          className="max-w-20 w-full rounded-md p-1 text-center"
+                                          style={{ textAlign: 'center' }}
+                                        />
+                                        <Button
+                                          isIconOnly
+                                          variant="faded"
+                                          className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                          onClick={handleIncrement}
+                                        >
+                                          <FaPlus />
+                                        </Button>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell>NT$30</TableCell>
+                                    <TableCell>
+                                      <div className="flex flex-col space-y-2">
+                                        <MyButton
+                                          color="primary"
+                                          size="xl"
+                                          isOutline
+                                        >
+                                          加入購物車
+                                        </MyButton>
+                                        <MyButton
+                                          color="primary"
+                                          size="xl"
+                                          isOutline
+                                        >
+                                          移除商品
+                                        </MyButton>
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </div>
+                        </Card>
+                      </Tab>
+                    </Tabs>
+                  </div>
+                  {/* cart content end */}
+
+                  {/* 主要內容 end */}
+                  {/* RWD 主要內容 start */}
+                  <div className="flex w-full flex-col sm:hidden mb-10">
+                    <Tabs
+                      aria-label="Options"
+                      color="primary"
+                      variant="underlined"
+                      classNames={{
+                        tabList:
+                          'gap-6 w-full relative rounded-none p-0 border-b border-divider',
+                        cursor: 'w-full bg-[#68A392]',
+                        tab: 'max-w-fit px-0 h-12',
+                        tabContent: 'group-data-[selected=true]:text-[#68A392]',
+                      }}
+                    >
+                      <Tab
+                        key="information"
+                        title={
+                          <div className="flex items-center text-base space-x-2">
+                            購物車
+                          </div>
+                        }
+                      >
+                        <Card className="shadow-none border-1 border-tertiary-gray-200 rounded-xl p-4">
+                          <CardBody>
+                            {cartContent.map((item, index) => (
+                              <div key={index} className="flex space-x-4 pb-4">
+                                <div className="flex-1">
+                                  <Image
+                                    src={item.image}
+                                    alt=""
+                                    className="mx-auto"
+                                  />
+                                </div>
+                                <div className="flex-1 space-y-1">
+                                  <p>{item.name}</p>
+                                  <p className="text-tertiary-gray-100">
+                                    {item.store}
+                                  </p>
+                                  <p>NT${item.price}</p>
+                                  <div className="flex items-center">
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                      onClick={handleDecrement}
+                                    >
+                                      <FaMinus />
+                                    </Button>
+                                    <Input
+                                      type="text"
+                                      value={quantity}
+                                      onChange={handleChange}
+                                      min="1"
+                                      className="max-w-20 w-full rounded-md p-1 text-center"
+                                      style={{ textAlign: 'center' }}
+                                    />
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                      onClick={handleIncrement}
+                                    >
+                                      <FaPlus />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </CardBody>
+                          <CardFooter className="flex justify-end pr-6">
+                            <div className="flex flex-col space-y-2">
+                              <div>共 2 項商品，數量 6 個</div>
+                              <div className="flex justify-end space-x-6">
+                                <span>小計</span>
+                                <span className="text-primary">NT$90</span>
+                              </div>
+                            </div>
+                          </CardFooter>
+                        </Card>
+                      </Tab>
+                      {/* buy again */}
+                      <Tab
+                        key="maybe"
+                        title={
+                          <div className="flex items-center text-base space-x-2">
+                            下次再買
+                          </div>
+                        }
+                      >
+                        <Card className="shadow-none border-1 border-tertiary-gray-200 rounded-xl p-4">
+                          <CardBody>
+                            {cartContent.map((item, index) => (
+                              <div key={index} className="flex space-x-4 pb-4">
+                                <div className="flex-1">
+                                  <Image
+                                    src={item.image}
+                                    alt=""
+                                    className="mx-auto"
+                                  />
+                                </div>
+                                <div className="flex-1 space-y-1">
+                                  <p>{item.name}hihi</p>
+                                  <p className="text-tertiary-gray-100">
+                                    {item.store}
+                                  </p>
+                                  <p>NT${item.price}</p>
+                                  <div className="flex items-center">
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                      onClick={handleDecrement}
+                                    >
+                                      <FaMinus />
+                                    </Button>
+                                    <Input
+                                      type="text"
+                                      value={quantity}
+                                      onChange={handleChange}
+                                      min="1"
+                                      className="max-w-20 w-full rounded-md p-1 text-center"
+                                      style={{ textAlign: 'center' }}
+                                    />
+                                    <Button
+                                      isIconOnly
+                                      variant="faded"
+                                      className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                                      onClick={handleIncrement}
+                                    >
+                                      <FaPlus />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </CardBody>
+                        </Card>
+                      </Tab>
+                    </Tabs>
+                  </div>
+                  {/* RWD 主要內容 end */}
+                </Card>
+              </Tab>
+              <Tab
+                key="course"
+                title={
+                  <div className="flex items-center space-x-2">合作課程</div>
+                }
+              >
+                <Card>
+                  <p>合作課程</p>
+                </Card>
+              </Tab>
+            </Tabs>
+          </div>
 
           {/* 按鈕 */}
-          <div className="flex justify-center space-x-10 pt-10">
-            <Link href="/">
-              <MyButton color="primary" size="xl" isOutline>
-                繼續購物
-              </MyButton>
-            </Link>
-            <Link href="/cart/fill-out">
-              <MyButton color="primary" size="xl">
-                下一步
-              </MyButton>
-            </Link>
+          <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
+            <MyButton color="primary" size="xl" isOutline>
+              <Link href="/">上一步</Link>
+            </MyButton>
+            <MyButton color="primary" size="xl">
+              <Link href="/cart/fill-out">下一步</Link>
+            </MyButton>
           </div>
         </CenterLayout>
       </DefaultLayout>
