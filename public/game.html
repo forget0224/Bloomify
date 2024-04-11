@@ -720,7 +720,7 @@
     <div class="game">
       <!-- <p style="font-family: 'NotoSerifTC', sans-serif;">這是行內文字，使用了自定義字型。</p> -->
       <div class="tip" style="font-family: 'NotoSerifTC', sans-serif">
-        點擊螢幕任一處開始洗牌
+        點擊畫面任一處開始占卜
       </div>
       <div class="card card1">
         <div class="content">
@@ -1327,7 +1327,7 @@
           document.querySelector(`.card${i}`).classList.add(`card${i}Active`)
         }
         // tipDiv.innerHTML = 'pick up the 1st card'
-        tipDiv.innerHTML = '選擇第1張牌'
+        tipDiv.innerHTML = '請選擇第1張牌'
         canSelect = true
       })
       //   <p style="font-family: 'NotoSerifTC', sans-serif;">這是行內文字，使用了自定義字型。</p>
@@ -1370,7 +1370,7 @@
           document.querySelector(`.card${i} .back`).classList.remove('reversed')
         }
         await waittings(1000)
-        tipDiv.innerHTML = '點擊開始占卜'
+        tipDiv.innerHTML = '點擊畫面任一處開始占卜'
         canClick = true
         canSelect = false
         finished = false
@@ -1400,9 +1400,9 @@
         await waittings(1000)
         if (pickAry.length < 3) {
           if (pickAry.length === 1) {
-            tipDiv.innerHTML = '選擇第2張牌'
+            tipDiv.innerHTML = '請選擇第2張牌'
           } else if (pickAry.length === 2) {
-            tipDiv.innerHTML = '選擇第3張牌'
+            tipDiv.innerHTML = '請選擇第3張牌'
           }
           canSelect = true
         } else {
