@@ -106,14 +106,14 @@ export default function Page() {
                       </button>
                     }
                   />
-                  <Input
+                  {/* <Input
                     // startContent={<CiMail className="text-default-400" />}
                     labelPlacement="outside"
                     placeholder="請輸入姓名"
                     type="text"
                     label="姓名"
                     isRequired
-                  />
+                  /> */}
                   {/* <div className="flex flex-row space-x-4">
                     <Select
                       labelPlacement="outside"
