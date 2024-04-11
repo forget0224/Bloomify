@@ -8,14 +8,24 @@ export default function CardNews() {
 
   //外層手風琴樣式
   const accordionStyle = {
-    base: ['p-0', 'text-tertiary-black'],
+    root: ['bg-danger'],
+    base: ['p-0', 'text-tertiary-black', 'flex', 'flex-col', 'mb-2'],
+    heading: [''],
+    titleWrapper: [''],
+    subtitle: [''],
+    startContent: [''],
+    indicator: [''],
     content: ['p-0', 'text-tertiary-black'],
-    title: ['text-tertiary-black'],
+    title: ['p-0', 'text-tertiary-black'],
     trigger: [''],
   }
 
   return (
-    <Accordion variant="splitted" itemClasses={accordionStyle}>
+    <Accordion
+      variant="splitted"
+      itemClasses={accordionStyle}
+      className="custom-accordion-padding"
+    >
       <AccordionItem
         key="1"
         style={{ padding: '8px 24px' }}

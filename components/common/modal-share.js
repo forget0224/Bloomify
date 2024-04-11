@@ -28,6 +28,7 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
       {/* <Button onPress={onOpen}>Open Modal</Button> */}
       <Modal
         size="md"
+        placement={'center'}
         isOpen={isShareOpen}
         onOpenChange={onShareOpenChange}
         classNames={{

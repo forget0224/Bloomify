@@ -10,8 +10,8 @@ export default function CourseSlider() {
     slidesToScroll: 1,
   }
   return (
-    <div className="flex flex-row gap-2">
-      <div className="order-1">
+    <div className="flex flex-col md:flex-row gap-2">
+      <div className="order-1 md:order-2">
         <Image
           width={600}
           height={400}
@@ -20,14 +20,14 @@ export default function CourseSlider() {
           className="rounded-2xl"
         />
       </div>
-      <div className="flex md:flex-col justify-center gap-2">
+      <div className="flex md:flex-col justify-center gap-2 order-2 md:order-1">
         <div>
           <Image
             width={120}
             height={80}
             alt="課程首頁banner圖"
             src="/assets/course/img_course_01_01.png"
-            className="rounded-2xl"
+            className="rounded-lg lg:rounded-2xl"
           />
         </div>
         <div>
@@ -36,7 +36,7 @@ export default function CourseSlider() {
             height={80}
             alt="課程首頁banner圖"
             src="/assets/course/img_course_01_01.png"
-            className="rounded-2xl"
+            className="rounded-lg lg:rounded-2xl"
           />
         </div>
         <div>
@@ -45,7 +45,7 @@ export default function CourseSlider() {
             height={80}
             alt="課程首頁banner圖"
             src="/assets/course/img_course_01_01.png"
-            className="rounded-2xl"
+            className="rounded-lg lg:rounded-2xl"
           />
         </div>
         <div>
@@ -54,7 +54,7 @@ export default function CourseSlider() {
             height={80}
             alt="課程首頁banner圖"
             src="/assets/course/img_course_01_01.png"
-            className="rounded-2xl"
+            className="rounded-lg lg:rounded-2xl"
           />
         </div>
       </div>

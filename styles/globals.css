@@ -154,3 +154,9 @@ a {
 .W0otqMDJ{
   display: none;
 }
+
+/* 手風琴 padding */
+.custom-accordion-padding {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

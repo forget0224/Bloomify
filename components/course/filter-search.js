@@ -51,9 +51,9 @@ export default function CourseSearchFilter() {
         value={value}
         onChange={handleValueChange}
         primaryColor="primary-100"
-        inputClassName="text-sm rounded-xl px-4 py-2 border-0 hover:border-0 focus:ring-0 focus:outline-none focus:border-teal"
-        containerClassName="bg-white pr-3 rounded-xl border-2 hover:border-primary-100 focus:ring-0 focus:outline-none focus:border-teal focus:border-primary-100"
-        toggleClassName="relative top-1"
+        inputClassName="z-20 text-sm rounded-xl px-4 py-2 border-0 hover:border-0 focus:ring-0 focus:outline-none focus:border-teal"
+        containerClassName="z-20 bg-white pr-3 rounded-xl border-2 hover:border-primary-100 focus:ring-0 focus:outline-none focus:border-teal focus:border-primary-100"
+        toggleClassName="z-20 relative top-1"
         placeholder={'選擇日期區間'}
         minDate={new Date('2024-01-01')}
         maxDate={new Date('2025-12-31')}

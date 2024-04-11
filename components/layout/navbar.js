@@ -170,7 +170,11 @@ export default function HomeNav({ activePage }) {
               </Dropdown>
             ) : (
               <NavbarItem>
-                <Link color="foreground" href={`/custom/${item.name}`}>
+                <Link
+                  color="foreground"
+                  className="flex justify-center"
+                  href={`/${item.name}`}
+                >
                   {item.chineseName}
                 </Link>
               </NavbarItem>
