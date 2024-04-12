@@ -22,7 +22,11 @@ export default function CourseTime() {
         <p className="text-tertiary-gray-100">尚餘3個名額</p>
         <div className="flex gap-4 mt-2 lg:mt-0">
           <CircleBtn />
-          <MyButton color="primary" size="xl" className="w-full">
+          <MyButton
+            color="primary"
+            size="xl"
+            className="w-full md:w-1/2 lg:w-full"
+          >
             直接購買
           </MyButton>
         </div>

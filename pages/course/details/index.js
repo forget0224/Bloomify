@@ -17,6 +17,7 @@ import {
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { BsChevronRight } from 'react-icons/bs'
 import { FaStar, FaShareAlt } from 'react-icons/fa'
+import { Link } from '@nextui-org/react'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -36,8 +37,6 @@ import CardGroup from '@/components/course/card-group'
 
 export default function CourseDetails() {
   const [activePage, setActivePage] = useState('course')
-  // 麵包屑 變數
-  const underlines = ['none']
 
   // 詳細介紹 Modal 變數
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -66,16 +65,16 @@ export default function CourseDetails() {
           </Breadcrumbs>
         </div>
         {/* 課程圖和課程資訊 */}
-        <div className="flex flex-col gap-6 md:flex-row mb-12 w-full">
-          {/* -課程圖 */}
-          <div className="w-full md:w-6/12 mb-6 md:mb-0">
+        <div className="flex flex-col gap-6 lg:flex-row mb-12 w-full">
+          {/* 課程圖 */}
+          <div className="w-full flex justify-center items-center lg:w-6/12 mb-6 md:mb-0">
             <CourseSlider />
           </div>
-          {/* -課程資訊 */}
-          <div className="w-full md:w-6/12 flex flex-col gap-6">
+          {/* 課程資訊 */}
+          <div className="w-full lg:w-6/12 flex flex-col gap-6">
             {/* 主要資訊 */}
             <div className="flex flex-col gap-4">
-              <div className="">
+              <div className="w-full">
                 <p className="text-3xl">韓系乾燥花束製作</p>
                 <div className="flex justify-between mt-2">
                   <CourseRating />
@@ -104,10 +103,9 @@ export default function CourseDetails() {
                   <BsChevronRight />
                 </p>
               </div>
-              <div className="flex gap-2 hidden md:block">
-                <span className="bg-primary-300 px-2">基礎花藝課程</span>
-                <span className="bg-primary-300 px-2">熱賣中</span>
-                <span className="bg-primary-300 px-2">可使用優惠券</span>
+              <div className="flex flex-row gap-2">
+                <div className="bg-primary-300 px-2">基礎花藝課程</div>
+                <div className="bg-primary-300 px-2">熱賣中</div>
               </div>
             </div>
             {/* 購買卡片 */}
@@ -137,13 +135,13 @@ export default function CourseDetails() {
           </div>
         </div>
         {/* 其他所有資訊 */}
-        <div className="flex flex-col md:flex-row w-full gap-16 static overflow:auto">
+        <div className="flex flex-col lg:flex-row w-full gap-16 static overflow:auto">
           {/* 開課商家資訊 */}
-          <div className="w-full md:w-5/12 order-0 md:order-1 h-fit sticky top-0">
+          <div className="w-full lg:w-5/12 order-0 lg:order-1 h-fit sticky top-0">
             <CourseMap />
           </div>
           {/* 其他詳細資訊 */}
-          <div className="flex w-full md:w-7/12 flex-col gap-16">
+          <div className="flex w-full lg:w-7/12 flex-col gap-16">
             {/* 課程最新訊息 */}
             <div className="flex flex-col gap-6">
               <Subtitle text="課程最新訊息" />

@@ -9,6 +9,7 @@ import Subtitle from '@/components/common/subtitle'
 import SearchBtn from '@/components/course/search'
 import CardGroup from '@/components/course/card-group'
 import CardGroupCategory from '@/components/course/card-group-category'
+import CardGroupStore from '@/components/course/card-group-store'
 
 export default function CourseIndex() {
   const [activePage, setActivePage] = useState('course')
@@ -69,14 +70,14 @@ export default function CourseIndex() {
             className="rounded-2xl"
           />
 
-          <div className="flex flex-col gap-4 md:w-3/12 md:ml-10 mt-4 md:mt-10 md:absolute top-0 left-0 right-0 z-10 rounded-lg">
+          <div className="flex flex-col gap-4 md:w-4/12 lg:w-3/12 md:ml-10 mt-4 md:mt-10 md:absolute top-0 left-0 right-0 z-10 rounded-lg">
             {/* 加入我們 */}
             <Card className="flex flex-row p-4 w-full">
               <CardBody className="p-0">
                 <div className="flex flex-col gap-2 items-start justify-between ">
                   <p>與我們一起提供優質的線下課程，讓更多人愛上花藝</p>
                   <Link
-                    href="/pages/join"
+                    href="/join"
                     className="text-primary-100 mb-1 border-b-1 border-primary-100"
                   >
                     加入我們
@@ -85,7 +86,6 @@ export default function CourseIndex() {
               </CardBody>
             </Card>
             {/* 搜尋框 */}
-            {/* <Link href="/course/search"> */}
             <SearchBtn />
             {/* </Link> */}
           </div>
@@ -97,12 +97,8 @@ export default function CourseIndex() {
           <CardGroup />
         </div>
         <div className="grid gap-y-4 my-14 w-full">
-          <Subtitle text="熱銷課程" />
-          <CardGroup />
-        </div>
-        <div className="grid gap-y-4 my-14 w-full">
           <Subtitle text="精選商家" />
-          <CardGroup />
+          <CardGroupStore />
         </div>
         <div className="grid gap-y-4 my-14 w-full">
           <Subtitle text="四大分類" />
