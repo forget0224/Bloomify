@@ -1,73 +1,35 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 // nextUI
 import Image from 'next/image'
-import { Input, Button } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
 import { Link } from '@nextui-org/react'
 import { Card, Select, SelectItem } from '@nextui-org/react'
-import {
-  Checkbox,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from '@nextui-org/react'
 
-// stepper
-import { Stepper } from 'react-dynamic-stepper'
-import { MyButton } from '@/components/btn/mybutton'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
-import flower from '@/assets/flower-2.jpeg'
+import { MyButton } from '@/components/btn/mybutton'
 
-// Signup Page
-export default function Page() {
-  // stepper
-  const steps = [
-    {
-      header: {
-        label: '',
-      },
-      // content: <div>First step content</div>,
-      isError: false,
-      isWarning: false,
-      isComplete: true,
-    },
-    {
-      header: {
-        label: '',
-      },
-      // content: <div>Second step content</div>,
-      onClickHandler: () => console.log('clicked on second step next button'),
-      isLoading: false,
-      isError: false,
-      isComplete: true,
-    },
-    {
-      header: {
-        label: '',
-      },
-      // content: <div>Third step content</div>,
-      isError: false,
-      isComplete: false,
-    },
-  ]
+// icon
+import { PiEye } from 'react-icons/pi'
+import { PiEyeClosed } from 'react-icons/pi'
 
+// Register
+export default function Register() {
+  // input 樣式
   const inputStyles = {
     label: 'text-base',
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
 
+  // 密碼toggle切換
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible((prev) => !prev)
 
-  const [current, setCurrent] = useState(0)
-  const routeName = 'signup'
+  const [activePage, setActivePage] = useState('register')
 
   return (
-    <DefaultLayout activePage={routeName}>
+    <DefaultLayout activePage={activePage}>
       {
         <>
           {/* main的東西 */}
@@ -78,31 +40,31 @@ export default function Page() {
                 <h1 className="text-3xl mb-12 mt-14 ">會員註冊</h1>
                 <form className="flex flex-col space-y-12 w-full">
                   <Input
-                    // startContent={<CiMail className="text-default-400" />}
                     labelPlacement="outside"
                     placeholder="請輸入您的電郵"
                     type="email"
                     label="電子郵件"
                     isRequired
+                    className={{ ...inputStyles }}
                   />
                   <Input
-                    // startContent={<LockKeyhole className="text-default-400" />}
                     labelPlacement="outside"
                     type={isVisible ? 'text' : 'password'}
                     label="密碼"
                     placeholder="請輸入密碼"
                     isRequired
+                    className={{ ...inputStyles }}
                     endContent={
                       <button
                         className="focus:outline-none"
                         type="submit"
                         onClick={toggleVisibility}
                       >
-                        {/* {isVisible ? (
-                          <EyeOff className="text-2xl text-default-400 pointer-events-none" />
+                        {isVisible ? (
+                          <PiEye className="text-2xl text-default-400 pointer-events-none" />
                         ) : (
-                          <Eye className="text-2xl text-default-400 pointer-events-none" />
-                        )} */}
+                          <PiEyeClosed className="text-2xl text-default-400 pointer-events-none" />
+                        )}
                       </button>
                     }
                   />
@@ -175,7 +137,7 @@ export default function Page() {
                 <Image
                   width={1000}
                   height={600}
-                  src={'/assets/about/store/store03.jpg'}
+                  src={'/assets/member/member_register.jpg'}
                   alt="flower"
                   className="object-center size-full"
                 />

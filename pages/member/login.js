@@ -1,26 +1,32 @@
 import { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
+
+// nextUI
 import Image from 'next/image'
-import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
-import { Textarea } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
+
+// 小組元件
+import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 
 // icon
-import { CiMail } from 'react-icons/ci'
+import { PiEye } from 'react-icons/pi'
+import { PiEyeClosed } from 'react-icons/pi'
 
-export default function LoginTest() {
-  const [isVisible, setIsVisible] = useState(false)
-  const toggleVisibility = () => setIsVisible((prev) => !prev)
-  const routeName = 'login'
-
+// Login
+export default function Login() {
   // input 樣式
   const inputStyles = {
     label: 'text-base',
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
 
-  const [activePage, setActivePage] = useState('custom')
+  // 密碼toggle切換
+  const [isVisible, setIsVisible] = useState(false)
+  const toggleVisibility = () => setIsVisible((prev) => !prev)
+
+  const [activePage, setActivePage] = useState('member')
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -33,31 +39,31 @@ export default function LoginTest() {
                 <h1 className="text-3xl mb-12 mt-14">會員登入</h1>
                 <form className="flex flex-col space-y-12 w-full">
                   <Input
-                    // startContent={<CiMail className="text-default-400" />}
                     labelPlacement="outside"
-                    placeholder="請輸入您的電郵"
+                    placeholder="請輸入您的信箱"
                     type="email"
-                    label="電子郵件"
+                    label="電子信箱"
                     isRequired
+                    className={{ ...inputStyles }}
                   />
                   <Input
-                    // startContent={<LockKeyhole className="text-default-400" />}
                     labelPlacement="outside"
                     type={isVisible ? 'text' : 'password'}
                     label="密碼"
                     placeholder="請輸入密碼"
                     isRequired
+                    className={{ ...inputStyles }}
                     endContent={
                       <button
                         className="focus:outline-none"
                         type="submit"
                         onClick={toggleVisibility}
                       >
-                        {/* {isVisible ? (
-                          <EyeOff className="text-2xl text-default-400 pointer-events-none" />
+                        {isVisible ? (
+                          <PiEye className="text-2xl text-default-400 pointer-events-none" />
                         ) : (
-                          <Eye className="text-2xl text-default-400 pointer-events-none" />
-                        )} */}
+                          <PiEyeClosed className="text-2xl text-default-400 pointer-events-none" />
+                        )}
                       </button>
                     }
                   />
@@ -80,7 +86,7 @@ export default function LoginTest() {
                 <Image
                   width={1000}
                   height={600}
-                  src={'/assets/about/store/store02.jpg'}
+                  src={'/assets/member/member_login.jpg'}
                   alt="flower"
                   className="object-center size-full"
                 />
