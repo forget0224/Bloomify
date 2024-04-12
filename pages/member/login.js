@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 // nextUI
 import Image from 'next/image'
@@ -56,7 +56,7 @@ export default function Login() {
                     endContent={
                       <button
                         className="focus:outline-none"
-                        type="submit"
+                        type="button"
                         onClick={toggleVisibility}
                       >
                         {isVisible ? (

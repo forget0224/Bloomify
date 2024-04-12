@@ -57,7 +57,7 @@ export default function Register() {
                     endContent={
                       <button
                         className="focus:outline-none"
-                        type="submit"
+                        type="button"
                         onClick={toggleVisibility}
                       >
                         {isVisible ? (
@@ -122,11 +122,15 @@ export default function Register() {
                         isOutline
                         className="w-full"
                       >
-                        回登入頁面
+                        登入頁面
                       </MyButton>
                     </Link>
 
-                    <MyButton color="primary" size="xl" className="w-full">
+                    <MyButton
+                      color="primary"
+                      size="xl"
+                      className="bg-primary-100 text-white w-full"
+                    >
                       註冊
                     </MyButton>
                   </div>
