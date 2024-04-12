@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
 import {
   Breadcrumbs,
   BreadcrumbItem,
@@ -11,24 +10,8 @@ import {
   Image,
   Select,
   SelectItem,
-  Input,
   RadioGroup,
   Radio,
-} from '@nextui-org/react'
-import { BsFillStarFill, BsHeart } from 'react-icons/bs'
-import { MyButton } from '@/components/btn/mybutton'
-import ShopSlider from '../../components/shop/shop-slider.js'
-import Subtitle from '@/components/common/subtitle.js'
-import Link from 'next/link.js'
-import { PiShoppingCartSimpleFill } from 'react-icons/pi'
-import { BiSolidLeaf } from 'react-icons/bi'
-import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
-import { BsFillGridFill } from 'react-icons/bs'
-import { FaToolbox } from 'react-icons/fa'
-import toast, { Toaster } from 'react-hot-toast'
-import { IoFilterCircleOutline } from 'react-icons/io5'
-import { SlMagnifier } from 'react-icons/sl'
-import {
   Modal,
   ModalContent,
   ModalHeader,
@@ -36,10 +19,50 @@ import {
   ModalFooter,
   useDisclosure,
 } from '@nextui-org/react'
+import Link from 'next/link.js'
+import toast, { Toaster } from 'react-hot-toast'
+import ShopSlider from '../../components/shop/shop-slider.js'
+import DefaultLayout from '@/components/layout/default-layout'
+import Subtitle from '@/components/common/subtitle.js'
+import { MyButton } from '@/components/btn/mybutton'
 import SearchBtn from '@/components/course/search'
+import { BsFillGridFill, BsFillStarFill, BsHeart } from 'react-icons/bs'
+import { PiShoppingCartSimpleFill } from 'react-icons/pi'
+import { BiSolidLeaf } from 'react-icons/bi'
+import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
+import { FaToolbox } from 'react-icons/fa'
+import { IoFilterCircleOutline } from 'react-icons/io5'
+import { SlMagnifier } from 'react-icons/sl'
 // import { useWindowSize } from 'react-use'
 
 export default function Shop() {
+  // backend start
+  const [products, setProducts] = useState([])
+
+  const getProducts = async () => {
+    //後端的url
+    const url = 'http://localhost:3005/api/products'
+
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+      // console.log(data)
+
+      // 設定到狀態中 ===> 進入update階段，觸發重新渲染(re-render) ===> 顯示資料
+      if (Array.isArray(data.data.products)) {
+        // 獲取照片的判斷式要寫在這裡
+
+        setProducts(data.data.products)
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  useEffect(() => {
+    getProducts()
+  }, [])
+  // backend end
+
   // carousel start
   const [page, setPage] = useState(0)
   const banners = [
@@ -106,6 +129,8 @@ export default function Shop() {
   ]
   // select list end
   // products start
+  //用category來找相對應的照片
+  // const arr = [{category:'鮮花', directory:'flowers'}, {category:'花盆栽', directory:'plant'}]以此類推
   const productList = [
     {
       img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
@@ -165,7 +190,7 @@ export default function Shop() {
     },
     {
       img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Orange',
+      title: 'Ok',
       starCount: '5.0',
       shop: 'shop4',
       tag: 'hot sale',
@@ -266,15 +291,12 @@ export default function Shop() {
     },
   ]
   // keyword tags end
-
   // load more start
   const [hasMore, setHasMore] = useState(true)
   const [sliceSize, setSliceSize] = useState(12)
   const handleLoadMore = () => {
-    // Increase the slice size by 6 when loading more
     setSliceSize((prevSliceSize) => prevSliceSize + 6)
     if (slicedProductList.length + 6 >= productList.length) {
-      // If there are no more cards, set hasMore to false and disable the button
       setHasMore(false)
     }
   }
@@ -284,8 +306,8 @@ export default function Shop() {
   // const sliceSizeForScreen = windowSize.width < 640 ? 6 : 12
   const slicedProductList = productList.slice(0, sliceSize)
   // screen size for number of cards end
-
   const [activePage, setActivePage] = useState('shop')
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -333,7 +355,7 @@ export default function Shop() {
                 </div>
                 {/* carousel end */}
                 {/* select categories start */}
-                <div className="flex justify-center flex-wrap my-8 w-full whitespace-nowrap">
+                <div className="flex justify-center my-8 w-full whitespace-nowrap">
                   {categories.map((category, index) => (
                     <div
                       key={index}
@@ -377,7 +399,7 @@ export default function Shop() {
                 {/* select categories end */}
 
                 {/* search & select start */}
-                <div className="flex justify-between py-6">
+                <div className="p-4 flex justify-between">
                   {/* searchbar */}
                   <div className="hidden sm:block sm:w-3/12">
                     <SearchBtn />
@@ -391,8 +413,9 @@ export default function Shop() {
                       排序
                     </p>
                     <Select
+                      aria-label="排序"
                       placeholder="排序"
-                      defaultSelectedKeys={['Orange']}
+                      defaultSelectedKeys={['']}
                       className="hidden sm:block sm:max-w-xs sm:w-48"
                       scrollShadowProps={{
                         isEnabled: false,
@@ -428,22 +451,6 @@ export default function Shop() {
                                 關鍵字搜尋
                               </ModalHeader>
                               <ModalBody>
-                                {/* <div>
-                                  <Input
-                                    variant="bordered"
-                                    placeholder="搜尋..."
-                                    endContent={
-                                      <button
-                                        className="focus:outline-none"
-                                        type="button"
-                                        onClick={() => {}}
-                                      >
-                                        <CiSearch />
-                                      </button>
-                                    }
-                                    className="max-w-xs"
-                                  />
-                                </div> */}
                                 <div className="sm:hidden block">
                                   <SearchBtn />
                                 </div>
@@ -460,7 +467,7 @@ export default function Shop() {
                                       <Link
                                         href="/shop/details"
                                         key={index}
-                                        className="text-base px-2 py-0.5 bg-primary text-white hover:bg-primary-200"
+                                        className="text-base px-2 py-0.5 bg-primary-300 hover:bg-primary-200"
                                         style={{ cursor: 'pointer' }}
                                       >
                                         {item.tag}
@@ -973,8 +980,60 @@ export default function Shop() {
                 {/* filter end */}
                 {/* products starts */}
                 <div className="sm:w-10/12">
-                  <div className="bg-white p-4 rounded-lg gap-2 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
-                    {slicedProductList.map((item, index) => (
+                  <div className="bg-white p-4 rounded-lg gap-6 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
+                    {products.map((product, index) => (
+                      <Card
+                        shadow="sm"
+                        key={index}
+                        isPressable
+                        onPress={() => console.log('item pressed')}
+                      >
+                        <CardBody className="relative overflow-visible p-0">
+                          <Link
+                            href="/shop/details"
+                            key={index}
+                            className="block relative"
+                          >
+                            <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                            <Image
+                              isZoomed
+                              shadow="none"
+                              radius="none"
+                              width="100%"
+                              alt={product.name}
+                              className="w-full object-cover h-[250px] z-0"
+                              src={product.url}
+                            />
+                          </Link>
+                        </CardBody>
+                        <CardHeader className="block text-left">
+                          <div className="flex justify-between">
+                            <p className="text-xl truncate">{product.name}</p>
+                            <p className="text-base flex items-center space-x-1">
+                              <BsFillStarFill className="text-secondary-100" />
+                              {product.star}
+                              <span>{product.overall_review}</span>
+                            </p>
+                          </div>
+                          <p className="text-base">{product.shop}</p>
+                          <p className="text-base px-2.5 py-0.5 inline-block bg-primary-300">
+                            {product.tag}
+                          </p>
+                        </CardHeader>
+                        <CardFooter className="text-small justify-between">
+                          <p className="text-xl truncate">NT${product.price}</p>
+                          <div
+                            className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
+                            onClick={notify}
+                          >
+                            <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                          </div>
+                          <Toaster />
+                        </CardFooter>
+                      </Card>
+                    ))}
+                    {/* 原始的程式碼 start */}
+                    {/* {slicedProductList.map((item, index) => (
                       <Card
                         shadow="sm"
                         key={index}
@@ -1009,14 +1068,14 @@ export default function Shop() {
                             </p>
                           </div>
                           <p className="text-base">{item.shop}</p>
-                          <p className="text-base px-2.5 py-0.5 inline-block bg-primary">
+                          <p className="text-base px-2.5 py-0.5 inline-block bg-primary-300">
                             {item.tag}
                           </p>
                         </CardHeader>
                         <CardFooter className="text-small justify-between">
                           <p className="text-xl truncate">{item.price}</p>
                           <div
-                            className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-300"
+                            className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
                             onClick={notify}
                           >
                             <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
@@ -1024,7 +1083,8 @@ export default function Shop() {
                           <Toaster />
                         </CardFooter>
                       </Card>
-                    ))}
+                    ))} */}
+                    {/* 原始的程式碼 end */}
                   </div>
                 </div>
                 {/* products end */}
