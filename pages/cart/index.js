@@ -234,14 +234,17 @@ export default function Cart() {
                             ></div>
                           </div>
 
-                          <div className="flex sm:flex-row sm:gap-2 sm:justify-between flex-grow flex-col items-center gap-1">
-                            <div className="sm:w-[80px] text-center">
-                              {item.name}
+                          <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1">
+                            <div className="flex-grow flex sm:flex-row flex-col sm:justify-around">
+                              <div className="sm:w-[80px] text-center">
+                                {item.name}
+                              </div>
+                              <div className="sm:w-[80px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
+                                {item.option}
+                              </div>
                             </div>
-                            <div className="sm:w-[80px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
-                              {item.option}
-                            </div>
-                            <div className="sm:w-[80px] text-center sm:text-sm  text-xs sm:text-tertiary-black text-tertiary-gray-100">
+
+                            <div className="sm:w-[80px] text-center text-sm   text-tertiary-black ">
                               {item.count} {item.category === 'flower' && '朵'}
                               {item.category === 'card' && '張'}
                               {item.category === 'package' && '個'}
