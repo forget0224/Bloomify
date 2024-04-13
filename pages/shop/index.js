@@ -316,503 +316,496 @@ export default function Shop() {
           <main className="flex flex-col justify-center items-center bg-white">
             {/* 主要容器 */}
             <div className="container justify-center flex flex-col items-start columns-12 mb-20 px-5 md:px-0">
-              <div
-              // style={{
-              //   maxHeight: 'calc(100vh - 50px)',
-              // }}
-              >
-                {/* breadcrumb start */}
-                <div className="py-6 w-full hidden sm:block">
-                  <Breadcrumbs>
-                    <BreadcrumbItem>首頁</BreadcrumbItem>
-                    <BreadcrumbItem color="primary">線上商城</BreadcrumbItem>
-                  </Breadcrumbs>
+              {/* breadcrumb start */}
+              <div className="py-6 w-full hidden sm:block">
+                <Breadcrumbs>
+                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem color="primary">線上商城</BreadcrumbItem>
+                </Breadcrumbs>
+              </div>
+              {/* breadcrumb end */}
+              {/* carousel start */}
+              <div className="box max-w-[1520px] max-h-[220px] sm:max-h-[525px] relative overflow-hidden">
+                <div className="carousel">
+                  <Image
+                    src={banners[page].banner}
+                    alt={banners[page].title}
+                    className="w-full h-full object-fit rounded-none sm:rounded-lg"
+                  />
                 </div>
-                {/* breadcrumb end */}
-                {/* carousel start */}
-                <div className="box max-w-[1520px] max-h-[220px] sm:max-h-[525px] relative overflow-hidden">
-                  <div className="carousel">
-                    <Image
-                      src={banners[page].banner}
-                      alt={banners[page].title}
-                      className="w-full h-full object-fit rounded-none sm:rounded-lg"
-                    />
-                  </div>
+                <div
+                  className="prev-btn absolute top-1/2 left-0 transform -translate-y-1/2 z-10 py-4 px-0.5 bg-tertiary-gray-200 hover:bg-primary-300 active:bg-primary-300 focus:outline-none focus:ring focus:ring-tertiary-gray-200 ease-in duration-300 rounded-r-lg"
+                  onClick={prevPage}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <IoIosArrowBack className="w-1 h-1 sm:w-3 h-3 md:w-5 h-5 text-primary" />
+                </div>
+                <div
+                  className="next-btn absolute top-1/2 right-0 transform -translate-y-1/2 z-10 py-4 px-0.5 bg-tertiary-gray-200 hover:bg-primary-300 active:bg-primary-300 focus:outline-none focus:ring focus:ring-tertiary-gray-200 ease-in duration-300 rounded-l-lg"
+                  onClick={nextPage}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <IoIosArrowForward className="w-1 h-1 sm:w-3 h-3 md:w-5 h-5 text-primary" />
+                </div>
+              </div>
+              {/* carousel end */}
+              {/* select categories start */}
+              <div className="flex justify-center my-8 w-full whitespace-nowrap">
+                {categories.map((category, index) => (
                   <div
-                    className="prev-btn absolute top-1/2 left-0 transform -translate-y-1/2 z-10 py-4 px-0.5 bg-tertiary-gray-200 hover:bg-primary-300 active:bg-primary-300 focus:outline-none focus:ring focus:ring-tertiary-gray-200 ease-in duration-300 rounded-r-lg"
-                    onClick={prevPage}
+                    key={index}
+                    onClick={() => setSelectedCategory(index)}
+                    className={`mx-4 ${
+                      index === selectedCategory
+                        ? 'border-b-4 border-secondary-100'
+                        : ''
+                    } sm:mr-4 sm:ml-4 md:mr-6 md:ml-6 lg:mr-12 lg:ml-12`}
                     style={{ cursor: 'pointer' }}
                   >
-                    <IoIosArrowBack className="w-1 h-1 sm:w-3 h-3 md:w-5 h-5 text-primary" />
-                  </div>
-                  <div
-                    className="next-btn absolute top-1/2 right-0 transform -translate-y-1/2 z-10 py-4 px-0.5 bg-tertiary-gray-200 hover:bg-primary-300 active:bg-primary-300 focus:outline-none focus:ring focus:ring-tertiary-gray-200 ease-in duration-300 rounded-l-lg"
-                    onClick={nextPage}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <IoIosArrowForward className="w-1 h-1 sm:w-3 h-3 md:w-5 h-5 text-primary" />
-                  </div>
-                </div>
-                {/* carousel end */}
-                {/* select categories start */}
-                <div className="flex justify-center my-8 w-full whitespace-nowrap">
-                  {categories.map((category, index) => (
                     <div
-                      key={index}
-                      onClick={() => setSelectedCategory(index)}
-                      className={`mx-4 ${
-                        index === selectedCategory
-                          ? 'border-b-4 border-secondary-100'
-                          : ''
-                      } sm:mr-4 sm:ml-4 md:mr-6 md:ml-6 lg:mr-12 lg:ml-12`}
-                      style={{ cursor: 'pointer' }}
+                      className={`icon flex flex-col justify-center items-center text-primary ${
+                        index === selectedCategory ? 'text-secondary-100' : ''
+                      }`}
                     >
-                      <div
-                        className={`icon flex flex-col justify-center items-center text-primary ${
-                          index === selectedCategory ? 'text-secondary-100' : ''
+                      <div className="text-5xl sm:text-[140px]">
+                        {category.icon}
+                      </div>
+
+                      <p
+                        className={`title text-center my-6 ${
+                          index === selectedCategory ? 'text-danger' : ''
                         }`}
                       >
-                        <div className="text-5xl sm:text-[140px]">
-                          {category.icon}
-                        </div>
-
-                        <p
-                          className={`title text-center my-6 ${
-                            index === selectedCategory ? 'text-danger' : ''
-                          }`}
-                        >
-                          {category.title}
-                        </p>
-                      </div>
-
-                      <style jsx>{`
-                        .mx-4.icon:hover {
-                          border-bottom: 4px solid #68a392;
-                        }
-                        .icon:hover {
-                          color: #ffc1b4;
-                        }
-                      `}</style>
+                        {category.title}
+                      </p>
                     </div>
-                  ))}
+
+                    <style jsx>{`
+                      .mx-4.icon:hover {
+                        border-bottom: 4px solid #68a392;
+                      }
+                      .icon:hover {
+                        color: #ffc1b4;
+                      }
+                    `}</style>
+                  </div>
+                ))}
+              </div>
+              {/* select categories end */}
+
+              {/* search & select start */}
+              <div className="w-full p-4 flex justify-between">
+                {/* searchbar */}
+                <div className="hidden sm:block sm:w-3/12">
+                  <SearchBtn />
                 </div>
-                {/* select categories end */}
+                {/* filter */}
+                {/* RWD start*/}
+                <p className="text-tertiary-black sm:hidden">共 100 項結果</p>
+                {/* RWD end*/}
+                <div className="flex items-center space-x-4">
+                  <p className="hidden sm:block sm:text-xl sm:text-tertiary-black sm:whitespace-nowrap">
+                    排序
+                  </p>
+                  <Select
+                    aria-label="排序"
+                    placeholder="排序"
+                    defaultSelectedKeys={['']}
+                    className="hidden sm:block sm:max-w-xs sm:w-48"
+                    scrollShadowProps={{
+                      isEnabled: false,
+                    }}
+                  >
+                    {selectList.map((item, index) => (
+                      <SelectItem key={item.label} value={item.label}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </Select>
 
-                {/* search & select start */}
-                <div className="p-4 flex justify-between">
-                  {/* searchbar */}
-                  <div className="hidden sm:block sm:w-3/12">
-                    <SearchBtn />
-                  </div>
-                  {/* filter */}
-                  {/* RWD start*/}
-                  <p className="text-tertiary-black sm:hidden">共 100 項結果</p>
-                  {/* RWD end*/}
-                  <div className="flex items-center space-x-4">
-                    <p className="hidden sm:block sm:text-xl sm:text-tertiary-black sm:whitespace-nowrap">
-                      排序
-                    </p>
-                    <Select
-                      aria-label="排序"
-                      placeholder="排序"
-                      defaultSelectedKeys={['']}
-                      className="hidden sm:block sm:max-w-xs sm:w-48"
-                      scrollShadowProps={{
-                        isEnabled: false,
-                      }}
-                    >
-                      {selectList.map((item, index) => (
-                        <SelectItem key={item.label} value={item.label}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </Select>
-
-                    {/* RWD start */}
-                    <div className="flex flex-row space-x-3 sm:hidden">
-                      <div className="flex gap-2 items-center text-xl hover:text-primary">
-                        <SlMagnifier
-                          onClick={onMagnifierOpen}
-                          style={{ cursor: 'pointer' }}
-                          className="text-xl"
-                        />
-                        <Modal
-                          isOpen={isMagnifierOpen}
-                          placement={modalPlacement}
-                          onOpenChange={onMagnifierOpenChange}
-                          className="mx-0 my-0 "
-                          style={{
-                            borderRadius: '4% 4% 0% 0%',
-                          }}
-                        >
-                          <ModalContent>
-                            <>
-                              <ModalHeader className="flex flex-col gap-1">
-                                關鍵字搜尋
-                              </ModalHeader>
-                              <ModalBody>
-                                <div className="sm:hidden block">
-                                  <SearchBtn />
-                                </div>
-                                <div className="flex space-x-2">
-                                  <p className="text-primary">HOT</p>
-                                  <p className="text-tertiary-gray-1">
-                                    熱門關鍵字
-                                  </p>
-                                </div>
-                                <div className="flex space-x-1.5">
-                                  {keywordTags
-                                    .slice(0, 3)
-                                    .map((item, index) => (
-                                      <Link
-                                        href="/shop/details"
-                                        key={index}
-                                        className="text-base px-2 py-0.5 bg-primary-300 hover:bg-primary-200"
-                                        style={{ cursor: 'pointer' }}
-                                      >
-                                        {item.tag}
-                                      </Link>
-                                    ))}
-                                </div>
-                                <p>玫瑰花</p>
-                                <p>桔梗</p>
-                              </ModalBody>
-                            </>
-                          </ModalContent>
-                        </Modal>
-                      </div>
-
-                      <div className="flex gap-2 items-center text-xl hover:text-primary">
-                        <IoFilterCircleOutline
-                          onClick={onFilterOpen}
-                          style={{ cursor: 'pointer' }}
-                          className="text-2xl"
-                        />
-                        <Modal
-                          isOpen={isFilterOpen}
-                          placement={modalPlacement}
-                          onOpenChange={onFilterOpenChange}
-                          className="mx-0 my-0"
-                          style={{ borderRadius: '4% 4% 0% 0%' }}
-                        >
-                          <ModalContent>
-                            <>
-                              <ModalHeader className="flex flex-col gap-1">
-                                排序與篩選
-                              </ModalHeader>
-                              <ModalBody
-                                style={{
-                                  maxHeight: 'calc(100vh - 200px)',
-                                  overflowY: 'auto',
-                                }}
-                              >
-                                <div>
-                                  <p className="text-primary text-center py-0.5 bg-primary-300">
-                                    排序
-                                  </p>
-                                  <div className="my-5">
-                                    <RadioGroup>
-                                      {selectList.map((item, index) => (
-                                        <Radio
-                                          key={item.value}
-                                          value={item.value}
-                                        >
-                                          {item.label}
-                                        </Radio>
-                                      ))}
-                                    </RadioGroup>
-                                  </div>
-                                </div>
-                                <div>
-                                  <p className="text-primary text-center py-0.5 bg-primary-300">
-                                    篩選
-                                  </p>
-                                  <div className="my-5">
-                                    <p className="text-tertiary-black my-2">
-                                      子類
-                                    </p>
-                                    <div className="space-y-0.5 grid grid-cols-2">
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <p className=" text-tertiary-black">
-                                          鮮花
-                                        </p>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <p className=" text-tertiary-black">
-                                          花盆栽
-                                        </p>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <p className=" text-tertiary-black">
-                                          葉材
-                                        </p>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <p className=" text-tertiary-black">
-                                          植盆栽
-                                        </p>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <p className=" text-tertiary-black">
-                                          器具
-                                        </p>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <p className=" text-tertiary-black">
-                                          材料
-                                        </p>
-                                      </Checkbox>
-                                    </div>
-                                  </div>
-                                  <hr />
-                                  <div className="my-5">
-                                    <p className="text-tertiary-black my-2">
-                                      價格
-                                    </p>
-                                    <div className="flex justify-between items-center">
-                                      <input
-                                        type="text"
-                                        placeholder="最低價格"
-                                        className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                      />
-                                      <div className="h-px w-10 bg-gray-400"></div>
-                                      <input
-                                        type="text"
-                                        placeholder="最高價格"
-                                        className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                      />
-                                    </div>
-                                  </div>
-                                  <hr />
-                                  <div className="my-5">
-                                    <p className="text-tertiary-black my-2">
-                                      顏色
-                                    </p>
-                                    <div className="space-y-0.5 grid grid-cols-2">
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">红色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#FF0000',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">橙色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#FFA500',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">黃色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#FFFF00',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">綠色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#CFDD81',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">藍色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#0000FF',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">紫色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#8B00FF',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">粉色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#FFC0CB',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">褐色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{ backgroundColor: 'red' }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">灰色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#704214',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">黑色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#808080',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-
-                                      <Checkbox
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">白色</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full bg-red-500"
-                                            style={{
-                                              backgroundColor: '#000000',
-                                            }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                    </div>
-                                  </div>
-                                </div>
-                              </ModalBody>
-                              <ModalFooter className="flex gap-2">
-                                <MyButton
-                                  color="primary"
-                                  size="xl"
-                                  isOutline
-                                  className="flex-1"
-                                >
-                                  清除條件
-                                </MyButton>
-                                <MyButton
-                                  color="primary"
-                                  size="xl"
-                                  isOutline
-                                  className="flex-1"
-                                >
-                                  確認
-                                </MyButton>
-                              </ModalFooter>
-                            </>
-                          </ModalContent>
-                        </Modal>
-                      </div>
+                  {/* RWD start */}
+                  <div className="flex flex-row space-x-3 sm:hidden">
+                    <div className="flex gap-2 items-center text-xl hover:text-primary">
+                      <SlMagnifier
+                        onClick={onMagnifierOpen}
+                        style={{ cursor: 'pointer' }}
+                        className="text-xl"
+                      />
+                      <Modal
+                        isOpen={isMagnifierOpen}
+                        placement={modalPlacement}
+                        onOpenChange={onMagnifierOpenChange}
+                        className="mx-0 my-0 "
+                        style={{
+                          borderRadius: '4% 4% 0% 0%',
+                        }}
+                      >
+                        <ModalContent>
+                          <>
+                            <ModalHeader className="flex flex-col gap-1">
+                              關鍵字搜尋
+                            </ModalHeader>
+                            <ModalBody>
+                              <div className="sm:hidden block">
+                                <SearchBtn />
+                              </div>
+                              <div className="flex space-x-2">
+                                <p className="text-primary">HOT</p>
+                                <p className="text-tertiary-gray-1">
+                                  熱門關鍵字
+                                </p>
+                              </div>
+                              <div className="flex space-x-1.5">
+                                {keywordTags.slice(0, 3).map((item, index) => (
+                                  <Link
+                                    href="/shop/details"
+                                    key={index}
+                                    className="text-base px-2 py-0.5 bg-primary-300 hover:bg-primary-200"
+                                    style={{ cursor: 'pointer' }}
+                                  >
+                                    {item.tag}
+                                  </Link>
+                                ))}
+                              </div>
+                              <p>玫瑰花</p>
+                              <p>桔梗</p>
+                            </ModalBody>
+                          </>
+                        </ModalContent>
+                      </Modal>
                     </div>
-                    {/* RWD end */}
+
+                    <div className="flex gap-2 items-center text-xl hover:text-primary">
+                      <IoFilterCircleOutline
+                        onClick={onFilterOpen}
+                        style={{ cursor: 'pointer' }}
+                        className="text-2xl"
+                      />
+                      <Modal
+                        isOpen={isFilterOpen}
+                        placement={modalPlacement}
+                        onOpenChange={onFilterOpenChange}
+                        className="mx-0 my-0"
+                        style={{ borderRadius: '4% 4% 0% 0%' }}
+                      >
+                        <ModalContent>
+                          <>
+                            <ModalHeader className="flex flex-col gap-1">
+                              排序與篩選
+                            </ModalHeader>
+                            <ModalBody
+                              style={{
+                                maxHeight: 'calc(100vh - 200px)',
+                                overflowY: 'auto',
+                              }}
+                            >
+                              <div>
+                                <p className="text-primary text-center py-0.5 bg-primary-300">
+                                  排序
+                                </p>
+                                <div className="my-5">
+                                  <RadioGroup>
+                                    {selectList.map((item, index) => (
+                                      <Radio
+                                        key={item.value}
+                                        value={item.value}
+                                      >
+                                        {item.label}
+                                      </Radio>
+                                    ))}
+                                  </RadioGroup>
+                                </div>
+                              </div>
+                              <div>
+                                <p className="text-primary text-center py-0.5 bg-primary-300">
+                                  篩選
+                                </p>
+                                <div className="my-5">
+                                  <p className="text-tertiary-black my-2">
+                                    子類
+                                  </p>
+                                  <div className="space-y-0.5 grid grid-cols-2">
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <p className=" text-tertiary-black">
+                                        鮮花
+                                      </p>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <p className=" text-tertiary-black">
+                                        花盆栽
+                                      </p>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <p className=" text-tertiary-black">
+                                        葉材
+                                      </p>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <p className=" text-tertiary-black">
+                                        植盆栽
+                                      </p>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <p className=" text-tertiary-black">
+                                        器具
+                                      </p>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <p className=" text-tertiary-black">
+                                        材料
+                                      </p>
+                                    </Checkbox>
+                                  </div>
+                                </div>
+                                <hr />
+                                <div className="my-5">
+                                  <p className="text-tertiary-black my-2">
+                                    價格
+                                  </p>
+                                  <div className="flex justify-between items-center">
+                                    <input
+                                      type="text"
+                                      placeholder="最低價格"
+                                      className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                    />
+                                    <div className="h-px w-10 bg-gray-400"></div>
+                                    <input
+                                      type="text"
+                                      placeholder="最高價格"
+                                      className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                    />
+                                  </div>
+                                </div>
+                                <hr />
+                                <div className="my-5">
+                                  <p className="text-tertiary-black my-2">
+                                    顏色
+                                  </p>
+                                  <div className="space-y-0.5 grid grid-cols-2">
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">红色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#FF0000',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">橙色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#FFA500',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">黃色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#FFFF00',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">綠色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#CFDD81',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">藍色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#0000FF',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">紫色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#8B00FF',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">粉色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#FFC0CB',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">褐色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{ backgroundColor: 'red' }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">灰色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#704214',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">黑色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#808080',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+
+                                    <Checkbox
+                                      defaultSelected
+                                      radius="sm"
+                                      className="mr-2"
+                                    >
+                                      <div className="flex items-center">
+                                        <p className=" mr-2">白色</p>
+                                        <div
+                                          className="h-4 w-4 rounded-full bg-red-500"
+                                          style={{
+                                            backgroundColor: '#000000',
+                                          }}
+                                        ></div>
+                                      </div>
+                                    </Checkbox>
+                                  </div>
+                                </div>
+                              </div>
+                            </ModalBody>
+                            <ModalFooter className="flex gap-2">
+                              <MyButton
+                                color="primary"
+                                size="xl"
+                                isOutline
+                                className="flex-1"
+                              >
+                                清除條件
+                              </MyButton>
+                              <MyButton
+                                color="primary"
+                                size="xl"
+                                isOutline
+                                className="flex-1"
+                              >
+                                確認
+                              </MyButton>
+                            </ModalFooter>
+                          </>
+                        </ModalContent>
+                      </Modal>
+                    </div>
                   </div>
-                  {/* search & select end */}
+                  {/* RWD end */}
                 </div>
                 {/* search & select end */}
               </div>
+              {/* search & select end */}
+
               {/* main section start */}
               <div className="flex flex-col md:flex-row gap-4 w-full">
                 {/* filter start */}
@@ -980,7 +973,7 @@ export default function Shop() {
                 {/* filter end */}
                 {/* products starts */}
                 <div className="sm:w-10/12">
-                  <div className="bg-white p-4 rounded-lg gap-6 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
+                  <div className="bg-white rounded-lg gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
                     {products.map((product, index) => (
                       <Card
                         shadow="sm"
