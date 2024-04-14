@@ -1387,11 +1387,6 @@
 
       // 播放選擇動畫
       async function playSelection() {
-        document
-          .getElementById('restartButton')
-          .addEventListener('click', async function () {
-            await reset()
-          })
         document.getElementById('restartButton').style.display = 'block'
         let pickNum = pickAry.length - 1
         document
