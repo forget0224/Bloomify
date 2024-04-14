@@ -98,7 +98,7 @@ const DraggableProductList = ({ productList }) => {
             </CardHeader>
             <CardFooter className=" justify-between">
               <p className="sm:text-lg text-md">
-                {item.discount !== '' ? (
+                {item.discount !== 0 ? (
                   <>
                     <span className="line-through">${item.price}</span>
                     <span className="ml-2 text-danger">

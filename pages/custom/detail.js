@@ -5,9 +5,7 @@ import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { MyButton } from '@/components/btn/mybutton'
 export default function Detail() {
   const [activePage, setActivePage] = useState('custom')
-
   const [isHeart, setIsHeart] = useState(true)
-
   const handleHeartClick = () => {
     setIsHeart(!isHeart)
   }
