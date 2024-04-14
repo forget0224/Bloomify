@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        transition: 0.1s;
+      }
+
+      /* 彈窗動畫縮放 */
+      .container {
+        transform: scale(0);
+      }
+      .is-active.container {
+        transform: scale(1);
+      }
+      /* 彈窗動畫縮放結束 */
+
+      /* 彈窗動畫 */
+      .is-active.container {
+        animation: popup 0.5s;
+      }
+      @keyframes popup {
+        0% {
+          transform: scale(0);
+        }
+        20% {
+          transform: scale(1.1);
+        }
+        50% {
+          transform: scale(0.95);
+        }
+        80% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      /* 彈窗動畫結束 */
+
+      /* ________彈窗開始_____________ */
+
+      .btn-open {
+        width: 200px;
+        color: white;
+        line-height: 50px;
+        text-align: center;
+        background-color: brown;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .container {
+        width: 320px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .title {
+        position: relative;
+        padding: 5px 0;
+        font-size: 30px;
+        text-align: center;
+        color: white;
+        background-color: DarkOrange;
+      }
+      .btn-close {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .content {
+        padding: 30px;
+        background-color: Bisque;
+      }
+      /* _______彈窗結束____________ */
+    </style>
+  </head>
+  <body>
+    <!-- _____彈窗按鈕開始_____ -->
+    <div class="btn-open" onclick="addActive()">Open Popup</div>
+
+    <div id="container" class="container">
+      <div class="title">
+        Title
+        <div class="btn-close" onclick="removeActive()">Close</div>
+      </div>
+      <div class="content">Content</div>
+    </div>
+    <!-- _____彈窗按鈕結束_____ -->
+    <script>
+      function removeActive() {
+        document.getElementById('container').classList.remove('is-active')
+      }
+      function addActive() {
+        document.getElementById('container').classList.add('is-active')
+      }
+    </script>
+  </body>
+</html>
