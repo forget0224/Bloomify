@@ -39,28 +39,78 @@ export default function Shop() {
   // backend start
   const [products, setProducts] = useState([])
 
-  const getProducts = async () => {
-    //後端的url
-    const url = 'http://localhost:3005/api/products'
-
-    try {
-      const res = await fetch(url)
-      const data = await res.json()
-      // console.log(data)
-
-      // 設定到狀態中 ===> 進入update階段，觸發重新渲染(re-render) ===> 顯示資料
-      if (Array.isArray(data.data.products)) {
-        // 獲取照片的判斷式要寫在這裡
-
-        setProducts(data.data.products)
-      }
-    } catch (e) {
-      console.log(e)
-    }
-  }
   useEffect(() => {
-    getProducts()
+    async function fetchAllProducts() {
+      try {
+        const response = await fetch('http://localhost:3005/api/products')
+        const data = await response.json()
+        if (data.status === 'success' && Array.isArray(data.data.products)) {
+          // 處理全部商品數據
+          setProducts(processProducts(data.data.products))
+        }
+      } catch (error) {
+        console.error('Error fetching all products:', error)
+      }
+    }
+
+    fetchAllProducts()
   }, [])
+
+  // 先找資料夾再找照片的方法
+  // 定義資料夾映射表
+  // 映射表示在兩個不同的資料之間建立對應關係，通常是以一個資料集合中的值對應到另一個資料集合中的值。
+  // 這裡的資料夾映射將產品類別對應到相應的資料夾路徑，以便在前端呈現時可以根據產品類別來動態地載入相應的圖片資源。
+  const folderMappings = [
+    {
+      category: '全部',
+      directory: [
+        'flowers',
+        'flower-pots',
+        'foliage',
+        'plant-pots',
+        'materials',
+        'tools',
+      ],
+    },
+    { category: '鮮花', directory: 'flowers' },
+    { category: '花盆栽', directory: 'flower-pots' },
+    { category: '葉材', directory: 'foliage' },
+    { category: '植盆栽', directory: 'plant-pots' },
+    { category: '器具', directory: 'tools' },
+    { category: '材料', directory: 'materials' },
+  ]
+
+  // 處理商品函數
+  function processProducts(productsArray) {
+    return productsArray.map((product) => {
+      // 取得主要圖片
+      const mainImage =
+        (product.images &&
+          product.images.find((image) => image.is_thumbnail === 0)) ||
+        (product.images && product.images[0])
+      // 初始化資料夾為全部類別的資料夾列表
+      let folder =
+        folderMappings.find((mapping) => mapping.category === '全部')
+          ?.directory || []
+      // 根據產品類別查找對應的資料夾
+      // 這裡是對應Product_Category的資料表，因此後端有關聯表格
+      const mapping = folderMappings.find(
+        (mapping) => mapping.category === product.category.name
+      )
+      // 如果找到對應的資料夾映射，則將資料夾設為映射的目錄，否則保持不變
+      if (mapping) {
+        folder = Array.isArray(mapping.directory)
+          ? mapping.directory
+          : [mapping.directory]
+      }
+      // 返回處理後的產品資料，包括資料夾和主要圖片
+      return {
+        ...product,
+        folder: folder,
+        mainImage: mainImage ? mainImage.url : 'pink_Gladiola_0.jpg', // 若無取得主圖，則設預設圖片
+      }
+    })
+  }
   // backend end
 
   // carousel start
@@ -128,140 +178,6 @@ export default function Shop() {
     { value: 'lowToHigh', label: '價格由低到高' },
   ]
   // select list end
-  // products start
-  //用category來找相對應的照片
-  // const arr = [{category:'鮮花', directory:'flowers'}, {category:'花盆栽', directory:'plant'}]以此類推
-  const productList = [
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Avocado',
-      starCount: '5.0',
-      shop: 'shop1',
-      tag: 'hot sale',
-      price: '$15.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
-      title: 'Watermelon',
-      starCount: '4.0',
-      shop: 'shop2',
-      tag: 'hot sale',
-      price: '$8.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Avocado',
-      starCount: '5.0',
-      shop: 'shop1',
-      tag: 'hot sale',
-      price: '$15.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
-      title: 'Watermelon',
-      starCount: '4.0',
-      shop: 'shop2',
-      tag: 'hot sale',
-      price: '$8.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Avocado',
-      starCount: '5.0',
-      shop: 'shop1',
-      tag: 'hot sale',
-      price: '$15.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
-      title: 'Watermelon',
-      starCount: '4.0',
-      shop: 'shop2',
-      tag: 'hot sale',
-      price: '$8.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/purple_Crocus_1.jpg',
-      title: 'Apple',
-      starCount: '3.0',
-      shop: 'shop3',
-      tag: 'hot sale',
-      price: '$44.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Ok',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/purple_Gloxinia_1.jpg',
-      title: 'Peach',
-      starCount: '2.5',
-      shop: 'shop5',
-      tag: 'hot sale',
-      price: '$24.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Sweet_Pea_0.jpg',
-      title: 'Avocado1',
-      starCount: '4.0',
-      shop: 'shop6',
-      tag: 'hot sale',
-      price: '$5.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/yellow_Coreopsis_0.jpg',
-      title: 'Avocado2',
-      starCount: '4.5',
-      shop: 'shop7',
-      tag: 'hot sale',
-      price: '$28.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Avocado3',
-      starCount: '5.0',
-      shop: 'shop8',
-      tag: 'hot sale',
-      price: '$35.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Avocado4',
-      starCount: '5.0',
-      shop: 'shop9',
-      tag: 'hot sale',
-      price: '$45.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/white_Apple_Blossoms_0.jpg',
-      title: 'Avocado5',
-      starCount: '3.0',
-      shop: 'shop10',
-      tag: 'hot sale',
-      price: '$35.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/red_Camellia__3.jpg',
-      title: 'Avocado6',
-      starCount: '4.5',
-      shop: 'shop11',
-      tag: 'hot sale',
-      price: '$10.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/blue_Trumpet_Gentian_1.jpg',
-      title: 'Avocado7',
-      starCount: '2.0',
-      shop: 'shop12',
-      tag: 'hot sale',
-      price: '$25.70',
-    },
-  ]
-  // products end
   // toaster start
   const notify = () => toast.success('已成功加入購物車')
   // toaster end
@@ -278,33 +194,20 @@ export default function Shop() {
   } = useDisclosure()
   const [modalPlacement, setModalPlacement] = React.useState('bottom-center')
   // RWD search & filter modal end
-  // keyword tags start
-  const keywordTags = [
-    {
-      tag: '玫瑰花',
-    },
-    {
-      tag: '桔梗',
-    },
-    {
-      tag: '向日葵',
-    },
-  ]
-  // keyword tags end
   // load more start
-  const [hasMore, setHasMore] = useState(true)
-  const [sliceSize, setSliceSize] = useState(12)
-  const handleLoadMore = () => {
-    setSliceSize((prevSliceSize) => prevSliceSize + 6)
-    if (slicedProductList.length + 6 >= productList.length) {
-      setHasMore(false)
-    }
-  }
+  // const [hasMore, setHasMore] = useState(true)
+  // const [sliceSize, setSliceSize] = useState(12)
+  // const handleLoadMore = () => {
+  //   setSliceSize((prevSliceSize) => prevSliceSize + 6)
+  //   if (slicedProductList.length + 6 >= productList.length) {
+  //     setHasMore(false)
+  //   }
+  // }
   // load more end
   // screen size for number of cards start
   // const windowSize = useWindowSize()
   // const sliceSizeForScreen = windowSize.width < 640 ? 6 : 12
-  const slicedProductList = productList.slice(0, sliceSize)
+  // const slicedProductList = productList.slice(0, sliceSize)
   // screen size for number of cards end
   const [activePage, setActivePage] = useState('shop')
 
@@ -394,7 +297,7 @@ export default function Shop() {
               {/* select categories end */}
 
               {/* search & select start */}
-              <div className="w-full p-4 flex justify-between">
+              <div className="w-full py-4 flex justify-between">
                 {/* searchbar */}
                 <div className="hidden sm:block sm:w-3/12">
                   <SearchBtn />
@@ -456,16 +359,13 @@ export default function Shop() {
                                 </p>
                               </div>
                               <div className="flex space-x-1.5">
-                                {keywordTags.slice(0, 3).map((item, index) => (
-                                  <Link
-                                    href="/shop/details"
-                                    key={index}
-                                    className="text-base px-2 py-0.5 bg-primary-300 hover:bg-primary-200"
-                                    style={{ cursor: 'pointer' }}
-                                  >
-                                    {item.tag}
-                                  </Link>
-                                ))}
+                                <Link
+                                  href="/shop/details"
+                                  className="text-base px-2 py-0.5 bg-primary-300 hover:bg-primary-200"
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  哈哈
+                                </Link>
                               </div>
                               <p>玫瑰花</p>
                               <p>桔梗</p>
@@ -973,11 +873,11 @@ export default function Shop() {
                 {/* filter end */}
                 {/* products starts */}
                 <div className="sm:w-10/12">
-                  <div className="bg-white rounded-lg gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
+                  <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
                     {products.map((product, index) => (
                       <Card
                         shadow="sm"
-                        key={index}
+                        key={product.id}
                         isPressable
                         onPress={() => console.log('item pressed')}
                       >
@@ -988,6 +888,7 @@ export default function Shop() {
                             className="block relative"
                           >
                             <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                            {/* 根據產品的資料夾路徑和主圖檔名，組合出完整的圖片路徑 */}
                             <Image
                               isZoomed
                               shadow="none"
@@ -995,7 +896,15 @@ export default function Shop() {
                               width="100%"
                               alt={product.name}
                               className="w-full object-cover h-[250px] z-0"
-                              src={product.url}
+                              src={
+                                Array.isArray(product.folder) // 檢查資料夾是否為陣列型態
+                                  ? product.folder // 如果是陣列，表示有多個資料夾路徑
+                                      .map((folder) => {
+                                        return `/assets/shop/products/${product.folder}/${product.mainImage}` // 對每個資料夾路徑，組合圖片路徑
+                                      })
+                                      .join(',') // 將多個圖片路徑組合成字串，用逗號分隔
+                                  : `/assets/shop/products/${product.folder}/${product.mainImage}` // 如果只有單個資料夾路徑，直接組合圖片路徑
+                              }
                             />
                           </Link>
                         </CardBody>
@@ -1009,9 +918,16 @@ export default function Shop() {
                             </p>
                           </div>
                           <p className="text-base">{product.shop}</p>
-                          <p className="text-base px-2.5 py-0.5 inline-block bg-primary-300">
-                            {product.tag}
-                          </p>
+                          <div className="flex flex-wrap">
+                            {product.tags.map((tag) => (
+                              <p
+                                key={tag.id}
+                                className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
+                              >
+                                {tag.name}
+                              </p>
+                            ))}
+                          </div>
                         </CardHeader>
                         <CardFooter className="text-small justify-between">
                           <p className="text-xl truncate">NT${product.price}</p>
@@ -1088,11 +1004,11 @@ export default function Shop() {
                   <MyButton
                     color="primary"
                     size="xl"
-                    onClick={handleLoadMore}
-                    disabled={!hasMore}
-                    className={`${
-                      !hasMore ? 'opacity-50 pointer-events-none' : ''
-                    }`}
+                    // onClick={handleLoadMore}
+                    // disabled={!hasMore}
+                    // className={`${
+                    //   !hasMore ? 'opacity-50 pointer-events-none' : ''
+                    // }`}
                   >
                     查看更多
                   </MyButton>
