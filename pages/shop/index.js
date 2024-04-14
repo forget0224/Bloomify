@@ -56,7 +56,7 @@ export default function Shop() {
     fetchAllProducts()
   }, [])
 
-  // 先找資料夾再找照片的方法
+  // 找資料夾再找照片
   // 定義資料夾映射表
   // 映射表示在兩個不同的資料之間建立對應關係，通常是以一個資料集合中的值對應到另一個資料集合中的值。
   // 這裡的資料夾映射將產品類別對應到相應的資料夾路徑，以便在前端呈現時可以根據產品類別來動態地載入相應的圖片資源。
@@ -93,7 +93,7 @@ export default function Shop() {
         folderMappings.find((mapping) => mapping.category === '全部')
           ?.directory || []
       // 根據產品類別查找對應的資料夾
-      // 這裡是對應Product_Category的資料表，因此後端有關聯表格
+      // 這裡是對應Product_Category的資料表，因此後端有作關聯表格
       const mapping = folderMappings.find(
         (mapping) => mapping.category === product.category.name
       )
@@ -107,7 +107,9 @@ export default function Shop() {
       return {
         ...product,
         folder: folder,
-        mainImage: mainImage ? mainImage.url : 'pink_Gladiola_0.jpg', // 若無取得主圖，則設預設圖片
+        mainImage: mainImage
+          ? mainImage.url
+          : '/assets/shop/products/flowers/pink_Gladiola_0.jpg', // 若無取得主圖，則設預設圖片
       }
     })
   }
@@ -917,7 +919,9 @@ export default function Shop() {
                               <span>{product.overall_review}</span>
                             </p>
                           </div>
-                          <p className="text-base">{product.shop}</p>
+                          <p className="text-base text-tertiary-gray-100">
+                            {product.stores.store_name}
+                          </p>
                           <div className="flex flex-wrap">
                             {product.tags.map((tag) => (
                               <p
@@ -941,59 +945,6 @@ export default function Shop() {
                         </CardFooter>
                       </Card>
                     ))}
-                    {/* 原始的程式碼 start */}
-                    {/* {slicedProductList.map((item, index) => (
-                      <Card
-                        shadow="sm"
-                        key={index}
-                        isPressable
-                        onPress={() => console.log('item pressed')}
-                      >
-                        <CardBody className="relative overflow-visible p-0">
-                          <Link
-                            href="/shop/details"
-                            key={index}
-                            className="block relative"
-                          >
-                            <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                            <Image
-                              isZoomed
-                              shadow="none"
-                              radius="none"
-                              width="100%"
-                              alt={item.title}
-                              className="w-full object-cover h-[250px] z-0"
-                              src={item.img}
-                            />
-                          </Link>
-                        </CardBody>
-                        <CardHeader className="block text-left">
-                          <div className="flex justify-between">
-                            <p className="text-xl truncate">{item.title}</p>
-                            <p className="text-base flex items-center space-x-1">
-                              <BsFillStarFill className="text-secondary-100" />
-                              {item.star}
-                              <span>{item.starCount}</span>
-                            </p>
-                          </div>
-                          <p className="text-base">{item.shop}</p>
-                          <p className="text-base px-2.5 py-0.5 inline-block bg-primary-300">
-                            {item.tag}
-                          </p>
-                        </CardHeader>
-                        <CardFooter className="text-small justify-between">
-                          <p className="text-xl truncate">{item.price}</p>
-                          <div
-                            className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                            onClick={notify}
-                          >
-                            <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
-                          </div>
-                          <Toaster />
-                        </CardFooter>
-                      </Card>
-                    ))} */}
-                    {/* 原始的程式碼 end */}
                   </div>
                 </div>
                 {/* products end */}
