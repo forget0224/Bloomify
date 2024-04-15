@@ -7,14 +7,23 @@ export default function CardGroupCategory() {
 
   useEffect(() => {
     async function fetchCategories() {
-      const res = await fetch('http://localhost:3005/api/courses/categories')
-      const data = await res.json()
-      if (data.status === 'success') {
-        setCategories(data.data.categories)
+      try {
+        const res = await fetch('http://localhost:3005/api/courses/categories')
+        const data = await res.json()
+        if (data.status === 'success') {
+          setCategories(data.data.categories)
+        }
+      } catch (e) {
+        console.error('Failed to fetch stores', e)
       }
     }
     fetchCategories()
   }, [])
+
+  // 如果 courses 是 undefined 或者為空數組，就渲染一個提示訊息或者 loading...
+  if (!categories || categories.length === 0) {
+    return <div>課程資料正在加載中或者沒有可用的課程。</div>
+  }
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
