@@ -15,32 +15,56 @@ import { PiEyeClosed } from 'react-icons/pi'
 
 // Login
 export default function Login() {
+  const [activePage, setActivePage] = useState('member')
+
+  // 密碼隱藏顯示切換
+  const [isVisible, setIsVisible] = useState(false)
+  const toggleVisibility = () => setIsVisible((prev) => !prev)
+
+  // 帳號密碼
+  const [user, setUser] = useState({
+    username: '',
+    password: '',
+  })
+
+  // 輸入帳號密碼
+  const handleFieldChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value })
+  }
+
+  // 表單送出
+  const handleSubmit = async (e) => {
+    // 阻擋表單預設送出行為
+    e.preventDefault()
+    // 確認是否有抓到 user
+    console.log(user)
+
+    // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
+    const res = await fetch('http://localhost:3005/api/share-members/login', {
+      credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(user),
+    })
+    const data = await res.json()
+    console.log(data)
+
+    if (data.status === 'success') {
+      // 登入成功，可以在這裡處理成功登入的相關操作，例如跳轉頁面或顯示成功訊息
+      console.log('登入成功，後端回應:', data)
+    } else {
+      // 登入失敗，顯示錯誤訊息
+      console.error('登入失敗，後端回應:', data)
+    }
+  }
+
   // input 樣式
   const inputStyles = {
     label: 'text-base',
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
-  }
-
-  // 密碼toggle切換
-  const [isVisible, setIsVisible] = useState(false)
-  const toggleVisibility = () => setIsVisible((prev) => !prev)
-
-  const [activePage, setActivePage] = useState('member')
-
-  const handleSubmit = async (e) => {
-    // 阻擋表單預設送出行為
-    e.preventDefault()
-
-    // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
-    // const res = await fetch('http://localhost:3000/api/members/login', {
-    //   credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   method: 'POST',
-    //   body: JSON.stringify(user),
-    // })
   }
 
   return (
@@ -58,18 +82,25 @@ export default function Login() {
                   onSubmit={handleSubmit}
                 >
                   <Input
+                    // input 要設定name
+                    name="username"
+                    label="帳號"
                     labelPlacement="outside"
                     placeholder="請輸入您的信箱"
-                    type="email"
-                    label="電子信箱"
+                    type="text"
+                    value={user.username}
+                    onChange={handleFieldChange}
                     isRequired
                     className={{ ...inputStyles }}
                   />
                   <Input
-                    labelPlacement="outside"
+                    name="password"
                     type={isVisible ? 'text' : 'password'}
                     label="密碼"
+                    labelPlacement="outside"
                     placeholder="請輸入密碼"
+                    value={user.password}
+                    onChange={handleFieldChange}
                     isRequired
                     className={{ ...inputStyles }}
                     endContent={
