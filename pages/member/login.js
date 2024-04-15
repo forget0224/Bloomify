@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 
 // nextUI
 import Image from 'next/image'
@@ -27,6 +27,22 @@ export default function Login() {
 
   const [activePage, setActivePage] = useState('member')
 
+  const handleSubmit = async (e) => {
+    // 阻擋表單預設送出行為
+    e.preventDefault()
+
+    // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
+    // const res = await fetch('http://localhost:3000/api/members/login', {
+    //   credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   method: 'POST',
+    //   body: JSON.stringify(user),
+    // })
+  }
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -37,7 +53,10 @@ export default function Login() {
               {/* Form */}
               <div className="w-1/2 h-full flex flex-col items-center px-10 py-12">
                 <h1 className="text-3xl mb-12 mt-14">會員登入</h1>
-                <form className="flex flex-col space-y-12 w-full">
+                <form
+                  className="flex flex-col space-y-12 w-full "
+                  onSubmit={handleSubmit}
+                >
                   <Input
                     labelPlacement="outside"
                     placeholder="請輸入您的信箱"
