@@ -51,38 +51,6 @@ function ShopSlider() {
       tag: 'hot sale',
       price: '$78.70',
     },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Orange',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Orange',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Orange',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Orange',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
   ]
 
   const containerRef = useRef()
