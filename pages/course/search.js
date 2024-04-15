@@ -31,8 +31,6 @@ export default function CourseSearch() {
           {/* 搜尋結果卡片 */}
           <div className="grid gap-y-16 my-14 w-full">
             <CardGroup />
-            <CardGroup />
-            <CardGroup />
           </div>
 
           {/* 頁碼 */}
