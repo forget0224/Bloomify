@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Image } from '@nextui-org/react'
@@ -14,6 +15,46 @@ import Link from 'next/link.js'
 import toast, { Toaster } from 'react-hot-toast'
 
 export default function Detail() {
+  const router = useRouter()
+  const [product, setProduct] = useState({
+    id: '',
+    name: '',
+    product_category_id: 0,
+    share_color_id: '',
+    price: 0,
+    stock: 0,
+    purchase_count: 0,
+    info: '',
+    share_store_id: '',
+    size: '',
+    note: '',
+    overall_review: 0,
+    product_review_id: '',
+    created_at: '',
+    updated_at: '',
+  })
+
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const { pid } = router.query
+        const response = await fetch(
+          `http://localhost:3005/api/products/${pid}`
+        )
+        const data = await response.json()
+        if (data.status === 'success' && data.data.product) {
+          setProduct(data.data.product)
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error)
+      }
+    }
+
+    if (router.isReady) {
+      fetchProduct()
+    }
+  }, [])
+
   const [activePage, setActivePage] = useState('shop')
 
   // images start
@@ -39,50 +80,24 @@ export default function Detail() {
     wrapper: 'text-base', // 整個表格
   }
 
-  //comment start
-  // const comment = [
-  //   {
-  //     userName: '吉伊卡哇',
-  //     time: '2023.02.12',
-  //     star: '3',
-  //     message:
-  //       '申居鄖說過一句富有哲理的話，始交不慎，後必成仇。這激勵了我。雨果說過一句富有哲理的話，有朋自遠方來，不亦樂乎。這激勵了我。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
-  //   },
-  //   {
-  //     userName: '芙莉蓮',
-  //     time: '2024.04.05',
-  //     star: '4',
-  //     message:
-  //       '我們仍然需要對玫瑰花保持懷疑的態度。面對如此難題，我們必須設想周全。所謂玫瑰花，關鍵是玫瑰花需要如何解讀。我們不妨可以這樣來想: 每個人的一生中，幾乎可說碰到玫瑰花這件事，是必然會發生的。',
-  //   },
-  //   {
-  //     userName: '費倫',
-  //     time: '2024.05.05',
-  //     star: '2',
-  //     message:
-  //       '當你搞懂後就會明白了。而這些並不是完全重要，更加重要的問題是，這種事實對本人來說意義重大，相信對這個世界也是有一定意義的。對玫瑰花進行深入研究，在現今時代已經無法避免了。',
-  //   },
-  // ]
-  //comment end
-
   // calculate start
-  const [quantity, setQuantity] = useState(1)
-  const handleIncrement = () => {
-    setQuantity(quantity + 1)
-  }
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1)
-    }
-  }
-  const handleChange = (event) => {
-    const newQuantity = parseInt(event.target.value)
-    if (!isNaN(newQuantity) && newQuantity >= 1) {
-      setQuantity(newQuantity)
-    } else if (event.target.value === '') {
-      setQuantity(1)
-    }
-  }
+  // const [quantity, setQuantity] = useState(1)
+  // const handleIncrement = () => {
+  //   setQuantity(quantity + 1)
+  // }
+  // const handleDecrement = () => {
+  //   if (quantity > 1) {
+  //     setQuantity(quantity - 1)
+  //   }
+  // }
+  // const handleChange = (event) => {
+  //   const newQuantity = parseInt(event.target.value)
+  //   if (!isNaN(newQuantity) && newQuantity >= 1) {
+  //     setQuantity(newQuantity)
+  //   } else if (event.target.value === '') {
+  //     setQuantity(1)
+  //   }
+  // }
   // calculate end
 
   // tabs start
@@ -158,6 +173,11 @@ export default function Detail() {
   const notify = () => toast.success('已成功加入購物車')
   // toaster end
 
+  // backend end
+  if (!router.isReady) {
+    return <div>Loading...</div>
+  }
+
   return (
     <DefaultLayout
       activePage={activePage}
@@ -221,6 +241,108 @@ export default function Detail() {
             {/* RWD imgs  end*/}
             {/* info start*/}
             <div className="space-y-4 sm:space-y-8">
+              <div className="space-y-2">
+                <p className="text-4xl text-tertiary-black font-bold">
+                  {product.name}
+                </p>
+                <div className="flex justify-between">
+                  <div className="flex items-center space-x-1 rtl:space-x-reverse">
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <BsFillStarFill className="text-secondary-100" />
+                    <div>
+                      <p className="text-tertiary-black">5.0</p>
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <BsHeart className="text-secondary-100" />
+                    <LuShare2 className="text-secondary-100" />
+                  </div>
+                </div>
+                <div>
+                  {productTags.map((item, index) => (
+                    <span
+                      key={index}
+                      className="bg-primary text-secondary-300 text-base me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                    >
+                      {item.tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex justify-start">
+                <table>
+                  <tbody>
+                    <tr className="my-4">
+                      <td className="py-2 whitespace-nowrap">商品定價</td>
+                      <td className="px-4 py-2">NT$30</td>
+                    </tr>
+                    <tr className="my-4">
+                      <td className="py-2 whitespace-nowrap">商品庫存</td>
+                      <td className="px-4 py-2">300支</td>
+                    </tr>
+                    <tr className="my-4">
+                      <td className="py-2 whitespace-nowrap">累積購買數</td>
+                      <td className="px-4 py-2">30支</td>
+                    </tr>
+                    <tr className="my-4">
+                      <td className="py-2 whitespace-nowrap">購買數量</td>
+                      <td className="px-4 py-2">
+                        <div className="flex gap-4 items-center">
+                          <Button
+                            isIconOnly
+                            variant="faded"
+                            className="border-transparent"
+                            // onClick={handleDecrement}
+                          >
+                            -
+                          </Button>
+                          <Input
+                            type="text"
+                            // value={quantity}
+                            // onChange={handleChange}
+                            min="1"
+                            className="max-w-20 w-full rounded-md p-1 text-center"
+                            style={{ textAlign: 'center' }}
+                          />
+                          <Button
+                            isIconOnly
+                            variant="faded"
+                            className="border-transparent"
+                            // onClick={handleIncrement}
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="flex gap-2 sm:gap-4">
+                <MyButton
+                  color="primary"
+                  size="xl"
+                  onClick={notify}
+                  isOutline
+                  className="w-full"
+                >
+                  加入購物車
+                </MyButton>
+                <Toaster />
+
+                <MyButton color="primary" size="xl" className="w-full">
+                  <Link href="/cart">立即購買</Link>
+                </MyButton>
+              </div>
+            </div>
+
+            {/* <div className="space-y-4 sm:space-y-8">
               <div className="space-y-2">
                 <p className="text-4xl text-tertiary-black font-bold">
                   粉色玫瑰
@@ -320,7 +442,7 @@ export default function Detail() {
                   <Link href="/cart">立即購買</Link>
                 </MyButton>
               </div>
-            </div>
+            </div> */}
             {/* info end*/}
           </div>
 
