@@ -21,6 +21,7 @@ import { Stepper } from 'react-dynamic-stepper'
 import { MyButton } from '@/components/btn/mybutton'
 import Link from 'next/link.js'
 import { FaMinus, FaPlus } from 'react-icons/fa6'
+import CourseCart from '@/components/course/page-cart'
 
 export default function Cart() {
   const [activePage, setActivePage] = useState('cart')
@@ -678,15 +679,15 @@ export default function Cart() {
                   {/* RWD 主要內容 end */}
                 </Card>
               </Tab>
+
               <Tab
                 key="course"
                 title={
                   <div className="flex items-center space-x-2">合作課程</div>
                 }
               >
-                <Card>
-                  <p>合作課程</p>
-                </Card>
+                {/* 課程購物車的頁面 */}
+                <CourseCart />
               </Tab>
             </Tabs>
           </div>

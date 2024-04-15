@@ -93,7 +93,7 @@ export default function Confirm() {
             </div>
             {/* 按鈕群組 */}
             <div className="w-full md:w-6/12 lg:w-4/12 flex justify-center gap-4 mt-8">
-              <Link href="/course/center-course">
+              <Link href="/center/course-order">
                 <MyButton color="primary" size="xl" isOutline>
                   查看訂單
                 </MyButton>

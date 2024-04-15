@@ -9,7 +9,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="hidden md:flex flex-col gap-8 lg:visible w-2/12 h-fit p-10 border-1 rounded-xl border-tertiary-gray-200">
+      <div className="hidden md:flex flex-col gap-8 lg:visible w-2/12 h-fit p-6 lg:p-10 border-1 rounded-xl border-tertiary-gray-200">
         {/* 會員資訊 start */}
         <div className="flex flex-row gap-2 items-center">
           <Image
@@ -20,7 +20,9 @@ export default function Sidebar() {
             width={40}
             height={40}
           />
-          <p className="text-xl text-tertiary-black font-medium">會員姓名</p>
+          <p className="text-xl text-tertiary-black font-medium hidden lg:block">
+            會員姓名
+          </p>
         </div>
         {/* 會員資訊 end */}
 

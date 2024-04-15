@@ -74,6 +74,27 @@ export default function Confirm() {
     wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
   }
 
+  // 假資料
+  // const cartCourseContent = {
+  //   cartList: [
+  //     {
+  //       image: '/assets/course/category-1/img-course-01-01.jpg',
+  //       name: 'AA課程',
+  //       price: '600',
+  //     },
+  //     {
+  //       image: '/assets/course/category-1/img-course-01-01.jpg',
+  //       name: 'BB課程',
+  //       price: '600',
+  //     },
+  //     {
+  //       image: '/assets/course/category-1/img-course-01-01.jpg',
+  //       name: 'CC課程',
+  //       price: '600',
+  //     },
+  //   ],
+  // }
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -136,10 +157,10 @@ export default function Confirm() {
                             <div className="flex flex-row items-center space-x-6">
                               <Image
                                 src={
-                                  '/assets/shop/products/pink_Gladiola_0.jpg'
+                                  '/assets/course/category-1/img-course-01-01.jpg'
                                 }
                                 alt=""
-                                className="w-6 h-6 md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
+                                className="h-6 md:h-24 mx-auto rounded-md md:rounded-xl"
                               />
                               <p>花的名稱</p>
                             </div>
@@ -153,10 +174,10 @@ export default function Confirm() {
                             <div className="flex flex-row items-center space-x-6">
                               <Image
                                 src={
-                                  '/assets/shop/products/pink_Gladiola_0.jpg'
+                                  '/assets/course/category-1/img-course-01-01.jpg'
                                 }
                                 alt=""
-                                className="w-6 h-6 md:w-24 md:h-24 rounded-md md:rounded-xl"
+                                className="h-6 md:h-24 mx-auto rounded-md md:rounded-xl"
                               />
                               <p>花的名稱</p>
                             </div>

@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Image } from '@nextui-org/react'
-import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
+import { Card, CardBody, CardFooter, Link } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
@@ -12,41 +12,78 @@ import CardGroupCategory from '@/components/course/card-group-category'
 import CardGroupStore from '@/components/course/card-group-store'
 
 export default function CourseIndex() {
+  const [courses, setCourses] = useState([])
+  const [latestCourses, setLatestCourses] = useState([])
+  const [randomCourses, setRandomCourses] = useState([])
+
+  useEffect(() => {
+    async function fetchAllCourses() {
+      try {
+        const response = await fetch('http://localhost:3005/api/courses')
+        const data = await response.json()
+        if (data.status === 'success' && Array.isArray(data.data.courses)) {
+          // 處理全部課程數據
+          setCourses(processCourses(data.data.courses))
+        }
+      } catch (error) {
+        console.error('Error fetching all courses:', error)
+      }
+    }
+
+    async function fetchNewestCourses() {
+      try {
+        const response = await fetch('http://localhost:3005/api/courses/latest')
+        const data = await response.json()
+        if (
+          data.status === 'success' &&
+          Array.isArray(data.data.latestCourses)
+        ) {
+          // 處理最新課程數據
+          setLatestCourses(processCourses(data.data.latestCourses))
+        }
+      } catch (error) {
+        console.error('Error fetching latest courses:', error)
+      }
+    }
+
+    async function fetchRandomCourses() {
+      try {
+        const response = await fetch('http://localhost:3005/api/courses/random')
+        const data = await response.json()
+        if (
+          data.status === 'success' &&
+          Array.isArray(data.data.randomCourses)
+        ) {
+          // 處理隨機課程數據
+          setRandomCourses(processCourses(data.data.randomCourses))
+        }
+      } catch (error) {
+        console.error('Error fetching random courses:', error)
+      }
+    }
+
+    fetchAllCourses()
+    fetchNewestCourses()
+    fetchRandomCourses()
+  }, [])
+
+  // 處理課程函數
+  function processCourses(coursesArray) {
+    return coursesArray.map((course) => {
+      const mainImage =
+        (course.images && course.images.find((image) => image.is_main)) ||
+        (course.images && course.images[0])
+      return {
+        ...course,
+        mainImage: mainImage
+          ? mainImage.path
+          : '/assets/course/category-1/img-course-01-01.jpg',
+      }
+    })
+  }
+
   const [activePage, setActivePage] = useState('course')
-  // const list = [
-  //   {
-  //     title: '課程一',
-  //     content:
-  //       '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
-  //     img: '/assets/course/img_course_card_01.png',
-  //     star: '5.0',
-  //     price: 'NT$1200',
-  //   },
-  //   {
-  //     title: '課程二',
-  //     content:
-  //       '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
-  //     img: '/assets/course/img_course_card_02.png',
-  //     star: '5.0',
-  //     price: 'NT$1000',
-  //   },
-  //   {
-  //     title: '課程三',
-  //     content:
-  //       '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
-  //     img: '/assets/course/img_course_card_03.png',
-  //     star: '5.0',
-  //     price: 'NT$800',
-  //   },
-  //   {
-  //     title: '課程四',
-  //     content:
-  //       '課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容課程內容',
-  //     img: '/assets/course/img_course_card_04.png',
-  //     star: '5.0',
-  //     price: 'NT$600',
-  //   },
-  // ]
+
   return (
     <DefaultLayout
       activePage={activePage}
@@ -93,20 +130,29 @@ export default function CourseIndex() {
 
         {/* 卡片群組 */}
         <div className="grid gap-y-4 my-14 w-full">
-          <Subtitle text="最新課程" className="inline-block" />
-          <CardGroup />
+          <Subtitle text="全部課程" className="inline-block" />
+          <CardGroup courses={courses} />
         </div>
+        {/* 最新課程 */}
+        <div className="grid gap-y-4 my-14 w-full">
+          <Subtitle text="最新課程" className="inline-block" />
+          {/* <CardGroup /> */}
+          <CardGroup courses={latestCourses} />
+        </div>
+        {/* 精選商家 */}
         <div className="grid gap-y-4 my-14 w-full">
           <Subtitle text="精選商家" />
           <CardGroupStore />
         </div>
+        {/* 四大分類 */}
         <div className="grid gap-y-4 my-14 w-full">
           <Subtitle text="四大分類" />
           <CardGroupCategory />
         </div>
+        {/* 為您推薦 */}
         <div className="grid gap-y-4 my-14 w-full">
           <Subtitle text="為您推薦" />
-          <CardGroup />
+          <CardGroup courses={randomCourses} />
         </div>
       </CenterLayout>
     </DefaultLayout>
