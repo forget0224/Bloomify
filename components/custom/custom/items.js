@@ -11,7 +11,25 @@ import LeafContent from './LeafContent'
 import PackageContent from './PackageContent'
 import GiftCardContent from './GiftCardContent'
 import LayerContent from './LayerContent'
-
+// api
+// {
+//   "status": "success",
+//   "data": {
+//   "store_id": "2",
+//   "store_name": "花姿妍",
+//   "products": {
+//   "配花": {
+//   "category_name": "配花",
+//   "items": [
+//   {
+//   "name": "向日葵",
+//   "colors": "橙色"
+//   }
+//   ]
+//   }
+//   }
+//   }
+//   }
 const items = [
   {
     icon: <PiFlowerTulipLight />,

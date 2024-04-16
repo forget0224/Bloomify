@@ -4,13 +4,16 @@ import { motion, useMotionValue } from 'framer-motion'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { CiShoppingCart } from 'react-icons/ci'
 import { GoArrowLeft, GoArrowRight } from 'react-icons/go'
+import { useRouter } from 'next/router'
 
 const DraggableProductList = ({ productList }) => {
+  const router = useRouter()
   const dragBuffer = 50
   const dragX = useMotionValue(0)
   const [imgIndex, setImgIndex] = useState(0)
   const [cardMinWidth, setCardMinWidth] = useState(125) // Minimum card width
   const [cardMinGap, setCardMinGap] = useState(14) // Minimum card width
+  const [isDragging, setIsDragging] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -39,8 +42,12 @@ const DraggableProductList = ({ productList }) => {
       setImgIndex((prevIndex) => prevIndex + 1)
     }
   }
+  const onDragStart = () => {
+    setIsDragging(true)
+  }
 
   const onDragEnd = () => {
+    setIsDragging(false)
     const x = dragX.get()
     if (x <= -dragBuffer && imgIndex < productList.length - 1) {
       setImgIndex((prevIndex) => prevIndex + 1)
@@ -54,26 +61,36 @@ const DraggableProductList = ({ productList }) => {
   }
 
   const [isHeart, setIsHeart] = useState(false)
-
+  const handleCardClick = (id) => {
+    console.log(`handleCardClick: isDragging = ${isDragging}, id = ${id}`)
+    if (!isDragging) {
+      console.log(`Navigating to /custom/${id}`)
+      router.push(`/custom/${id}`)
+    }
+  }
   return (
-    <div className=" sm:overflow-hidden  max-w-[1200px]">
+    <div className="   max-w-[1200px] pl-[10px] sm:py-3  py-2 ">
       <motion.div
         transition={{ type: 'spring', mass: 9, stiffness: 400, damping: 50 }}
         drag="x"
         style={{ x: dragX }}
+        onDragStart={onDragStart}
         onDragEnd={onDragEnd}
-        className="grid grid-flow-col auto-cols-max gap-4 sm:gap-4 sm:pr-8 sm:py-3  py-2 "
+        className="grid grid-flow-col auto-cols-max gap-3  "
         animate={{
-          translateX: `-${imgIndex * (cardMinWidth + cardMinGap)}px`,
+          translateX: `-${imgIndex * (cardMinWidth + cardMinGap) + 10}px`,
         }}
         dragConstraints={{ left: 0, right: 0 }}
       >
-        {productList.map((item, index) => (
+        {productList.map((item) => (
           <Card
             shadow="sm"
-            key={index}
+            key={item.id}
             className="cursor-grab active:cursor-grabbing"
             style={{ width: `${cardMinWidth}px` }}
+            isPressable
+            // onPress={handleCardClick(item.id)}
+            onClick={() => handleCardClick(item.id)}
           >
             <CardBody className="p-0">
               <div
@@ -100,13 +117,13 @@ const DraggableProductList = ({ productList }) => {
               <p className="sm:text-lg text-md">
                 {item.discount !== 0 ? (
                   <>
-                    <span className="line-through">${item.price}</span>
+                    <span className="line-through">${item.total_price}</span>
                     <span className="ml-2 text-danger">
-                      ${parseInt(item.price) - parseInt(item.discount)}
+                      ${parseInt(item.total_price) - parseInt(item.discount)}
                     </span>
                   </>
                 ) : (
-                  <>${item.price}</>
+                  <>${item.total_price}</>
                 )}
               </p>
               <p className="text-base items-center">

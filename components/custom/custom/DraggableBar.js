@@ -7,6 +7,7 @@ const DraggableBar = ({
   dragBuffer,
   className,
 }) => {
+  console.log(items)
   const dragY = useMotionValue(0)
   const [imgIndex, setImgIndex] = useState(0)
 
@@ -36,13 +37,13 @@ const DraggableBar = ({
           <div
             key={item.id}
             className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
-            onClick={() => onItemSelect(item)}
+            onClick={() => onItemSelect(item.colors)}
           >
             <div
-              style={{ backgroundImage: `url(${item.src})` }}
+              style={{ backgroundImage: `url(${item.category_url})` }}
               className="bg-cover bg-center aspect-square w-[150px] rounded-xl object-cover cursor-pointer"
             ></div>
-            <p className="text-center">{item.name}</p>
+            <p className="text-center">{item.category_name}</p>
           </div>
         ))}
       </motion.div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ColorSelector from '../common/ColorSelector'
 import DraggableBar from './DraggableBar'
 import ChangeComponent from './ChangeComponent'
-const AccentFlowerComponent = ({ onNext, onPrev }) => {
+const AccentFlowerComponent = ({ onNext, onPrev, items }) => {
   const [selectedFlower, setSelectedFlower] = useState(null)
 
   const flowers = [
@@ -59,7 +59,7 @@ const AccentFlowerComponent = ({ onNext, onPrev }) => {
           </div>
           <div className="w-full h-full relative">
             <DraggableBar
-              items={flowers}
+              items={items}
               onItemSelect={setSelectedFlower}
               itemHeight={35}
               dragBuffer={50}
