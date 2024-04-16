@@ -123,12 +123,10 @@ export default function Shop() {
         (product.images &&
           product.images.find((image) => image.is_thumbnail)) ||
         (product.images && product.images[0])
-      // console.log(mainImage)
       // 初始化資料夾為全部類別的資料夾列表
       let folder =
         folderMappings.find((mapping) => mapping.category === '全部')
           ?.directory || []
-      console.log(folder)
       // 根據產品類別查找對應的資料夾
       // 這裡是對應Product_Category的資料表，因此後端有作關聯表格
       const mapping = folderMappings.find(
@@ -338,7 +336,10 @@ export default function Shop() {
                 </div>
                 {/* filter */}
                 {/* RWD start*/}
-                <p className="text-tertiary-black sm:hidden">共 100 項結果</p>
+
+                <p className="text-tertiary-black sm:hidden">
+                  共 {products.length} 項結果
+                </p>
                 {/* RWD end*/}
                 <div className="flex items-center space-x-4">
                   <p className="hidden sm:block sm:text-xl sm:text-tertiary-black sm:whitespace-nowrap">
@@ -557,7 +558,9 @@ export default function Shop() {
                 <div className="hidden sm:block">
                   <div className="bg-white p-4 rounded-lg shadow-md space-y-8 max-w-[335px]">
                     <Subtitle text="篩選" />
-                    <p className=" text-tertiary-black">共 100 項結果</p>
+                    <p className=" text-tertiary-black">
+                      共 {products.length} 項結果
+                    </p>
 
                     <div className="space-y-4">
                       <p className="text-lg text-tertiary-black">子類</p>
@@ -628,7 +631,7 @@ export default function Shop() {
                 {/* products starts */}
                 <div className="sm:w-10/12">
                   <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
-                    {products.map((product, index) => (
+                    {products.map((product) => (
                       <Card
                         shadow="sm"
                         key={product.id}
@@ -641,7 +644,7 @@ export default function Shop() {
                               pathname: '/shop/[pid]', // 動態路由
                               query: { pid: product.id }, // 將 pid 設置為商品 ID
                             }}
-                            key={index}
+                            key={product.id}
                             className="block relative"
                           >
                             <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
@@ -722,7 +725,7 @@ export default function Shop() {
               </div>
               {/* main section end */}
 
-              <ShopSlider />
+              <ShopSlider products={products} />
             </div>
           </main>
         </>
