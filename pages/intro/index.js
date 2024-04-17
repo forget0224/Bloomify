@@ -2,7 +2,7 @@ import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { Image } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-import CardGroup from '@/components/intro/card-group'
+import CardGroupClean from '@/components/intro/card-group-clean'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/intro/subtitle'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
@@ -186,7 +186,6 @@ export default function FlowersIndex() {
                 />
                 {/* filter */}
                 <div className="flex flex-cols items-center space-x-2">
-                  
                   <Select
                     placeholder="Select"
                     defaultSelectedKeys={['場合']}
@@ -203,7 +202,6 @@ export default function FlowersIndex() {
                   </Select>
                 </div>
                 <div className="flex flex-cols items-center space-x-4">
-                  
                   <Select
                     placeholder="Select"
                     defaultSelectedKeys={['顏色']}
@@ -220,7 +218,6 @@ export default function FlowersIndex() {
                   </Select>
                 </div>
                 <div className="flex flex-cols items-center space-x-4">
-                 
                   <Select
                     placeholder="Select"
                     defaultSelectedKeys={['對象']}
@@ -237,7 +234,6 @@ export default function FlowersIndex() {
                   </Select>
                 </div>
                 <div className="flex flex-cols items-center space-x-4">
-                
                   <Select
                     placeholder="Select"
                     defaultSelectedKeys={['季節']}
@@ -276,22 +272,11 @@ export default function FlowersIndex() {
               {/* search & select end */}
             </div>
             <div className="grid gap-y-4 my-14 ">
-              <CardGroup />
+              <CardGroupClean />
             </div>
-            <div className="grid gap-y-4 my-14 ">
-              <CardGroup />
-            </div>
-            <div className="grid gap-y-4 my-14 ">
-              <CardGroup />
-            </div>
-            <div className="grid gap-y-4 my-14 ">
-              <CardGroup />
-            </div>
-            <div className="grid gap-y-4 my-14 ">
-              <CardGroup />
-              <div class="flex justify-center">
-                <MyButton>查看更多</MyButton>
-              </div>
+
+            <div class="flex justify-center">
+              <MyButton>查看更多</MyButton>
             </div>
           </div>
         </div>

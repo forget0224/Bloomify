@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title></title>
+    <style>
+      @font-face {
+        font-family: 'NotoSerifTC'; /* 定義字型名稱 */
+        src: url('./fonts/NotoSerifTC-Medium.otf') format('truetype'); /* 如果您有多個格式的字型檔案，可以使用逗號分隔 */
+      }
+
+      html {
+        font-family: NotoSerifTC, sans-serif; /* 使用自定義字型，如果字型無法載入，則使用預設字型 */
+      }
+
+      /* 將按鈕改成圓形 */
+      .back-button {
+        width: 60px; /* 設定按鈕的寬度 */
+        height: 60px; /* 設定按鈕的高度 */
+        border-radius: 50%; /* 使用 border-radius 屬性將按鈕變成圓形 */
+        background-color: #68a392; /* 按鈕的背景顏色 */
+        color: white; /* 按鈕的文字顏色 */
+        font-size: 16px; /* 按鈕文字的大小 */
+        text-align: center; /* 將按鈕文字置中 */
+        line-height: 60px; /* 將按鈕文字置中 */
+        text-decoration: none; /* 移除文字底線 */
+        display: inline-block; /*讓按鈕以行內元素方式顯示*/
+        position: fixed; /* 固定在螢幕上 */
+        bottom: 30px; /* 距離底部 20px */
+        right: 30px; /* 距離右邊 20px */
+        text-decoration: none; /* 移除超連結的下底線 */
+        font-family: NotoSerifTC, sans-serif;
+      }
+      /* 指向按鈕的滑鼠游標 */
+      .back-button:hover {
+        background-color: #dbeddf; /* 按鈕的背景顏色在滑鼠移入時變暗 */
+        border-width: 1px;
+        border-style: solid;
+        border-color: #68a392;
+      }
+
+      /* @import url('https://fonts.googleapis.com/css2?family=Croissant+One&display=swap'); */
+      html,
+      body {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        background-image: url('/assets/intro/vintage_speckles.png');
+      }
+
+      .game {
+        position: relative;
+        outline: 1px solid red;
+        height: 100%;
+        overflow: hidden;
+        font-family: 'Croissant One', cursive;
+      }
+      .game .tip {
+        text-align: center;
+        font-size: 32px;
+      }
+      .game .post1 {
+        margin-bottom: 450px;
+      }
+      .game .post2 {
+        margin-left: 450px;
+      }
+      .game .post3 {
+        margin-left: -450px;
+      }
+      .game .card {
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 200px;
+        height: 300px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        bottom: -100px;
+        transform-origin: center calc(100% + 100px);
+        perspective: 500px;
+        transition: transform 0.5s;
+      }
+      .game .card .content {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.03);
+        /* 卡片陰影 */
+        transition: transform 1s;
+        transform-style: preserve-3d;
+        border-radius: 16px;
+      }
+      .game .card .content .front {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        border-radius: 5px;
+        backface-visibility: hidden;
+      }
+      .game .card .content .front::after {
+        content: '';
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        background-image: url(./images/back.jpg);
+        background-position: center center;
+        background-size: cover;
+      }
+      .game .card .content .back {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        /* color: #03446A; */
+        background-color: transparent;
+        /* 翻過來之後的背景底色 */
+        text-align: center;
+        font-size: 40px;
+        font-weight: 700;
+        border-radius: 15px;
+        backface-visibility: hidden;
+        transform: rotateY(180deg);
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+      }
+      .game .card .content .back::after {
+        content: attr(text);
+      }
+      .game .card .content .back::before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        width: calc(100% - 30px);
+        height: calc(100% - 30px);
+        /* border: 5px solid #03446A; */
+        border-radius: 10px;
+        background-color: transparent;
+      }
+      .game .card .content .reversed::after {
+        rotate: 180deg;
+      }
+      .game .card .active {
+        transform: rotateY(180deg);
+        transition: transform 0.5s;
+      }
+      .game .card .pickup {
+        margin-bottom: 100px;
+      }
+      .game .forward1 {
+        z-index: 1;
+        transition: all 0.5s;
+        bottom: 60px;
+      }
+      .game .forward12 {
+        z-index: 2;
+        bottom: 490px;
+      }
+      .game .forward2 {
+        transition: all 0.5s;
+        bottom: 60px;
+      }
+      .game .forward22 {
+        bottom: 260px;
+        left: 450px;
+      }
+      .game .forward3 {
+        z-index: 3;
+        transition: all 0.5s;
+        bottom: 60px;
+      }
+      .game .forward32 {
+        bottom: 260px;
+        left: -450px;
+      }
+      .game .card1Active {
+        transition: transform 0.5s;
+        transform: rotate(-45deg);
+      }
+      .game .card1Active:hover {
+        transform: rotate(-45deg) translateX(35.3553390593px)
+          translateY(-35.3553390593px);
+      }
+      .game .card1pickup {
+        transform: rotate(-45deg) translateX(35.3553390593px)
+          translateY(-35.3553390593px);
+      }
+      .game .card2Active {
+        transition: transform 0.5s;
+        transform: rotate(-42.9069767442deg);
+      }
+      .game .card2Active:hover {
+        transform: rotate(-42.9069767442deg) translateX(34.0405031789px)
+          translateY(-36.6230001956px);
+      }
+      .game .card2pickup {
+        transform: rotate(-42.9069767442deg) translateX(34.0405031789px)
+          translateY(-36.6230001956px);
+      }
+      .game .card3Active {
+        transition: transform 0.5s;
+        transform: rotate(-40.8139534884deg);
+      }
+      .game .card3Active:hover {
+        transform: rotate(-40.8139534884deg) translateX(32.6802469442px)
+          translateY(-37.8417951433px);
+      }
+      .game .card3pickup {
+        transform: rotate(-40.8139534884deg) translateX(32.6802469442px)
+          translateY(-37.8417951433px);
+      }
+      .game .card4Active {
+        transition: transform 0.5s;
+        transform: rotate(-38.7209302326deg);
+      }
+      .game .card4Active:hover {
+        transform: rotate(-38.7209302326deg) translateX(31.2763853494px)
+          translateY(-39.0100976604px);
+      }
+      .game .card4pickup {
+        transform: rotate(-38.7209302326deg) translateX(31.2763853494px)
+          translateY(-39.0100976604px);
+      }
+      .game .card5Active {
+        transition: transform 0.5s;
+        transform: rotate(-36.6279069767deg);
+      }
+      .game .card5Active:hover {
+        transform: rotate(-36.6279069767deg) translateX(29.8307915717px)
+          translateY(-40.1263488771px);
+      }
+      .game .card5pickup {
+        transform: rotate(-36.6279069767deg) translateX(29.8307915717px)
+          translateY(-40.1263488771px);
+      }
+      .game .card6Active {
+        transition: transform 0.5s;
+        transform: rotate(-34.5348837209deg);
+      }
+      .game .card6Active:hover {
+        transform: rotate(-34.5348837209deg) translateX(28.3453944716px)
+          translateY(-41.1890593757px);
+      }
+      .game .card6pickup {
+        transform: rotate(-34.5348837209deg) translateX(28.3453944716px)
+          translateY(-41.1890593757px);
+      }
+      .game .card7Active {
+        transition: transform 0.5s;
+        transform: rotate(-32.4418604651deg);
+      }
+      .game .card7Active:hover {
+        transform: rotate(-32.4418604651deg) translateX(26.8221760192px)
+          translateY(-42.196811178px);
+      }
+      .game .card7pickup {
+        transform: rotate(-32.4418604651deg) translateX(26.8221760192px)
+          translateY(-42.196811178px);
+      }
+      .game .card8Active {
+        transition: transform 0.5s;
+        transform: rotate(-30.3488372093deg);
+      }
+      .game .card8Active:hover {
+        transform: rotate(-30.3488372093deg) translateX(25.26316865px)
+          translateY(-43.1482596377px);
+      }
+      .game .card8pickup {
+        transform: rotate(-30.3488372093deg) translateX(25.26316865px)
+          translateY(-43.1482596377px);
+      }
+      .game .card9Active {
+        transition: transform 0.5s;
+        transform: rotate(-28.2558139535deg);
+      }
+      .game .card9Active:hover {
+        transform: rotate(-28.2558139535deg) translateX(23.6704525524px)
+          translateY(-44.0421352339px);
+      }
+      .game .card9pickup {
+        transform: rotate(-28.2558139535deg) translateX(23.6704525524px)
+          translateY(-44.0421352339px);
+      }
+      .game .card10Active {
+        transition: transform 0.5s;
+        transform: rotate(-26.1627906977deg);
+      }
+      .game .card10Active:hover {
+        transform: rotate(-26.1627906977deg) translateX(22.0461528929px)
+          translateY(-44.8772452655px);
+      }
+      .game .card10pickup {
+        transform: rotate(-26.1627906977deg) translateX(22.0461528929px)
+          translateY(-44.8772452655px);
+      }
+      .game .card11Active {
+        transition: transform 0.5s;
+        transform: rotate(-24.0697674419deg);
+      }
+      .game .card11Active:hover {
+        transform: rotate(-24.0697674419deg) translateX(20.3924369797px)
+          translateY(-45.6524754425px);
+      }
+      .game .card11pickup {
+        transform: rotate(-24.0697674419deg) translateX(20.3924369797px)
+          translateY(-45.6524754425px);
+      }
+      .game .card12Active {
+        transition: transform 0.5s;
+        transform: rotate(-21.976744186deg);
+      }
+      .game .card12Active:hover {
+        transform: rotate(-21.976744186deg) translateX(18.7115113714px)
+          translateY(-46.3667913727px);
+      }
+      .game .card12pickup {
+        transform: rotate(-21.976744186deg) translateX(18.7115113714px)
+          translateY(-46.3667913727px);
+      }
+      .game .card13Active {
+        transition: transform 0.5s;
+        transform: rotate(-19.8837209302deg);
+      }
+      .game .card13Active:hover {
+        transform: rotate(-19.8837209302deg) translateX(17.0056189325px)
+          translateY(-47.019239942px);
+      }
+      .game .card13pickup {
+        transform: rotate(-19.8837209302deg) translateX(17.0056189325px)
+          translateY(-47.019239942px);
+      }
+      .game .card14Active {
+        transition: transform 0.5s;
+        transform: rotate(-17.7906976744deg);
+      }
+      .game .card14Active:hover {
+        transform: rotate(-17.7906976744deg) translateX(15.2770358408px)
+          translateY(-47.6089505862px);
+      }
+      .game .card14pickup {
+        transform: rotate(-17.7906976744deg) translateX(15.2770358408px)
+          translateY(-47.6089505862px);
+      }
+      .game .card15Active {
+        transition: transform 0.5s;
+        transform: rotate(-15.6976744186deg);
+      }
+      .game .card15Active:hover {
+        transform: rotate(-15.6976744186deg) translateX(13.5280685504px)
+          translateY(-48.1351364525px);
+      }
+      .game .card15pickup {
+        transform: rotate(-15.6976744186deg) translateX(13.5280685504px)
+          translateY(-48.1351364525px);
+      }
+      .game .card16Active {
+        transition: transform 0.5s;
+        transform: rotate(-13.6046511628deg);
+      }
+      .game .card16Active:hover {
+        transform: rotate(-13.6046511628deg) translateX(11.761050714px)
+          translateY(-48.5970954492px);
+      }
+      .game .card16pickup {
+        transform: rotate(-13.6046511628deg) translateX(11.761050714px)
+          translateY(-48.5970954492px);
+      }
+      .game .card17Active {
+        transition: transform 0.5s;
+        transform: rotate(-11.511627907deg);
+      }
+      .game .card17Active:hover {
+        transform: rotate(-11.511627907deg) translateX(9.9783400693px)
+          translateY(-48.9942111832px);
+      }
+      .game .card17pickup {
+        transform: rotate(-11.511627907deg) translateX(9.9783400693px)
+          translateY(-48.9942111832px);
+      }
+      .game .card18Active {
+        transition: transform 0.5s;
+        transform: rotate(-9.4186046512deg);
+      }
+      .game .card18Active:hover {
+        transform: rotate(-9.4186046512deg) translateX(8.1823152929px)
+          translateY(-49.3259537814px);
+      }
+      .game .card18pickup {
+        transform: rotate(-9.4186046512deg) translateX(8.1823152929px)
+          translateY(-49.3259537814px);
+      }
+      .game .card19Active {
+        transition: transform 0.5s;
+        transform: rotate(-7.3255813953deg);
+      }
+      .game .card19Active:hover {
+        transform: rotate(-7.3255813953deg) translateX(6.3753728266px)
+          translateY(-49.5918805988px);
+      }
+      .game .card19pickup {
+        transform: rotate(-7.3255813953deg) translateX(6.3753728266px)
+          translateY(-49.5918805988px);
+      }
+      .game .card20Active {
+        transition: transform 0.5s;
+        transform: rotate(-5.2325581395deg);
+      }
+      .game .card20Active:hover {
+        transform: rotate(-5.2325581395deg) translateX(4.5599236795px)
+          translateY(-49.7916368082px);
+      }
+      .game .card20pickup {
+        transform: rotate(-5.2325581395deg) translateX(4.5599236795px)
+          translateY(-49.7916368082px);
+      }
+      .game .card21Active {
+        transition: transform 0.5s;
+        transform: rotate(-3.1395348837deg);
+      }
+      .game .card21Active:hover {
+        transform: rotate(-3.1395348837deg) translateX(2.7383902114px)
+          translateY(-49.9249558743px);
+      }
+      .game .card21pickup {
+        transform: rotate(-3.1395348837deg) translateX(2.7383902114px)
+          translateY(-49.9249558743px);
+      }
+      .game .card22Active {
+        transition: transform 0.5s;
+        transform: rotate(-1.0465116279deg);
+      }
+      .game .card22Active:hover {
+        transform: rotate(-1.0465116279deg) translateX(0.9132029003px)
+          translateY(-49.9916599091px);
+      }
+      .game .card22pickup {
+        transform: rotate(-1.0465116279deg) translateX(0.9132029003px)
+          translateY(-49.9916599091px);
+      }
+      .game .card23Active {
+        transition: transform 0.5s;
+        transform: rotate(1.0465116279deg);
+      }
+      .game .card23Active:hover {
+        transform: rotate(1.0465116279deg) translateX(-0.9132029003px)
+          translateY(-49.9916599091px);
+      }
+      .game .card23pickup {
+        transform: rotate(1.0465116279deg) translateX(-0.9132029003px)
+          translateY(-49.9916599091px);
+      }
+      .game .card24Active {
+        transition: transform 0.5s;
+        transform: rotate(3.1395348837deg);
+      }
+      .game .card24Active:hover {
+        transform: rotate(3.1395348837deg) translateX(-2.7383902114px)
+          translateY(-49.9249558743px);
+      }
+      .game .card24pickup {
+        transform: rotate(3.1395348837deg) translateX(-2.7383902114px)
+          translateY(-49.9249558743px);
+      }
+      .game .card25Active {
+        transition: transform 0.5s;
+        transform: rotate(5.2325581395deg);
+      }
+      .game .card25Active:hover {
+        transform: rotate(5.2325581395deg) translateX(-4.5599236795px)
+          translateY(-49.7916368082px);
+      }
+      .game .card25pickup {
+        transform: rotate(5.2325581395deg) translateX(-4.5599236795px)
+          translateY(-49.7916368082px);
+      }
+      .game .card26Active {
+        transition: transform 0.5s;
+        transform: rotate(7.3255813953deg);
+      }
+      .game .card26Active:hover {
+        transform: rotate(7.3255813953deg) translateX(-6.3753728266px)
+          translateY(-49.5918805988px);
+      }
+      .game .card26pickup {
+        transform: rotate(7.3255813953deg) translateX(-6.3753728266px)
+          translateY(-49.5918805988px);
+      }
+      .game .card27Active {
+        transition: transform 0.5s;
+        transform: rotate(9.4186046512deg);
+      }
+      .game .card27Active:hover {
+        transform: rotate(9.4186046512deg) translateX(-8.1823152929px)
+          translateY(-49.3259537814px);
+      }
+      .game .card27pickup {
+        transform: rotate(9.4186046512deg) translateX(-8.1823152929px)
+          translateY(-49.3259537814px);
+      }
+      .game .card28Active {
+        transition: transform 0.5s;
+        transform: rotate(11.511627907deg);
+      }
+      .game .card28Active:hover {
+        transform: rotate(11.511627907deg) translateX(-9.9783400693px)
+          translateY(-48.9942111832px);
+      }
+      .game .card28pickup {
+        transform: rotate(11.511627907deg) translateX(-9.9783400693px)
+          translateY(-48.9942111832px);
+      }
+      .game .card29Active {
+        transition: transform 0.5s;
+        transform: rotate(13.6046511628deg);
+      }
+      .game .card29Active:hover {
+        transform: rotate(13.6046511628deg) translateX(-11.761050714px)
+          translateY(-48.5970954492px);
+      }
+      .game .card29pickup {
+        transform: rotate(13.6046511628deg) translateX(-11.761050714px)
+          translateY(-48.5970954492px);
+      }
+      .game .card30Active {
+        transition: transform 0.5s;
+        transform: rotate(15.6976744186deg);
+      }
+      .game .card30Active:hover {
+        transform: rotate(15.6976744186deg) translateX(-13.5280685504px)
+          translateY(-48.1351364525px);
+      }
+      .game .card30pickup {
+        transform: rotate(15.6976744186deg) translateX(-13.5280685504px)
+          translateY(-48.1351364525px);
+      }
+      .game .card31Active {
+        transition: transform 0.5s;
+        transform: rotate(17.7906976744deg);
+      }
+      .game .card31Active:hover {
+        transform: rotate(17.7906976744deg) translateX(-15.2770358408px)
+          translateY(-47.6089505862px);
+      }
+      .game .card31pickup {
+        transform: rotate(17.7906976744deg) translateX(-15.2770358408px)
+          translateY(-47.6089505862px);
+      }
+      .game .card32Active {
+        transition: transform 0.5s;
+        transform: rotate(19.8837209302deg);
+      }
+      .game .card32Active:hover {
+        transform: rotate(19.8837209302deg) translateX(-17.0056189325px)
+          translateY(-47.019239942px);
+      }
+      .game .card32pickup {
+        transform: rotate(19.8837209302deg) translateX(-17.0056189325px)
+          translateY(-47.019239942px);
+      }
+      .game .card33Active {
+        transition: transform 0.5s;
+        transform: rotate(21.976744186deg);
+      }
+      .game .card33Active:hover {
+        transform: rotate(21.976744186deg) translateX(-18.7115113714px)
+          translateY(-46.3667913727px);
+      }
+      .game .card33pickup {
+        transform: rotate(21.976744186deg) translateX(-18.7115113714px)
+          translateY(-46.3667913727px);
+      }
+      .game .card34Active {
+        transition: transform 0.5s;
+        transform: rotate(24.0697674419deg);
+      }
+      .game .card34Active:hover {
+        transform: rotate(24.0697674419deg) translateX(-20.3924369797px)
+          translateY(-45.6524754425px);
+      }
+      .game .card34pickup {
+        transform: rotate(24.0697674419deg) translateX(-20.3924369797px)
+          translateY(-45.6524754425px);
+      }
+      .game .card35Active {
+        transition: transform 0.5s;
+        transform: rotate(26.1627906977deg);
+      }
+      .game .card35Active:hover {
+        transform: rotate(26.1627906977deg) translateX(-22.0461528929px)
+          translateY(-44.8772452655px);
+      }
+      .game .card35pickup {
+        transform: rotate(26.1627906977deg) translateX(-22.0461528929px)
+          translateY(-44.8772452655px);
+      }
+      .game .card36Active {
+        transition: transform 0.5s;
+        transform: rotate(28.2558139535deg);
+      }
+      .game .card36Active:hover {
+        transform: rotate(28.2558139535deg) translateX(-23.6704525524px)
+          translateY(-44.0421352339px);
+      }
+      .game .card36pickup {
+        transform: rotate(28.2558139535deg) translateX(-23.6704525524px)
+          translateY(-44.0421352339px);
+      }
+      .game .card37Active {
+        transition: transform 0.5s;
+        transform: rotate(30.3488372093deg);
+      }
+      .game .card37Active:hover {
+        transform: rotate(30.3488372093deg) translateX(-25.26316865px)
+          translateY(-43.1482596377px);
+      }
+      .game .card37pickup {
+        transform: rotate(30.3488372093deg) translateX(-25.26316865px)
+          translateY(-43.1482596377px);
+      }
+      .game .card38Active {
+        transition: transform 0.5s;
+        transform: rotate(32.4418604651deg);
+      }
+      .game .card38Active:hover {
+        transform: rotate(32.4418604651deg) translateX(-26.8221760192px)
+          translateY(-42.196811178px);
+      }
+      .game .card38pickup {
+        transform: rotate(32.4418604651deg) translateX(-26.8221760192px)
+          translateY(-42.196811178px);
+      }
+      .game .card39Active {
+        transition: transform 0.5s;
+        transform: rotate(34.5348837209deg);
+      }
+      .game .card39Active:hover {
+        transform: rotate(34.5348837209deg) translateX(-28.3453944716px)
+          translateY(-41.1890593757px);
+      }
+      .game .card39pickup {
+        transform: rotate(34.5348837209deg) translateX(-28.3453944716px)
+          translateY(-41.1890593757px);
+      }
+      .game .card40Active {
+        transition: transform 0.5s;
+        transform: rotate(36.6279069767deg);
+      }
+      .game .card40Active:hover {
+        transform: rotate(36.6279069767deg) translateX(-29.8307915717px)
+          translateY(-40.1263488771px);
+      }
+      .game .card40pickup {
+        transform: rotate(36.6279069767deg) translateX(-29.8307915717px)
+          translateY(-40.1263488771px);
+      }
+      .game .card41Active {
+        transition: transform 0.5s;
+        transform: rotate(38.7209302326deg);
+      }
+      .game .card41Active:hover {
+        transform: rotate(38.7209302326deg) translateX(-31.2763853494px)
+          translateY(-39.0100976604px);
+      }
+      .game .card41pickup {
+        transform: rotate(38.7209302326deg) translateX(-31.2763853494px)
+          translateY(-39.0100976604px);
+      }
+      .game .card42Active {
+        transition: transform 0.5s;
+        transform: rotate(40.8139534884deg);
+      }
+      .game .card42Active:hover {
+        transform: rotate(40.8139534884deg) translateX(-32.6802469442px)
+          translateY(-37.8417951433px);
+      }
+      .game .card42pickup {
+        transform: rotate(40.8139534884deg) translateX(-32.6802469442px)
+          translateY(-37.8417951433px);
+      }
+      .game .card43Active {
+        transition: transform 0.5s;
+        transform: rotate(42.9069767442deg);
+      }
+      .game .card43Active:hover {
+        transform: rotate(42.9069767442deg) translateX(-34.0405031789px)
+          translateY(-36.6230001956px);
+      }
+      .game .card43pickup {
+        transform: rotate(42.9069767442deg) translateX(-34.0405031789px)
+          translateY(-36.6230001956px);
+      }
+      .game .card44Active {
+        transition: transform 0.5s;
+        transform: rotate(45deg);
+      }
+      .game .card44Active:hover {
+        transform: rotate(45deg) translateX(-35.3553390593px)
+          translateY(-35.3553390593px);
+      }
+      .game .card44pickup {
+        transform: rotate(45deg) translateX(-35.3553390593px)
+          translateY(-35.3553390593px);
+      }
+    </style>
+    <style>
+      /* CSS 樣式 */
+
+      /* 全局樣式設定 */
+      @font-face {
+        font-family: 'NotoSerifTC'; /* 定義字型名稱 */
+        src: url('./fonts/NotoSerifTC-Regular.otf') format('truetype'); /* 如果您有多個格式的字型檔案，可以使用逗號分隔 */
+      }
+
+      html {
+        box-sizing: border-box;
+        font-family: NotoSerifTC, sans-serif; /* 使用自定義字型，如果字型無法載入，則使用預設字型 */
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #f9fafb;
+        font-size: 80%;
+        line-height: 1.4;
+        font-family: 'Inter', sans-serif;
+        color: #272727;
+        font-weight: 400;
+      }
+      @media only screen and (min-width: 600px) {
+        body {
+          justify-content: center;
+          align-items: center;
+          display: flex;
+          height: 100vh;
+          font-size: 100%;
+          letter-spacing: 0.1em;
+        }
+      }
+
+      /* 按鈕樣式 */
+      .button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: #68a392;
+        border-radius: 2em;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: 3em;
+        line-height: 3em;
+        padding: 0 1em;
+        font-family: NotoSerifTC, sans-serif;
+        border: none;
+        letter-spacing: 0.2em;
+      }
+      .button:hover {
+        background-color: #a5d1ae;
+      }
+
+      .button2 {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: #ffc1b4;
+        border-radius: 2em;
+        color: #272727;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: 3em;
+        line-height: 3em;
+        padding: 0 1em;
+        font-family: NotoSerifTC, sans-serif;
+        border: none;
+        letter-spacing: 0.1em;
+      }
+      .button2:hover {
+        background-color: #ff7c7c;
+      }
+
+      .button3 {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        border: #68A392;
+        border-style: none;
+        border-width: 1px;
+        border-radius: 1em;
+        color: #68A392;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: 3em;
+        line-height: 3em;
+        padding: 0 1em;
+        font-family: NotoSerifTC, sans-serif;
+        
+        letter-spacing: 0.1em;
+      }
+      .button3:hover {
+        background-color: #DBEDDF;
+      }
+      /* 彈出式視窗樣式 */
+      .details-modal {
+        background: #ffffff;
+        border-radius: 0.5em;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        left: 50%;
+        max-width: 90%;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 30em;
+        text-align: center;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        font-family: NotoSerifTC, sans-serif;
+        z-index: 10;
+      }
+      .details-modal .details-modal-close {
+        align-items: center;
+        color: #111827;
+        display: flex;
+        height: 4.5em;
+        justify-content: center;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 4.5em;
+      }
+      .details-modal .details-modal-close svg {
+        display: block;
+      }
+      .details-modal .details-modal-title {
+        color: white;
+        /* padding: 1.5em 2em; */
+        pointer-events: all;
+        position: relative;
+        width: calc(100% - 4.5em);
+        font-size: 1.25rem;
+        text-align: center;
+      }
+      .details-modal .details-modal-title h1 {
+        font-size: 1.25rem;
+        font-weight: 400;
+        line-height: normal;
+      }
+      .details-modal .details-modal-content {
+        border-top: 1px solid #e0e0e0;
+        padding: 2em;
+        pointer-events: all;
+        overflow: auto;
+      }
+
+      /* 覆蓋層樣式 */
+      .details-modal-overlay {
+        transition: opacity 0.2s ease-out;
+        pointer-events: none;
+        background: rgba(15, 23, 42, 0.8);
+        position: fixed;
+        opacity: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+        z-index: 9;
+      }
+      details[open] .details-modal-overlay {
+        pointer-events: all;
+        opacity: 0.5;
+      }
+
+      /* 用於去除 details 元素默認樣式的 CSS */
+      details summary {
+        list-style: none;
+      }
+      details summary:focus {
+        outline: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+
+      /* 代碼塊樣式 */
+      code {
+        font-family: Monaco, monospace;
+        line-height: 100%;
+        background-color: #2d2d2c;
+        padding: 0.1em 0.4em;
+        letter-spacing: -0.05em;
+        word-break: normal;
+        border-radius: 7px;
+        color: white;
+        font-weight: normal;
+        font-size: 1.75rem;
+        position: relative;
+        top: -2px;
+      }
+
+      /* 容器樣式 */
+      .container {
+        text-align: center;
+        max-width: 40em;
+        /* padding: 2em; */
+      }
+      .container > h1 {
+        font-weight: 400;
+        font-size: 2rem;
+        line-height: normal;
+        color: #111827;
+      }
+      .container > p {
+        margin-top: 2em;
+        margin-bottom: 2em;
+      }
+      .container sup {
+        font-size: 1rem;
+        margin-left: 0.25em;
+        opacity: 0.5;
+        position: relative;
+      }
+    </style>
+  </head>
+
+  <body style="position: relative">
+    <div class="game" style="width: 100%">
+      <!-- <p style="font-family: 'NotoSerifTC', sans-serif;">這是行內文字，使用了自定義字型。</p> -->
+      <div class="tip" style="font-family: 'NotoSerifTC', sans-serif">
+        點擊畫面任一處開始占卜
+      </div>
+      <div class="card card1">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card2">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card3">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card4">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card5">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card6">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card7">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card8">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card9">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card10">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card11">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card12">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card13">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card14">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card15">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card16">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card17">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card18">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card19">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card20">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card21">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card22">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card23">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card24">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card25">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card26">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card27">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card28">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card29">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card30">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card31">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card32">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card33">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card34">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card35">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card36">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card37">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card38">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card39">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card40">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card41">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card42">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card43">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="card card44">
+        <div class="content">
+          <div class="front"></div>
+          <div class="back" style="max-width: 100%; max-height: 100%">
+            <img
+              src=""
+              alt=""
+              style="width: 100%; height: 100%; object-fit: contain"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 重新開始遊戲按鈕 start-->
+    <div style="position: absolute; top: 50%; left: 50%; display: none">
+      <button id="restartButton" style="">重新開始遊戲</button>
+    </div>
+    <!-- 重新開始遊戲按鈕 end-->
+
+    <div>
+      <a href="/" class="back-button">回首頁</a>
+    </div>
+
+    <div class="container">
+      <!-- 標題 -->
+
+      <!-- 詳細內容 -->
+      <!-- Details 元素 -->
+      <details>
+        <!-- Summary 元素 -->
+        <summary>
+          <!-- 優惠碼modal的按鈕 start-->
+          <div
+          id="discountButton"
+            class="button2"
+            style="
+              position: absolute;
+              right: 44.5%;
+              top: 60%;
+              transform: translate(-50%, -50%);
+              display: none;
+            "
+          >
+            領取優惠
+          </div>
+          <!-- 優惠碼modal的遮罩層 -->
+          <div class="details-modal-overlay"></div>
+        </summary>
+        <!-- 優惠碼modal的內容 -->
+        <div class="details-modal">
+          <!-- 優惠碼modal上半部開始 -->
+          <div
+            style="
+              color: white;
+              background-color: #394a54;
+              border-top-left-radius: 10px;
+              border-top-right-radius: 10px;
+              padding: 20px;
+              font-weight: 400;
+            "
+          >
+            <!-- 優惠碼modal的關閉按鈕 -->
+            <div class="details-modal-close">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M13.7071 1.70711C14.0976 1.31658 14.0976 0.683417 13.7071 0.292893C13.3166 -0.0976311 12.6834 -0.0976311 12.2929 0.292893L7 5.58579L1.70711 0.292893C1.31658 -0.0976311 0.683417 -0.0976311 0.292893 0.292893C-0.0976311 0.683417 -0.0976311 1.31658 0.292893 1.70711L5.58579 7L0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683417 14.0976 1.31658 14.0976 1.70711 13.7071L7 8.41421L12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L8.41421 7L13.7071 1.70711Z"
+                  fill="black"
+                ></path>
+              </svg>
+            </div>
+            <!-- 優惠碼modal的標題 -->
+            <div class="details-modal-title">
+              <h1 style="font-size: 2rem; font-weight: bold">
+                母親節優惠準備開跑囉!
+              </h1>
+            </div>
+          </div>
+          <!-- 優惠碼modal上半部結束 -->
+          <!-- 優惠碼modal的內容 -->
+          <div class="details-modal-content">
+            <!-- <h1 style="color: white; background-color: #394A54;border-top-left-radius: 10px; border-top-right-radius: 10px; padding: 20px; font-weight: 400;">母親節優惠開跑囉!</h1> -->
+            <p
+              style="font-size: 1.25rem; margin-top: 1em; margin-bottom: 1em"
+            ></p>
+            <p style="font-size: 1.3rem; color: #111827">
+              選購商城商品滿NT$1,000
+            </p>
+            <p style="font-size: 1.3rem; color: #111827">
+              可額外享NT$50折扣優惠
+            </p>
+            <p><strong>結帳時請輸入優惠碼</strong></p>
+            <p></p>
+
+            <!-- 優惠碼複製部分start -->
+            <div style="display: flex; justify-content: center">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-around;
+                  padding: 0.25rem;
+                  border-width: 1.5px;
+                  width: 70%;
+                  border-radius: 0.75rem;
+                  border-style: dashed;
+                "
+              >
+                <div
+                  style="
+                    width: 70%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <input
+                    type="text"
+                    value="FLOWER50"
+                    id="couponCode"
+                    style="
+                      text-align: center;
+                      font-size: 0.875rem;
+                      margin: 0;
+                      width: 100%;
+                      margin-right: 0.375rem;
+                      background-color: transparent;
+                      outline: none;
+                      border: none;
+                    "
+                    readonly=""
+                  />
+                </div>
+
+                <button
+                id="copyButton"
+                  class="button3"
+                  style="width: 30%"
+                  onclick="copyToClipboard()"
+                >
+                  複製
+                </button>
+              </div>
+            </div>
+            <!-- 優惠碼複製部分end -->
+
+            <div style="text-align: center">
+              <button
+                class="button"
+                style="display: inline-block; margin: 10px; width: 30%"
+              >
+                前往商城
+              </button>
+              <img
+                src="./assets/intro/FlowerMom.jpg"
+                alt="FlowerMom"
+                width="300"
+                style="display: block; margin: 0 auto"
+              />
+            </div>
+            <p><strong>母親節限定優惠碼</strong></p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <script>
+     function copyToClipboard() {
+  // 獲取複製內容
+  let couponCode = document.getElementById('couponCode');
+  // 選擇複製內容
+  couponCode.select();
+  // 執行複製
+  document.execCommand('copy');
+  // 取消選擇
+  window.getSelection().removeAllRanges();
+  // 改變按鈕文字為已複製
+  document.getElementById('copyButton').innerText = '已複製';
+}
+
+    </script>
+    <script>
+      const body = document.querySelector('body')
+      const tipDiv = document.querySelector('.game .tip')
+      let canClick = true
+      let canSelect = false
+      let finished = false
+      let pickAry = []
+
+      body.addEventListener('click', async () => {
+        if (canClick === false) {
+          return false
+        }
+        if (finished === true) {
+          reset()
+          return false
+        }
+        tipDiv.innerHTML = 'Shuffling'
+
+        //-----------改正面圖案感覺是改這裡----------start
+        /*let cardNum = getRandomNumbers(1, 44, 44); // 生成 1 到 44 之間的 44 個隨機數字
+      for (let i = 0; i < cardNum.length; i++) {
+        // let cardFront = `url('../images/image (${cardNum[i]}).jpg')`; // 根據隨機數字生成對應的圖片路徑
+        let cardFront = `url('../images/back.png')`;
+
+        console.log(cardFront);
+        document.querySelector(`.card${cardNum[i]} .front`).style.backgroundImage =
+          cardFront; // 設置正面的背景圖片
+
+          */
+        let cardNum = getRandomNumbers(1, 44, 44)
+        for (let i = 0; i < cardNum.length; i++) {
+          document.querySelector(`.card${cardNum[i]} .back img`).innerHTML = ''
+
+          // // 創建一個圖片元素
+          // let img = document.createElement("img");
+
+          // // 設置圖片的 src 屬性，這裡假設圖片的名稱為 "card_back.jpg"，你可以根據實際情況修改路徑
+          // img.src = "../images/back.png";
+
+          // // 將圖片元素添加到背面元素中
+          // cardBack.appendChild(img);
+
+          // // 設置一個自訂屬性，用於區分不同的卡片
+          // cardBack.setAttribute("data-card", cardNum[i]);
+
+          //-------這裡是顯示文字的程式碼---start
+          let randomNumber = Math.floor(Math.random() * 44) + 1 // 產生 1 到 44 之間的隨機數字
+          document
+            .querySelector(`.card${cardNum[i]} .back img`)
+            // .setAttribute("src", "../images/back.png");
+            .setAttribute(
+              'src',
+              `/images/FlowerCard/image(${randomNumber}).jpg`
+            )
+          // .setAttribute("text", `Back!${i + 1}`);
+
+          let ran = Math.round(Math.random() * 2)
+
+          if (ran === 0) {
+            document
+              .querySelector(`.card${cardNum[i]} .back`)
+              .classList.add('reversed')
+          }
+        }
+        //-------這裡是顯示文字的程式碼---end
+
+        //  -----------改正面圖案感覺是改這裡----------end
+        canClick = false
+        for (let i = 1; i <= 44; i++) {
+          document.querySelector(`.card${i}`).classList.add(`card${i}Active`)
+        }
+        // tipDiv.innerHTML = 'pick up the 1st card'
+        tipDiv.innerHTML = '請選擇第1張牌'
+        canSelect = true
+      })
+      //   <p style="font-family: 'NotoSerifTC', sans-serif;">這是行內文字，使用了自定義字型。</p>
+      // 監聽所有卡片的點擊事件
+      for (let i = 1; i <= 44; i++) {
+        document.querySelector(`.card${i}`).addEventListener('click', (e) => {
+          if (canSelect) {
+            canSelect = false
+            pickAry.push(i)
+            playSelection()
+          }
+        })
+      }
+
+      // 重置遊戲
+      async function reset() {
+        document.getElementById('restartButton').style.display = 'none'
+        tipDiv.innerHTML = ''
+        canClick = false
+        for (let i = pickAry.length - 1; i >= 0; i--) {
+          document
+            .querySelector(`.card${pickAry[i]} .content`)
+            .classList.remove('active')
+          await waittings(300)
+          document
+            .querySelector(`.card${pickAry[i]}`)
+            .classList.remove(`forward${i + 1}2`)
+          await waittings(300)
+          document
+            .querySelector(`.card${pickAry[i]}`)
+            .classList.remove(`forward${i + 1}`)
+          document
+            .querySelector(`.card${pickAry[i]}`)
+            .classList.add(`card${pickAry[i]}Active`)
+          await waittings(300)
+          // 清除 重新开始 按钮
+          let restartButton = document.getElementById('restartButton')
+          if (restartButton) {
+            document.body.removeChild(restartButton)
+          }
+        }
+
+        await waittings(500)
+        for (let i = 1; i <= 44; i++) {
+          document.querySelector(`.card${i}`).classList.remove(`card${i}Active`)
+          document.querySelector(`.card${i} .back`).classList.remove('reversed')
+        }
+        await waittings(1000)
+        tipDiv.innerHTML = '點擊畫面任一處開始占卜'
+        canClick = true
+        canSelect = false
+        finished = false
+        pickAry = []
+      }
+
+      // 播放選擇動畫
+      async function playSelection() {
+        document
+          .getElementById('restartButton')
+          .addEventListener('click', async function () {
+            await reset()
+          })
+        document.getElementById('restartButton').style.display = 'block'
+        let pickNum = pickAry.length - 1
+        document
+          .querySelector(`.card${pickAry[pickNum]}`)
+          .classList.remove(`card${pickAry[pickNum]}pickup`)
+        document
+          .querySelector(`.card${pickAry[pickNum]}`)
+          .classList.remove(`card${pickAry[pickNum]}Active`)
+        document
+          .querySelector(`.card${pickAry[pickNum]}`)
+          .classList.add(`forward${pickAry.length}`)
+        await waittings(300)
+        document
+          .querySelector(`.card${pickAry[pickNum]}`)
+          .classList.add(`forward${pickAry.length}2`)
+        await waittings(300)
+        document
+          .querySelector(`.card${pickAry[pickNum]} .content`)
+          .classList.add('active')
+        await waittings(1000)
+        if (pickAry.length < 3) {
+          if (pickAry.length === 1) {
+            tipDiv.innerHTML = '請選擇第2張牌'
+          } else if (pickAry.length === 2) {
+            tipDiv.innerHTML = '請選擇第3張牌'
+          }
+          canSelect = true
+        } else {
+          if (pickAry.length >= 3) {
+            // 抽完三張牌後顯示領取優惠按鈕
+            document.getElementById('discountButton').style.display = 'block'
+
+            //-------產生重新開始遊戲按鈕start
+            // let restartButton = document.createElement('button')
+            // restartButton.innerText = '重新開始遊戲'
+            // restartButton.id = 'restartButton'
+            // document.body.appendChild(restartButton)
+            // 監聽按鈕點擊事件
+            // document
+            //   .getElementById('restartButton')
+            //   .addEventListener('click', function () {
+            //     reset()
+            //   })
+            // tipDiv.innerHTML = '點擊 [重新開始遊戲] 按鈕重新開始遊戲'
+            // canClick = false // 關閉頁面其他區域的點擊監聽
+            // finished = true
+            //-------產生重新開始遊戲按鈕end
+          }
+        }
+      }
+
+      // 延遲函數
+      function waittings(time) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve()
+          }, time)
+        })
+      }
+
+      // 獲取隨機數字陣列
+      function getRandomNumbers(start, end, count) {
+        const numbers = Array.from(
+          { length: end - start + 1 },
+          (v, i) => i + start
+        )
+        const result = []
+        for (let i = 0; i < count; i++) {
+          const randomIndex = Math.floor(Math.random() * numbers.length)
+          result.push(numbers[randomIndex])
+          numbers.splice(randomIndex, 1)
+        }
+        return result
+      }
+      // 輕薄的假象start
+      // 使用 JavaScript 將網址修改為 http://localhost:3000/intro/game-div
+      // window.history.replaceState({}, '', '/intro/game-div')
+      // console.log(`./images/FlowerCard/image(${randomNumber}).jpg`)
+      // 輕薄的假象end
+    </script>
+  </body>
+</html>

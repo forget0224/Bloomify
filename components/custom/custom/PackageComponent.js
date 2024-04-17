@@ -6,7 +6,7 @@ import DraggableBar from './DraggableBar'
 import { BsSignStopLights } from 'react-icons/bs'
 import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci'
 import ChangeComponent from './ChangeComponent'
-const PackageComponent = ({ onNext, onPrev }) => {
+const PackageComponent = ({ onNext, onPrev, items }) => {
   const [selectedFlower, setSelectedFlower] = useState(null)
   const flowers = [
     {
@@ -64,7 +64,7 @@ const PackageComponent = ({ onNext, onPrev }) => {
           </div>
           <div className="w-full h-full relative">
             <DraggableBar
-              items={flowers}
+              items={items}
               onItemSelect={setSelectedFlower}
               itemHeight={35}
               dragBuffer={50}

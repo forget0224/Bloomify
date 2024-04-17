@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant-TW">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>http://localhost:3000/intro/game-div</title>
+    <title></title>
     <style>
       @font-face {
         font-family: 'NotoSerifTC'; /* 定義字型名稱 */
@@ -17,20 +17,21 @@
 
       /* 將按鈕改成圓形 */
       .back-button {
-        width: 60px; /* 設定按鈕的寬度 */
-        height: 60px; /* 設定按鈕的高度 */
+        width: 4vw; /* 使用 vw 單位設定按鈕的寬度，根據視窗寬度自動縮放 */
+        height: 4vw; /* 使用 vw 單位設定按鈕的高度，與寬度相同，使按鈕成為正圓 */
         border-radius: 50%; /* 使用 border-radius 屬性將按鈕變成圓形 */
         background-color: #68a392; /* 按鈕的背景顏色 */
         color: white; /* 按鈕的文字顏色 */
-        font-size: 16px; /* 按鈕文字的大小 */
+        font-size: 1vw; /* 使用 vw 單位設定按鈕文字的大小，根據視窗寬度自動縮放 */
         text-align: center; /* 將按鈕文字置中 */
-        line-height: 60px; /* 將按鈕文字置中 */
+        line-height: 4vw; /* 使用 vw 單位設定按鈕文字的行高，與按鈕的高度相同，使文字垂直置中 */
         text-decoration: none; /* 移除文字底線 */
         display: inline-block; /*讓按鈕以行內元素方式顯示*/
         position: fixed; /* 固定在螢幕上 */
-        bottom: 30px; /* 距離底部 20px */
-        right: 30px; /* 距離右邊 20px */
+        bottom: 1vw; /* 使用 vw 單位設定距離底部的距離，根據視窗寬度自動縮放 */
+        right: 1vw; /* 使用 vw 單位設定距離右邊的距離，根據視窗寬度自動縮放 */
         text-decoration: none; /* 移除超連結的下底線 */
+        font-family: NotoSerifTC, sans-serif;
       }
       /* 指向按鈕的滑鼠游標 */
       .back-button:hover {
@@ -714,549 +715,959 @@
           translateY(-35.3553390593px);
       }
     </style>
+    <style>
+      /* CSS 樣式 */
+
+      /* 全局樣式設定 */
+      @font-face {
+        font-family: 'NotoSerifTC'; /* 定義字型名稱 */
+        src: url('./fonts/NotoSerifTC-Regular.otf') format('truetype'); /* 如果您有多個格式的字型檔案，可以使用逗號分隔 */
+      }
+
+      html {
+        box-sizing: border-box;
+        font-family: NotoSerifTC, sans-serif; /* 使用自定義字型，如果字型無法載入，則使用預設字型 */
+      }
+
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background-color: #f9fafb;
+        font-size: 80%;
+        line-height: 1.4;
+        font-family: 'Inter', sans-serif;
+        color: #272727;
+        font-weight: 400;
+      }
+      @media only screen and (min-width: 600px) {
+        body {
+          justify-content: center;
+          align-items: center;
+          display: flex;
+          height: 100vh;
+          font-size: 100%;
+          letter-spacing: 0.1em;
+        }
+      }
+
+      /* 按鈕樣式 */
+      .button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: #68a392;
+        border-radius: 2em;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: 3em;
+        line-height: 3em;
+        padding: 0 1em;
+        font-family: NotoSerifTC, sans-serif;
+        border: none;
+        letter-spacing: 0.2em;
+      }
+      .button:hover {
+        background-color: #a5d1ae;
+      }
+
+      .button2 {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: #ffc1b4;
+        border-radius: 2em;
+        color: #272727;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: 3em;
+        line-height: 3em;
+        padding: 0 1em;
+        font-family: NotoSerifTC, sans-serif;
+        border: none;
+        letter-spacing: 0.1em;
+      }
+      .button2:hover {
+        background-color: #ff7c7c;
+      }
+
+      .button3 {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        border: #68a392;
+        border-style: none;
+        border-width: 1px;
+        border-radius: 1em;
+        color: #68a392;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: 3em;
+        line-height: 3em;
+        padding: 0 1em;
+        font-family: NotoSerifTC, sans-serif;
+
+        letter-spacing: 0.1em;
+      }
+      .button3:hover {
+        background-color: #dbeddf;
+      }
+      /* 彈出式視窗樣式 */
+      .details-modal {
+        background: #ffffff;
+        border-radius: 0.5em;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        left: 50%;
+        max-width: 90%;
+        pointer-events: none;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 30em;
+        text-align: center;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        font-family: NotoSerifTC, sans-serif;
+        z-index: 10;
+      }
+      .details-modal .details-modal-close {
+        align-items: center;
+        color: #111827;
+        display: flex;
+        height: 4.5em;
+        justify-content: center;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 4.5em;
+      }
+      .details-modal .details-modal-close svg {
+        display: block;
+      }
+      .details-modal .details-modal-title {
+        color: white;
+        /* padding: 1.5em 2em; */
+        pointer-events: all;
+        position: relative;
+        /* width: calc(100% - 4.5em); */
+        font-size: 1.25rem;
+        text-align: center;
+        width: 100%;
+      }
+      .details-modal .details-modal-title h1 {
+        font-size: 1.25rem;
+        font-weight: 400;
+        line-height: normal;
+      }
+      .details-modal .details-modal-content {
+        border-top: 1px solid #e0e0e0;
+        padding: 2em;
+        pointer-events: all;
+        overflow: auto;
+      }
+
+      /* 覆蓋層樣式 */
+      .details-modal-overlay {
+        transition: opacity 0.2s ease-out;
+        pointer-events: none;
+        background: rgba(15, 23, 42, 0.8);
+        position: fixed;
+        opacity: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+        z-index: 9;
+      }
+      details[open] .details-modal-overlay {
+        pointer-events: all;
+        opacity: 0.5;
+      }
+
+      /* 用於去除 details 元素默認樣式的 CSS */
+      details summary {
+        list-style: none;
+      }
+      details summary:focus {
+        outline: none;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+
+      /* 代碼塊樣式 */
+      code {
+        font-family: Monaco, monospace;
+        line-height: 100%;
+        background-color: #2d2d2c;
+        padding: 0.1em 0.4em;
+        letter-spacing: -0.05em;
+        word-break: normal;
+        border-radius: 7px;
+        color: white;
+        font-weight: normal;
+        font-size: 1.75rem;
+        position: relative;
+        top: -2px;
+      }
+
+      /* 容器樣式 */
+      .container {
+        text-align: center;
+        max-width: 40em;
+        /* padding: 2em; */
+      }
+      .container > h1 {
+        font-weight: 400;
+        font-size: 2rem;
+        line-height: normal;
+        color: #111827;
+      }
+      .container > p {
+        margin-top: 2em;
+        margin-bottom: 2em;
+      }
+      .container sup {
+        font-size: 1rem;
+        margin-left: 0.25em;
+        opacity: 0.5;
+        position: relative;
+      }
+    </style>
   </head>
 
-  <body>
-    <div class="game">
-      <!-- <p style="font-family: 'NotoSerifTC', sans-serif;">這是行內文字，使用了自定義字型。</p> -->
+  <body style="position: relative">
+    <div class="game" style="width: 100%; letter-spacing: 4px">
       <div class="tip" style="font-family: 'NotoSerifTC', sans-serif">
         點擊畫面任一處開始占卜
       </div>
-      <div class="card card1">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+      <div
+        class="position"
+        style="width: 100%; position: absolute; bottom: 5%; left: 0"
+      >
+        <!-- <p style="font-family: 'NotoSerifTC', sans-serif;">這是行內文字，使用了自定義字型。</p> -->
+
+        <div class="card card1">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card2">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card2">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card3">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card3">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card4">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card4">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card5">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card5">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card6">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card6">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card7">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card7">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card8">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card8">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card9">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card9">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card10">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card10">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card11">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card11">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card12">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card12">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card13">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card13">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card14">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card14">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card15">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card15">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card16">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card16">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card17">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card17">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card18">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card18">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card19">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card19">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card20">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card20">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card21">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card21">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card22">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card22">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card23">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card23">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card24">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card24">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card25">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card25">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card26">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card26">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card27">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card27">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card28">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card28">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card29">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card29">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card30">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card30">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card31">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card31">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card32">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card32">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card33">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card33">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card34">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card34">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card35">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card35">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card36">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card36">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card37">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card37">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card38">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card38">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card39">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card39">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card40">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card40">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card41">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card41">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card42">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card42">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card43">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card43">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="card card44">
-        <div class="content">
-          <div class="front"></div>
-          <div class="back" style="max-width: 100%; max-height: 100%">
-            <img
-              src=""
-              alt=""
-              style="width: 100%; height: 100%; object-fit: contain"
-            />
+        <div class="card card44">
+          <div class="content">
+            <div class="front"></div>
+            <div class="back" style="max-width: 100%; max-height: 100%">
+              <img
+                src=""
+                alt=""
+                style="width: 100%; height: 100%; object-fit: contain"
+              />
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- 重新開始遊戲按鈕 -->
-    <button id="restartButton" style="display: none">重新開始遊戲</button>
+
+    <!-- 重新開始遊戲按鈕 start-->
+    <div style="position: absolute; top: 50%; left: 50%; display: none">
+      <button id="restartButton" style="">重新開始遊戲</button>
+    </div>
+    <!-- 重新開始遊戲按鈕 end-->
+
     <div>
       <a href="/" class="back-button">回首頁</a>
     </div>
 
+    <div class="container">
+      <!-- 標題 -->
+
+      <!-- 詳細內容 -->
+      <!-- Details 元素 -->
+      <details>
+        <!-- Summary 元素 -->
+        <summary>
+          <!-- 優惠碼modal的按鈕 start-->
+          <div
+            id="discountButton"
+            class="button2"
+            style="
+              position: absolute;
+              right: 44.5%;
+              top: 60%;
+              transform: translate(-50%, -50%);
+              display: none;
+            "
+          >
+            領取優惠
+          </div>
+          <!-- 優惠碼modal的遮罩層 -->
+          <div class="details-modal-overlay"></div>
+        </summary>
+        <!-- 優惠碼modal的內容 -->
+        <div class="details-modal">
+          <!-- 優惠碼modal上半部開始 -->
+          <div
+            style="
+              color: white;
+              background-color: #394a54;
+              border-top-left-radius: 10px;
+              border-top-right-radius: 10px;
+              padding: 20px;
+              font-weight: 400;
+            "
+          >
+            <!-- 優惠碼modal的關閉按鈕 -->
+            <div class="details-modal-close">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 14 14"
+                fill="none"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M13.7071 1.70711C14.0976 1.31658 14.0976 0.683417 13.7071 0.292893C13.3166 -0.0976311 12.6834 -0.0976311 12.2929 0.292893L7 5.58579L1.70711 0.292893C1.31658 -0.0976311 0.683417 -0.0976311 0.292893 0.292893C-0.0976311 0.683417 -0.0976311 1.31658 0.292893 1.70711L5.58579 7L0.292893 12.2929C-0.0976311 12.6834 -0.0976311 13.3166 0.292893 13.7071C0.683417 14.0976 1.31658 14.0976 1.70711 13.7071L7 8.41421L12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L8.41421 7L13.7071 1.70711Z"
+                  fill="black"
+                ></path>
+              </svg>
+            </div>
+            <!-- 優惠碼modal的標題 -->
+            <div class="details-modal-title">
+              <h1 style="font-size: 2rem; font-weight: bold">
+                母親節優惠準備開跑囉!
+              </h1>
+            </div>
+          </div>
+          <!-- 優惠碼modal上半部結束 -->
+          <!-- 優惠碼modal的內容 -->
+          <div class="details-modal-content">
+            <!-- <h1 style="color: white; background-color: #394A54;border-top-left-radius: 10px; border-top-right-radius: 10px; padding: 20px; font-weight: 400;">母親節優惠開跑囉!</h1> -->
+            <p
+              style="font-size: 1.25rem; margin-top: 1em; margin-bottom: 1em"
+            ></p>
+            <p style="font-size: 1.3rem; color: #111827">
+              選購商城商品滿NT$1,000
+            </p>
+            <p style="font-size: 1.3rem; color: #111827">
+              可額外享NT$50折扣優惠
+            </p>
+            <p><strong>結帳時請輸入優惠碼</strong></p>
+            <p></p>
+
+            <!-- 優惠碼複製部分start -->
+            <div style="display: flex; justify-content: center">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-around;
+                  padding: 0.25rem;
+                  border-width: 1.5px;
+                  width: 70%;
+                  border-radius: 0.75rem;
+                  border-style: dashed;
+                "
+              >
+                <div
+                  style="
+                    width: 70%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                >
+                  <input
+                    type="text"
+                    value="FLOWER50"
+                    id="couponCode"
+                    style="
+                      text-align: center;
+                      font-size: 0.875rem;
+                      margin: 0;
+                      width: 100%;
+                      margin-right: 0.375rem;
+                      background-color: transparent;
+                      outline: none;
+                      border: none;
+                    "
+                    readonly=""
+                  />
+                </div>
+
+                <button
+                  id="copyButton"
+                  class="button3"
+                  style="width: 30%"
+                  onclick="copyToClipboard()"
+                >
+                  複製
+                </button>
+              </div>
+            </div>
+            <!-- 優惠碼複製部分end -->
+
+            <div style="text-align: center">
+              <button
+                class="button"
+                style="display: inline-block; margin: 10px; width: 30%"
+              >
+                前往商城
+              </button>
+              <img
+                src="./assets/intro/FlowerMom.jpg"
+                alt="FlowerMom"
+                width="300"
+                style="display: block; margin: 0 auto"
+              />
+            </div>
+            <p><strong>母親節限定優惠碼</strong></p>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <script>
+      function copyToClipboard() {
+        // 獲取複製內容
+        let couponCode = document.getElementById('couponCode')
+        // 選擇複製內容
+        couponCode.select()
+        // 執行複製
+        document.execCommand('copy')
+        // 取消選擇
+        window.getSelection().removeAllRanges()
+        // 改變按鈕文字為已複製
+        document.getElementById('copyButton').innerText = '已複製'
+        // 三秒後將按鈕文字還原
+        setTimeout(function () {
+          document.getElementById('copyButton').innerText = '複製'
+        }, 1500)
+      }
+    </script>
     <script>
       const body = document.querySelector('body')
       const tipDiv = document.querySelector('.game .tip')
@@ -1421,22 +1832,24 @@
           canSelect = true
         } else {
           if (pickAry.length >= 3) {
-            //创建一个 "重新开始" 按钮并添加到页面中
-            let restartButton = document.createElement('button')
-            restartButton.innerText = '重新開始遊戲'
-            restartButton.id = 'restartButton'
-            document.body.appendChild(restartButton)
+            // 抽完三張牌後顯示領取優惠按鈕
+            document.getElementById('discountButton').style.display = 'block'
 
+            //-------產生重新開始遊戲按鈕start
+            // let restartButton = document.createElement('button')
+            // restartButton.innerText = '重新開始遊戲'
+            // restartButton.id = 'restartButton'
+            // document.body.appendChild(restartButton)
             // 監聽按鈕點擊事件
-            document
-              .getElementById('restartButton')
-              .addEventListener('click', function () {
-                reset()
-              })
-
-            tipDiv.innerHTML = '點擊 [重新開始遊戲] 按鈕重新開始遊戲'
-            canClick = false // 關閉頁面其他區域的點擊監聽
-            finished = true
+            // document
+            //   .getElementById('restartButton')
+            //   .addEventListener('click', function () {
+            //     reset()
+            //   })
+            // tipDiv.innerHTML = '點擊 [重新開始遊戲] 按鈕重新開始遊戲'
+            // canClick = false // 關閉頁面其他區域的點擊監聽
+            // finished = true
+            //-------產生重新開始遊戲按鈕end
           }
         }
       }
@@ -1464,9 +1877,10 @@
         }
         return result
       }
+      // 輕薄的假象start
       // 使用 JavaScript 將網址修改為 http://localhost:3000/intro/game-div
-      window.history.replaceState({}, '', '/intro/game-div')
-      console.log(`./images/FlowerCard/image(${randomNumber}).jpg`)
+      // window.history.replaceState({}, '', '/intro/game-div')
+      // 輕薄的假象end
     </script>
   </body>
 </html>

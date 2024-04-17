@@ -6,55 +6,48 @@ import {
   CardBody,
   CardFooter,
   Image,
+  Button,
 } from '@nextui-org/react'
 import { BsHeart } from 'react-icons/bs'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import Link from 'next/link'
-import { Button } from '@nextui-org/react'
 
 const ITEM_WIDTH = 300
 
-function ShopSlider() {
+function ShopSlider({ products = [] }) {
+  const folderMappings = [
+    { category: '鮮花', directory: '/assets/shop/products/flowers/' },
+    { category: '花盆栽', directory: '/assets/shop/products/flower-pots' },
+    { category: '葉材', directory: '/assets/shop/products/foliage' },
+    { category: '植盆栽', directory: '/assets/shop/products/plant-pots' },
+    { category: '器具', directory: '/assets/shop/products/tools' },
+    { category: '材料', directory: '/assets/shop/products/materials' },
+  ]
+
+  const productItems = products.map((product) => {
+    // 查找對應的文件資料夾
+    const folder =
+      folderMappings.find(
+        (mapping) => mapping.category === product.category.name
+      )?.directory || 'shop/images/all'
+    const imagePath = product.mainImage
+      ? `${folder}/${product.mainImage}`
+      : '/assets/shop/products/flowers/default.jpg'
+    return {
+      name: product.name,
+      image: imagePath,
+      store: product.stores.store_name,
+      price: `NT$${product.price}`,
+      tag: product.tags.map((tag) => tag.id),
+    }
+  })
+
   const [scrollPosition, setScrollPosition] = useState(0)
   const [isLeftDisabled, setIsLeftDisabled] = useState(true)
   const [isRightDisabled, setIsRightDisabled] = useState(false)
-  const productList = [
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Avocado',
-      starCount: '5.0',
-      shop: 'shop1',
-      tag: 'hot sale',
-      price: '$15.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
-      title: 'Watermelon',
-      starCount: '4.0',
-      shop: 'shop2',
-      tag: 'hot sale',
-      price: '$8.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Apple',
-      starCount: '3.0',
-      shop: 'shop3',
-      tag: 'hot sale',
-      price: '$44.70',
-    },
-    {
-      img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-      title: 'Orange',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
-  ]
 
   const containerRef = useRef()
-  const contentWidth = ITEM_WIDTH * productList.length
+  const contentWidth = ITEM_WIDTH * productItems.length
 
   // function to handle scrolling when the btn is clicked
   const handleScroll = (scrollAmount) => {
@@ -102,42 +95,46 @@ function ShopSlider() {
             className="content-box w-auto flex align-center gap-5"
             style={{ width: contentWidth }}
           >
-            {productList.map((item, index) => (
-              <Card
-                shadow="sm"
-                key={index}
-                isPressable
-                onPress={() => console.log('item pressed')}
-              >
-                <CardBody className="relative overflow-visible p-0">
-                  <Link
-                    href="/shop/details"
-                    key={index}
-                    className="block relative"
-                  >
-                    <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                    <Image
-                      isZoomed
-                      shadow="none"
-                      radius="none"
-                      width="100%"
-                      alt={item.title}
-                      className="w-[300px] object-cover h-[200px] z-0"
-                      src={item.img}
-                    />
-                  </Link>
-                </CardBody>
-                <CardHeader className="block text-left">
-                  <div className="flex justify-between">
-                    <p className="text-xl truncate">{item.title}</p>
-                  </div>
-                  <p className="text-base">{item.shop}</p>
-                </CardHeader>
-                <CardFooter className="text-small justify-between">
-                  <p className="text-xl truncate">{item.price}</p>
-                </CardFooter>
-              </Card>
-            ))}
+            {productItems
+              .filter((product) => product.tag.some((tagId) => tagId === 4)) // 使用 some 方法检查 tags 数组
+              .map((product) => (
+                <Card
+                  shadow="sm"
+                  key={product.id}
+                  isPressable
+                  onPress={() => console.log('item pressed')}
+                >
+                  <CardBody className="relative overflow-visible p-0">
+                    <Link
+                      href={{
+                        pathname: '/shop/[pid]',
+                        query: { pid: product.id },
+                      }}
+                      as={`/shop/${product.id}`}
+                    >
+                      <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                      <Image
+                        isZoomed
+                        shadow="none"
+                        radius="none"
+                        width="100%"
+                        alt={product.name}
+                        className="w-[300px] object-cover h-[200px] z-0"
+                        src={product.image}
+                      />
+                    </Link>
+                  </CardBody>
+                  <CardHeader className="block text-left">
+                    <div className="flex justify-between">
+                      <p className="text-xl truncate">{product.name}</p>
+                    </div>
+                    <p className="text-base">{product.store}</p>
+                  </CardHeader>
+                  <CardFooter className="text-small justify-between">
+                    <p className="text-xl truncate">{product.price}</p>
+                  </CardFooter>
+                </Card>
+              ))}
           </div>
         </div>
 

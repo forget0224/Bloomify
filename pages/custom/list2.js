@@ -9,6 +9,8 @@ import { PiSlidersThin } from 'react-icons/pi'
 import FilterButton from '@/components/custom/product/filterBtn'
 import BottomSheetButton from '@/components/custom/custom/BottomSheetButton'
 import FilterContent from '@/components/custom/product/FilterContent'
+import { useLoader } from '@/hooks/use-loader'
+import Loader from '@/components/common/loader'
 export default function List() {
   const [activePage, setActivePage] = useState('custom')
   const [isSheetOpen, setSheetOpen] = useState(false)
@@ -16,6 +18,7 @@ export default function List() {
   const handleOpen = () => setSheetOpen(true)
   const handleClose = () => setSheetOpen(false)
   const [isHeart, setIsHeart] = useState(true)
+  const { close, open, isLoading } = useLoader()
   const handleHeartClick = () => {
     setIsHeart(!isHeart)
   }
@@ -25,26 +28,20 @@ export default function List() {
   const [products, setProducts] = useState([])
 
   const getProducts = async () => {
-    const url = 'http://localhost:3005/api/custom-list' // 确保 URL 是正确的
+    const url = 'http://localhost:3005/api/custom'
 
     try {
       const res = await fetch(url)
       if (!res.ok) {
-        throw new Error(`Failed to fetch: ${res.status}`) // 显示具体错误代码
+        throw new Error(`Failed to fetch: ${res.status}`)
       }
       const data = await res.json()
-      console.log(data) // 查看原始数据，确保它是如预期那样
+      console.log(data)
 
-      // 现在我们知道数据结构是 { status: "success", data: { customTemplateLists: [Array] } }
-      if (
-        data.status === 'success' &&
-        data.data &&
-        Array.isArray(data.data.customTemplateLists)
-      ) {
-        setProducts(data.data.customTemplateLists) // 将数据设置到状态中
-      } else {
-        console.error('Unexpected data structure:', data)
+      if (Array.isArray(data.data.customTemplateLists)) {
+        setProducts(data.data.customTemplateLists)
       }
+      close(3)
     } catch (e) {
       console.error('Failed to load products:', e) // 更详细地记录错误
     }
@@ -63,7 +60,7 @@ export default function List() {
     }
   }
 
-  return (
+  const display = (
     <DefaultLayout activePage={activePage}>
       <>
         <div className="bg-white  w-screen h-auto overflow-visible">
@@ -189,4 +186,5 @@ export default function List() {
       </>
     </DefaultLayout>
   )
+  return <>{isLoading ? <Loader /> : display}</>
 }
