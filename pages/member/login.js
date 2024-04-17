@@ -1,4 +1,10 @@
 import { useState } from 'react'
+import { useAuth } from '@/hooks/use-auth'
+import { useRouter } from 'next/router'
+
+// sweetalert2
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 // nextUI
 import Image from 'next/image'
@@ -13,9 +19,28 @@ import { MyButton } from '@/components/btn/mybutton'
 import { PiEye } from 'react-icons/pi'
 import { PiEyeClosed } from 'react-icons/pi'
 
+// 解析accessToken用的函式
+// JWT 的範例：xxxxx.yyyyy.zzzzz (Header、Payload 和 Signature)
+export const parseJwt = (token) => {
+  // 從 token 中提取 Payload 部分
+  const base64Payload = token.split('.')[1]
+  console.log(base64Payload)
+  // 使用 Base64 解碼 Payload
+  const payload = Buffer.from(base64Payload, 'base64')
+  console.log(payload)
+  // 將 Payload 轉換成 JSON 格式
+  return JSON.parse(payload.toString())
+}
+
 // Login
 export default function Login() {
   const [activePage, setActivePage] = useState('member')
+
+  // 登入狀態
+  const { login } = useAuth()
+
+  // 網址
+  const router = useRouter()
 
   // 密碼隱藏顯示切換
   const [isVisible, setIsVisible] = useState(false)
@@ -26,6 +51,20 @@ export default function Login() {
     username: '',
     password: '',
   })
+
+  //  SweetAlert2 彈窗
+  const MySwal = withReactContent(Swal)
+
+  // SweetAlert2 彈窗設定
+  const notify = (msg) => {
+    MySwal.fire({
+      //position: "top-end",
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
 
   // 輸入帳號密碼
   const handleFieldChange = (e) => {
@@ -49,12 +88,25 @@ export default function Login() {
       method: 'POST',
       body: JSON.stringify(user),
     })
+
     const data = await res.json()
     console.log(data)
 
     if (data.status === 'success') {
       // 登入成功，可以在這裡處理成功登入的相關操作，例如跳轉頁面或顯示成功訊息
       console.log('登入成功，後端回應:', data)
+
+      const user = parseJwt(data.data.accessToken)
+      // {id: 1, username: 'herry@test.com', iat: 1713370273, exp: 1713629473}
+      console.log(user)
+      // 設定全域的context會員登入
+      login(user)
+      // 出現登入成功對話訊息盒
+      notify('成功登入')
+      // 導向到會員個人資料頁
+      // setTimeout(() => {
+      //   router.push('/center')
+      // }, 1500)
     } else {
       // 登入失敗，顯示錯誤訊息
       console.error('登入失敗，後端回應:', data)
