@@ -14,7 +14,7 @@ import Link from 'next/link'
 
 const ITEM_WIDTH = 300
 
-function ShopSlider({ products }) {
+function ShopSlider({ products = [] }) {
   const folderMappings = [
     { category: '鮮花', directory: '/assets/shop/products/flowers/' },
     { category: '花盆栽', directory: '/assets/shop/products/flower-pots' },
@@ -25,7 +25,7 @@ function ShopSlider({ products }) {
   ]
 
   const productItems = products.map((product) => {
-    // 查找对应的文件夹路径
+    // 查找對應的文件資料夾
     const folder =
       folderMappings.find(
         (mapping) => mapping.category === product.category.name
