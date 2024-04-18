@@ -18,7 +18,7 @@ function BottomSheetButton({
   blocking = false,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center text-tertiary-black ">
+    <div className="flex flex-col items-center justify-center text-tertiary-black z-9">
       <div className={iconClass} onClick={onOpen}>
         {icon}
       </div>

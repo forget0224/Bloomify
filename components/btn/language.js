@@ -19,7 +19,7 @@ export default function Language() {
 
   const selectedOptionValue = Array.from(selectedOption)[0]
   return (
-    <ButtonGroup variant="bordered" className="rounded-lg">
+    <ButtonGroup variant="bordered" className="rounded-lg z-0">
       <Dropdown>
         <DropdownTrigger>
           <Button className="border-1 border-black px-unit-6 text-xs min-h-[34px] min-w-[120px]">
