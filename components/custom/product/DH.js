@@ -5,6 +5,8 @@ import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { CiShoppingCart } from 'react-icons/ci'
 import { GoArrowLeft, GoArrowRight } from 'react-icons/go'
 import { useRouter } from 'next/router'
+import { useColors } from '@/hooks/use-color'
+import CustomCheckbox from '../common/CustomCheckbox'
 
 const DraggableProductList = ({ productList }) => {
   const router = useRouter()
@@ -14,6 +16,7 @@ const DraggableProductList = ({ productList }) => {
   const [cardMinWidth, setCardMinWidth] = useState(125) // Minimum card width
   const [cardMinGap, setCardMinGap] = useState(14) // Minimum card width
   const [isDragging, setIsDragging] = useState(false)
+  const color = useColors()
 
   useEffect(() => {
     const handleResize = () => {
@@ -82,56 +85,70 @@ const DraggableProductList = ({ productList }) => {
         }}
         dragConstraints={{ left: 0, right: 0 }}
       >
-        {productList.map((item) => (
-          <Card
-            shadow="sm"
-            key={item.id}
-            className="cursor-grab active:cursor-grabbing"
-            style={{ width: `${cardMinWidth}px` }}
-            isPressable
-            // onPress={handleCardClick(item.id)}
-            onClick={() => handleCardClick(item.id)}
-          >
-            <CardBody className="p-0">
-              <div
-                style={{ backgroundImage: `url(${item.src})` }}
-                className="bg-cover bg-center aspect-video w-full rounded-t-xl"
-              ></div>
-            </CardBody>
-            <CardHeader className="flex flex-col items-start">
-              <div className="flex flex-row items-center justify-between w-full">
-                <h1 className="sm:text-lg text:md">{item.name}</h1>
-                <div className="cursor-pointer" onClick={handleHeartClick}>
-                  {isHeart ? (
-                    <IoIosHeartEmpty className="text-danger text-xl" />
-                  ) : (
-                    <IoIosHeart className="text-danger text-xl" />
-                  )}
+        {productList.map((item) => {
+          const colorCode = color.find(
+            (color) => color.name === item.color
+          )?.code // 根據名稱找到顏色碼
+          return (
+            <Card
+              shadow="sm"
+              key={item.id}
+              className="cursor-grab active:cursor-grabbing"
+              style={{ width: `${cardMinWidth}px` }}
+              isPressable
+              // onPress={handleCardClick(item.id)}
+              onClick={() => handleCardClick(item.id)}
+            >
+              <CardBody className="p-0">
+                <div
+                  style={{ backgroundImage: `url(${item.src})` }}
+                  className="bg-cover bg-center aspect-video w-full rounded-t-xl"
+                ></div>
+              </CardBody>
+              <CardHeader className="flex flex-col items-start">
+                <div className="flex flex-row items-center justify-between w-full">
+                  <h1 className="sm:text-lg text:md">{item.name}</h1>
+                  <div className="cursor-pointer" onClick={handleHeartClick}>
+                    {isHeart ? (
+                      <IoIosHeartEmpty className="text-danger text-xl" />
+                    ) : (
+                      <IoIosHeart className="text-danger text-xl" />
+                    )}
+                  </div>
                 </div>
-              </div>
-              <p className="sm:text-sm text-xs  text-tertiary-gray-100 text-left">
-                {item.store}
-              </p>
-            </CardHeader>
-            <CardFooter className=" justify-between">
-              <p className="sm:text-lg text-md">
-                {item.discount !== 0 ? (
-                  <>
-                    <span className="line-through">${item.total_price}</span>
-                    <span className="ml-2 text-danger">
-                      ${parseInt(item.total_price) - parseInt(item.discount)}
-                    </span>
-                  </>
-                ) : (
-                  <>${item.total_price}</>
+                <p className="sm:text-sm text-xs  text-tertiary-gray-100 text-left">
+                  {item.store}
+                </p>
+                {colorCode && (
+                  <CustomCheckbox
+                    width={'w-4'}
+                    height={'h-4'}
+                    value={item.color}
+                    bgColor={colorCode}
+                  />
                 )}
-              </p>
-              <p className="text-base items-center">
-                <CiShoppingCart className="text-primary-100 h-6 w-6 cursor-pointer" />
-              </p>
-            </CardFooter>
-          </Card>
-        ))}
+                {/* bgColor={code} */}
+              </CardHeader>
+              <CardFooter className=" justify-between">
+                <p className="sm:text-lg text-md">
+                  {item.discount !== 0 ? (
+                    <>
+                      <span className="line-through">${item.total_price}</span>
+                      <span className="ml-2 text-danger">
+                        ${parseInt(item.total_price) - parseInt(item.discount)}
+                      </span>
+                    </>
+                  ) : (
+                    <>${item.total_price}</>
+                  )}
+                </p>
+                <p className="text-base items-center">
+                  <CiShoppingCart className="text-primary-100 h-6 w-6 cursor-pointer" />
+                </p>
+              </CardFooter>
+            </Card>
+          )
+        })}
       </motion.div>
       <div className="flex flex-row items-center text-2xl justify-end cursor-pointer  gap-3  w-full">
         <GoArrowLeft onClick={handlePrev} className="text-tertiary-black " />

@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, cloneElement } from 'react'
 import logo from '@/assets/singleLogo.svg'
 import Image from 'next/image'
 import { CiUndo } from 'react-icons/ci'
 import { MyButton } from '@/components/btn/mybutton'
 import BottomSheetButton from '@/components/custom/custom/BottomSheetButton'
 import 'react-spring-bottom-sheet/dist/style.css'
-import items from '@/components/custom/custom/items'
+// import items from '@/components/custom/custom/items'
 import MainFlowerComponent from '@/components/custom/custom/MainFlowerComponent'
 import AccentFlowerComponent from '@/components/custom/custom/AccentFlowerComponent'
 import LeafComponent from '@/components/custom/custom/LeafComponent'
@@ -23,13 +23,26 @@ import {
   Button,
 } from '@nextui-org/react'
 import LayerContent from '@/components/custom/custom/LayerContent'
+import {
+  PiFlowerTulipLight,
+  PiLeafLight,
+  PiGiftLight,
+  PiPencilLineLight,
+} from 'react-icons/pi'
+// import { IoLayersOutline } from 'react-icons/io5'
+import FlowerContent from '@/components/custom/custom/FlowerContent'
+import LeafContent from '@/components/custom/custom/LeafContent'
+import PackageContent from '@/components/custom/custom/PackageContent'
+import GiftCardContent from '@/components/custom/custom/GiftCardContent'
+// import LayerContent from '@/components/custom/custom/LayerContent'
 
 export default function Custom() {
   const [openedIndex, setOpenedIndex] = useState(null)
   const [currentPage, setCurrentPage] = useState('main')
   const [storeData, setStoreData] = useState(null)
   const [currentComponentIndex, setCurrentComponentIndex] = useState(0)
-
+  const [currentItemIndex, setCurrentItemIndex] = useState(0)
+  const [items, setItems] = useState([])
   const components = [
     { component: MainFlowerComponent, name: 'main' },
     { component: AccentFlowerComponent, name: 'accent' },
@@ -45,52 +58,11 @@ export default function Custom() {
     fetchStoreData(store.id)
   }
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const urls = [
-  //         'http://localhost:3005/api/share-colors',
-  //         'http://localhost:3005/api/share-occs',
-  //         'http://localhost:3005/api/share-roles',
-  //       ]
-
-  //       const responses = await Promise.all(urls.map((url) => fetch(url)))
-  //       const dataPromises = responses.map((response) => response.json())
-  //       const results = await Promise.all(dataPromises)
-
-  //       if (
-  //         results[2].status === 'success' &&
-  //         Array.isArray(results[2].data.roles)
-  //       ) {
-  //         setRoles(results[2].data.roles)
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error)
-  //     }
-  //   }
-
-  //   fetchData()
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log('storeData 更新後的值:', storeData)
-
-  //   if (storeData && storeData.items) {
-  //     // 將每個 component 的數據更新為對應的類型數據
-  //     Object.keys(components).forEach((key) => {
-  //       // 檢查 storeData.items 中是否有對應的 category type
-  //       if (storeData.items[key]) {
-  //         // 如果有，更新相應 component 的 data 屬性
-  //         components[key].data = storeData.items[key]
-  //         const currentData = storeData.items[currentPage]
-  //       }
-  //     })
-  //   }
-  // }, [storeData])
   useEffect(() => {
     if (storeData && storeData.items) {
       // 設置當前組件的數據
       const currentItems = storeData.items[currentPage] // 根據當前頁面類型獲取數據
+
       if (currentItems) {
         // 更新當前頁面的數據
         setCurrentData(currentItems)
@@ -99,9 +71,56 @@ export default function Custom() {
         setCurrentData([])
       }
     }
-
-    console.log(currentData)
+    // setItemsWithCurrentData(getItems(currentData))
+    // console.log(currentData)
   }, [storeData, currentPage]) // 依賴 storeData 和 currentPage
+  useEffect(() => {
+    if (storeData && storeData.items) {
+      // 創建一個新的 items 陣列來更新底部導航欄
+      const newItems = [
+        {
+          icon: <PiFlowerTulipLight />,
+          label: '花材',
+          name: ['main', 'accent'],
+          content: (
+            <FlowerContent
+              mainItems={storeData.items['main'] || []}
+              accentItems={storeData.items['accent'] || []}
+            />
+          ),
+          headerContent: '花材標題',
+        },
+        {
+          icon: <PiLeafLight />,
+          label: '葉材',
+          name: 'leaf',
+          content: <LeafContent items={storeData.items['leaf'] || []} />,
+          headerContent: '葉材標題',
+        },
+        {
+          icon: <PiGiftLight />,
+          label: '包裝',
+          name: 'package',
+          content: <PackageContent items={storeData.items['package'] || []} />,
+          headerContent: '包裝',
+        },
+        {
+          icon: <PiPencilLineLight />,
+          label: '賀卡',
+          name: 'card',
+          content: <GiftCardContent items={storeData.items['card'] || []} />,
+          headerContent: '賀卡',
+        },
+        {
+          icon: <IoLayersOutline />,
+          label: '圖層',
+          content: <LayerContent />,
+          headerContent: '圖層',
+        },
+      ]
+      setItems(newItems)
+    }
+  }, [storeData]) // 依賴 storeData 變化
 
   // 確保有一個 state 來存儲當前的數據
   const [currentData, setCurrentData] = useState([])
@@ -183,26 +202,23 @@ export default function Custom() {
                   <p className="text-xs">reset</p>
                 </div>
                 <div className="sm:hidden ">
-                  <MyButton size="xs" color="secondary200">
-                    完成
-                  </MyButton>
+                  <Link href="/cart">
+                    <MyButton size="xs" color="secondary200">
+                      完成
+                    </MyButton>
+                  </Link>
                 </div>
                 <div className="hidden sm:block">
-                  <MyButton size="md" color="secondary200">
-                    完成
-                  </MyButton>
+                  <Link href="/cart">
+                    <MyButton size="md" color="secondary200">
+                      完成
+                    </MyButton>
+                  </Link>
                 </div>
               </div>
             </nav>
 
             <main className="flex-1 w-full h-auto relative">
-              {/* <div className="rounded-full border-1 text-tertiary-black border-tertiary-black w-16 h-16 bg-secondary-200 flex flex-col items-center justify-center m-4">
-              <div className="text-3xl">
-                <IoLayersOutline />
-              </div>
-              <p>圖層</p>
-              <IoLayersOutline />
-            </div> */}
               <div className="hidden sm:block">
                 <Popover placement="bottom-start">
                   <PopoverTrigger>
@@ -261,6 +277,7 @@ export default function Custom() {
                   onNext={handleNextComponent}
                 />
               )}
+              {/* 電腦版的currenData 順利傳進去 */}
             </div>
           </div>
           {/* 底部  */}
