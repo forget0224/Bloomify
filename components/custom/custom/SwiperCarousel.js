@@ -9,7 +9,8 @@ const SPRING_OPTIONS = {
   damping: 50,
 }
 
-export default function SwiperCarousel({ productList, setSelectedFlower }) {
+export default function SwiperCarousel({ items, onItemSelect }) {
+  console.log(items)
   const dragX = useMotionValue(0)
   const [imgIndex, setImgIndex] = useState(0)
   const cardWidth = 125 // Width of the card
@@ -23,18 +24,18 @@ export default function SwiperCarousel({ productList, setSelectedFlower }) {
   const onDragEnd = () => {
     setIsDragging(false)
     const x = dragX.get()
-    if (x <= -DRAG_BUFFER && imgIndex < productList.length - 1) {
+    if (x <= -DRAG_BUFFER && imgIndex < items.length - 1) {
       setImgIndex((prevIndex) => prevIndex + 1)
     } else if (x >= DRAG_BUFFER && imgIndex > 0) {
       setImgIndex((prevIndex) => prevIndex - 1)
     }
   }
 
-  const handleClick = (product) => {
-    if (!isDragging) {
-      setSelectedFlower(product)
-    }
-  }
+  // const handleClick = (product) => {
+  //   if (!isDragging) {
+  //     setSelectedFlower(product)
+  //   }
+  // }
 
   return (
     <div className="w-full h-full overflow-hidden">
@@ -48,16 +49,23 @@ export default function SwiperCarousel({ productList, setSelectedFlower }) {
         onDragEnd={onDragEnd}
         className="flex justify-start cursor-grab active:cursor-grabbing h-full"
       >
-        {productList.map((product) => (
-          <div key={product.id} className="flex flex-col items-center mr-4">
-            <div
-              onClick={() => handleClick(product)}
-              style={{ backgroundImage: `url(${product.src})` }}
-              className="bg-cover bg-center aspect-square w-[125px] rounded-xl object-cover"
-            ></div>
-            <p>{product.name}</p>
-          </div>
-        ))}
+        {items &&
+          items.map((item, index) => (
+            <div key={index} className="flex flex-col items-center mr-4">
+              <div
+                // onClick={() => handleClick(item)}
+                onClick={() =>
+                  onItemSelect({
+                    name: item.category_name,
+                    colors: item.colors,
+                  })
+                }
+                style={{ backgroundImage: `url(${item.category_url})` }}
+                className="bg-cover bg-center aspect-square w-[125px] rounded-xl object-cover"
+              ></div>
+              <p>{item.category_name}</p>
+            </div>
+          ))}
       </motion.div>
     </div>
   )

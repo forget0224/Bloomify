@@ -11,54 +11,36 @@ import LeafContent from './LeafContent'
 import PackageContent from './PackageContent'
 import GiftCardContent from './GiftCardContent'
 import LayerContent from './LayerContent'
-// api
-// {
-//   "status": "success",
-//   "data": {
-//   "store_id": "2",
-//   "store_name": "花姿妍",
-//   "products": {
-//   "配花": {
-//   "category_name": "配花",
-//   "items": [
-//   {
-//   "name": "向日葵",
-//   "colors": "橙色"
-//   }
-//   ]
-//   }
-//   }
-//   }
-//   }
+
 const items = [
   {
     icon: <PiFlowerTulipLight />,
     label: '花材',
-    content: <FlowerContent />,
+    content: <FlowerContent items={data} />,
     headerContent: '花材標題',
   },
   {
     icon: <PiLeafLight />,
     label: '葉材',
-    content: <LeafContent />,
+    content: <LeafContent items={data} />,
     headerContent: '葉材標題',
   },
   {
     icon: <PiGiftLight />,
     label: '包裝',
-    content: <PackageContent />,
+    content: <PackageContent items={data} />,
     headerContent: '包裝',
   },
   {
     icon: <PiPencilLineLight />,
     label: '賀卡',
-    content: <GiftCardContent />,
+    content: <GiftCardContent items={data} />,
     headerContent: '賀卡',
   },
   {
     icon: <IoLayersOutline />,
     label: '圖層',
-    content: <LayerContent />,
+    content: <LayerContent items={data} />,
     headerContent: '圖層',
   },
 ]
