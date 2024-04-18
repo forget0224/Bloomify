@@ -5,6 +5,7 @@ import { MdEdit } from 'react-icons/md'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { MyButton } from '@/components/btn/mybutton'
 import { useLoader } from '@/hooks/use-loader'
+import Link from 'next/link'
 import Loader from '@/components/common/loader'
 
 export default function Detail() {
@@ -157,21 +158,6 @@ export default function Detail() {
                 <p className="">如當日花材不足會以相似款替代</p>
               </div>
               <div className="flex flex-col justify-center px-5 gap-2">
-                {/* <div className="flex flex-row justify-between items-center">
-                      <p>玫瑰</p>
-                      <p>$50</p>
-                      <p>x3</p>
-                    </div> */}
-                {/* <div className="flex flex-row justify-between items-center">
-                      <p>玫瑰</p>
-                      <p>$50</p>
-                      <p>x3</p>
-                    </div>
-                    <div className="flex flex-row justify-between items-center">
-                      <p>玫瑰</p>
-                      <p>$50</p>
-                      <p>x3</p>
-                    </div> */}
                 {product.products.map((item, index) => (
                   <div
                     key={index}
@@ -201,12 +187,18 @@ export default function Detail() {
                   <IoIosHeart className="text-danger text-2xl " />
                 )}
               </div>
-              <MyButton color="secondary200" size="xl">
-                客製化
-              </MyButton>
-              <MyButton color="secondary" size="xl">
-                結帳
-              </MyButton>
+
+              <Link href="/custom/custom">
+                {' '}
+                <MyButton color="secondary200" size="xl">
+                  客製化
+                </MyButton>
+              </Link>
+              <Link href="/cart">
+                <MyButton color="secondary" size="xl">
+                  結帳
+                </MyButton>
+              </Link>
             </div>
           </div>
         </div>
