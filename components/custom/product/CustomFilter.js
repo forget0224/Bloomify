@@ -2,65 +2,61 @@ import { useState, useEffect } from 'react'
 import { Checkbox, CheckboxGroup } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import CustomCheckbox from '../common/CustomCheckbox'
-export default function CustomFilter() {
-  const [selected, setSelected] = useState([''])
-  const [colors, setColors] = useState([''])
-  const [roles, setRoles] = useState([''])
-  const [occs, setOccs] = useState([''])
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const urls = [
-          'http://localhost:3005/api/share-colors',
-          'http://localhost:3005/api/share-occs',
-          'http://localhost:3005/api/share-roles',
-        ]
+import { useColors } from '@/hooks/use-color'
+import { useOccs } from '@/hooks/use-occ'
+import { useRoles } from '@/hooks/use-role'
 
-        const responses = await Promise.all(urls.map((url) => fetch(url)))
-        const dataPromises = responses.map((response) => response.json())
-        const results = await Promise.all(dataPromises)
+export default function CustomFilter({ onFilterChange }) {
+  const colors = useColors()
+  const occs = useOccs()
+  const roles = useRoles()
+  const [selectedOccs, setSelectedOccs] = useState([])
+  const [selectedRoles, setSelectedRoles] = useState([])
+  const [selectedColors, setSelectedColors] = useState([])
 
-        if (
-          results[0].status === 'success' &&
-          Array.isArray(results[0].data.colors)
-        ) {
-          setColors(results[0].data.colors)
-        }
-        if (
-          results[1].status === 'success' &&
-          Array.isArray(results[1].data.occs)
-        ) {
-          setOccs(results[1].data.occs)
-        }
-        if (
-          results[2].status === 'success' &&
-          Array.isArray(results[2].data.roles)
-        ) {
-          setRoles(results[2].data.roles)
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
+  const handleColorChange = (updateFunction) => {
+    setSelectedColors(updateFunction)
+  }
+  const handleConfirm = () => {
+    const query = {
+      occ_id: selectedOccs.join(','),
+      role_id: selectedRoles.join(','),
+      color_id: selectedColors.join(','),
     }
 
-    fetchData()
-  }, [])
+    console.log(query)
+    onFilterChange(query)
+  }
+
+  const handleClear = () => {
+    setSelectedOccs([])
+    setSelectedRoles([])
+    setSelectedColors([])
+    handleConfirm()
+  }
+
   return (
     <>
       <div className="bg-white p-4 rounded-lg shadow-md w-[250px] m-auto h-[600px] text-tertiary-black  overflow-y-auto scrollbar-thumb:bg-tertiary-black scrollbar-thumb:rounded-sm scrollbar-track:bg-transparent items-center ">
-        <div className=" ">
+        <div className="">
           <div className="">
             <p className="text-lg text-tertiary-black">節日</p>
             <hr className="" />
+
             <div className="">
               <CheckboxGroup
-                value={selected}
-                color="default"
-                onValueChange={setSelected}
+                value={selectedOccs}
+                onValueChange={setSelectedOccs}
                 className="py-2"
+                color="primary"
               >
-                {occs.map(({ id, occ }) => (
-                  <Checkbox key={id} radius="none" className="" value={occ}>
+                {occs.map(({ occ_id, occ }) => (
+                  <Checkbox
+                    key={occ_id}
+                    className=""
+                    radius="xs"
+                    value={occ_id}
+                  >
                     {occ}
                   </Checkbox>
                 ))}
@@ -72,13 +68,18 @@ export default function CustomFilter() {
             <hr className="" />
             <div className="">
               <CheckboxGroup
-                value={selected}
-                color="default"
-                onValueChange={setSelected}
+                value={selectedRoles}
+                onValueChange={setSelectedRoles}
                 className="py-2"
+                color="primary"
               >
-                {roles.map(({ id, role }) => (
-                  <Checkbox key={id} radius="none" className="" value={role}>
+                {roles.map(({ role_id, role }) => (
+                  <Checkbox
+                    key={role_id}
+                    className=""
+                    radius="xs"
+                    value={role_id}
+                  >
                     {role}
                   </Checkbox>
                 ))}
@@ -89,41 +90,32 @@ export default function CustomFilter() {
           <div className="">
             <p className="text-lg text-tertiary-black">顏色</p>
             <hr className="" />
-            <div className="">
-              <CheckboxGroup
-                className="gap-1 pb-2"
-                orientation="horizontal"
-                value={selected}
-              >
-                {colors.map(({ id, code, name }) => (
-                  <div key={id} className="flex flex-col items-center">
-                    <CustomCheckbox
-                      value={name}
-                      bgColor={code}
-                      checked={selected.includes(name)}
-                      onChange={(isChecked) => {
-                        if (isChecked) {
-                          setSelected((prev) => [...prev, name])
-                        } else {
-                          setSelected((prev) =>
-                            prev.filter((item) => item !== name)
-                          )
-                        }
-                      }}
-                      isMultiple={true}
-                    />
-                    <p className="text-sm">{name}</p>
-                  </div>
-                ))}
-              </CheckboxGroup>
-            </div>
+            <CheckboxGroup
+              className="gap-1 pb-2"
+              orientation="horizontal"
+              value={selectedColors}
+              onValueChange={setSelectedColors}
+            >
+              {colors.map(({ color_id, code, name }) => (
+                <div key={color_id} className="flex flex-col items-center">
+                  <CustomCheckbox
+                    value={color_id}
+                    bgColor={code}
+                    onChange={handleColorChange}
+                    checked={selectedColors.includes(color_id)}
+                    isMultiple={true}
+                  />
+                  <p className="text-sm">{name}</p>
+                </div>
+              ))}
+            </CheckboxGroup>
           </div>
           <hr />
-          <div className="flex justify-around w-full pt-3">
-            <MyButton color="primary" size="md" isOutline>
+          <div className="flex justify-around w-full pt-3 ">
+            <MyButton color="primary" size="md" isOutline onClick={handleClear}>
               清除
             </MyButton>
-            <MyButton color="primary" size="md">
+            <MyButton color="primary" size="md" onClick={handleConfirm}>
               確認
             </MyButton>
           </div>

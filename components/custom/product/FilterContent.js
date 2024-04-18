@@ -1,52 +1,56 @@
 import { useState, useEffect } from 'react'
 import { MyButton } from '@/components/btn/mybutton'
 import { RadioGroup, Radio, Checkbox, CheckboxGroup } from '@nextui-org/react'
-
+import { useColors } from '@/hooks/use-color'
+import { useOccs } from '@/hooks/use-occ'
+import { useRoles } from '@/hooks/use-role'
 import CustomCheckbox from '../common/CustomCheckbox'
 
-export default function FilterContent() {
-  const [selected, setSelected] = useState([''])
-  const [colors, setColors] = useState([''])
-  const [roles, setRoles] = useState([''])
-  const [occs, setOccs] = useState([''])
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const urls = [
-          'http://localhost:3005/api/share-colors',
-          'http://localhost:3005/api/share-occs',
-          'http://localhost:3005/api/share-roles',
-        ]
+export default function FilterContent({
+  onFilterChange,
+  onSortChange,
+  selectedOccs,
+  setSelectedOccs,
+  selectedRoles,
+  setSelectedRoles,
+  selectedColors,
+  setSelectedColors,
+  sortOption,
+  setSortOption,
+  radioSelection,
+  setRadioSelection,
+}) {
+  const colors = useColors()
+  const occs = useOccs()
+  const roles = useRoles()
 
-        const responses = await Promise.all(urls.map((url) => fetch(url)))
-        const dataPromises = responses.map((response) => response.json())
-        const results = await Promise.all(dataPromises)
-
-        if (
-          results[0].status === 'success' &&
-          Array.isArray(results[0].data.colors)
-        ) {
-          setColors(results[0].data.colors)
-        }
-        if (
-          results[1].status === 'success' &&
-          Array.isArray(results[1].data.occs)
-        ) {
-          setOccs(results[1].data.occs)
-        }
-        if (
-          results[2].status === 'success' &&
-          Array.isArray(results[2].data.roles)
-        ) {
-          setRoles(results[2].data.roles)
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
+  const handleConfirm = () => {
+    onFilterChange({
+      occ_id: selectedOccs.join(','),
+      role_id: selectedRoles.join(','),
+      color_id: selectedColors.join(','),
+    })
+    console.log(sortOption)
+    if (sortOption) {
+      onSortChange(sortOption.field, sortOption.order)
     }
+  }
 
-    fetchData()
-  }, [])
+  const handleClear = () => {
+    setSelectedOccs([])
+    setSelectedRoles([])
+    setSelectedColors([])
+    handleConfirm()
+  }
+  const handleColorChange = (updateFunction) => {
+    setSelectedColors(updateFunction)
+  }
+
+  const handleSortSelection = (value) => {
+    setRadioSelection(value)
+    const [field, order] = value.split(',')
+    setSortOption({ field, order })
+  }
 
   return (
     <div className="flex flex-col px-4">
@@ -56,12 +60,14 @@ export default function FilterContent() {
             排序
           </div>
           <div className="flex flex-col p-2">
-            <RadioGroup>
-              <Radio value="default">預設</Radio>
-              <Radio value="new">依最新上架</Radio>
-              <Radio value="lowPrice">依價格低到高</Radio>
-              <Radio value="highPrice">依價格高到低</Radio>
-              <Radio value="hot">依銷量</Radio>
+            <RadioGroup
+              value={radioSelection}
+              onValueChange={handleSortSelection}
+            >
+              <Radio value="template_id,asc">預設</Radio>
+              <Radio value="created_at,desc">依最新上架</Radio>
+              <Radio value="total_price,asc">依價格低到高</Radio>
+              <Radio value="total_price,desc">依價格高到低</Radio>
             </RadioGroup>
           </div>
         </div>
@@ -77,18 +83,18 @@ export default function FilterContent() {
               <hr className="" />
               <div className="">
                 <CheckboxGroup
-                  value={selected}
-                  color="default"
-                  onValueChange={setSelected}
+                  value={selectedOccs}
+                  color="primary"
+                  onValueChange={setSelectedOccs}
                   className="py-2 "
                 >
                   <div className="grid grid-cols-[repeat(2,1fr)] auto-rows-[minmax(40px,auto)]">
-                    {occs.map(({ id, occ }) => (
+                    {occs.map(({ occ_id, occ }) => (
                       <Checkbox
-                        key={id}
-                        radius="none"
+                        key={occ_id}
+                        radius="xs"
                         className="h-10"
-                        value={occ}
+                        value={occ_id}
                       >
                         {occ}
                       </Checkbox>
@@ -105,19 +111,18 @@ export default function FilterContent() {
               <hr className="" />
               <div className="">
                 <CheckboxGroup
-                  value={selected}
-                  color="default"
-                  onValueChange={setSelected}
+                  value={selectedRoles}
+                  color="primary"
+                  onValueChange={setSelectedRoles}
                   className="py-2 "
                 >
                   <div className="grid grid-cols-2 gap-2 ">
-                    {/* <div className="flex flex-col gap-2"> */}
-                    {roles.map(({ id, role }) => (
+                    {roles.map(({ role_id, role }) => (
                       <Checkbox
-                        key={id}
-                        radius="none"
+                        key={role_id}
+                        radius="xs"
                         className="h-10"
-                        value={role}
+                        value={role_id}
                       >
                         {role}
                       </Checkbox>
@@ -134,28 +139,23 @@ export default function FilterContent() {
               <hr className="" />
               <div className="">
                 <CheckboxGroup
-                  value={selected}
-                  color="default"
-                  onValueChange={setSelected}
+                  value={selectedColors}
+                  color="primary"
+                  onValueChange={setSelectedColors}
                   className="py-2 "
                 >
                   <div className="grid grid-cols-3 ">
-                    {colors.map(({ code, name }, index) => (
-                      <div key={index} className="flex flex-col items-center ">
+                    {colors.map(({ code, name, color_id }) => (
+                      <div
+                        key={color_id}
+                        className="flex flex-col items-center "
+                      >
                         <CustomCheckbox
-                          value={name}
+                          value={color_id}
                           bgColor={code}
-                          checked={selected.includes(name)}
-                          onChange={(isChecked) => {
-                            if (isChecked) {
-                              setSelected((prev) => [...prev, name])
-                            } else {
-                              setSelected((prev) =>
-                                prev.filter((item) => item !== name)
-                              )
-                            }
-                          }}
-                          isMultiple={false}
+                          onChange={handleColorChange}
+                          checked={selectedColors.includes(color_id)}
+                          isMultiple={true}
                         />
                         <p className="text-sm">{name}</p>
                       </div>
@@ -169,10 +169,12 @@ export default function FilterContent() {
       </div>
       <div className="fixed bottom-0 left-0 w-full bg-white border-t-1 z-20">
         <div className="flex flex-row gap-1 justify-around pt-2 pb-1 w-full ">
-          <MyButton size="xl" isOutline>
+          <MyButton size="xl" isOutline onClick={handleClear}>
             清除
           </MyButton>
-          <MyButton size="xl">確定</MyButton>
+          <MyButton size="xl" onClick={handleConfirm}>
+            確定
+          </MyButton>
         </div>
       </div>
     </div>

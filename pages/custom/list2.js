@@ -6,7 +6,7 @@ import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import DH from '@/components/custom/product/DH'
 import { CiGrid41, CiGrid2H, CiBoxList } from 'react-icons/ci'
 import { PiSlidersThin } from 'react-icons/pi'
-import FilterButton from '@/components/custom/product/filterBtn'
+import SortButton from '@/components/custom/product/sortButton'
 import BottomSheetButton from '@/components/custom/custom/BottomSheetButton'
 import FilterContent from '@/components/custom/product/FilterContent'
 import { useLoader } from '@/hooks/use-loader'
@@ -23,13 +23,20 @@ export default function List() {
     setIsHeart(!isHeart)
   }
 
-  const [sortedList, setSortedList] = useState([])
-
+  const [selectedOccs, setSelectedOccs] = useState([])
+  const [selectedRoles, setSelectedRoles] = useState([])
+  const [selectedColors, setSelectedColors] = useState([])
+  const [sortOption, setSortOption] = useState({ field: '', order: '' })
+  const [radioSelection, setRadioSelection] = useState('')
   const [products, setProducts] = useState([])
+  const [sortField, setSortField] = useState('')
+  const [sortOrder, setSortOrder] = useState('')
+  const [filters, setFilters] = useState({})
+  const [queryString, setQueryString] = useState('')
 
   const getProducts = async () => {
-    const url = 'http://localhost:3005/api/custom'
-
+    console.log(queryString)
+    const url = `http://localhost:3005/api/custom?${queryString}`
     try {
       const res = await fetch(url)
       if (!res.ok) {
@@ -41,36 +48,60 @@ export default function List() {
       if (Array.isArray(data.data.customTemplateLists)) {
         setProducts(data.data.customTemplateLists)
       }
-      close(3)
+      close(1)
     } catch (e) {
-      console.error('Failed to load products:', e) // 更详细地记录错误
+      console.error('Failed to load products:', e)
     }
   }
 
   useEffect(() => {
     getProducts()
-  }, [])
-
-  const fetchSortedProducts = async (sortType) => {
-    try {
-      const response = await fetch(`/api/products?sort=${sortType}`)
-      setSortedList(response.data)
-    } catch (error) {
-      console.error('Error fetching sorted products:', error)
-    }
+  }, [queryString])
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters)
   }
 
+  const handleSortChange = (field, order) => {
+    setSortField(field)
+    setSortOrder(order)
+  }
+
+  const updateQueryString = () => {
+    const queryStringParts = []
+    const filterFields = []
+    const filterValues = []
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        filterFields.push(key)
+        filterValues.push(value)
+      }
+    })
+
+    if (filterFields.length > 0) {
+      queryStringParts.push(`filterField=${filterFields.join('&')}`)
+      queryStringParts.push(`filterValue=${filterValues.join(';')}`)
+    }
+
+    if (sortField && sortOrder) {
+      queryStringParts.push(`sortField=${encodeURIComponent(sortField)}`)
+      queryStringParts.push(`sortOrder=${encodeURIComponent(sortOrder)}`)
+    }
+
+    setQueryString(queryStringParts.join('&'))
+  }
+
+  useEffect(() => {
+    updateQueryString()
+  }, [filters, sortField, sortOrder])
   const display = (
     <DefaultLayout activePage={activePage}>
       <>
         <div className="bg-white  w-screen h-auto overflow-visible">
           <div className="container m-auto">
-            <div
-              className="flex sm:flex-row flex-col "
-              // style={{ minHeight: 'calc(100vh - 64px)' }}
-            >
+            <div className="flex sm:flex-row flex-col ">
               <div className="h-[600px] w-auto  p-4 sticky top-0  hidden sm:block">
-                <CustomFilter />
+                <CustomFilter onFilterChange={handleFilterChange} />
               </div>
               <div
                 style={{ minHeight: 'calc(100vh - 64px)' }}
@@ -91,7 +122,22 @@ export default function List() {
                     label="排序與篩選"
                     // {...(<FilterContent />)}
                     // content={<div>sdfsdf</div>}
-                    content={<FilterContent />}
+                    content={
+                      <FilterContent
+                        onFilterChange={handleFilterChange}
+                        onSortChange={handleSortChange}
+                        selectedOccs={selectedOccs}
+                        setSelectedOccs={setSelectedOccs}
+                        selectedRoles={selectedRoles}
+                        setSelectedRoles={setSelectedRoles}
+                        selectedColors={selectedColors}
+                        setSelectedColors={setSelectedColors}
+                        sortOption={sortOption}
+                        setSortOption={setSortOption}
+                        radioSelection={radioSelection}
+                        setRadioSelection={setRadioSelection}
+                      />
+                    }
                     isOpen={isSheetOpen}
                     onOpen={handleOpen}
                     onClose={handleClose}
@@ -110,23 +156,7 @@ export default function List() {
                       </p>
                       <div className="hidden sm:flex flex-row gap-1">
                         {' '}
-                        <FilterButton />
-                        {/* <button
-                          onClick={() => fetchSortedProducts('price_asc')}
-                        >
-                          按价格低到高排序
-                        </button>
-                        <button
-                          onClick={() => fetchSortedProducts('price_desc')}
-                        >
-                          按价格高到低排序
-                        </button>
-                        <button onClick={() => fetchSortedProducts('newest')}>
-                          按最新上架排序
-                        </button>
-                        <button onClick={() => fetchSortedProducts('sales')}>
-                          按销量排序
-                        </button> */}
+                        <SortButton onSortChange={handleSortChange} />
                       </div>
                     </div>
 
@@ -140,37 +170,6 @@ export default function List() {
                   <div className="flex flex-col gap-2 ">
                     <p className="sm:text-3xl text-xl text-tertiary-black">
                       情人節
-                    </p>
-                    <hr className="w-full" />
-
-                    <div className="w-full h-full relative overflow-hidden">
-                      <DH productList={products} className="h-auto" />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 ">
-                    <p className="sm:text-3xl text-xl text-tertiary-black">
-                      母親節
-                    </p>
-                    <hr className="w-full" />
-
-                    <div className="w-full h-full relative overflow-hidden">
-                      <DH productList={products} className="h-auto" />
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-2 ">
-                    <p className="sm:text-3xl text-xl text-tertiary-black">
-                      生日
-                    </p>
-                    <hr className="w-full" />
-
-                    <div className="w-full h-full relative overflow-hidden">
-                      <DH productList={products} className="h-auto" />
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-2 ">
-                    <p className="sm:text-3xl text-xl text-tertiary-black">
-                      慰問
                     </p>
                     <hr className="w-full" />
 
