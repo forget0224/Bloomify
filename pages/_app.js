@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
 import * as React from 'react'
+import { AuthProvider } from '@/hooks/use-auth'
 
 // 1. import `NextUIProvider` component
 import { NextUIProvider } from '@nextui-org/react'
@@ -13,15 +14,17 @@ export default function MyApp({ Component, pageProps }) {
 
   return getLayout(
     <NextUIProvider>
-      <LoaderProvider>
-        <ColorProvider>
-          <OccProvider>
-            <RoleProvider>
-              <Component {...pageProps} />
-            </RoleProvider>
-          </OccProvider>
-        </ColorProvider>
-      </LoaderProvider>
+      <AuthProvider>
+        <LoaderProvider>
+          <ColorProvider>
+            <OccProvider>
+              <RoleProvider>
+                <Component {...pageProps} />
+              </RoleProvider>
+            </OccProvider>
+          </ColorProvider>
+        </LoaderProvider>
+      </AuthProvider>
     </NextUIProvider>
   )
 }
