@@ -6,113 +6,184 @@ import CardGroupClean from '@/components/intro/card-group-clean'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/intro/subtitle'
 import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
-import { CiSearch } from 'react-icons/ci'
 import { Select, SelectItem } from '@nextui-org/react'
-import { Input } from '@nextui-org/react'
+import SearchBtn from '@/components/intro/search-btn'
+import { CiSearch } from 'react-icons/ci'
 
 export default function FlowersIndex() {
   const [activePage, setActivePage] = useState('course')
   const underlines = ['none']
-  // products start
-  const productList = [
+  //occList start
+  const occList = [
+    { id: 0, title: '場合' },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Avocado',
-      starCount: '5.0',
-      shop: 'shop1',
-      tag: 'hot sale',
-      price: '$15.70',
+      id: 1,
+      title: '生日慶祝',
     },
+    { id: 2, title: '情人節' },
+    { id: 3, title: '新婚喜慶' },
     {
-      img: '/assets/shop/products/red_Amaryllis_3.jpg',
-      title: 'Watermelon',
-      starCount: '4.0',
-      shop: 'shop2',
-      tag: 'hot sale',
-      price: '$8.70',
+      id: 4,
+      title: '母親節',
     },
+    { id: 5, title: '慰問安慰' },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Apple',
-      starCount: '3.0',
-      shop: 'shop3',
-      tag: 'hot sale',
-      price: '$44.70',
+      id: 6,
+      title: '感謝禮物',
     },
+    { id: 7, title: '慶祝祝賀' },
     {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Orange',
-      starCount: '5.0',
-      shop: 'shop4',
-      tag: 'hot sale',
-      price: '$78.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Peach',
-      starCount: '2.5',
-      shop: 'shop5',
-      tag: 'hot sale',
-      price: '$24.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: '場合',
-      starCount: '4.0',
-      shop: 'shop6',
-      tag: 'hot sale',
-      price: '$5.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: '顏色',
-      starCount: '4.5',
-      shop: 'shop7',
-      tag: 'hot sale',
-      price: '$28.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: '對象',
-      starCount: '5.0',
-      shop: 'shop8',
-      tag: 'hot sale',
-      price: '$35.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: '季節',
-      starCount: '5.0',
-      shop: 'shop9',
-      tag: 'hot sale',
-      price: '$45.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'A-Z',
-      starCount: '3.0',
-      shop: 'shop10',
-      tag: 'hot sale',
-      price: '$35.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: 'Z-A',
-      starCount: '4.5',
-      shop: 'shop11',
-      tag: 'hot sale',
-      price: '$10.70',
-    },
-    {
-      img: '/assets/shop/products/pink_Gladiola_0.jpg',
-      title: '預設排序',
-      starCount: '2.0',
-      shop: 'shop12',
-      tag: 'hot sale',
-      price: '$25.70',
+      id: 8,
+      title: '紀念日',
     },
   ]
-  // products end
+  //occList end
+
+  //colorList start
+  const colorList = [
+    {
+      id: 0,
+      title: '顏色',
+    },
+    {
+      id: 1,
+      title: '紅色',
+    },
+    {
+      id: 2,
+      title: '橘色',
+    },
+    {
+      id: 3,
+      title: '黃色',
+    },
+    {
+      id: 4,
+      title: '綠色',
+    },
+    {
+      id: 5,
+      title: '藍色',
+    },
+    {
+      id: 6,
+      title: '紫色',
+    },
+    {
+      id: 7,
+      title: '粉色',
+    },
+    {
+      id: 8,
+      title: '棕色',
+    },
+    {
+      id: 9,
+      title: '灰色',
+    },
+    {
+      id: 10,
+      title: '黑色',
+    },
+    {
+      id: 11,
+      title: '白色',
+    },
+    { id: 12, title: '其他' },
+  ]
+  //colorList end
+  //roleList start
+  const roleList = [
+    {
+      id: 0,
+      title: '對象',
+    },
+    {
+      id: 1,
+      title: '長輩',
+    },
+    {
+      id: 2,
+      title: '朋友',
+    },
+    {
+      id: 3,
+      title: '同學',
+    },
+    {
+      id: 4,
+      title: '師長',
+    },
+    {
+      id: 5,
+      title: '戀人',
+    },
+    {
+      id: 6,
+      title: '工作伙伴',
+    },
+    {
+      id: 7,
+      title: '新生嬰兒',
+    },
+    {
+      id: 8,
+      title: '親人',
+    },
+    { id: 9, title: '新婚夫婦' },
+  ]
+  //roleList end
+
+  //seasonList start
+  const seasonList = [
+    {
+      id: 0,
+      title: '季節',
+    },
+    {
+      id: 1,
+      title: '春',
+    },
+    { id: 2, title: '夏' },
+    {
+      id: 3,
+      title: '秋',
+    },
+    { id: 4, title: '冬' },
+    {
+      id: 5,
+      title: '全年',
+    },
+  ]
+  //seasonList end
+
+  //sortList start
+  const sortList = [
+    {
+      id: 0,
+      title: '預設排序',
+    },
+    {
+      id: 1,
+      title: 'A-Z',
+    },
+    {
+      id: 2,
+      title: 'Z-A',
+    },
+    // {
+    //   id: ,
+    //   title: '',
+    // },
+    // {
+    //   id: ,
+    //   title: '',
+    // },
+    // {
+    //   id: ,
+    //   title: '',
+    // },
+  ] //sortList end
   return (
     <DefaultLayout
       activePage={activePage}
@@ -170,31 +241,18 @@ export default function FlowersIndex() {
               {/* search & select start */}
               <div className="flex py-10 px-15 justify-between w-full">
                 {/* searchbar */}
-                <Input
-                  variant="bordered"
-                  placeholder="搜尋..."
-                  endContent={
-                    <button
-                      className="focus:outline-none"
-                      type="button"
-                      onClick={() => {}}
-                    >
-                      <CiSearch />
-                    </button>
-                  }
-                  className="max-w-xs"
-                />
+                <SearchBtn />
                 {/* filter */}
                 <div className="flex flex-cols items-center space-x-2">
                   <Select
                     placeholder="Select"
                     defaultSelectedKeys={['場合']}
-                    className="max-w-xs w-24"
+                    className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
                   >
-                    {productList.map((item, index) => (
+                    {occList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
                         {item.title}
                       </SelectItem>
@@ -210,7 +268,7 @@ export default function FlowersIndex() {
                       isEnabled: false,
                     }}
                   >
-                    {productList.map((item, index) => (
+                    {colorList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
                         {item.title}
                       </SelectItem>
@@ -226,7 +284,7 @@ export default function FlowersIndex() {
                       isEnabled: false,
                     }}
                   >
-                    {productList.map((item, index) => (
+                    {roleList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
                         {item.title}
                       </SelectItem>
@@ -242,7 +300,7 @@ export default function FlowersIndex() {
                       isEnabled: false,
                     }}
                   >
-                    {productList.map((item, index) => (
+                    {seasonList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
                         {item.title}
                       </SelectItem>
@@ -256,12 +314,12 @@ export default function FlowersIndex() {
                   <Select
                     placeholder="Select"
                     defaultSelectedKeys={['預設排序']}
-                    className="max-w-xs w-48"
+                    className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
                   >
-                    {productList.map((item, index) => (
+                    {sortList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
                         {item.title}
                       </SelectItem>
@@ -273,10 +331,9 @@ export default function FlowersIndex() {
             </div>
             <div className="grid gap-y-4 my-14 ">
               <CardGroupClean />
-            </div>
-
-            <div class="flex justify-center">
-              <MyButton>查看更多</MyButton>
+              <div class="flex justify-center">
+                <MyButton>查看更多</MyButton>
+              </div>
             </div>
           </div>
         </div>
