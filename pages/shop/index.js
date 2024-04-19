@@ -40,234 +40,9 @@ export default function Shop() {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [colors, setColors] = useState([])
-  // 篩選:大項分類
-  const [selectedParentId, setSelectedParentId] = useState(null)
-  // 篩選: 子項分類
-  //初始化所有複選框的選中狀態為未選中
-  const [checkedStates, setCheckedStates] = useState({})
+  const [activeCategory, setActiveCategory] = useState(null)
 
-  // 篩選: 大項分類start
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // 取得商品資料
-        const productsResponse = await fetch(
-          'http://localhost:3005/api/products'
-        )
-        const productsData = await productsResponse.json()
-        if (
-          productsData.status === 'success' &&
-          Array.isArray(productsData.data.products)
-        ) {
-          // 處理全部商品數據
-          setProducts(processProducts(productsData.data.products))
-        }
-
-        // 取得種類資料
-        const categoriesResponse = await fetch(
-          'http://localhost:3005/api/product-categories'
-        )
-        const categoriesData = await categoriesResponse.json()
-        if (
-          categoriesData.status === 'success' &&
-          Array.isArray(categoriesData.data.categories)
-        ) {
-          setCategories(categoriesData.data.categories)
-        }
-
-        // 取得顏色資料
-        const colorsResponse = await fetch(
-          'http://localhost:3005/api/share-colors'
-        )
-        const colorsData = await colorsResponse.json()
-        if (
-          colorsData.status === 'success' &&
-          Array.isArray(colorsData.data.colors)
-        ) {
-          // 設置顏色資料
-          setColors(colorsData.data.colors)
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-
-  // 篩選:大項
-  const icons = [
-    {
-      id: '1',
-      name: '全部',
-      icon: <BsFillGridFill />,
-    },
-    {
-      id: '2',
-      name: '鮮花類',
-      icon: <IoMdFlower />,
-    },
-    {
-      id: '3',
-      name: '植栽類',
-      icon: <BiSolidLeaf />,
-    },
-    {
-      id: '4',
-      name: '資材類',
-      icon: <FaToolbox />,
-    },
-  ]
-
-  const parentToCategoryMap = {
-    1: [5, 6, 7, 8, 9, 10],
-    2: [5, 6],
-    3: [7, 8],
-    4: [9, 10],
-  }
-
-  const handleCategoryChange = async (iconId) => {
-    setSelectedParentId(iconId)
-    // 根據 iconId 更新子項複選框狀態
-    const selectedCategories = parentToCategoryMap[iconId] || []
-    const newCheckedStates = { ...checkedStates }
-    for (const categoryId of Object.keys(checkedStates)) {
-      newCheckedStates[categoryId] = selectedCategories.includes(
-        parseInt(categoryId)
-      )
-    }
-    setCheckedStates(newCheckedStates)
-
-    try {
-      const response = await fetch(
-        `http://localhost:3005/api/products/filter?parent_id=${iconId}`
-      )
-      const data = await response.json()
-      if (data.status === 'success') {
-        setProducts(processProducts(data.data.products))
-      } else {
-        console.error('Failed to fetch products:', data.message)
-        setProducts([])
-      }
-    } catch (error) {
-      console.error('Error fetching products:', error)
-      setProducts([])
-    }
-  }
-
-  //當點擊全部時，勾選所有子項
-  const handleSelectAll = () => {
-    setSelectedParentId('1') // Assuming '1' is the ID for "All"
-    const allCategoryIds = [].concat(...Object.values(parentToCategoryMap))
-    const uniqueIds = [...new Set(allCategoryIds)] // Remove duplicate IDs
-
-    const newCheckedStates = {}
-    uniqueIds.forEach((id) => {
-      newCheckedStates[id] = true
-    })
-    setCheckedStates(newCheckedStates)
-
-    // Fetch all products
-    fetchAllProducts()
-  }
-  const fetchAllProducts = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:3005/api/products/filter?parent_id=1'
-      )
-      const data = await response.json()
-      if (data.status === 'success') {
-        setProducts(processProducts(data.data.products))
-      } else {
-        console.error('Failed to fetch all products:', data.message)
-        setProducts([])
-      }
-    } catch (error) {
-      console.error('Error fetching all products:', error)
-      setProducts([])
-    }
-  }
-  // 篩選: 大項分類 end
-
-  // 篩選: 子項分類 start
-  useEffect(() => {
-    const initialStates = {}
-    categories.forEach((category) => {
-      if (category.parent_id !== 0) {
-        initialStates[category.id] = false // 所有覆選框的選中狀態為未選中
-      }
-    })
-    setCheckedStates(initialStates)
-  }, [categories])
-
-  // 處理複選框選中後狀態改變
-  const handleCheckboxChange = (categoryId) => {
-    setCheckedStates((prevStates) => ({
-      ...prevStates,
-      [categoryId]: !prevStates[categoryId], // 切換選中狀態
-    }))
-  }
-  // 篩選: 子項分類 end
-
-  // 找資料夾再找照片
-  // 定義資料夾映射表
-  // 映射表示在兩個不同的資料之間建立對應關係，通常是以一個資料集合中的值對應到另一個資料集合中的值。
-  // 這裡的資料夾映射將產品類別對應到相應的資料夾路徑，以便在前端呈現時可以根據產品類別來動態地載入相應的圖片資源。
-  const folderMappings = [
-    {
-      category: '全部',
-      directory: [
-        'flowers',
-        'flower-pots',
-        'foliage',
-        'plant-pots',
-        'materials',
-        'tools',
-      ],
-    },
-    { category: '鮮花', directory: 'flowers' },
-    { category: '花盆栽', directory: 'flower-pots' },
-    { category: '葉材', directory: 'foliage' },
-    { category: '植盆栽', directory: 'plant-pots' },
-    { category: '器具', directory: 'tools' },
-    { category: '材料', directory: 'materials' },
-  ]
-
-  // 處理商品函數
-  function processProducts(productsArray) {
-    return productsArray.map((product) => {
-      // 取得主要圖片
-      const mainImage =
-        (product.images &&
-          product.images.find((image) => image.is_thumbnail)) ||
-        (product.images && product.images[0])
-      // 初始化資料夾為全部類別的資料夾列表
-      let folder =
-        folderMappings.find((mapping) => mapping.category === '全部')
-          ?.directory || []
-      // 根據產品類別查找對應的資料夾
-      // 這裡是對應Product_Category的資料表，因此後端有作關聯表格
-      const mapping = folderMappings.find(
-        (mapping) => mapping.category === product.category.name
-      )
-      // 如果找到對應的資料夾映射，則將資料夾設為映射的目錄，否則保持不變
-      if (mapping) {
-        folder = Array.isArray(mapping.directory)
-          ? mapping.directory
-          : [mapping.directory]
-      }
-      // 返回處理後的產品資料，包括資料夾和主要圖片
-      return {
-        ...product,
-        folder: folder,
-        mainImage: mainImage
-          ? mainImage.url
-          : '/assets/shop/products/flowers/pink_Gladiola_0.jpg', // 若無取得主圖，則設預設圖片
-      }
-    })
-  }
-
-  // carousel start
+  // Carousel State
   const [page, setPage] = useState(0)
   const banners = [
     {
@@ -297,20 +72,8 @@ export default function Shop() {
     const timer = setTimeout(nextPage, 3000)
     return () => clearInterval(timer)
   }, [page])
-  // carousel end
 
-  // select list start
-  const selectList = [
-    { value: 'hot', label: '最熱門' },
-    { value: 'new', label: '最新' },
-    { value: 'highToLow', label: '價格由高到低' },
-    { value: 'lowToHigh', label: '價格由低到高' },
-  ]
-  // select list end
-  // toaster start
-  const notify = () => toast.success('已成功加入購物車')
-  // toaster end
-  // RWD search & filter modal start
+  // RWD Sorting and Filtering Modal State
   const {
     isOpen: isMagnifierOpen,
     onOpen: onMagnifierOpen,
@@ -321,10 +84,76 @@ export default function Shop() {
     onOpen: onFilterOpen,
     onOpenChange: onFilterOpenChange,
   } = useDisclosure()
-  const [modalPlacement, setModalPlacement] = React.useState('bottom-center')
-  // RWD search & filter modal end
+  const [modalPlacement, setModalPlacement] = useState('bottom-center')
 
-  const [isSelected, setIsSelected] = React.useState(false)
+  // Product categories and icon setup
+  const iconLookup = {
+    1: <BsFillGridFill />,
+    2: <IoMdFlower />,
+    3: <BiSolidLeaf />,
+    4: <FaToolbox />,
+  }
+
+  // 獲取全部、顏色資料
+  useEffect(() => {
+    fetchCategories()
+    fetchColors()
+    fetchData() // Existing call to fetch other data
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/products')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setProducts(data.data.products) // Assuming your API returns an array of colors in data.data.colors
+      } else {
+        console.error('Failed to fetch colors:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching category data:', error)
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3005/api/product-categories'
+      )
+      const data = await response.json()
+      if (data.status === 'success') {
+        setCategories(data.data.categories) // Assuming your API returns an array of colors in data.data.colors
+      } else {
+        console.error('Failed to fetch colors:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching category data:', error)
+    }
+  }
+
+  const fetchColors = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/share-colors')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setColors(data.data.colors) // Assuming your API returns an array of colors in data.data.colors
+      } else {
+        console.error('Failed to fetch colors:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching color data:', error)
+    }
+  }
+
+  const notify = () => toast.success('已成功加入購物車')
+
+  // 篩選:種類
+  const handleCategoryClick = (id) => {
+    console.log('Category clicked:', id)
+    setActiveCategory(id)
+    // You might also want to fetch products for this category or do other actions
+  }
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -368,39 +197,38 @@ export default function Shop() {
               {/* carousel end */}
               {/* select categories start */}
               <div className="flex justify-center my-8 w-full whitespace-nowrap gap-2">
-                {icons.map((icon) => (
-                  <div
-                    key={icon.id}
-                    onClick={() =>
-                      icon.id === '1'
-                        ? handleSelectAll()
-                        : handleCategoryChange(icon.id)
-                    }
-                    className={`mx-4 ${
-                      selectedParentId === icon.id
-                        ? 'border-b-4 border-secondary-100'
-                        : ''
-                    }`}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    <div
-                      className={`icon flex flex-col justify-center items-center text-primary ${
-                        selectedParentId === icon.id ? 'text-secondary-100' : ''
-                      }`}
-                    >
-                      <div className="text-5xl sm:text-[140px]">
-                        {icon.icon}
-                      </div>
-                      <p
-                        className={`title text-center my-6 ${
-                          selectedParentId === icon.id ? 'text-danger' : ''
+                {categories
+                  .filter((category) => category.parent_id === 0)
+                  .map((category) => {
+                    const isActive = activeCategory === category.id
+                    return (
+                      <div
+                        key={category.id}
+                        className={`mx-4 ${
+                          isActive ? 'text-secondary-100' : ''
                         }`}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => handleCategoryClick(category.id)}
                       >
-                        {icon.name}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                        <div
+                          className={`icon flex flex-col justify-center items-center ${
+                            isActive ? 'text-secondary-100' : 'text-primary'
+                          }`}
+                        >
+                          <div className="text-5xl sm:text-[140px]">
+                            {iconLookup[category.id.toString()]}
+                          </div>
+                          <p
+                            className={`title text-center my-6 ${
+                              isActive ? 'text-secondary-100' : 'text-primary'
+                            }`}
+                          >
+                            {category.name}
+                          </p>
+                        </div>
+                      </div>
+                    )
+                  })}
               </div>
               {/* select categories end */}
 
@@ -429,11 +257,11 @@ export default function Shop() {
                       isEnabled: false,
                     }}
                   >
-                    {selectList.map((item, index) => (
+                    {/* {selectList.map((item, index) => (
                       <SelectItem key={item.label} value={item.label}>
                         {item.label}
                       </SelectItem>
-                    ))}
+                    ))} */}
                   </Select>
 
                   {/* RWD start */}
@@ -515,14 +343,14 @@ export default function Shop() {
                                 </p>
                                 <div className="my-5">
                                   <RadioGroup>
-                                    {selectList.map((item, index) => (
+                                    {/* {selectList.map((item, index) => (
                                       <Radio
                                         key={item.value}
                                         value={item.value}
                                       >
                                         {item.label}
                                       </Radio>
-                                    ))}
+                                    ))} */}
                                   </RadioGroup>
                                 </div>
                               </div>
@@ -534,7 +362,7 @@ export default function Shop() {
                                   <p className="text-tertiary-black my-2">
                                     子類
                                   </p>
-                                  <div className="space-y-0.5 grid grid-cols-2">
+                                  <div className="space-y-2 grid grid-cols-2">
                                     {categories
                                       .filter(
                                         (category) => category.parent_id !== 0
@@ -543,8 +371,6 @@ export default function Shop() {
                                         <Checkbox
                                           key={category.id}
                                           className="mr-2"
-                                          isSelected={isSelected}
-                                          onValueChange={setIsSelected}
                                         >
                                           <p className="text-tertiary-black">
                                             {category.name}
@@ -578,22 +404,23 @@ export default function Shop() {
                                     顏色
                                   </p>
                                   <div className="space-y-0.5 grid grid-cols-2">
-                                    {colors.map((color) => (
-                                      <Checkbox
-                                        key={color.id}
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">{color.name}</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full"
-                                            style={{ background: color.code }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                    ))}
+                                    {colors &&
+                                      colors.map((color) => (
+                                        <Checkbox
+                                          key={color.id}
+                                          defaultSelected
+                                          radius="sm"
+                                          className="mr-2"
+                                        >
+                                          <div className="flex items-center">
+                                            <p className="mr-2">{color.name}</p>
+                                            <div
+                                              className="h-4 w-4 rounded-full"
+                                              style={{ background: color.code }}
+                                            ></div>
+                                          </div>
+                                        </Checkbox>
+                                      ))}
                                   </div>
                                 </div>
                               </div>
@@ -636,22 +463,13 @@ export default function Shop() {
                     <p className=" text-tertiary-black">
                       共 {products.length} 項結果
                     </p>
-
                     <div className="space-y-4">
                       <p className="text-lg text-tertiary-black">子類</p>
                       <div className="space-y-2 grid grid-cols-2">
                         {categories
                           .filter((category) => category.parent_id !== 0)
                           .map((category) => (
-                            <Checkbox
-                              key={category.id}
-                              isSelected={checkedStates[category.id]}
-                              onValueChange={() =>
-                                handleCheckboxChange(category.id)
-                              }
-                              radius="sm"
-                              className="mr-2"
-                            >
+                            <Checkbox key={category.id} className="mr-2">
                               <p className="text-tertiary-black">
                                 {category.name}
                               </p>
@@ -680,22 +498,23 @@ export default function Shop() {
                     <div className="space-y-4">
                       <p className="text-lg text-tertiary-black">顏色</p>
                       <div className="space-y-2 grid grid-cols-2">
-                        {colors.map((color) => (
-                          <Checkbox
-                            key={color.id}
-                            defaultSelected
-                            radius="sm"
-                            className="mr-2"
-                          >
-                            <div className="flex items-center">
-                              <p className=" mr-2">{color.name}</p>
-                              <div
-                                className="h-4 w-4 rounded-full"
-                                style={{ background: color.code }}
-                              ></div>
-                            </div>
-                          </Checkbox>
-                        ))}
+                        {colors &&
+                          colors.map((color) => (
+                            <Checkbox
+                              key={color.id}
+                              defaultSelected
+                              radius="sm"
+                              className="mr-2"
+                            >
+                              <div className="flex items-center">
+                                <p className="mr-2">{color.name}</p>
+                                <div
+                                  className="h-4 w-4 rounded-full"
+                                  style={{ background: color.code }}
+                                ></div>
+                              </div>
+                            </Checkbox>
+                          ))}
                       </div>
                     </div>
                     <div className="flex justify-center pb-8">
@@ -709,78 +528,83 @@ export default function Shop() {
                 {/* products starts */}
                 <div className="sm:w-10/12">
                   <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
-                    {products.map((product) => (
-                      <Card
-                        shadow="sm"
-                        key={product.id}
-                        isPressable
-                        onPress={() => console.log('item pressed')}
-                      >
-                        <CardBody className="relative overflow-visible p-0">
-                          <Link
-                            href={{
-                              pathname: '/shop/[pid]', // 動態路由
-                              query: { pid: product.id }, // 將 pid 設置為商品 ID
-                            }}
-                            key={product.id}
-                            className="block relative"
-                          >
-                            <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                            {/* 根據產品的資料夾路徑和主圖檔名，組合出完整的圖片路徑 */}
-                            <Image
-                              isZoomed
-                              shadow="none"
-                              radius="none"
-                              width="100%"
-                              alt={product.name}
-                              className="w-full object-cover h-[250px] z-0"
-                              src={
-                                Array.isArray(product.folder) // 檢查資料夾是否為陣列型態
-                                  ? product.folder // 如果是陣列，表示有多個資料夾路徑
-                                      .map((folder) => {
-                                        return `/assets/shop/products/${product.folder}/${product.mainImage}` // 對每個資料夾路徑，組合圖片路徑
-                                      })
-                                      .join(',') // 將多個圖片路徑組合成字串，用逗號分隔
-                                  : `/assets/shop/products/${product.folder}/${product.mainImage}` // 如果只有單個資料夾路徑，直接組合圖片路徑
-                              }
-                            />
-                          </Link>
-                        </CardBody>
-                        <CardHeader className="block text-left">
-                          <div className="flex justify-between">
-                            <p className="text-xl truncate">{product.name}</p>
-                            <p className="text-base flex items-center space-x-1">
-                              <BsFillStarFill className="text-secondary-100" />
-                              {product.star}
-                              <span>{product.overall_review}</span>
-                            </p>
-                          </div>
-                          <p className="text-base text-tertiary-gray-100">
-                            {product.stores.store_name}
-                          </p>
-                          <div className="flex flex-wrap">
-                            {product.tags.map((tag) => (
-                              <p
-                                key={tag.id}
-                                className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
-                              >
-                                {tag.name}
+                    {products.map((product) => {
+                      // Find the image where is_thumbnail is false
+                      const nonThumbnailImage = product.images.find(
+                        (image) => !image.is_thumbnail
+                      )
+
+                      // If nonThumbnailImage is not found, use a fallback image URL
+                      const imageUrl = nonThumbnailImage
+                        ? nonThumbnailImage.url
+                        : 'default_fallback_image.jpg'
+
+                      return (
+                        <Card
+                          shadow="sm"
+                          key={product.id}
+                          isPressable
+                          onPress={() => console.log('item pressed')}
+                        >
+                          <CardBody className="relative overflow-visible p-0">
+                            <Link
+                              href={{
+                                pathname: '/shop/[pid]', // dynamic route
+                                query: { pid: product.id }, // setting pid to product ID
+                              }}
+                              className="block relative"
+                            >
+                              <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                              {/* Use the non-thumbnail image URL for the image src */}
+                              <Image
+                                isZoomed
+                                shadow="none"
+                                radius="none"
+                                width="100%"
+                                alt={product.name}
+                                className="w-full object-cover h-[250px] z-0"
+                                src={`/assets/shop/products/${product.directory}/${imageUrl}`}
+                              />
+                            </Link>
+                          </CardBody>
+                          <CardHeader className="block text-left">
+                            <div className="flex justify-between">
+                              <p className="text-xl truncate">{product.name}</p>
+                              <p className="text-base flex items-center space-x-1">
+                                <BsFillStarFill className="text-secondary-100" />
+                                {product.star}
+                                <span>{product.overall_review}</span>
                               </p>
-                            ))}
-                          </div>
-                        </CardHeader>
-                        <CardFooter className="text-small justify-between">
-                          <p className="text-xl truncate">NT${product.price}</p>
-                          <div
-                            className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                            onClick={notify}
-                          >
-                            <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
-                          </div>
-                          <Toaster />
-                        </CardFooter>
-                      </Card>
-                    ))}
+                            </div>
+                            <p className="text-base text-tertiary-gray-100">
+                              {product.stores.store_name}
+                            </p>
+                            <div className="flex flex-wrap">
+                              {product.tags.map((tag) => (
+                                <p
+                                  key={tag.id}
+                                  className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
+                                >
+                                  {tag.name}
+                                </p>
+                              ))}
+                            </div>
+                          </CardHeader>
+                          <CardFooter className="text-small justify-between">
+                            <p className="text-xl truncate">
+                              NT${product.price}
+                            </p>
+                            <div
+                              className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
+                              onClick={notify}
+                            >
+                              <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                            </div>
+                            <Toaster />
+                          </CardFooter>
+                        </Card>
+                      )
+                    })}
                   </div>
                 </div>
                 {/* products end */}

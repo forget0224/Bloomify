@@ -302,18 +302,16 @@ export default function Confirm() {
                 </div>
 
                 <div className="w-full gap-2 flex justify-center sm:gap-4 ">
-                  <MyButton color="primary" size="xl" isOutline>
-                    <Link href="/cart/fill-out">上一步</Link>
-                  </MyButton>
-
-                  <MyButton color="primary" size="xl">
-                    <Link
-                      href="/cart/payment-successful"
-                      className="text-white"
-                    >
+                  <Link href="/cart/fill-out">
+                    <MyButton color="primary" size="xl" isOutline>
+                      上一步
+                    </MyButton>
+                  </Link>
+                  <Link href="/cart/payment-successful" className="text-white">
+                    <MyButton color="primary" size="xl">
                       確認，進行付款
-                    </Link>
-                  </MyButton>
+                    </MyButton>
+                  </Link>
                 </div>
               </div>
             </div>
