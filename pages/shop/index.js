@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import {
   Breadcrumbs,
   BreadcrumbItem,
@@ -36,6 +37,7 @@ import { SlMagnifier } from 'react-icons/sl'
 // import { useWindowSize } from 'react-use'
 
 export default function Shop() {
+  const router = useRouter()
   const [activePage, setActivePage] = useState('shop')
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
@@ -151,7 +153,49 @@ export default function Shop() {
   const handleCategoryClick = (id) => {
     console.log('Category clicked:', id)
     setActiveCategory(id)
-    // You might also want to fetch products for this category or do other actions
+    // Update the query string in the URL, which will then trigger the useEffect
+    handleCategoryChange(id)
+  }
+  // fetch資料
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        // Construct the query string based on the active category
+        const queryStr = new URLSearchParams({
+          parent_id: activeCategory,
+        }).toString()
+        const res = await fetch(
+          `http://localhost:3005/api/products/filter?${queryStr}`
+        )
+        const data = await res.json()
+        if (data.status === 'success') {
+          setProducts(data.data.products)
+        } else {
+          console.error('Failed to fetch products:', data.message)
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      }
+    }
+    if (activeCategory !== null) {
+      // Only fetch products if a category is selected
+      fetchProducts()
+    }
+  }, [activeCategory])
+
+  // 商品 query string更新
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategoryId(categoryId)
+    // Use the Next.js router to update the URL without triggering a navigation
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, parent_id: categoryId },
+      },
+      undefined,
+      { shallow: true }
+    )
   }
 
   return (
