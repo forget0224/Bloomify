@@ -303,7 +303,7 @@ export default function FillOut() {
 
               {/* button */}
               <div className="w-full flex justify-center gap-4">
-                <Link href="/course/cart">
+                <Link href="/cart">
                   <MyButton
                     color="primary"
                     size="xl"

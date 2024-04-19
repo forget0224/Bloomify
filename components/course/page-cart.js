@@ -5,20 +5,6 @@ import Link from 'next/link.js'
 import { FaRegTrashAlt } from 'react-icons/fa'
 
 export default function CourseCart() {
-  //table 樣式
-  // const tableStyles = {
-  //   base: ['text-tertiary-black'],
-  //   th: ['text-base', 'text-tertiary-gray-100'],
-  //   td: ['text-base', 'px-3', 'py-3'],
-  //   wrapper: [
-  //     'text-base',
-  //     'shadow-none',
-  //     'border-1',
-  //     'border-tertiary-100',
-  //     'rounded-xl',
-  //   ],
-  // }
-
   return (
     <div className="flex flex-col w-[350px] md:w-[600px] lg:w-[800px] h-full gap-2 mt-4">
       {/* 購物車表格 */}
@@ -171,7 +157,7 @@ export default function CourseCart() {
           </div>
         </Card>
         {/* 小計 */}
-        <div className="flex flex-col justify-between mt-2">
+        <div className="flex flex-col justify-between mt-2 border-t-1 border-tertiary-gray-200 pt-4">
           <div className="text-right text-right">共 5 堂課程</div>
           <div className="flex justify-end space-x-4">
             <span>小計</span>

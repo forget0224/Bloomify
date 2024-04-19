@@ -11,6 +11,7 @@ import {
 import { Checkbox } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
 import { Link } from '@nextui-org/react'
+import { Card, CardBody, CardFooter } from '@nextui-org/react'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
@@ -74,27 +75,6 @@ export default function Confirm() {
     wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
   }
 
-  // 假資料
-  // const cartCourseContent = {
-  //   cartList: [
-  //     {
-  //       image: '/assets/course/category-1/img-course-01-01.jpg',
-  //       name: 'AA課程',
-  //       price: '600',
-  //     },
-  //     {
-  //       image: '/assets/course/category-1/img-course-01-01.jpg',
-  //       name: 'BB課程',
-  //       price: '600',
-  //     },
-  //     {
-  //       image: '/assets/course/category-1/img-course-01-01.jpg',
-  //       name: 'CC課程',
-  //       price: '600',
-  //     },
-  //   ],
-  // }
-
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -131,63 +111,81 @@ export default function Confirm() {
                   <Subtitle text="購物明細" />
                   {/* 明細 */}
                   <div className="flex flex-col gap-3 mt-6 mb-4">
-                    <Table
-                      selectionMode="single"
-                      defaultSelectedKeys={['2']}
-                      aria-label="Example static collection table"
-                      classNames={{ ...tableStyles }}
-                    >
-                      <TableHeader>
-                        <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
-                          商品
-                        </TableColumn>
-                        <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                          單價
-                        </TableColumn>
-                        <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                          數量
-                        </TableColumn>
-                        <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                          小計
-                        </TableColumn>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow key="1">
-                          <TableCell>
-                            <div className="flex flex-row items-center space-x-6">
-                              <Image
-                                src={
-                                  '/assets/course/category-1/img-course-01-01.jpg'
-                                }
-                                alt=""
-                                className="h-6 md:h-24 mx-auto rounded-md md:rounded-xl"
-                              />
-                              <p>花的名稱</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>NT$30</TableCell>
-                          <TableCell>3</TableCell>
-                          <TableCell>NT$30</TableCell>
-                        </TableRow>
-                        <TableRow key="2">
-                          <TableCell>
-                            <div className="flex flex-row items-center space-x-6">
-                              <Image
-                                src={
-                                  '/assets/course/category-1/img-course-01-01.jpg'
-                                }
-                                alt=""
-                                className="h-6 md:h-24 mx-auto rounded-md md:rounded-xl"
-                              />
-                              <p>花的名稱</p>
-                            </div>
-                          </TableCell>
-                          <TableCell>NT$30</TableCell>
-                          <TableCell>3</TableCell>
-                          <TableCell>NT$30</TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
+                    {/* 表內容 */}
+                    <Card className="shadow-none border-1 border-tertiary-gray-200 p-4">
+                      <div className="flex flex-col md:flex-row justify-between border-b-1 pb-2">
+                        <Link
+                          className="w-full md:w-1/3 flex flex-row gap-2 text-tertiary-black items-center truncate px-2 py-1 md:py-2"
+                          href={`/course/1`}
+                        >
+                          <Image
+                            width={80}
+                            height={40}
+                            alt="課程圖片"
+                            src="/assets/course/category-1/img-course-01-01.jpg"
+                            className="rounded-md"
+                          />
+                          <span className="md:ml-1 truncate">
+                            韓系乾燥花課程
+                          </span>
+                        </Link>
+
+                        <div className="w-full md:w-1/3 flex items-center px-2 py-1 md:py-2">
+                          2024-04-14 17:00
+                        </div>
+                        <div className="w-full md:w-1/6 flex items-center px-2 py-1 md:py-2 md:justify-end">
+                          NT$2000
+                        </div>
+                      </div>
+                      <div className="flex flex-col md:flex-row justify-between border-b-1 py-2">
+                        <Link
+                          className="w-full md:w-1/3 flex flex-row gap-2 text-tertiary-black items-center truncate px-2 py-1 md:py-2"
+                          href={`/course/1`}
+                        >
+                          <Image
+                            width={80}
+                            height={40}
+                            alt="課程圖片"
+                            src="/assets/course/category-1/img-course-01-01.jpg"
+                            className="rounded-md"
+                          />
+                          <span className="md:ml-1 truncate">
+                            韓系乾燥花課程
+                          </span>
+                        </Link>
+
+                        <div className="w-full md:w-1/3 flex items-center px-2 py-1 md:py-2">
+                          2024-04-14 17:00
+                        </div>
+                        <div className="w-full md:w-1/6 flex items-center px-2 py-1 md:py-2 md:justify-end">
+                          NT$2000
+                        </div>
+                      </div>
+                      <div className="flex flex-col md:flex-row justify-between pt-2">
+                        <Link
+                          className="w-full md:w-1/3 flex flex-row gap-2 text-tertiary-black items-center truncate px-2 py-1 md:py-2"
+                          href={`/course/1`}
+                        >
+                          <Image
+                            width={80}
+                            height={40}
+                            alt="課程圖片"
+                            src="/assets/course/category-1/img-course-01-01.jpg"
+                            className="rounded-md"
+                          />
+                          <span className="md:ml-1 truncate">
+                            韓系乾燥花課程
+                          </span>
+                        </Link>
+
+                        <div className="w-full md:w-1/3 flex items-center px-2 py-1 md:py-2">
+                          2024-04-14 17:00
+                        </div>
+                        <div className="w-full md:w-1/6 flex items-center px-2 py-1 md:py-2 md:justify-end">
+                          NT$2000
+                        </div>
+                      </div>
+                    </Card>
                   </div>
                   {/* 小計 */}
                   <div>
@@ -197,8 +195,8 @@ export default function Confirm() {
                       classNames={{ ...tableStylesContent }}
                     >
                       <TableHeader>
-                        <TableColumn>無</TableColumn>
-                        <TableColumn>無</TableColumn>
+                        <TableColumn>x</TableColumn>
+                        <TableColumn>x</TableColumn>
                       </TableHeader>
                       <TableBody>
                         <TableRow key="1">
@@ -287,14 +285,20 @@ export default function Confirm() {
                   </Checkbox>
                 </div>
 
-                <div className="w-full flex justify-center gap-4">
-                  <Link href="/shop/cart/fill-out">
-                    <MyButton color="primary" size="xl" isOutline>
-                      上一步
+                {/* 按鈕群組 */}
+                <div className="flex flex-col md:flex-row gap-3 w-full justify-center md:py-10">
+                  <Link href="/course/">
+                    <MyButton
+                      color="primary"
+                      size="xl"
+                      isOutline
+                      className="w-full"
+                    >
+                      繼續購物
                     </MyButton>
                   </Link>
                   <Link href="/course/cart/payment-successful">
-                    <MyButton color="primary" size="xl">
+                    <MyButton color="primary" size="xl" className="w-full">
                       確認，進行付款
                     </MyButton>
                   </Link>
