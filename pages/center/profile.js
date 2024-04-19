@@ -28,34 +28,42 @@ export default function Profile() {
   const [activePage, setActivePage] = useState('profile')
 
   const { auth } = useAuth()
-  // const [userProfile, setUserProfile] = useState(initUserProfile)
-  // const [hasProfile, setHasProfile] = useState(false)
-  // const [selectedFile, setSelectedFile] = useState(null)
+  const [userProfile, setUserProfile] = useState(initUserProfile)
+  const [hasProfile, setHasProfile] = useState(false)
+  const [selectedFile, setSelectedFile] = useState(null)
 
-  // 獲取登入會員資料
-  // const getUserData = async (id = 0) => {
-  //   const res = await fetch(
-  //     `http://localhost:3005/api/share-members/center/${id}/profile`,
-  //     {
-  //       credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       method: 'GET',
-  //       body: JSON.stringify(auth.userData),
-  //     }
-  //   )
-  //   console.log(res.data)
-  // }
+  // auth中只能獲得id和帳號
+  console.log(auth)
+  console.log(auth.userData)
+  // {id: 1, username: 'herry@test.com', iat: 1713511167, exp: 1713770367}
+  console.log(auth.userData.id)
 
-  // // auth載入完成後向資料庫要會員資料
-  // useEffect(() => {
-  //   if (auth.isAuth) {
-  //     getUserData(auth.userData.id)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [auth])
+  // 獲取登入會員資料-phone.address......
+  const getUserData = async () => {
+    const res = await fetch(
+      `http://localhost:3005/api/share-members/${auth.userData.id}`,
+      {
+        credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'GET',
+      }
+    )
+    const data = await res.json() // 將回傳的 Response 物件轉換成 JSON 格式
+    console.log(data)
+    console.log(data.data)
+    // user: {id: 1, name: '哈利', username: 'herry@test.com', phone: '0906102808', city: '台北市', …}
+  }
+
+  // auth載入完成後向資料庫要會員資料
+  useEffect(() => {
+    if (auth.isAuth) {
+      getUserData(auth.userData.id)
+    }
+    // eslint-disable-next-line
+  }, [auth])
 
   // input 樣式
   const inputStyles = {

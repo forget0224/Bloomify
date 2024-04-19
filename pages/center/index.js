@@ -9,11 +9,63 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
+import { useAuth } from '@/hooks/use-auth'
+
+// sweetalert2
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 export default function Index() {
   const [activePage, setActivePage] = useState('shop')
   const router = useRouter()
   const isActive = (pathname) => router.pathname === pathname
+
+  // 登出
+  const { logout } = useAuth()
+
+  //  SweetAlert2 彈窗
+  const MySwal = withReactContent(Swal)
+
+  // SweetAlert2 彈窗設定
+  const notify = (msg) => {
+    MySwal.fire({
+      //position: "top-end",
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
+
+  // 處理登出
+  const handleLogout = async () => {
+    // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
+    const res = await fetch('http://localhost:3005/api/share-members/logout', {
+      credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({}),
+    })
+
+    const data = await res.json()
+    console.log(data)
+
+    if (data.status === 'success') {
+      console.log('登出成功，後端回應:', data)
+      // 設定全域的context會員登出
+      logout()
+      // 出現登入成功對話訊息盒
+      notify('已成功登出')
+      // 導向到會員個人資料頁
+      setTimeout(() => {
+        router.push('/member/login')
+      }, 2000)
+    }
+  }
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -200,6 +252,12 @@ export default function Index() {
                     >
                       優惠券
                     </Link>
+                    <button
+                      onClick={handleLogout}
+                      className={'hover:text-primary-100'}
+                    >
+                      登出
+                    </button>
                   </div>
                 </AccordionItem>
                 {/* member end */}
