@@ -13,13 +13,11 @@ import { CiSearch } from 'react-icons/ci'
 export default function FlowersIndex() {
   const [activePage, setActivePage] = useState('course')
   const underlines = ['none']
+
   //occList start
   const occList = [
     { id: 0, title: '場合' },
-    {
-      id: 1,
-      title: '生日慶祝',
-    },
+    { id: 1, title: '生日慶祝' },
     { id: 2, title: '情人節' },
     { id: 3, title: '新婚喜慶' },
     {
@@ -92,6 +90,7 @@ export default function FlowersIndex() {
     { id: 12, title: '其他' },
   ]
   //colorList end
+
   //roleList start
   const roleList = [
     {
@@ -171,19 +170,8 @@ export default function FlowersIndex() {
       id: 2,
       title: 'Z-A',
     },
-    // {
-    //   id: ,
-    //   title: '',
-    // },
-    // {
-    //   id: ,
-    //   title: '',
-    // },
-    // {
-    //   id: ,
-    //   title: '',
-    // },
-  ] //sortList end
+  ]
+  //sortList end
   return (
     <DefaultLayout
       activePage={activePage}
@@ -206,7 +194,7 @@ export default function FlowersIndex() {
             ))}
           </div>
           {/* ------------花圖鑑首頁banner  ------------start*/}
-          {/* banner圖 & 加入我們 */}
+          {/* banner圖  */}
           <div className="relative w-full">
             {/* banner圖 */}
             <Image
@@ -216,7 +204,7 @@ export default function FlowersIndex() {
             />
             {/* 文字方塊 */}
 
-            <Card className="flex flex-row p-6 columns-2 m-4 md:m-10 absolute top-0 left-0 z-10 rounded-lg opacity-50">
+            <Card className="flex flex-row p-3 columns-2 m-4 md:m-10 absolute top-0 left-0 z-10 rounded-lg opacity-80">
               <CardBody className="p-0">
                 <div className="flex flex-col gap-1 items-start justify-between">
                   {/* <h1>
@@ -224,8 +212,7 @@ export default function FlowersIndex() {
                     doux, la nuit, de regarder le ciel."─Le petit Prince
                   </h1> */}
                   <p>
-                    「如果你愛著一朵盛開在浩瀚星海裡的花，那麼當你抬頭仰望繁星時，便會感到幸福。」─小王子
-                    Le petit Prince
+                    「如果你愛著一朵盛開在浩瀚星海裡的花，那麼當你抬頭仰望繁星時，便會感到幸福。」─《小王子Le Petit Prince》
                   </p>
                 </div>
               </CardBody>
