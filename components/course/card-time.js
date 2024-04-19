@@ -10,27 +10,48 @@ import {
 import CircleBtn from './btn-add-to-cart'
 import { MyButton } from '../btn/mybutton'
 
-export default function CourseTime() {
+export default function CourseTime({ datetimes }) {
+  // 處理日期格式
+  function formatDate(dateString) {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }
+    return new Date(dateString).toLocaleDateString('zh-TW', options)
+  }
+  // 處理時間格式
+  function formatTime(timeString) {
+    return timeString.substr(0, 5)
+  }
+
   return (
-    <Card className="flex flex-row px-6 py-6">
-      <CardBody className="flex flex-col lg:flex-row items-left lg:items-center justify-between p-0">
-        <p className="text-md">3期</p>
-        <div>
-          <p>2024.04.12</p>
-          <p>6:00 am - 8:00 am</p>
-        </div>
-        <p className="text-tertiary-gray-100">尚餘3個名額</p>
-        <div className="flex gap-4 mt-2 lg:mt-0">
-          <CircleBtn />
-          <MyButton
-            color="primary"
-            size="xl"
-            className="w-full md:w-1/2 lg:w-full"
-          >
-            直接購買
-          </MyButton>
-        </div>
-      </CardBody>
-    </Card>
+    <>
+      {datetimes.map((datetimes) => (
+        <Card key={datetimes.id} className="flex flex-row px-6 py-6">
+          <CardBody className="flex flex-col lg:flex-row items-left lg:items-center justify-between p-0">
+            <p className="text-md">{datetimes.period}期</p>
+            <div>
+              <p>{formatDate(datetimes.date)}</p>
+              <p>
+                {formatTime(datetimes.start_time)}-
+                {formatTime(datetimes.end_time)}
+              </p>
+            </div>
+            <p className="text-tertiary-gray-100">尚餘{`3`}個名額</p>
+            <div className="flex gap-4 mt-2 lg:mt-0">
+              <CircleBtn />
+              <MyButton
+                color="primary"
+                size="xl"
+                className="w-full md:w-1/2 lg:w-full"
+              >
+                立即預約
+              </MyButton>
+            </div>
+          </CardBody>
+        </Card>
+      ))}
+    </>
   )
 }

@@ -28,7 +28,7 @@ export default function CardGroupStore() {
   }
 
   return (
-    <div className="grid grid-cols-3 lg:grid-cols-8 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-6">
       {stores.map((store) => (
         <Card
           shadow="sm"
@@ -37,7 +37,11 @@ export default function CardGroupStore() {
           onPress={() => console.log('item pressed')}
           className="bg-danger"
         >
-          <Link href="/course/search" key={store.id} className="w-full">
+          <Link
+            href={`/course/search?store_id=${store.store_id}`}
+            key={store.id}
+            className="w-full"
+          >
             <CardBody className="p-0">
               <Image
                 isZoomed

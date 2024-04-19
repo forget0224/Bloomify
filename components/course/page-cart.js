@@ -16,26 +16,6 @@ import Link from 'next/link.js'
 import { FaRegTrashAlt } from 'react-icons/fa'
 
 export default function CourseCart() {
-  const cartCourseContent = {
-    cartList: [
-      {
-        image: '/assets/course/category-1/img-course-01-01.jpg',
-        name: '韓系乾燥花課程',
-        price: '600',
-      },
-      {
-        image: '/assets/course/category-1/img-course-01-01.jpg',
-        name: '韓系乾燥花課程',
-        price: '600',
-      },
-      {
-        image: '/assets/course/category-1/img-course-01-01.jpg',
-        name: '韓系乾燥花課程',
-        price: '600',
-      },
-    ],
-  }
-
   //table 樣式
   const tableStyles = {
     base: ['text-tertiary-black'],
@@ -56,58 +36,74 @@ export default function CourseCart() {
         {/* 購物車表格 */}
         <div className="flex flex-col w-full border-1 border-tertiary-gray-200 p-4 rounded-lg">
           {/* 表頭 */}
-          <div className="flex flex-row justify-between bg-primary-300 py-2 px-2">
-            <div className="w-1/3">課程名稱</div>
-            <div className="w-1/3">課程時間</div>
-            <div className="w-1/6">價格</div>
-            <div className="w-1/6 text-right">移除</div>
+          <div className="flex flex-row justify-between bg-primary-300 rounded-md">
+            <div className="w-1/3 p-2 text-nowrap">課程名稱</div>
+            <div className="w-1/3 p-2 text-nowrap">課程時間</div>
+            <div className="w-1/6 p-2 text-nowrap">價格</div>
+            <div className="w-1/6 p-2 text-right text-nowrap">移除</div>
           </div>
           {/* 表內容 */}
-          <div className="flex flex-col md:flex-row justify-between py-2 px-2">
-            <div className="w-full md:w-1/3 flex flex-col md:flex-row items-center truncate">
-              <span>
-                <Image
-                  width={80}
-                  height={40}
-                  alt="課程圖片"
-                  src="/assets/course/category-1/img-course-01-01.jpg"
-                  className="p-1 border-1 rounded-lg mr-1"
-                />
-              </span>
-              <span>韓系乾燥花課程</span>
+          <div className="flex flex-col md:flex-row justify-between border-b">
+            <div className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate p-2">
+              <Image
+                width={80}
+                height={40}
+                alt="課程圖片"
+                src="/assets/course/category-1/img-course-01-01.jpg"
+                className="rounded-md"
+              />
+              <span className="md:ml-1">韓系乾燥花課程</span>
             </div>
-            <div className="w-full md:w-1/3 flex items-center">
+            <div className="w-full md:w-1/3 flex items-center p-2">
               2024-04-14 17:00
             </div>
-            <div className="w-full md:w-1/6 flex items-center">NT$2000</div>
-            <div className="flex w-full md:w-1/6 flex items-center text-right justify-start md:justify-end md:px-2">
+            <div className="w-full md:w-1/6 flex items-center p-2">NT$2000</div>
+            <div className="flex w-full md:w-1/6 flex items-center text-right justify-start md:justify-end p-2">
               <FaRegTrashAlt />
             </div>
           </div>
           {/* 表內容 */}
-          <div className="flex flex-col md:flex-row justify-between py-2 px-2">
-            <div className="w-full md:w-1/3 flex flex-col md:flex-row items-center truncate">
-              <span>
-                <Image
-                  width={80}
-                  height={40}
-                  alt="課程圖片"
-                  src="/assets/course/category-1/img-course-01-01.jpg"
-                  className="p-1 border-1 rounded-lg mr-1"
-                />
-              </span>
-              <span>韓系乾燥花課程</span>
+          <div className="flex flex-col md:flex-row justify-between border-b">
+            <div className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate p-2">
+              <Image
+                width={80}
+                height={40}
+                alt="課程圖片"
+                src="/assets/course/category-1/img-course-01-01.jpg"
+                className="rounded-md"
+              />
+              <span className="md:ml-1">韓系乾燥花課程</span>
             </div>
-            <div className="w-full md:w-1/3 flex items-center">
+            <div className="w-full md:w-1/3 flex items-center p-2">
               2024-04-14 17:00
             </div>
-            <div className="w-full md:w-1/6 flex items-center">NT$2000</div>
-            <div className="flex w-full md:w-1/6 flex items-center text-right justify-start md:justify-end md:px-2">
+            <div className="w-full md:w-1/6 flex items-center p-2">NT$2000</div>
+            <div className="flex w-full md:w-1/6 flex items-center text-right justify-start md:justify-end p-2">
+              <FaRegTrashAlt />
+            </div>
+          </div>
+          {/* 表內容 */}
+          <div className="flex flex-col md:flex-row justify-between border-b">
+            <div className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate p-2">
+              <Image
+                width={80}
+                height={40}
+                alt="課程圖片"
+                src="/assets/course/category-1/img-course-01-01.jpg"
+                className="rounded-md"
+              />
+              <span className="md:ml-1">韓系乾燥花課程</span>
+            </div>
+            <div className="w-full md:w-1/3 flex items-center p-2">
+              2024-04-14 17:00
+            </div>
+            <div className="w-full md:w-1/6 flex items-center p-2">NT$2000</div>
+            <div className="flex w-full md:w-1/6 flex items-center text-right justify-start md:justify-end p-2">
               <FaRegTrashAlt />
             </div>
           </div>
           {/* 小計 */}
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between mt-2">
             <div className="text-right text-right">共 2 堂課程</div>
             <div className="flex justify-end space-x-4">
               <span>小計</span>

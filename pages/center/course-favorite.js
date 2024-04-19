@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
@@ -11,7 +11,45 @@ import Title from '@/components/common/title'
 import Sidebar from '@/components/layout/sidebar'
 import CardGroup from '@/components/course/card-group'
 
-export default function Favorite() {
+export default function FavoriteCourses() {
+  const [courses, setCourses] = useState([])
+
+  useEffect(() => {
+    async function fetchAllCourses() {
+      try {
+        const response = await fetch(
+          'http://localhost:3005/api/course-favorites'
+        )
+        const data = await response.json()
+        console.log('API data:', data) // 確認數據已接收
+        if (response.ok && data.status === 'success') {
+          setCourses(processCourses(data.data)) // 直接使用data.data因為他是課程數組
+        } else {
+          throw new Error('Failed to fetch courses')
+        }
+      } catch (error) {
+        console.error('Error fetching all courses:', error)
+      }
+    }
+
+    fetchAllCourses()
+  }, [])
+
+  // 處理課程圖片函數
+  function processCourses(coursesArray) {
+    return coursesArray.map((course) => {
+      const mainImage =
+        (course.images && course.images.find((image) => image.is_main)) ||
+        (course.images && course.images[0])
+      return {
+        ...course,
+        mainImage: mainImage
+          ? mainImage.path
+          : '/assets/course/img-default.jpg',
+      }
+    })
+  }
+
   const list = [
     {
       title: 'Orange',
@@ -23,8 +61,9 @@ export default function Favorite() {
       title: 'Raspberry',
     },
   ]
-  // const productList = []
+
   const [activePage, setActivePage] = useState('course')
+
   return (
     <DefaultLayout activePage={activePage}>
       <>
@@ -38,19 +77,19 @@ export default function Favorite() {
               <BreadcrumbItem>收藏課程</BreadcrumbItem>
             </Breadcrumbs>
           </div>
-          <div className="flex flex-row w-full">
-            {/* sidebar start */}
+          {/* 主要內容 */}
+          <div className="flex flex-row w-full justify-center">
+            {/* 側邊欄 */}
             <Sidebar />
-            {/* sidebar end */}
 
             {/* order content start */}
-            <div className="w-10/12 pl-10">
+            <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
               <Title text="收藏課程" />
 
-              {/* search & select start */}
-              <div className="flex justify-between gap-4 py-4">
+              {/* 搜尋與排序 */}
+              <div className="flex flex-col md:flex-row justify-between gap-4 py-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
                 {/* searchbar */}
-                <div>
+                <div className="w-full md:w-[320px]">
                   <CourseSearch />
                 </div>
                 {/* filter */}
@@ -59,7 +98,7 @@ export default function Favorite() {
                   <Select
                     placeholder="Select"
                     defaultSelectedKeys={['Orange']}
-                    className="max-w-xs w-48"
+                    className="max-w-xs md:w-48 w-full"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
@@ -72,12 +111,10 @@ export default function Favorite() {
                   </Select>
                 </div>
               </div>
-              {/* search & select end */}
 
+              {/* 卡片群組 */}
               <div className="grid gap-y-10 gap-x-6 w-full mt-4">
-                <CardGroup />
-                <CardGroup />
-                <CardGroup />
+                <CardGroup courses={courses} />
               </div>
 
               {/* pagination */}

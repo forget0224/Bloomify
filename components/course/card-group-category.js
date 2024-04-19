@@ -26,7 +26,7 @@ export default function CardGroupCategory() {
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {categories.map((category) => (
         <Card
           shadow="sm"
@@ -35,7 +35,11 @@ export default function CardGroupCategory() {
           onPress={() => console.log('item pressed')}
           className="bg-danger"
         >
-          <Link href="/course/search" key={category.id} className="w-full">
+          <Link
+            href={`/course/search?category_id=${category.id}`}
+            key={category.id}
+            className="w-full"
+          >
             <CardBody className="p-0">
               <Image
                 isZoomed

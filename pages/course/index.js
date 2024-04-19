@@ -93,7 +93,7 @@ export default function CourseIndex() {
         {/* 麵包屑 */}
         <div className="w-full py-6 hidden md:block">
           <Breadcrumbs>
-            <BreadcrumbItem>首頁</BreadcrumbItem>
+            <BreadcrumbItem href="/">首頁</BreadcrumbItem>
             <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>
           </Breadcrumbs>
         </div>
@@ -123,7 +123,7 @@ export default function CourseIndex() {
               </CardBody>
             </Card>
             {/* 搜尋框 */}
-            <SearchBtn />
+            <SearchBtn baseSearchPath="/course/search" />
             {/* </Link> */}
           </div>
         </div>
@@ -136,7 +136,6 @@ export default function CourseIndex() {
         {/* 最新課程 */}
         <div className="grid gap-y-4 my-14 w-full">
           <Subtitle text="最新課程" className="inline-block" />
-          {/* <CardGroup /> */}
           <CardGroup courses={latestCourses} />
         </div>
         {/* 精選商家 */}

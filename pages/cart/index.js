@@ -268,16 +268,6 @@ export default function Cart() {
               </Tab>
             </Tabs>
           </div>
-
-          {/* 按鈕 */}
-          {/* <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
-            <MyButton color="primary" size="xl" isOutline>
-              <Link href="/">上一步</Link>
-            </MyButton>
-            <MyButton color="primary" size="xl">
-              <Link href="/cart/fill-out">下一步</Link>
-            </MyButton>
-          </div> */}
         </CenterLayout>
       </DefaultLayout>
     </>

@@ -1,17 +1,18 @@
 import React from 'react'
 import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import Link from 'next/link'
-import { BsFillStarFill, BsFillHeartFill } from 'react-icons/bs'
+import { BsFillStarFill } from 'react-icons/bs'
+import HeartButton from './btn-heart'
 
-export default function CardGroup({ courses }) {
+export default function CardGroup({ courses, isActive, onToggle }) {
   // 如果 courses 是 undefined 或者為空數組，就渲染一個提示訊息或者 loading...
   if (!courses || courses.length === 0) {
     return <div>課程資料正在加載中或者沒有可用的課程。</div>
   }
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-      {courses.map((course, index) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {courses.map((course) => (
         <Card
           shadow="sm"
           key={course.id}
@@ -19,7 +20,11 @@ export default function CardGroup({ courses }) {
           onPress={() => console.log('item pressed', course.id)}
           className="relative"
         >
-          <Link href="/course/details" key={index} className="block relative">
+          <Link
+            href={`/course/${course.id}`}
+            key={course.id}
+            className="block relative"
+          >
             <CardBody className="relative overflow-visible p-0">
               <Image
                 isZoomed
@@ -43,8 +48,16 @@ export default function CardGroup({ courses }) {
                 </p>
               </div>
             </CardFooter>
-            <BsFillHeartFill className="text-secondary-100 absolute top-4 right-4 z-10 w-6 h-6" />
           </Link>
+          {/* <BsFillHeartFill
+            className="text-secondary-100 absolute top-4 right-4 z-10 w-6 h-6 cursor-pointer"
+            onClick={(e) => {
+              e.stopPropagation() // 阻止事件冒泡到卡片的 onPress
+              alert('Heart clicked', course.id)
+              // 這裡添加切換收藏的邏輯
+            }}
+          /> */}
+          <HeartButton />
         </Card>
       ))}
     </div>
