@@ -3,7 +3,7 @@ import { Button } from '@nextui-org/react'
 
 export default function CourseRatingFilter() {
   return (
-    <div className="flex flex-row gap-2 overflow-x-auto items-center py-4">
+    <div className="flex flex-row gap-2 overflow-x-auto items-center">
       <Button color="primary" variant="solid">
         全部(21)
       </Button>
