@@ -153,12 +153,12 @@ export default function CourseCart() {
         </div>
         {/* 按鈕群組 */}
         <div className="flex justify-center space-x-10 py-10">
-          <Link href="/course">
+          <Link href="/shop">
             <MyButton color="primary" size="xl" isOutline>
               繼續購物
             </MyButton>
           </Link>
-          <Link href="/course/cart/fill-out">
+          <Link href="/cart/fill-out">
             <MyButton color="primary" size="xl">
               下一步
             </MyButton>
