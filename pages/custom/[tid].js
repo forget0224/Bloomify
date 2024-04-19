@@ -7,6 +7,7 @@ import { MyButton } from '@/components/btn/mybutton'
 import { useLoader } from '@/hooks/use-loader'
 import Link from 'next/link'
 import Loader from '@/components/common/loader'
+import { ColorProvider } from '@/hooks/use-color'
 
 export default function Detail() {
   const [activePage, setActivePage] = useState('custom')
@@ -37,34 +38,6 @@ export default function Detail() {
     ],
   })
 
-  //   {
-  //     "status": "success",
-  //     "data": {
-  //         "template_id": "T20240131001",
-  //         "template_occ": "紀念日",
-  //         "template_role": "新生嬰兒",
-  //         "store_name": "美好花房",
-  //         "template_name": "聖誕花環",
-  //         "image_url": "https://example.com/image1.jpg",
-  //         "products": [
-  //             {
-  //                 "product_name": "向日葵",
-  //                 "product_price": 200,
-  //                 "quantity": 1
-  //             },
-  //             {
-  //                 "product_name": "百合",
-  //                 "product_price": 300,
-  //                 "quantity": 2
-  //             },
-  //             {
-  //                 "product_name": "鬱金香",
-  //                 "product_price": 400,
-  //                 "quantity": 1
-  //             }
-  //         ]
-  //     }
-  // }
   const getProductById = async (pid) => {
     const url = `http://localhost:3005/api/custom/${pid}` // 確保此 URL 正確並能夠返回預期的數據結構
 
@@ -111,122 +84,125 @@ export default function Detail() {
   console.log(product)
 
   const display = (
-    <>
-      <div className="w-screen flex flex-col bg-white items-center justify-center text-tertiary-black gap-2 sm:flex-row ">
-        <div
-          className="w-[300px] sm:w-[1000px]  flex flex-col sm:flex-row justify-center  items-center gap-5"
-          style={{ height: 'calc(100vh - 64px)' }}
-        >
+    <ColorProvider>
+      {' '}
+      <>
+        <div className="w-screen flex flex-col bg-white items-center justify-center text-tertiary-black gap-2 sm:flex-row ">
           <div
-            className=" w-[300px] h-[300px] sm:w-[500px]  relative my-5 sm:h-[500px]"
-            style={{
-              backgroundImage: `url('${product.src}')`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center center',
-              backgroundSize: 'contain',
-            }}
+            className="w-[300px] sm:w-[1000px]  flex flex-col sm:flex-row justify-center  items-center gap-5"
+            style={{ height: 'calc(100vh - 64px)' }}
           >
-            <div className="absolute top-2 left-2 hover:bg-white hover:text-tertiary-black rounded-full w-5 h-5">
-              <MdEdit className="text-xl" />
+            <div
+              className=" w-[300px] h-[300px] sm:w-[500px]  relative my-5 sm:h-[500px]"
+              style={{
+                backgroundImage: `url('${product.src}')`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center center',
+                backgroundSize: 'contain',
+              }}
+            >
+              <div className="absolute top-2 left-2 hover:bg-white hover:text-tertiary-black rounded-full w-5 h-5">
+                <MdEdit className="text-xl" />
+              </div>
             </div>
-          </div>
 
-          <div className="flex flex-col flex-1 w-full gap-3 sm:h-[500px]">
-            {/* 分類花束 */}
-            <div className="flex flex-col px-5 py-6 gap-1">
-              <div className="flex flex-row justify-between">
-                <p className="text-xs">{product.occ}</p>
-                <div className="sm:hidden" onClick={handleHeartClick}>
-                  {isHeart ? (
-                    <IoIosHeartEmpty className="text-danger text-xl " />
-                  ) : (
-                    <IoIosHeart className="text-danger text-xl " />
-                  )}
+            <div className="flex flex-col flex-1 w-full gap-3 sm:h-[500px]">
+              {/* 分類花束 */}
+              <div className="flex flex-col px-5 py-6 gap-1">
+                <div className="flex flex-row justify-between">
+                  <p className="text-xs">{product.occ}</p>
+                  <div className="sm:hidden" onClick={handleHeartClick}>
+                    {isHeart ? (
+                      <IoIosHeartEmpty className="text-danger text-xl " />
+                    ) : (
+                      <IoIosHeart className="text-danger text-xl " />
+                    )}
+                  </div>
+                </div>
+
+                <h1 className="sm:text-3xl">{product.template_name}</h1>
+                <p className="text-tertiary-gray-100 text-xs">
+                  {product.store_name}
+                </p>
+                <p className="text-right sm:hidden">${product.price}</p>
+              </div>
+              {/* 詳細資訊 */}
+              <div className="w-[300px] text-sm h-full sm:h-auto flex-col gap-3 py-6 hidden sm:flex sm:w-full">
+                <div className="flex flex-col w-full px-5">
+                  <p className="">詳細資訊</p>
+                  <p className="">如當日花材不足會以相似款替代</p>
+                </div>
+                <div className="flex flex-col justify-center px-5 gap-2">
+                  {product.products.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-row justify-between items-center flex-grow"
+                    >
+                      <p className="flex-grow">{item.category_name}</p>
+                      <p className="flex-grow">{item.color}</p>
+                      <p className="w-6 text-center flex-grow">
+                        ${item.product_price}
+                      </p>
+                      <p className="flex-grow">x{item.quantity}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <h1 className="sm:text-3xl">{product.template_name}</h1>
-              <p className="text-tertiary-gray-100 text-xs">
-                {product.store_name}
-              </p>
-              <p className="text-right sm:hidden">${product.price}</p>
-            </div>
-            {/* 詳細資訊 */}
-            <div className="w-[300px] text-sm h-full sm:h-auto flex-col gap-3 py-6 hidden sm:flex sm:w-full">
-              <div className="flex flex-col w-full px-5">
-                <p className="">詳細資訊</p>
-                <p className="">如當日花材不足會以相似款替代</p>
+              <hr className="w-full hidden sm:block" />
+              <div className="px-5 py-6 hidden sm:block">
+                <p className="text-right text-3xl">${product.price}</p>
               </div>
-              <div className="flex flex-col justify-center px-5 gap-2">
-                {product.products.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-row justify-between items-center flex-grow"
-                  >
-                    <p className="flex-grow">{item.category_name}</p>
-                    <p className="flex-grow">{item.color}</p>
-                    <p className="w-6 text-center flex-grow">
-                      ${item.product_price}
-                    </p>
-                    <p className="flex-grow">x{item.quantity}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+              {/* 按鈕 */}
+              <div className="flex flex-row w-full gap-6  justify-around items-center sm:px-5 ">
+                <div className="hidden sm:block" onClick={handleHeartClick}>
+                  {isHeart ? (
+                    <IoIosHeartEmpty className="text-danger text-2xl " />
+                  ) : (
+                    <IoIosHeart className="text-danger text-2xl " />
+                  )}
+                </div>
 
-            <hr className="w-full hidden sm:block" />
-            <div className="px-5 py-6 hidden sm:block">
-              <p className="text-right text-3xl">${product.price}</p>
-            </div>
-            {/* 按鈕 */}
-            <div className="flex flex-row w-full gap-6  justify-around items-center sm:px-5 ">
-              <div className="hidden sm:block" onClick={handleHeartClick}>
-                {isHeart ? (
-                  <IoIosHeartEmpty className="text-danger text-2xl " />
-                ) : (
-                  <IoIosHeart className="text-danger text-2xl " />
-                )}
+                <Link href="/custom/custom">
+                  {' '}
+                  <MyButton color="secondary200" size="xl">
+                    客製化
+                  </MyButton>
+                </Link>
+                <Link href="/cart">
+                  <MyButton color="secondary" size="xl">
+                    結帳
+                  </MyButton>
+                </Link>
               </div>
-
-              <Link href="/custom/custom">
-                {' '}
-                <MyButton color="secondary200" size="xl">
-                  客製化
-                </MyButton>
-              </Link>
-              <Link href="/cart">
-                <MyButton color="secondary" size="xl">
-                  結帳
-                </MyButton>
-              </Link>
+            </div>
+          </div>
+          <hr className="w-full sm:hidden" />
+          {/* 詳細資訊 */}
+          <div className="w-[300px] text-sm h-full flex flex-col gap-3 py-6 sm:hidden">
+            <div className="flex flex-col ">
+              <p className="">詳細資訊</p>
+              <p className="">如當日花材不足會以相似款替代</p>
+            </div>
+            <div className="flex flex-col justify-center px-5 gap-2">
+              {product.products.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex flex-row justify-between items-center flex-grow"
+                >
+                  <p className="flex-grow">{item.category_name}</p>
+                  <p className="flex-grow">{item.color}</p>
+                  <p className="w-6 text-center flex-grow">
+                    ${item.product_price}
+                  </p>
+                  <p className="flex-grow">x{item.quantity}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
-        <hr className="w-full sm:hidden" />
-        {/* 詳細資訊 */}
-        <div className="w-[300px] text-sm h-full flex flex-col gap-3 py-6 sm:hidden">
-          <div className="flex flex-col ">
-            <p className="">詳細資訊</p>
-            <p className="">如當日花材不足會以相似款替代</p>
-          </div>
-          <div className="flex flex-col justify-center px-5 gap-2">
-            {product.products.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-row justify-between items-center flex-grow"
-              >
-                <p className="flex-grow">{item.category_name}</p>
-                <p className="flex-grow">{item.color}</p>
-                <p className="w-6 text-center flex-grow">
-                  ${item.product_price}
-                </p>
-                <p className="flex-grow">x{item.quantity}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </>
+      </>
+    </ColorProvider>
   )
   return (
     <DefaultLayout activePage={activePage}>

@@ -6,7 +6,7 @@ import ChangeComponent from './ChangeComponent'
 const MainFlowerComponent = ({ onNext, onPrev, items }) => {
   const [selectedFlower, setSelectedFlower] = useState(null)
 
-  const handleSelectColor = (color) => {
+  const handleSelectColor = ({ color }) => {
     console.log(`選擇的顏色是: ${color}`)
     setSelectedFlower(null)
   }

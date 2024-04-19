@@ -11,6 +11,9 @@ import BottomSheetButton from '@/components/custom/custom/BottomSheetButton'
 import FilterContent from '@/components/custom/product/FilterContent'
 import { useLoader } from '@/hooks/use-loader'
 import Loader from '@/components/common/loader'
+import { ColorProvider } from '@/hooks/use-color'
+import { RoleProvider } from '@/hooks/use-role'
+import { OccProvider } from '@/hooks/use-occ'
 export default function List() {
   const [activePage, setActivePage] = useState('custom')
   const [isSheetOpen, setSheetOpen] = useState(false)
@@ -95,95 +98,103 @@ export default function List() {
     updateQueryString()
   }, [filters, sortField, sortOrder])
   const display = (
-    <DefaultLayout activePage={activePage}>
-      <>
-        <div className="bg-white  w-screen h-auto overflow-visible">
-          <div className="container m-auto">
-            <div className="flex sm:flex-row flex-col ">
-              <div className="h-[600px] w-auto  p-4 sticky top-0  hidden sm:block">
-                <CustomFilter onFilterChange={handleFilterChange} />
-              </div>
-              <div
-                style={{ minHeight: 'calc(100vh - 64px)' }}
-                className="min-h-full h-full sm:w-10/12 flex flex-col gap-3 sm:p-4 m-auto w-full p-2"
-              >
-                <div className="hidden sm:block">
-                  <Breadcrumbs>
-                    <BreadcrumbItem>首頁</BreadcrumbItem>
-                    <BreadcrumbItem>代客送花</BreadcrumbItem>
-                    <BreadcrumbItem color="primary">快速選購</BreadcrumbItem>
-                  </Breadcrumbs>
-                </div>
+    <ColorProvider>
+      <OccProvider>
+        <RoleProvider>
+          <DefaultLayout activePage={activePage}>
+            <>
+              <div className="bg-white  w-screen h-auto overflow-visible">
+                <div className="container m-auto">
+                  <div className="flex sm:flex-row flex-col ">
+                    <div className="h-[600px] w-auto  p-4 sticky top-0  hidden sm:block">
+                      <CustomFilter onFilterChange={handleFilterChange} />
+                    </div>
+                    <div
+                      style={{ minHeight: 'calc(100vh - 64px)' }}
+                      className="min-h-full h-full sm:w-10/12 flex flex-col gap-3 sm:p-4 m-auto w-full p-2"
+                    >
+                      <div className="hidden sm:block">
+                        <Breadcrumbs>
+                          <BreadcrumbItem>首頁</BreadcrumbItem>
+                          <BreadcrumbItem>代客送花</BreadcrumbItem>
+                          <BreadcrumbItem color="primary">
+                            快速選購
+                          </BreadcrumbItem>
+                        </Breadcrumbs>
+                      </div>
 
-                <div className="w-full flex flex-row justify-end gap-3 text-tertiary-black text-2xl sm:hidden">
-                  <BottomSheetButton
-                    icon={<PiSlidersThin />}
-                    iconClass="text-2xl"
-                    label="排序與篩選"
-                    // {...(<FilterContent />)}
-                    // content={<div>sdfsdf</div>}
-                    content={
-                      <FilterContent
-                        onFilterChange={handleFilterChange}
-                        onSortChange={handleSortChange}
-                        selectedOccs={selectedOccs}
-                        setSelectedOccs={setSelectedOccs}
-                        selectedRoles={selectedRoles}
-                        setSelectedRoles={setSelectedRoles}
-                        selectedColors={selectedColors}
-                        setSelectedColors={setSelectedColors}
-                        sortOption={sortOption}
-                        setSortOption={setSortOption}
-                        radioSelection={radioSelection}
-                        setRadioSelection={setRadioSelection}
-                      />
-                    }
-                    isOpen={isSheetOpen}
-                    onOpen={handleOpen}
-                    onClose={handleClose}
-                    showArrows={false}
-                    showLabel={false}
-                    blocking={true}
-                  />
-                  <CiGrid41 />
-                </div>
+                      <div className="w-full flex flex-row justify-end gap-3 text-tertiary-black text-2xl sm:hidden">
+                        <BottomSheetButton
+                          icon={<PiSlidersThin />}
+                          iconClass="text-2xl"
+                          label="排序與篩選"
+                          // {...(<FilterContent />)}
+                          // content={<div>sdfsdf</div>}
+                          content={
+                            <FilterContent
+                              onFilterChange={handleFilterChange}
+                              onSortChange={handleSortChange}
+                              selectedOccs={selectedOccs}
+                              setSelectedOccs={setSelectedOccs}
+                              selectedRoles={selectedRoles}
+                              setSelectedRoles={setSelectedRoles}
+                              selectedColors={selectedColors}
+                              setSelectedColors={setSelectedColors}
+                              sortOption={sortOption}
+                              setSortOption={setSortOption}
+                              radioSelection={radioSelection}
+                              setRadioSelection={setRadioSelection}
+                            />
+                          }
+                          isOpen={isSheetOpen}
+                          onOpen={handleOpen}
+                          onClose={handleClose}
+                          showArrows={false}
+                          showLabel={false}
+                          blocking={true}
+                        />
+                        <CiGrid41 />
+                      </div>
 
-                <div className="">
-                  <div className="flex flex-col gap-2 ">
-                    <div className="flex flex-row justify-between">
-                      <p className="sm:text-3xl text-xl text-tertiary-black select-none	">
-                        聖誕節
-                      </p>
-                      <div className="hidden sm:flex flex-row gap-1">
-                        {' '}
-                        <SortButton onSortChange={handleSortChange} />
+                      <div className="">
+                        <div className="flex flex-col gap-2 ">
+                          <div className="flex flex-row justify-between">
+                            <p className="sm:text-3xl text-xl text-tertiary-black select-none	">
+                              聖誕節
+                            </p>
+                            <div className="hidden sm:flex flex-row gap-1">
+                              {' '}
+                              <SortButton onSortChange={handleSortChange} />
+                            </div>
+                          </div>
+
+                          <hr className="w-full" />
+
+                          <div className="w-full h-full relative overflow-hidden">
+                            <DH productList={products} className="h-auto" />
+                          </div>
+                        </div>
+
+                        <div className="flex flex-col gap-2 ">
+                          <p className="sm:text-3xl text-xl text-tertiary-black">
+                            情人節
+                          </p>
+                          <hr className="w-full" />
+
+                          <div className="w-full h-full relative overflow-hidden">
+                            <DH productList={products} className="h-auto" />
+                          </div>
+                        </div>
                       </div>
                     </div>
-
-                    <hr className="w-full" />
-
-                    <div className="w-full h-full relative overflow-hidden">
-                      <DH productList={products} className="h-auto" />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 ">
-                    <p className="sm:text-3xl text-xl text-tertiary-black">
-                      情人節
-                    </p>
-                    <hr className="w-full" />
-
-                    <div className="w-full h-full relative overflow-hidden">
-                      <DH productList={products} className="h-auto" />
-                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </>
-    </DefaultLayout>
+            </>
+          </DefaultLayout>
+        </RoleProvider>
+      </OccProvider>
+    </ColorProvider>
   )
   return <>{isLoading ? <Loader /> : display}</>
 }
