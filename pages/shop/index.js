@@ -39,235 +39,12 @@ export default function Shop() {
   const [activePage, setActivePage] = useState('shop')
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
   const [colors, setColors] = useState([])
-  // 篩選:大項分類
   const [selectedParentId, setSelectedParentId] = useState(null)
-  // 篩選: 子項分類
-  //初始化所有複選框的選中狀態為未選中
-  const [checkedStates, setCheckedStates] = useState({})
+  const [isSelected, setIsSelected] = React.useState(false)
 
-  // 篩選: 大項分類start
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // 取得商品資料
-        const productsResponse = await fetch(
-          'http://localhost:3005/api/products'
-        )
-        const productsData = await productsResponse.json()
-        if (
-          productsData.status === 'success' &&
-          Array.isArray(productsData.data.products)
-        ) {
-          // 處理全部商品數據
-          setProducts(processProducts(productsData.data.products))
-        }
-
-        // 取得種類資料
-        const categoriesResponse = await fetch(
-          'http://localhost:3005/api/product-categories'
-        )
-        const categoriesData = await categoriesResponse.json()
-        if (
-          categoriesData.status === 'success' &&
-          Array.isArray(categoriesData.data.categories)
-        ) {
-          setCategories(categoriesData.data.categories)
-        }
-
-        // 取得顏色資料
-        const colorsResponse = await fetch(
-          'http://localhost:3005/api/share-colors'
-        )
-        const colorsData = await colorsResponse.json()
-        if (
-          colorsData.status === 'success' &&
-          Array.isArray(colorsData.data.colors)
-        ) {
-          // 設置顏色資料
-          setColors(colorsData.data.colors)
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-
-  // 篩選:大項
-  const icons = [
-    {
-      id: '1',
-      name: '全部',
-      icon: <BsFillGridFill />,
-    },
-    {
-      id: '2',
-      name: '鮮花類',
-      icon: <IoMdFlower />,
-    },
-    {
-      id: '3',
-      name: '植栽類',
-      icon: <BiSolidLeaf />,
-    },
-    {
-      id: '4',
-      name: '資材類',
-      icon: <FaToolbox />,
-    },
-  ]
-
-  const parentToCategoryMap = {
-    1: [5, 6, 7, 8, 9, 10],
-    2: [5, 6],
-    3: [7, 8],
-    4: [9, 10],
-  }
-
-  const handleCategoryChange = async (iconId) => {
-    setSelectedParentId(iconId)
-    // 根據 iconId 更新子項複選框狀態
-    const selectedCategories = parentToCategoryMap[iconId] || []
-    const newCheckedStates = { ...checkedStates }
-    for (const categoryId of Object.keys(checkedStates)) {
-      newCheckedStates[categoryId] = selectedCategories.includes(
-        parseInt(categoryId)
-      )
-    }
-    setCheckedStates(newCheckedStates)
-
-    try {
-      const response = await fetch(
-        `http://localhost:3005/api/products/filter?parent_id=${iconId}`
-      )
-      const data = await response.json()
-      if (data.status === 'success') {
-        setProducts(processProducts(data.data.products))
-      } else {
-        console.error('Failed to fetch products:', data.message)
-        setProducts([])
-      }
-    } catch (error) {
-      console.error('Error fetching products:', error)
-      setProducts([])
-    }
-  }
-
-  //當點擊全部時，勾選所有子項
-  const handleSelectAll = () => {
-    setSelectedParentId('1') // Assuming '1' is the ID for "All"
-    const allCategoryIds = [].concat(...Object.values(parentToCategoryMap))
-    const uniqueIds = [...new Set(allCategoryIds)] // Remove duplicate IDs
-
-    const newCheckedStates = {}
-    uniqueIds.forEach((id) => {
-      newCheckedStates[id] = true
-    })
-    setCheckedStates(newCheckedStates)
-
-    // Fetch all products
-    fetchAllProducts()
-  }
-  const fetchAllProducts = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:3005/api/products/filter?parent_id=1'
-      )
-      const data = await response.json()
-      if (data.status === 'success') {
-        setProducts(processProducts(data.data.products))
-      } else {
-        console.error('Failed to fetch all products:', data.message)
-        setProducts([])
-      }
-    } catch (error) {
-      console.error('Error fetching all products:', error)
-      setProducts([])
-    }
-  }
-  // 篩選: 大項分類 end
-
-  // 篩選: 子項分類 start
-  useEffect(() => {
-    const initialStates = {}
-    categories.forEach((category) => {
-      if (category.parent_id !== 0) {
-        initialStates[category.id] = false // 所有覆選框的選中狀態為未選中
-      }
-    })
-    setCheckedStates(initialStates)
-  }, [categories])
-
-  // 處理複選框選中後狀態改變
-  const handleCheckboxChange = (categoryId) => {
-    setCheckedStates((prevStates) => ({
-      ...prevStates,
-      [categoryId]: !prevStates[categoryId], // 切換選中狀態
-    }))
-  }
-  // 篩選: 子項分類 end
-
-  // 找資料夾再找照片
-  // 定義資料夾映射表
-  // 映射表示在兩個不同的資料之間建立對應關係，通常是以一個資料集合中的值對應到另一個資料集合中的值。
-  // 這裡的資料夾映射將產品類別對應到相應的資料夾路徑，以便在前端呈現時可以根據產品類別來動態地載入相應的圖片資源。
-  const folderMappings = [
-    {
-      category: '全部',
-      directory: [
-        'flowers',
-        'flower-pots',
-        'foliage',
-        'plant-pots',
-        'materials',
-        'tools',
-      ],
-    },
-    { category: '鮮花', directory: 'flowers' },
-    { category: '花盆栽', directory: 'flower-pots' },
-    { category: '葉材', directory: 'foliage' },
-    { category: '植盆栽', directory: 'plant-pots' },
-    { category: '器具', directory: 'tools' },
-    { category: '材料', directory: 'materials' },
-  ]
-
-  // 處理商品函數
-  function processProducts(productsArray) {
-    return productsArray.map((product) => {
-      // 取得主要圖片
-      const mainImage =
-        (product.images &&
-          product.images.find((image) => image.is_thumbnail)) ||
-        (product.images && product.images[0])
-      // 初始化資料夾為全部類別的資料夾列表
-      let folder =
-        folderMappings.find((mapping) => mapping.category === '全部')
-          ?.directory || []
-      // 根據產品類別查找對應的資料夾
-      // 這裡是對應Product_Category的資料表，因此後端有作關聯表格
-      const mapping = folderMappings.find(
-        (mapping) => mapping.category === product.category.name
-      )
-      // 如果找到對應的資料夾映射，則將資料夾設為映射的目錄，否則保持不變
-      if (mapping) {
-        folder = Array.isArray(mapping.directory)
-          ? mapping.directory
-          : [mapping.directory]
-      }
-      // 返回處理後的產品資料，包括資料夾和主要圖片
-      return {
-        ...product,
-        folder: folder,
-        mainImage: mainImage
-          ? mainImage.url
-          : '/assets/shop/products/flowers/pink_Gladiola_0.jpg', // 若無取得主圖，則設預設圖片
-      }
-    })
-  }
-
-  // carousel start
+  // Carousel State
   const [page, setPage] = useState(0)
   const banners = [
     {
@@ -297,20 +74,8 @@ export default function Shop() {
     const timer = setTimeout(nextPage, 3000)
     return () => clearInterval(timer)
   }, [page])
-  // carousel end
 
-  // select list start
-  const selectList = [
-    { value: 'hot', label: '最熱門' },
-    { value: 'new', label: '最新' },
-    { value: 'highToLow', label: '價格由高到低' },
-    { value: 'lowToHigh', label: '價格由低到高' },
-  ]
-  // select list end
-  // toaster start
-  const notify = () => toast.success('已成功加入購物車')
-  // toaster end
-  // RWD search & filter modal start
+  // RWD Sorting and Filtering Modal State
   const {
     isOpen: isMagnifierOpen,
     onOpen: onMagnifierOpen,
@@ -321,10 +86,192 @@ export default function Shop() {
     onOpen: onFilterOpen,
     onOpenChange: onFilterOpenChange,
   } = useDisclosure()
-  const [modalPlacement, setModalPlacement] = React.useState('bottom-center')
-  // RWD search & filter modal end
+  const [modalPlacement, setModalPlacement] = useState('bottom-center')
 
-  const [isSelected, setIsSelected] = React.useState(false)
+  // Product categories and icon setup
+  const icons = [
+    { id: '1', name: '全部', icon: <BsFillGridFill /> },
+    { id: '2', name: '鮮花類', icon: <IoMdFlower /> },
+    { id: '3', name: '植栽類', icon: <BiSolidLeaf /> },
+    { id: '4', name: '資材類', icon: <FaToolbox /> },
+  ]
+  const parentToCategoryMap = {
+    1: [5, 6, 7, 8, 9, 10],
+    2: [5, 6],
+    3: [7, 8],
+    4: [9, 10],
+  }
+  const folderMappings = [
+    {
+      category: '全部',
+      directory: [
+        'flowers',
+        'flower-pots',
+        'foliage',
+        'plant-pots',
+        'materials',
+        'tools',
+      ],
+    },
+    { category: '鮮花', directory: 'flowers' },
+    { category: '花盆栽', directory: 'flower-pots' },
+    { category: '葉材', directory: 'foliage' },
+    { category: '植盆栽', directory: 'plant-pots' },
+    { category: '器具', directory: 'tools' },
+    { category: '材料', directory: 'materials' },
+  ]
+
+
+  // 獲取全部、顏色資料
+  useEffect(() => {
+    fetchSubCategories()
+    fetchColors()
+    fetchData() // Existing call to fetch other data
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/products')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setColors(data.data.colors) // Assuming your API returns an array of colors in data.data.colors
+      } else {
+        console.error('Failed to fetch colors:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching category data:', error)
+    }
+  }
+
+  // const fetchCategories = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       'http://localhost:3005/api/product-categories'
+  //     )
+  //     const data = await response.json()
+  //     if (data.status === 'success') {
+  //       setColors(data.data.colors) // Assuming your API returns an array of colors in data.data.colors
+  //     } else {
+  //       console.error('Failed to fetch colors:', data.message)
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching category data:', error)
+  //   }
+  // }
+  const fetchSubCategories = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3005/api/product-categories/subcategories'
+      )
+      const data = await response.json()
+      if (data.status === 'success') {
+        setSubCategories(data.data.subCategories)
+      } else {
+        console.error('Failed to fetch subcategories:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching subcategory data:', error)
+    }
+  }
+
+  const fetchColors = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/share-colors')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setColors(data.data.colors) // Assuming your API returns an array of colors in data.data.colors
+      } else {
+        console.error('Failed to fetch colors:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching color data:', error)
+    }
+  }
+
+  // 處理排序
+  const handleCategoryChange = async (iconId) => {
+    setSelectedParentId(iconId)
+
+    // Fetch filtered products as per selected category
+    try {
+      const response = await fetch(
+        `http://localhost:3005/api/products/filter?parent_id=${iconId}`
+      )
+      const data = await response.json()
+      if (data.status === 'success') {
+        setProducts(processProducts(data.data.products))
+      } else {
+        console.error('Failed to fetch products:', data.message)
+        setProducts([])
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error)
+      setProducts([])
+    }
+  }
+
+  const handleSelectAll = () => {
+    setSelectedParentId('1') // Assuming '1' is the ID for '全部'
+    const allCategoryIds = [].concat(...Object.values(parentToCategoryMap))
+
+    const newCheckedStates = {}
+    const newDisabledStates = {}
+
+    // Set all checkboxes to be unchecked and disabled
+    allCategoryIds.forEach((id) => {
+      newCheckedStates[id] = false // Ensure checkboxes are unchecked
+      newDisabledStates[id] = true // Keep them disabled if needed
+    })
+
+    fetchAllProducts() // Assuming you want to fetch all products when all are selected
+  }
+
+  const fetchAllProducts = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3005/api/products/filter?parent_id=1'
+      )
+      const data = await response.json()
+      if (data.status === 'success') {
+        setProducts(processProducts(data.data.products))
+      } else {
+        console.error('Failed to fetch all products:', data.message)
+        setProducts([])
+      }
+    } catch (error) {
+      console.error('Error fetching all products:', error)
+      setProducts([])
+    }
+  }
+
+  const processProducts = (productsArray) =>
+    productsArray.map((product) => {
+      const mainImage =
+        (product.images &&
+          product.images.find((image) => image.is_thumbnail)) ||
+        (product.images && product.images[0])
+      let folder =
+        folderMappings.find((mapping) => mapping.category === '全部')
+          ?.directory || []
+      const mapping = folderMappings.find(
+        (mapping) => mapping.category === product.category.name
+      )
+      if (mapping) {
+        folder = Array.isArray(mapping.directory)
+          ? mapping.directory
+          : [mapping.directory]
+      }
+      return {
+        ...product,
+        folder: folder,
+        mainImage: mainImage
+          ? mainImage.url
+          : '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
+      }
+    })
+
+  const notify = () => toast.success('已成功加入購物車')
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -429,11 +376,11 @@ export default function Shop() {
                       isEnabled: false,
                     }}
                   >
-                    {selectList.map((item, index) => (
+                    {/* {selectList.map((item, index) => (
                       <SelectItem key={item.label} value={item.label}>
                         {item.label}
                       </SelectItem>
-                    ))}
+                    ))} */}
                   </Select>
 
                   {/* RWD start */}
@@ -515,14 +462,14 @@ export default function Shop() {
                                 </p>
                                 <div className="my-5">
                                   <RadioGroup>
-                                    {selectList.map((item, index) => (
+                                    {/* {selectList.map((item, index) => (
                                       <Radio
                                         key={item.value}
                                         value={item.value}
                                       >
                                         {item.label}
                                       </Radio>
-                                    ))}
+                                    ))} */}
                                   </RadioGroup>
                                 </div>
                               </div>
@@ -534,23 +481,17 @@ export default function Shop() {
                                   <p className="text-tertiary-black my-2">
                                     子類
                                   </p>
-                                  <div className="space-y-0.5 grid grid-cols-2">
-                                    {categories
-                                      .filter(
-                                        (category) => category.parent_id !== 0
-                                      )
-                                      .map((category) => (
-                                        <Checkbox
-                                          key={category.id}
-                                          className="mr-2"
-                                          isSelected={isSelected}
-                                          onValueChange={setIsSelected}
-                                        >
-                                          <p className="text-tertiary-black">
-                                            {category.name}
-                                          </p>
-                                        </Checkbox>
-                                      ))}
+                                  <div className="space-y-2 grid grid-cols-2">
+                                    {subCategories.map((subCategory) => (
+                                      <Checkbox
+                                        key={subCategory.id}
+                                        className="mr-2"
+                                      >
+                                        <p className="text-tertiary-black">
+                                          {subCategory.name}
+                                        </p>
+                                      </Checkbox>
+                                    ))}
                                   </div>
                                 </div>
                                 <hr />
@@ -578,22 +519,23 @@ export default function Shop() {
                                     顏色
                                   </p>
                                   <div className="space-y-0.5 grid grid-cols-2">
-                                    {colors.map((color) => (
-                                      <Checkbox
-                                        key={color.id}
-                                        defaultSelected
-                                        radius="sm"
-                                        className="mr-2"
-                                      >
-                                        <div className="flex items-center">
-                                          <p className=" mr-2">{color.name}</p>
-                                          <div
-                                            className="h-4 w-4 rounded-full"
-                                            style={{ background: color.code }}
-                                          ></div>
-                                        </div>
-                                      </Checkbox>
-                                    ))}
+                                    {colors &&
+                                      colors.map((color) => (
+                                        <Checkbox
+                                          key={color.id}
+                                          defaultSelected
+                                          radius="sm"
+                                          className="mr-2"
+                                        >
+                                          <div className="flex items-center">
+                                            <p className="mr-2">{color.name}</p>
+                                            <div
+                                              className="h-4 w-4 rounded-full"
+                                              style={{ background: color.code }}
+                                            ></div>
+                                          </div>
+                                        </Checkbox>
+                                      ))}
                                   </div>
                                 </div>
                               </div>
@@ -640,18 +582,9 @@ export default function Shop() {
                     <div className="space-y-4">
                       <p className="text-lg text-tertiary-black">子類</p>
                       <div className="space-y-2 grid grid-cols-2">
-                        {categories
-                          .filter((category) => category.parent_id !== 0)
-                          .map((category) => (
-                            <Checkbox
-                              key={category.id}
-                              isSelected={checkedStates[category.id]}
-                              onValueChange={() =>
-                                handleCheckboxChange(category.id)
-                              }
-                              radius="sm"
-                              className="mr-2"
-                            >
+                        {categories &&
+                          categories.map((category) => (
+                            <Checkbox key={category.id} className="mr-2">
                               <p className="text-tertiary-black">
                                 {category.name}
                               </p>
@@ -680,22 +613,23 @@ export default function Shop() {
                     <div className="space-y-4">
                       <p className="text-lg text-tertiary-black">顏色</p>
                       <div className="space-y-2 grid grid-cols-2">
-                        {colors.map((color) => (
-                          <Checkbox
-                            key={color.id}
-                            defaultSelected
-                            radius="sm"
-                            className="mr-2"
-                          >
-                            <div className="flex items-center">
-                              <p className=" mr-2">{color.name}</p>
-                              <div
-                                className="h-4 w-4 rounded-full"
-                                style={{ background: color.code }}
-                              ></div>
-                            </div>
-                          </Checkbox>
-                        ))}
+                        {colors &&
+                          colors.map((color) => (
+                            <Checkbox
+                              key={color.id}
+                              defaultSelected
+                              radius="sm"
+                              className="mr-2"
+                            >
+                              <div className="flex items-center">
+                                <p className="mr-2">{color.name}</p>
+                                <div
+                                  className="h-4 w-4 rounded-full"
+                                  style={{ background: color.code }}
+                                ></div>
+                              </div>
+                            </Checkbox>
+                          ))}
                       </div>
                     </div>
                     <div className="flex justify-center pb-8">
