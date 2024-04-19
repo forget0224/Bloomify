@@ -65,7 +65,7 @@ export default function Sidebar() {
         <div className="flex flex-row gap-2 items-center">
           <Image
             key={''}
-            src="/assets/shop/products/pink_Gladiola_0.jpg"
+            src="/assets/shop/products/flowers/pink_Gladiola_0.jpg"
             alt=""
             className="w-8 h-8 md:w-8 md:h-8 rounded-full"
             width={40}
