@@ -2,6 +2,8 @@ import React from 'react'
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
 import { CiPhone } from 'react-icons/ci'
 import { CiLocationOn } from 'react-icons/ci'
+import { BsChevronRight } from 'react-icons/bs'
+import { Link } from '@nextui-org/react'
 import Subtitle from '../common/subtitle'
 
 export default function CourseMap({ store }) {
@@ -18,6 +20,7 @@ export default function CourseMap({ store }) {
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.007875795804!2d121.5404192760508!3d25.03380678829804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1711707763962!5m2!1szh-TW!2stw"
         ></iframe>
       </CardBody>
+
       <CardFooter className="flex flex-col gap-1 pb-2 pt-2 items-start">
         <h4 className="text-xl">{store.store_name}</h4>
         <div className="flex flex-row">
@@ -28,6 +31,14 @@ export default function CourseMap({ store }) {
           <CiLocationOn className="w-6 h-6 mr-1" />
           <p className="text-l uppercase">{store.store_address}</p>
         </div>
+        <Link href={`/course/search?store_id=${store.store_id}`}>
+          <div className="flex flex-row items-center">
+            <p className="text-l uppercase hover:underline">
+              查看此商家開設課程
+            </p>
+            <BsChevronRight />
+          </div>
+        </Link>
       </CardFooter>
     </Card>
   )
