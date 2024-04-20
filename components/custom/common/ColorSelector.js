@@ -225,6 +225,87 @@
 // }
 
 // export default ColorSelector
+
+// 好的--------------------------------------------------
+// import React, { useState } from 'react'
+// import CustomCheckbox from './CustomCheckbox'
+// import { useColors } from '@/hooks/use-color'
+// import { useFlower } from '@/hooks/use-flowerSelector'
+// import { CiCircleCheck, CiCircleChevLeft } from 'react-icons/ci'
+
+// const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
+//   const [selectedColor, setSelectedColor] = useState(null)
+//   const colors = useColors()
+//   // const { setImageInfo, } = useFlower()
+//   const { addImageToCanvas, commitImage, removeImage } = useFlower()
+//   // const handleSelectFlower = (attribute) => {
+//   //   setSelectedColor(attribute.color)
+//   //   setImageInfo({
+//   //     url: attribute.url,
+//   //     color: attribute.color,
+//   //     name: categoryName,
+//   //   })
+//   //   onConfirm(attribute.color)
+//   //   // onConfirm() // 可以進一步處理確認後的行為
+//   // }
+
+//   const handleSelectFlower = (attribute) => {
+//     setSelectedColor(attribute.color)
+//     addImageToCanvas(attribute.url, {
+//       name: categoryName,
+//       color: attribute.color,
+//     })
+//   }
+
+//   const handleConfirm = () => {
+//     commitImage()
+//     onConfirm(selectedColor)
+//   }
+
+//   const handleCancel = () => {
+//     removeImage()
+//     onConfirm(null)
+//   }
+
+//   return (
+//     <div className="text-tertiary-black h-full flex flex-col items-center relative">
+//       <div className="border-b-1 w-full">
+//         <h1 className="sm:text-2xl text-lg py-2 text-center">{categoryName}</h1>
+//       </div>
+
+//       <div className="h-full w-[300px]">
+//         <div className="grid grid-cols-2 justify-items-center gap-2 pb-10">
+//           {itemAttribute.map((attribute, index) => (
+//             <div
+//               key={index}
+//               className="flex flex-col items-center cursor-pointer"
+//               onClick={() => handleSelectFlower(attribute)}
+//             >
+//               <CustomCheckbox
+//                 value={attribute.color}
+//                 bgColor={colors.find((c) => c.name === attribute.color)?.code}
+//                 width={'sm:w-12 w-8'}
+//                 height={'sm:h-12 h-8'}
+//                 checked={selectedColor === attribute.color}
+//                 onChange={() => setSelectedColor(attribute.color)}
+//                 isMultiple={false}
+//               />
+//               <p className="text-sm">{attribute.color}</p>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+
+//       <div className="grid grid-cols-2 w-[300px] justify-items-center gap-2 text-tertiary-black text-4xl fixed bottom-0 border-t-1 bg-white sm:border-none">
+//         <CiCircleChevLeft className="cursor-pointer" onClick={handleCancel} />
+//         <CiCircleCheck className="cursor-pointer" onClick={handleConfirm} />
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default ColorSelector
+
 import React, { useState } from 'react'
 import CustomCheckbox from './CustomCheckbox'
 import { useColors } from '@/hooks/use-color'
@@ -234,17 +315,23 @@ import { CiCircleCheck, CiCircleChevLeft } from 'react-icons/ci'
 const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   const [selectedColor, setSelectedColor] = useState(null)
   const colors = useColors()
-  const { setImageInfo } = useFlower()
+  const { addImageToCanvas, clearCanvas } = useFlower()
 
   const handleSelectFlower = (attribute) => {
     setSelectedColor(attribute.color)
-    setImageInfo({
-      url: attribute.url,
+    addImageToCanvas(attribute.url, {
       color: attribute.color,
       name: categoryName,
     })
-    onConfirm(attribute.color)
-    // onConfirm() // 可以進一步處理確認後的行為
+  }
+
+  const handleConfirm = () => {
+    onConfirm(selectedColor)
+  }
+
+  const handleCancel = () => {
+    clearCanvas()
+    onConfirm(null)
   }
 
   return (
@@ -252,7 +339,6 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
       <div className="border-b-1 w-full">
         <h1 className="sm:text-2xl text-lg py-2 text-center">{categoryName}</h1>
       </div>
-
       <div className="h-full w-[300px]">
         <div className="grid grid-cols-2 justify-items-center gap-2 pb-10">
           {itemAttribute.map((attribute, index) => (
@@ -275,16 +361,9 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
           ))}
         </div>
       </div>
-
       <div className="grid grid-cols-2 w-[300px] justify-items-center gap-2 text-tertiary-black text-4xl fixed bottom-0 border-t-1 bg-white sm:border-none">
-        <CiCircleChevLeft
-          className="cursor-pointer"
-          onClick={() => onConfirm(null)}
-        />
-        <CiCircleCheck
-          className="cursor-pointer"
-          onClick={() => onConfirm(selectedColor)}
-        />
+        <CiCircleChevLeft className="cursor-pointer" onClick={handleCancel} />
+        <CiCircleCheck className="cursor-pointer" onClick={handleConfirm} />
       </div>
     </div>
   )

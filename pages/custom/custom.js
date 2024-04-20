@@ -1,11 +1,7 @@
-import { useState, useEffect, cloneElement } from 'react'
-import logo from '@/assets/singleLogo.svg'
-import Image from 'next/image'
-import { CiUndo } from 'react-icons/ci'
-import { MyButton } from '@/components/btn/mybutton'
+import { useState, useEffect } from 'react'
+
 import BottomSheetButton from '@/components/custom/custom/BottomSheetButton'
 import 'react-spring-bottom-sheet/dist/style.css'
-// import items from '@/components/custom/custom/items'
 import MainFlowerComponent from '@/components/custom/custom/MainFlowerComponent'
 import AccentFlowerComponent from '@/components/custom/custom/AccentFlowerComponent'
 import LeafComponent from '@/components/custom/custom/LeafComponent'
@@ -14,14 +10,13 @@ import CardComponent from '@/components/custom/custom/CardComponent'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { IoLayersOutline } from 'react-icons/io5'
 import ShareModal from '@/components/custom/common/Modal'
-import Link from 'next/link'
 import WorkingArea from '@/components/custom/custom/WorkingArea'
 import { ColorProvider } from '@/hooks/use-color'
 import { RoleProvider } from '@/hooks/use-role'
 import { OccProvider } from '@/hooks/use-occ'
 import { FlowerProvider } from '@/hooks/use-flowerSelector'
 import { StoreProvider } from '@/hooks/use-store'
-// import { useStore } from '@/hooks/use-store'
+import CustomNav from '@/components/custom/custom/customNav'
 import {
   Popover,
   PopoverTrigger,
@@ -35,7 +30,6 @@ import {
   PiGiftLight,
   PiPencilLineLight,
 } from 'react-icons/pi'
-// import { IoLayersOutline } from 'react-icons/io5'
 import FlowerContent from '@/components/custom/custom/FlowerContent'
 import LeafContent from '@/components/custom/custom/LeafContent'
 import PackageContent from '@/components/custom/custom/PackageContent'
@@ -47,7 +41,7 @@ export default function Custom() {
   const [currentPage, setCurrentPage] = useState('main')
   const [storeData, setStoreData] = useState(null)
   const [currentComponentIndex, setCurrentComponentIndex] = useState(0)
-  const [currentItemIndex, setCurrentItemIndex] = useState(0)
+  // const [currentItemIndex, setCurrentItemIndex] = useState(0)
   const [items, setItems] = useState([])
   // const storeData = useStore()
   const components = [
@@ -207,38 +201,7 @@ export default function Custom() {
                 {selectedStore ? (
                   <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
                     <div className="flex flex-col sm:w-8/12 h-full ">
-                      <nav className="w-full h-14 flex flex-row items-center px-5 gap-4 sm:h-16">
-                        <div className="text-center w-10 sm:h-16 cursor-pointer">
-                          <Link href="/">
-                            <Image
-                              className="w-full h-full"
-                              src={logo}
-                              alt=""
-                            />
-                          </Link>
-                        </div>
-                        <div className="w-full h-full flex flex-row justify-between items-center">
-                          <div className="text-xl text-tertiary-black flex flex-col items-center mt-2 sm:mt-1 sm:text-3xl cursor-pointer">
-                            <CiUndo />
-                            <p className="text-xs">reset</p>
-                          </div>
-                          <div className="sm:hidden ">
-                            <Link href="/cart">
-                              <MyButton size="xs" color="secondary200">
-                                完成
-                              </MyButton>
-                            </Link>
-                          </div>
-                          <div className="hidden sm:block">
-                            <Link href="/cart">
-                              <MyButton size="md" color="secondary200">
-                                完成
-                              </MyButton>
-                            </Link>
-                          </div>
-                        </div>
-                      </nav>
-
+                      <CustomNav />
                       <main className="flex-1 w-full h-auto relative">
                         {/* 圖層的區塊 */}
                         <div className="hidden sm:block">
