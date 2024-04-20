@@ -32,35 +32,32 @@ const DraggableBar = ({
         dragConstraints={{ top: 0, bottom: 0 }}
         className="flex flex-col justify-around items-center h-full gap-2"
       >
-        {/* {items.map((item) => (
-          <div
-            key={item.id}
-            className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
-            onClick={() => onItemSelect(item.attribute)}
-          >
+        {items ? (
+          items.map((item, index) => (
             <div
-              style={{ backgroundImage: `url(${item.category_url})` }}
-              className="bg-cover bg-center aspect-square w-[150px] rounded-xl object-cover cursor-pointer"
-            ></div>
-            <p className="text-center">{item.category_name}</p>
+              key={index}
+              className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
+              onClick={() => {
+                console.log(
+                  'Item clicked:',
+                  item.attributes,
+                  item.category_name
+                ) // 添加這個來確認點擊事件
+                onItemSelect(item.attributes, item.category_name)
+              }}
+            >
+              <div
+                style={{ backgroundImage: `url(${item.category_url})` }}
+                className="bg-cover bg-center aspect-square w-[150px] rounded-xl object-cover cursor-pointer"
+              ></div>
+              <p className="text-center">{item.category_name}</p>
+            </div>
+          ))
+        ) : (
+          <div className="w-full ">
+            <p> 目前店家尚未上架商品</p>
           </div>
-        ))} */}
-        {items.map((item, index) => (
-          <div
-            key={index}
-            className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
-            onClick={() => {
-              console.log('Item clicked:', item.attributes, item.category_name) // 添加這個來確認點擊事件
-              onItemSelect(item.attributes, item.category_name)
-            }}
-          >
-            <div
-              style={{ backgroundImage: `url(${item.category_url})` }}
-              className="bg-cover bg-center aspect-square w-[150px] rounded-xl object-cover cursor-pointer"
-            ></div>
-            <p className="text-center">{item.category_name}</p>
-          </div>
-        ))}
+        )}
       </motion.div>
     </div>
   )

@@ -375,7 +375,7 @@
 import React, { useState } from 'react'
 import CustomCheckbox from './CustomCheckbox'
 import { useColors } from '@/hooks/use-color'
-import { useFlower } from '@/hooks/use-flowerSelector'
+import { useFlower } from '@/hooks/use-flower'
 import { CiCircleCheck, CiCircleChevLeft } from 'react-icons/ci'
 
 const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {

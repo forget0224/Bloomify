@@ -14,7 +14,7 @@ import WorkingArea from '@/components/custom/custom/WorkingArea'
 import { ColorProvider } from '@/hooks/use-color'
 import { RoleProvider } from '@/hooks/use-role'
 import { OccProvider } from '@/hooks/use-occ'
-import { FlowerProvider } from '@/hooks/use-flowerSelector'
+import { FlowerProvider } from '@/hooks/use-flower'
 import { StoreProvider } from '@/hooks/use-store'
 import CustomNav from '@/components/custom/custom/customNav'
 import {
