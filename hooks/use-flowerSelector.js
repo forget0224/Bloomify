@@ -111,9 +111,35 @@ export const FlowerProvider = ({ children }) => {
   const canvasRef = useRef(null)
   const tempObjectRef = useRef(null) // 用於暫存當前預覽的圖片
 
-  // 添加圖片至畫布並預覽
+  // // 添加圖片至畫布並預覽
+  // const addImageToCanvas = useCallback((url, metadata) => {
+  //   if (!canvasRef.current) return
+  //   const canvas = canvasRef.current
+
+  //   // 移除當前預覽的圖片
+  //   if (tempObjectRef.current) {
+  //     canvas.remove(tempObjectRef.current)
+  //   }
+
+  //   new fabric.Image.fromURL(url, (img) => {
+  //     img.set({
+  //       left: 100,
+  //       top: 100,
+  //       scaleX: 0.5,
+  //       scaleY: 0.5,
+  //       ...metadata,
+  //     })
+  //     canvas.add(img)
+  //     canvas.renderAll()
+  //     tempObjectRef.current = img // 更新暫存的當前預覽圖片
+  //   })
+  // }, [])
   const addImageToCanvas = useCallback((url, metadata) => {
-    if (!canvasRef.current) return
+    if (!canvasRef.current) {
+      console.error('Canvas is not initialized.')
+      return
+    }
+
     const canvas = canvasRef.current
 
     // 移除當前預覽的圖片
@@ -121,7 +147,13 @@ export const FlowerProvider = ({ children }) => {
       canvas.remove(tempObjectRef.current)
     }
 
+    console.log(`Loading image from URL: ${url}`)
     new fabric.Image.fromURL(url, (img) => {
+      if (!img) {
+        console.error('Failed to load image')
+        return
+      }
+
       img.set({
         left: 100,
         top: 100,
@@ -134,7 +166,6 @@ export const FlowerProvider = ({ children }) => {
       tempObjectRef.current = img // 更新暫存的當前預覽圖片
     })
   }, [])
-
   // 確認當前預覽圖片，並將其永久保存至畫布
   const commitImageToCanvas = useCallback(() => {
     tempObjectRef.current = null // 清空暫存

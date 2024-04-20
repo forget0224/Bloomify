@@ -220,7 +220,16 @@ export default function Custom() {
                           </Popover>
                         </div>
 
-                        <div className="bg-secondary-200 w-[400px] h-[400px] m-auto">
+                        <div
+                          className="bg-secondary-200 sm:w-[500px] sm:h-[550px] m-auto "
+                          style={{
+                            backgroundImage:
+                              'url("/custom/custom/canvasBg.png")',
+                            backgroundSize: 'contain',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                          }}
+                        >
                           <WorkingArea />
                         </div>
                       </main>
