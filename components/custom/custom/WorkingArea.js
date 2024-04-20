@@ -99,19 +99,20 @@
 // }
 
 // export default WorkingArea
-
 import React from 'react'
-import { useFlower } from '@/hooks/use-flowerSelector'
 import { FabricJSCanvas, useFabricJSEditor } from 'fabricjs-react'
+import { useFlower } from '@/hooks/use-flowerSelector'
 
 const WorkingArea = () => {
   const { editor, onReady } = useFabricJSEditor()
-  const { setCanvas } = useFlower()
+  const { canvasRef } = useFlower()
 
+  // 畫布就緒時設定其參照
   const handleCanvasReady = (canvas) => {
-    canvas.setWidth(500)
-    canvas.setHeight(500)
-    setCanvas(canvas) // Save the canvas in the context
+    canvas.setWidth(400)
+    canvas.setHeight(400)
+    canvasRef.current = canvas // 將畫布參照儲存至 hook
+    onReady(canvas)
   }
 
   return (
