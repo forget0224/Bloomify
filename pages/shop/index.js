@@ -26,7 +26,7 @@ import ShopSlider from '../../components/shop/shop-slider.js'
 import DefaultLayout from '@/components/layout/default-layout'
 import Subtitle from '@/components/common/subtitle.js'
 import { MyButton } from '@/components/btn/mybutton'
-import SearchBtn from '@/components/course/search'
+import SearchBtn from '@/components/shop/search'
 import { BsFillGridFill, BsFillStarFill, BsHeart } from 'react-icons/bs'
 import { PiShoppingCartSimpleFill } from 'react-icons/pi'
 import { BiSolidLeaf } from 'react-icons/bi'
@@ -198,6 +198,21 @@ export default function Shop() {
     )
   }
 
+  // 搜尋關鍵字
+  // const baseSearchPath = '/api/products/filter'
+  const baseSearchPath = 'http://localhost:3005/api/products/filter'
+  const handleSearch = (searchTerm) => {
+    // 在这里调用后端 API
+    fetch(`${baseSearchPath}?keyword=${encodeURIComponent(searchTerm)}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setProducts(data.data.products)
+      })
+      .catch((error) => {
+        console.error('Error fetching products:', error)
+      })
+  }
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -280,7 +295,7 @@ export default function Shop() {
               <div className="w-full py-4 flex justify-between">
                 {/* searchbar */}
                 <div className="hidden sm:block sm:w-3/12">
-                  <SearchBtn />
+                  <SearchBtn onSearch={handleSearch} />
                 </div>
                 {/* filter */}
                 {/* RWD start*/}
@@ -332,7 +347,7 @@ export default function Shop() {
                             </ModalHeader>
                             <ModalBody>
                               <div className="sm:hidden block">
-                                <SearchBtn />
+                                <SearchBtn onSearch={handleSearch} />
                               </div>
                               <div className="flex space-x-2">
                                 <p className="text-primary">HOT</p>
