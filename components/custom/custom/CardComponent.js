@@ -2,11 +2,8 @@ import React, { useState } from 'react'
 import ColorSelector from '../common/ColorSelector'
 import DraggableBar from './DraggableBar'
 import ChangeComponent from './ChangeComponent'
-import { useFlower } from '@/hooks/use-flowerSelector'
-// import {editor}
 const CardComponent = ({ onNext, onPrev, items }) => {
   const [selectedItem, setSelectedItem] = useState(null)
-  const { editor } = useFlower()
   const handleSelectItem = (attributes, categoryName) => {
     setSelectedItem({ attributes, categoryName })
   }

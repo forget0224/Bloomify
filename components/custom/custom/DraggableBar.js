@@ -45,9 +45,9 @@ const DraggableBar = ({
             <p className="text-center">{item.category_name}</p>
           </div>
         ))} */}
-        {items.map((item) => (
+        {items.map((item, index) => (
           <div
-            key={item.id}
+            key={index}
             className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
             onClick={() => {
               console.log('Item clicked:', item.attributes, item.category_name) // 添加這個來確認點擊事件

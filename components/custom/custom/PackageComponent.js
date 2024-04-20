@@ -1,26 +1,23 @@
 import React, { useState } from 'react'
-import { motion, useMotionValue } from 'framer-motion'
 import ColorSelector from '../common/ColorSelector'
-import Image from 'next/image'
+// import Image from 'next/image'
 import DraggableBar from './DraggableBar'
-import { BsSignStopLights } from 'react-icons/bs'
-import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci'
+// import { BsSignStopLights } from 'react-icons/bs'
+// import { CiCircleChevLeft, CiCircleChevRight } from 'react-icons/ci'
 import ChangeComponent from './ChangeComponent'
 const PackageComponent = ({ onNext, onPrev, items }) => {
-  const [selectedFlower, setSelectedFlower] = useState(null)
-
-  const handleSelectColor = (color) => {
-    console.log(`選擇的顏色是: ${color}`)
-    setSelectedFlower(null) // 返回到花朵選擇
+  const [selectedItem, setSelectedItem] = useState(null)
+  const handleSelectItem = (attributes, categoryName) => {
+    setSelectedItem({ attributes, categoryName })
   }
 
   return (
     <>
-      {selectedFlower ? (
+      {selectedItem ? (
         <ColorSelector
-          itemName={selectedFlower.name}
-          itemColors={selectedFlower.colors}
-          onConfirm={handleSelectColor}
+          itemAttribute={selectedItem.attributes}
+          categoryName={selectedItem.categoryName}
+          onConfirm={() => setSelectedItem(null)}
         />
       ) : (
         <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center">
@@ -33,7 +30,7 @@ const PackageComponent = ({ onNext, onPrev, items }) => {
           <div className="w-full h-full relative">
             <DraggableBar
               items={items}
-              onItemSelect={setSelectedFlower}
+              onItemSelect={handleSelectItem}
               itemHeight={35}
               dragBuffer={50}
               className="w-[150px] h-[580px] mx-auto pt-2"

@@ -230,21 +230,10 @@ import CustomCheckbox from './CustomCheckbox'
 import { useColors } from '@/hooks/use-color'
 import { useFlower } from '@/hooks/use-flowerSelector'
 import { CiCircleCheck, CiCircleChevLeft } from 'react-icons/ci'
-// import {fabric}
+
 const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   const [selectedColor, setSelectedColor] = useState(null)
   const colors = useColors()
-
-  // const handleSelectFlower = (attribute) => {
-  //   setSelectedColor(attribute.color)
-  //   // 使用 addImageToCanvas 函數來將選擇的花朵圖片加到畫布上
-  //   addImageToCanvas(attribute.url, {
-  //     name: attribute.color,
-  //     color: attribute.color,
-  //   })
-  //   onConfirm(attribute.color)
-  // }
-
   const { setImageInfo } = useFlower()
 
   const handleSelectFlower = (attribute) => {
