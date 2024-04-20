@@ -199,10 +199,9 @@ export default function Shop() {
   }
 
   // 搜尋關鍵字
-  // const baseSearchPath = '/api/products/filter'
+  // const [searchTerm, setSearchTerm] = useState('');
   const baseSearchPath = 'http://localhost:3005/api/products/filter'
   const handleSearch = (searchTerm) => {
-    // 在这里调用后端 API
     fetch(`${baseSearchPath}?keyword=${encodeURIComponent(searchTerm)}`)
       .then((response) => response.json())
       .then((data) => {
@@ -210,6 +209,38 @@ export default function Shop() {
       })
       .catch((error) => {
         console.error('Error fetching products:', error)
+      })
+  }
+
+  // 排序
+  const sortOptions = {
+    由新到舊: 'newest',
+    由舊到新: 'oldest',
+    價格由高到低: 'expensive',
+    價格由低到高: 'cheapest',
+  }
+  const handleSortChange = (selectedLabel) => {
+    const selectedSortKey = sortOptions[selectedLabel]
+    if (selectedSortKey) {
+      // Fetch products based on the selected sort key
+      fetchSortedProducts(`sort=${selectedSortKey}`)
+    } else {
+      console.error('Selected sort key is undefined.')
+    }
+  }
+  // Function to fetch sorted products
+  const fetchSortedProducts = (sortQuery) => {
+    const url = `http://localhost:3005/api/products/filter?${sortQuery}`
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          // Update the state with the sorted products
+          setProducts(data.data.products)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching sorted products:', error)
       })
   }
 
@@ -310,17 +341,17 @@ export default function Shop() {
                   <Select
                     aria-label="排序"
                     placeholder="排序"
-                    defaultSelectedKeys={['']}
                     className="hidden sm:block sm:max-w-xs sm:w-48"
-                    scrollShadowProps={{
-                      isEnabled: false,
-                    }}
+                    onChange={(e) => {
+                      console.log('Selected value: ', e.target.value) // For debugging
+                      handleSortChange(e.target.value)
+                    }} // handle the change
                   >
-                    {/* {selectList.map((item, index) => (
-                      <SelectItem key={item.label} value={item.label}>
-                        {item.label}
+                    {Object.keys(sortOptions).map((label) => (
+                      <SelectItem key={label} value={sortOptions[label]}>
+                        {label}
                       </SelectItem>
-                    ))} */}
+                    ))}
                   </Select>
 
                   {/* RWD start */}
@@ -401,16 +432,13 @@ export default function Shop() {
                                   排序
                                 </p>
                                 <div className="my-5">
-                                  <RadioGroup>
-                                    {/* {selectList.map((item, index) => (
-                                      <Radio
-                                        key={item.value}
-                                        value={item.value}
-                                      >
+                                  {/* <RadioGroup>
+                                    {selectList.map((item, index) => (
+                                      <Radio key={index} value={item}>
                                         {item.label}
                                       </Radio>
-                                    ))} */}
-                                  </RadioGroup>
+                                    ))}
+                                  </RadioGroup> */}
                                 </div>
                               </div>
                               <div>
