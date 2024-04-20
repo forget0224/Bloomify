@@ -8,6 +8,7 @@ export default function SearchBtn({ onSearch }) {
     event.preventDefault()
     // Call the onSearch function passed as a prop with the searchTerm
     onSearch(searchTerm)
+    setSearchTerm('')
   }
 
   return (

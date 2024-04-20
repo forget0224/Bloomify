@@ -43,6 +43,8 @@ export default function Shop() {
   const [categories, setCategories] = useState([])
   const [colors, setColors] = useState([])
   const [activeCategory, setActiveCategory] = useState(null)
+  const [selectedCategoryId, setSelectedCategoryId] = useState('')
+  const [selectedSubcategoryIds, setSelectedSubcategoryIds] = useState([])
 
   // Carousel State
   const [page, setPage] = useState(0)
@@ -103,12 +105,27 @@ export default function Shop() {
     fetchData() // Existing call to fetch other data
   }, [])
 
+  function getUniqueCategoryList(products) {
+    // Map products to their categories
+    const dataList = products.map((product) => product.category)
+
+    // Filter out duplicate categories based on their ID
+    const uniqueCategoryList = dataList.filter((category, index, self) => {
+      return index === self.findIndex((t) => t.id === category.id)
+    })
+    return uniqueCategoryList
+  }
+
   const fetchData = async () => {
     try {
       const response = await fetch('http://localhost:3005/api/products')
       const data = await response.json()
+
       if (data.status === 'success') {
-        setProducts(data.data.products) // Assuming your API returns an array of colors in data.data.colors
+        const uniqueCategories = getUniqueCategoryList(data.data.products)
+        console.log('Unique Categories:', uniqueCategories)
+
+        setProducts(data.data.products)
       } else {
         console.error('Failed to fetch colors:', data.message)
       }
@@ -184,7 +201,7 @@ export default function Shop() {
   }, [activeCategory])
 
   // 商品 query string更新
-  const [selectedCategoryId, setSelectedCategoryId] = useState('')
+
   const handleCategoryChange = (categoryId) => {
     setSelectedCategoryId(categoryId)
     // Use the Next.js router to update the URL without triggering a navigation
@@ -198,8 +215,25 @@ export default function Shop() {
     )
   }
 
+  // 篩選第二層分類
+  const handleCheckboxChange = (subcategoryId, isChecked) => {
+    // Log the ID of the subcategory and its new checked status
+    console.log(`Subcategory ID: ${subcategoryId}, Checked: ${isChecked}`)
+
+    setSelectedSubcategoryIds((currentIds) => {
+      // If the checkbox is checked, add the ID to the array
+      if (isChecked) {
+        console.log('Adding subcategory ID:', subcategoryId)
+        return [...currentIds, subcategoryId]
+      } else {
+        // If the checkbox is unchecked, remove the ID from the array
+        console.log('Removing subcategory ID:', subcategoryId)
+        return currentIds.filter((id) => id !== subcategoryId)
+      }
+    })
+  }
+
   // 搜尋關鍵字
-  // const [searchTerm, setSearchTerm] = useState('');
   const baseSearchPath = 'http://localhost:3005/api/products/filter'
   const handleSearch = (searchTerm) => {
     fetch(`${baseSearchPath}?keyword=${encodeURIComponent(searchTerm)}`)
@@ -285,7 +319,7 @@ export default function Shop() {
                 </div>
               </div>
               {/* carousel end */}
-              {/* select categories start */}
+              {/* 第一層選項 start */}
               <div className="flex justify-center my-8 w-full whitespace-nowrap gap-2">
                 {categories
                   .filter((category) => category.parent_id === 0)
@@ -451,9 +485,16 @@ export default function Shop() {
                                   </p>
                                   <div className="space-y-2 grid grid-cols-2">
                                     {categories
-                                      .filter(
-                                        (category) => category.parent_id !== 0
-                                      )
+                                      .filter((category) => {
+                                        // If no top-level category is active, or 'all' is selected, show all sub-categories
+                                        if (activeCategory === null) {
+                                          return category.parent_id !== 0
+                                        }
+                                        // Otherwise, filter sub-categories based on the active top-level category
+                                        return (
+                                          category.parent_id === activeCategory
+                                        )
+                                      })
                                       .map((category) => (
                                         <Checkbox
                                           key={category.id}
@@ -537,7 +578,6 @@ export default function Shop() {
                   </div>
                   {/* RWD end */}
                 </div>
-                {/* search & select end */}
               </div>
               {/* search & select end */}
 
@@ -554,9 +594,21 @@ export default function Shop() {
                       <p className="text-lg text-tertiary-black">子類</p>
                       <div className="space-y-2 grid grid-cols-2">
                         {categories
-                          .filter((category) => category.parent_id !== 0)
+                          .filter((category) => {
+                            if (activeCategory === 1) {
+                              return category.parent_id !== 0
+                            }
+                            // Otherwise, filter sub-categories based on the active top-level category
+                            return category.parent_id === activeCategory
+                          })
                           .map((category) => (
-                            <Checkbox key={category.id} className="mr-2">
+                            <Checkbox
+                              key={category.id}
+                              className="mr-2"
+                              onValueChange={(isChecked) =>
+                                handleCheckboxChange(category.id, isChecked)
+                              }
+                            >
                               <p className="text-tertiary-black">
                                 {category.name}
                               </p>
@@ -615,83 +667,93 @@ export default function Shop() {
                 {/* products starts */}
                 <div className="sm:w-10/12">
                   <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
-                    {products.map((product) => {
-                      // Find the image where is_thumbnail is false
-                      const nonThumbnailImage = product.images.find(
-                        (image) => !image.is_thumbnail
+                    {products
+                      .filter(
+                        (product) =>
+                          selectedSubcategoryIds.length === 0 ||
+                          selectedSubcategoryIds.includes(
+                            product.product_category_id
+                          )
                       )
+                      .map((product) => {
+                        // Find the image where is_thumbnail is false
+                        const nonThumbnailImage = product.images.find(
+                          (image) => !image.is_thumbnail
+                        )
 
-                      // If nonThumbnailImage is not found, use a fallback image URL
-                      const imageUrl = nonThumbnailImage
-                        ? nonThumbnailImage.url
-                        : 'default_fallback_image.jpg'
+                        // If nonThumbnailImage is not found, use a fallback image URL
+                        const imageUrl = nonThumbnailImage
+                          ? nonThumbnailImage.url
+                          : 'default_fallback_image.jpg'
 
-                      return (
-                        <Card
-                          shadow="sm"
-                          key={product.id}
-                          isPressable
-                          onPress={() => console.log('item pressed')}
-                        >
-                          <CardBody className="relative overflow-visible p-0">
-                            <Link
-                              href={{
-                                pathname: '/shop/[pid]', // dynamic route
-                                query: { pid: product.id }, // setting pid to product ID
-                              }}
-                              className="block relative"
-                            >
-                              <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                              {/* Use the non-thumbnail image URL for the image src */}
-                              <Image
-                                isZoomed
-                                shadow="none"
-                                radius="none"
-                                width="100%"
-                                alt={product.name}
-                                className="w-full object-cover h-[250px] z-0"
-                                src={`/assets/shop/products/${product.directory}/${imageUrl}`}
-                              />
-                            </Link>
-                          </CardBody>
-                          <CardHeader className="block text-left">
-                            <div className="flex justify-between">
-                              <p className="text-xl truncate">{product.name}</p>
-                              <p className="text-base flex items-center space-x-1">
-                                <BsFillStarFill className="text-secondary-100" />
-                                {product.star}
-                                <span>{product.overall_review}</span>
-                              </p>
-                            </div>
-                            <p className="text-base text-tertiary-gray-100">
-                              {product.stores.store_name}
-                            </p>
-                            <div className="flex flex-wrap">
-                              {product.tags.map((tag) => (
-                                <p
-                                  key={tag.id}
-                                  className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
-                                >
-                                  {tag.name}
+                        return (
+                          <Card
+                            shadow="sm"
+                            key={product.id}
+                            isPressable
+                            onPress={() => console.log('item pressed')}
+                          >
+                            <CardBody className="relative overflow-visible p-0">
+                              <Link
+                                href={{
+                                  pathname: '/shop/[pid]', // dynamic route
+                                  query: { pid: product.id }, // setting pid to product ID
+                                }}
+                                className="block relative"
+                              >
+                                <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                                {/* Use the non-thumbnail image URL for the image src */}
+                                <Image
+                                  isZoomed
+                                  shadow="none"
+                                  radius="none"
+                                  width="100%"
+                                  alt={product.name}
+                                  className="w-full object-cover h-[250px] z-0"
+                                  src={`/assets/shop/products/${product.directory}/${imageUrl}`}
+                                />
+                              </Link>
+                            </CardBody>
+                            <CardHeader className="block text-left">
+                              <div className="flex justify-between">
+                                <p className="text-xl truncate">
+                                  {product.name}
                                 </p>
-                              ))}
-                            </div>
-                          </CardHeader>
-                          <CardFooter className="text-small justify-between">
-                            <p className="text-xl truncate">
-                              NT${product.price}
-                            </p>
-                            <div
-                              className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                              onClick={notify}
-                            >
-                              <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
-                            </div>
-                            <Toaster />
-                          </CardFooter>
-                        </Card>
-                      )
-                    })}
+                                <p className="text-base flex items-center space-x-1">
+                                  <BsFillStarFill className="text-secondary-100" />
+                                  {product.star}
+                                  <span>{product.overall_review}</span>
+                                </p>
+                              </div>
+                              <p className="text-base text-tertiary-gray-100">
+                                {product.stores.store_name}
+                              </p>
+                              <div className="flex flex-wrap">
+                                {product.tags.map((tag) => (
+                                  <p
+                                    key={tag.id}
+                                    className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
+                                  >
+                                    {tag.name}
+                                  </p>
+                                ))}
+                              </div>
+                            </CardHeader>
+                            <CardFooter className="text-small justify-between">
+                              <p className="text-xl truncate">
+                                NT${product.price}
+                              </p>
+                              <div
+                                className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
+                                onClick={notify}
+                              >
+                                <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                              </div>
+                              <Toaster />
+                            </CardFooter>
+                          </Card>
+                        )
+                      })}
                   </div>
                 </div>
                 {/* products end */}
