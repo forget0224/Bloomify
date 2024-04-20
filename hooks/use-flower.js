@@ -44,16 +44,103 @@
 //   )
 // }
 
-import { createContext, useContext, useCallback, useRef } from 'react'
+import {
+  createContext,
+  useContext,
+  useCallback,
+  useRef,
+  useState,
+  useEffect,
+} from 'react'
 import { fabric } from 'fabric' // 確保引入fabric
-
+import { GrRotateLeft } from 'react-icons/gr'
 const FlowerContext = createContext()
 
 export const useFlower = () => useContext(FlowerContext)
 
 export const FlowerProvider = ({ children }) => {
   const canvasRef = useRef(null)
-  const tempObjectRef = useRef(null) // 用於暫存當前預覽的圖片
+  const tempObjectRef = useRef(null)
+  const [imagesInfo, setImagesInfo] = useState([])
+  useEffect(() => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current
+      const rotateIcon = new Image()
+      rotateIcon.onload = () => {
+        fabric.Object.prototype.controls.mtr = new fabric.Control({
+          x: 0.5,
+          y: -0.5,
+          offsetY: -10, // 控制點向上偏 不會覆蓋物體
+          offsetX: 10,
+          cursorStyle: 'pointer',
+          actionHandler: fabric.controlsUtils.rotationWithSnapping,
+          render: (ctx, left, top, styleOverride, fabricObject) => {
+            const size = fabricObject.cornerSize
+            ctx.save()
+            ctx.translate(left, top)
+            ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle))
+            ctx.drawImage(rotateIcon, -size / 2, -size / 2, size, size)
+            ctx.restore()
+          },
+          cornerSize: 24,
+        })
+      }
+      rotateIcon.src = '/custom/custom/rotateIcon.png'
+      fabric.Object.prototype.hasControls = true
+      fabric.Object.prototype.hasBorders = true
+      fabric.Object.prototype.borderColor = '#FF7C7C'
+      fabric.Object.prototype.borderScaleFactor = 1.5
+      // Hide other controls
+      ;['tl', 'tr', 'bl', 'br', 'mt', 'mb', 'ml', 'mr'].forEach((ctrl) => {
+        fabric.Object.prototype.controls[ctrl].visible = false
+      })
+    }
+  }, [canvasRef])
+  // const renderRotateControl = (ctx, left, top, styleOverride, fabricObject) => {
+  //   const size = fabricObject.cornerSize
+  //   ctx.save()
+  //   ctx.translate(left, top)
+  //   ctx.rotate(fabric.util.degreesToRadians(fabricObject.angle))
+  //   ctx.drawImage(
+  //     fabricObject.rotateIcon.getElement(),
+  //     -size / 2,
+  //     -size / 2,
+  //     size,
+  //     size
+  //   )
+  //   ctx.restore()
+  // }
+
+  // const setupCustomControls = (canvas) => {
+  //   fabric.Object.prototype.controls.mtr = new fabric.Control({
+  //     x: 0.5, //控制點
+  //     y: -0.5,
+  //     offsetY: -10, // 控制點向上偏 不會覆蓋物體
+  //     offsetX: 10,
+  //     cursorStyle: 'pointer',
+  //     actionHandler: fabric.controlsUtils.rotationWithSnapping,
+  //     render: renderRotateControl,
+  //     cornerSize: 24,
+  //   })
+
+  //   fabric.Image.fromURL('/custom/custom/rotateIcon.png', (img) => {
+  //     fabric.Object.prototype.rotateIcon = img
+  //   })
+
+  //   fabric.Object.prototype.hasControls = true
+  //   fabric.Object.prototype.hasBorders = true
+  //   fabric.Object.prototype.borderColor = '#272727'
+  //   fabric.Object.prototype.borderScaleFactor = 1.2
+  //   ;['tl', 'tr', 'bl', 'br', 'mt', 'mb', 'ml', 'mr'].forEach((ctrl) => {
+  //     fabric.Object.prototype.controls[ctrl].visible = false
+  //   })
+  // }
+
+  // useEffect(() => {
+  //   if (canvasRef.current) {
+  //     setupCustomControls(canvasRef.current)
+  //   }
+  // }, [canvasRef])
 
   const addImageToCanvas = useCallback((url, metadata) => {
     if (!canvasRef.current) {
@@ -76,10 +163,14 @@ export const FlowerProvider = ({ children }) => {
       }
 
       img.set({
-        left: 100,
-        top: 100,
+        left: 180,
+        top: 35,
         scaleX: 0.5,
         scaleY: 0.5,
+        originX: 'center',
+        originY: 'center',
+        lockScalingX: true,
+        lockScalingY: true,
         ...metadata,
       })
       canvas.add(img)
@@ -89,7 +180,20 @@ export const FlowerProvider = ({ children }) => {
   }, [])
   // 確認當前預覽圖片，並將其永久保存至畫布
   const commitImageToCanvas = useCallback(() => {
-    tempObjectRef.current = null // 清空暫存
+    if (tempObjectRef.current) {
+      const imgInfo = {
+        url: tempObjectRef.current.url,
+        left: tempObjectRef.current.left,
+        top: tempObjectRef.current.top,
+        scaleX: tempObjectRef.current.scaleX,
+        scaleY: tempObjectRef.current.scaleY,
+        name: tempObjectRef.current.name,
+        color: tempObjectRef.current.color,
+        zIndex: tempObjectRef.current.zIndex,
+      }
+      setImagesInfo((prev) => [...prev, imgInfo])
+      tempObjectRef.current = null
+    }
   }, [])
 
   // 清除當前預覽的圖片
@@ -122,6 +226,7 @@ export const FlowerProvider = ({ children }) => {
         clearCanvas,
         snapshotCanvas,
         canvasRef,
+        imagesInfo,
       }}
     >
       {children}
