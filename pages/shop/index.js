@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import {
   Breadcrumbs,
   BreadcrumbItem,
@@ -22,7 +23,7 @@ import {
 } from '@nextui-org/react'
 import Link from 'next/link.js'
 import toast, { Toaster } from 'react-hot-toast'
-import ShopSlider from '../../components/shop/shop-slider.js'
+// import ShopSlider from '../../components/shop/shop-slider.js'
 import DefaultLayout from '@/components/layout/default-layout'
 import Subtitle from '@/components/common/subtitle.js'
 import { MyButton } from '@/components/btn/mybutton'
@@ -37,12 +38,17 @@ import { SlMagnifier } from 'react-icons/sl'
 // import { useWindowSize } from 'react-use'
 
 export default function Shop() {
+  const searchParams = useSearchParams()
+  const queryParentId = searchParams.get('parent_id')
   const router = useRouter()
   const [activePage, setActivePage] = useState('shop')
+  const [loadPage, setLoadPage] = useState(1) // Track the current page
+  const [productTotal, setProductTotal] = useState(0)
+
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [colors, setColors] = useState([])
-  const [activeCategory, setActiveCategory] = useState(null)
+  const [activeCategory, setActiveCategory] = useState(1)
   const [selectedCategoryId, setSelectedCategoryId] = useState('')
   const [selectedSubcategoryIds, setSelectedSubcategoryIds] = useState([])
 
@@ -77,6 +83,11 @@ export default function Shop() {
     return () => clearInterval(timer)
   }, [page])
 
+  // Function to handle clicking the "Load More" button
+  const handleLoadMore = () => {
+    setLoadPage((prevLoadPage) => prevLoadPage + 1)
+  }
+  const notify = () => toast.success('已成功加入購物車')
   // RWD Sorting and Filtering Modal State
   const {
     isOpen: isMagnifierOpen,
@@ -164,58 +175,17 @@ export default function Shop() {
     }
   }
 
-  const notify = () => toast.success('已成功加入購物車')
-
-  // 篩選:種類
+  // 篩選:第一層分類
   const handleCategoryClick = (id) => {
     console.log('Category clicked:', id)
+    setSelectedSubcategoryIds([]) // This line clears the subcategory selections
     setActiveCategory(id)
     // Update the query string in the URL, which will then trigger the useEffect
     handleCategoryChange(id)
-  }
-  // fetch資料
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        // Construct the query string based on the active category
-        const queryStr = new URLSearchParams({
-          parent_id: activeCategory,
-        }).toString()
-        const res = await fetch(
-          `http://localhost:3005/api/products/filter?${queryStr}`
-        )
-        const data = await res.json()
-        if (data.status === 'success') {
-          setProducts(data.data.products)
-        } else {
-          console.error('Failed to fetch products:', data.message)
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error)
-      }
-    }
-    if (activeCategory !== null) {
-      // Only fetch products if a category is selected
-      fetchProducts()
-    }
-  }, [activeCategory])
-
-  // 商品 query string更新
-
-  const handleCategoryChange = (categoryId) => {
-    setSelectedCategoryId(categoryId)
-    // Use the Next.js router to update the URL without triggering a navigation
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: { ...router.query, parent_id: categoryId },
-      },
-      undefined,
-      { shallow: true }
-    )
+    setLoadPage(1)
   }
 
-  // 篩選第二層分類
+  // 篩選:第二層分類
   const handleCheckboxChange = (subcategoryId, isChecked) => {
     // Log the ID of the subcategory and its new checked status
     console.log(`Subcategory ID: ${subcategoryId}, Checked: ${isChecked}`)
@@ -231,6 +201,52 @@ export default function Shop() {
         return currentIds.filter((id) => id !== subcategoryId)
       }
     })
+    setLoadPage(1)
+  }
+
+  // fetch 資料
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        // Construct the query string based on the active category
+
+        const res = await fetch(
+          `http://localhost:3005/api/products/filter?parent_id=${activeCategory}&page=${loadPage}`
+        )
+        const data = await res.json()
+        if (data.status === 'success') {
+          // setProducts(data.data.products)
+          if (loadPage > 1) {
+            setProducts([...products, ...data.data.products])
+          } else {
+            setProducts(data.data.products)
+          }
+          setProductTotal(data.data.count)
+        } else {
+          console.error('Failed to fetch products:', data.message)
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      }
+    }
+    if (activeCategory !== null) {
+      // Only fetch products if a category is selected
+      fetchProducts()
+    }
+  }, [activeCategory, loadPage])
+
+  // 商品 query string更新
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategoryId(categoryId)
+    // Use the Next.js router to update the URL without triggering a navigation
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, parent_id: categoryId },
+      },
+      undefined,
+      { shallow: true }
+    )
   }
 
   // 搜尋關鍵字
@@ -278,6 +294,11 @@ export default function Shop() {
       })
   }
 
+  useEffect(() => {
+    if (!!queryParentId && queryParentId !== activeCategory)
+      setActiveCategory(+queryParentId)
+  }, [queryParentId])
+  // console.log('check', categories, activeCategory, selectedSubcategoryIds)
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -365,7 +386,7 @@ export default function Shop() {
                 {/* filter */}
                 {/* RWD start*/}
                 <p className="text-tertiary-black sm:hidden">
-                  共 {products.length} 項結果
+                  共 {productTotal} 項結果
                 </p>
                 {/* RWD end*/}
                 <div className="flex items-center space-x-4">
@@ -588,7 +609,9 @@ export default function Shop() {
                   <div className="bg-white p-4 rounded-lg shadow-md space-y-8 max-w-[335px]">
                     <Subtitle text="篩選" />
                     <p className=" text-tertiary-black">
-                      共 {products.length} 項結果
+                      共{''}
+                      {productTotal}
+                      {''}項結果
                     </p>
                     <div className="space-y-4">
                       <p className="text-lg text-tertiary-black">子類</p>
@@ -605,6 +628,9 @@ export default function Shop() {
                             <Checkbox
                               key={category.id}
                               className="mr-2"
+                              isSelected={selectedSubcategoryIds.includes(
+                                category.id
+                              )}
                               onValueChange={(isChecked) =>
                                 handleCheckboxChange(category.id, isChecked)
                               }
@@ -764,11 +790,8 @@ export default function Shop() {
                   <MyButton
                     color="primary"
                     size="xl"
-                    // onClick={handleLoadMore}
+                    onClick={handleLoadMore}
                     // disabled={!hasMore}
-                    // className={`${
-                    //   !hasMore ? 'opacity-50 pointer-events-none' : ''
-                    // }`}
                   >
                     查看更多
                   </MyButton>
