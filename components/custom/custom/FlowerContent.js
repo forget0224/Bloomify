@@ -5,19 +5,18 @@ import ColorSelector from '../common/ColorSelector'
 
 export default function FlowerContent({ mainItems, accentItems }) {
   const [selected, setSelected] = useState('mainFlower')
-  const [selectedFlower, setSelectedFlower] = useState(null)
-  const handleSelectColor = (color) => {
-    console.log(`選擇的顏色是: ${color}`)
-    setSelectedFlower(null)
+  const [selectedItem, setSelectedItem] = useState(null)
+  const handleSelectItem = (attributes, categoryName) => {
+    setSelectedItem({ attributes, categoryName })
   }
 
   return (
     <>
-      {selectedFlower ? (
+      {selectedItem ? (
         <ColorSelector
-          itemName={selectedFlower.name}
-          itemColors={selectedFlower.colors}
-          onConfirm={handleSelectColor}
+          itemAttribute={selectedItem.attributes}
+          categoryName={selectedItem.categoryName}
+          onConfirm={() => setSelectedItem(null)}
         />
       ) : (
         <div className="flex flex-col items-center py-2 ">
@@ -37,7 +36,7 @@ export default function FlowerContent({ mainItems, accentItems }) {
                     </div>
                     <SwiperCarousel
                       items={mainItems}
-                      onItemSelect={setSelectedFlower}
+                      onItemSelect={handleSelectItem}
                     />
                   </div>
                 </CardBody>
@@ -54,7 +53,7 @@ export default function FlowerContent({ mainItems, accentItems }) {
                     </div>
                     <SwiperCarousel
                       items={accentItems}
-                      onItemSelect={setSelectedFlower}
+                      onItemSelect={handleSelectItem}
                     />
                   </div>
                 </CardBody>
