@@ -118,7 +118,7 @@
 //     </div>
 //   )
 // }
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import { useFlower } from '@/hooks/use-flower'
 import {
@@ -130,11 +130,95 @@ import {
 } from 'react-icons/ci'
 import Image from 'next/image'
 import { IoMdHammer } from 'react-icons/io'
-
+import { fabric } from 'fabric'
 export default function LayerContent() {
-  const { imagesInfo, getClipBounds } = useFlower()
-  console.log(`imagesInfo,,,,,${imagesInfo}`)
-  console.log(getClipBounds)
+  const {
+    imagesInfo,
+    getClipBounds,
+    setImagesInfo,
+    canvasRef,
+    addImageToCanvas,
+    commitImageToCanvas,
+  } = useFlower()
+  const [selectedImageId, setSelectedImageId] = useState(null)
+  const handleDeleteImage = (imageId) => {
+    const targetImg = imagesInfo.find((img) => img.id === imageId)
+    if (targetImg && !targetImg.locked) {
+      setImagesInfo(imagesInfo.filter((img) => img.id !== imageId))
+
+      const canvas = canvasRef.current.fabric
+      const object = canvas.getObjects().find((obj) => obj.id === imageId)
+      if (object) {
+        canvas.remove(object)
+        canvas.requestRenderAll()
+      }
+    } else {
+      console.log('被鎖定了無法刪除')
+    }
+  }
+
+  const handleCopyImage = (img) => {
+    const clipPath = getClipBounds()
+    if (!clipPath) {
+      console.error('沒有遮罩')
+      return
+    }
+    const clipP = getClipBounds()
+    const newImageMetadata = {
+      url: img.url,
+      name: img.name,
+      left: img.left + 10 + clipP.left + clipP.width / 2,
+      top: img.top + 10 + clipP.top + clipP.height / 2,
+      scaleX: 0,
+      scaleY: 0,
+    }
+
+    addImageToCanvas(img.url, newImageMetadata)
+    setTimeout(() => {
+      commitImageToCanvas()
+    }, 100)
+  }
+  const handleSelectImage = (imageId) => {
+    const canvas = canvasRef.current.fabric
+    const object = canvas.getObjects().find((obj) => obj.id === imageId)
+    if (object) {
+      canvas.setActiveObject(object)
+      canvas.requestRenderAll()
+      setSelectedImageId(imageId) // 確保這裡設置了
+    }
+  }
+
+  const toggleLockImage = (imageId) => {
+    setImagesInfo((prev) =>
+      prev.map((img) =>
+        img.id === imageId ? { ...img, locked: !img.locked } : img
+      )
+    )
+
+    const canvas = canvasRef.current.fabric
+    const object = canvas.getObjects().find((obj) => obj.id === imageId)
+    if (object) {
+      object.selectable = !object.selectable
+      object.evented = !object.evented
+      canvas.requestRenderAll()
+    }
+  }
+
+  useEffect(() => {
+    const canvas = canvasRef.current?.fabric
+    if (canvas) {
+      const handleObjectSelected = (e) => {
+        setSelectedImageId(e.target.id)
+      }
+
+      canvas.on('object:selected', handleObjectSelected)
+
+      return () => {
+        canvas.off('object:selected', handleObjectSelected)
+      }
+    }
+  }, [canvasRef, setSelectedImageId])
+
   return (
     <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center">
       <div className="text-tertiary-gray-100 w-60 text-center py-4">
@@ -146,7 +230,10 @@ export default function LayerContent() {
             <div
               id={img.id}
               key={img.id}
-              className="flex flex-row items-center justify-around border-b border-gray-300 py-2"
+              className={`flex flex-row items-center justify-around border-b border-gray-300 py-2 ${
+                img.id === selectedImageId ? 'bg-secondary-200' : ''
+              }`}
+              onClick={() => handleSelectImage(img.id)}
             >
               <div className="relative h-16 w-24 overflow-hidden border rounded-lg">
                 <Image
@@ -164,9 +251,13 @@ export default function LayerContent() {
               </div>
               <div className="text-sm">{img.name}</div>
               <div className="flex flex-row gap-3 text-lg">
-                <CiLock />
-                <CiSquarePlus />
-                <CiTrash />
+                {img.locked ? (
+                  <CiLock onClick={() => toggleLockImage(img.id)} />
+                ) : (
+                  <CiUnlock onClick={() => toggleLockImage(img.id)} />
+                )}
+                <CiSquarePlus onClick={() => handleCopyImage(img)} />
+                <CiTrash onClick={() => handleDeleteImage(img.id)} />
               </div>
             </div>
           ))}

@@ -14,7 +14,7 @@ import WorkingArea from '@/components/custom/custom/WorkingArea'
 import { ColorProvider } from '@/hooks/use-color'
 import { RoleProvider } from '@/hooks/use-role'
 import { OccProvider } from '@/hooks/use-occ'
-import { FlowerProvider } from '@/hooks/use-flower'
+
 import { StoreProvider } from '@/hooks/use-store'
 import CustomNav from '@/components/custom/custom/customNav'
 import {
@@ -34,7 +34,6 @@ import FlowerContent from '@/components/custom/custom/FlowerContent'
 import LeafContent from '@/components/custom/custom/LeafContent'
 import PackageContent from '@/components/custom/custom/PackageContent'
 import GiftCardContent from '@/components/custom/custom/GiftCardContent'
-// import LayerContent from '@/components/custom/custom/LayerContent'
 
 export default function Custom() {
   const [openedIndex, setOpenedIndex] = useState(null)
@@ -214,14 +213,14 @@ export default function Custom() {
                                 <IoLayersOutline className="text-3xl" />
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent>
+                            <PopoverContent className="sm:max-h-[600px] overflow-auto">
                               <LayerContent />
                             </PopoverContent>
                           </Popover>
                         </div>
 
                         <div
-                          className="bg-secondary-200 sm:w-[500px] sm:h-[550px] m-auto relative w-[375px] h-auto"
+                          className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full"
                           style={{
                             backgroundImage:
                               'url("/custom/custom/canvasBg.png")',

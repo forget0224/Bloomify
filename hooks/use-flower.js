@@ -45,22 +45,27 @@ export const FlowerProvider = ({ children }) => {
         return
       }
 
+      const newId = fabric.util.getRandomInt(1000, 9999)
+
       img.set({
-        id: fabric.util.getRandomInt(1000, 9999),
-        zIndex: 1,
-        left: clipBounds.left + clipBounds.width / 2,
-        top: clipBounds.top + clipBounds.height / 2,
+        ...metadata,
+        id: newId,
+        zIndex: metadata.zIndex || 1,
+        left: metadata.left || clipBounds.left + clipBounds.width / 2, // 如果没有提供left，使用原图的left加偏移
+        top: metadata.top || clipBounds.top + clipBounds.height / 2,
         angle: 0,
-        scaleX: 0.5,
-        scaleY: 0.5,
+        scaleX: metadata.scaleX || 0.5, // 使用原图的scaleX，如果没有提供则使用原图的值
+        scaleY: metadata.scaleY || 0.5, // 使用原图的scaleY，如果没有提供则使用原图的值
         originX: 'center',
         originY: 'center',
-        lockScalingX: true,
-        lockScalingY: true,
-        ...metadata,
+        lockScalingX:
+          metadata.lockScalingX !== undefined ? metadata.lockScalingX : true,
+        lockScalingY:
+          metadata.lockScalingY !== undefined ? metadata.lockScalingY : true,
       })
 
       canvas.add(img)
+      canvas.setActiveObject(img)
       canvas.renderAll()
       tempObjectRef.current = img
     })
@@ -70,6 +75,7 @@ export const FlowerProvider = ({ children }) => {
     if (tempObjectRef.current && canvasRef.current.fabric.clipPath) {
       const img = tempObjectRef.current
       const clipBounds = canvasRef.current.fabric.clipPath.getBoundingRect()
+
       const imgInfo = {
         id: img.id,
         url: img.url,
@@ -79,9 +85,13 @@ export const FlowerProvider = ({ children }) => {
         color: img.color,
         zIndex: img.zIndex,
         angle: img.angle,
+        scaleX: img.scaleX,
+        scaleY: img.scaleY,
+        locked: false,
       }
 
       setImagesInfo((prev) => [...prev, imgInfo])
+
       tempObjectRef.current = null
     }
   }, [])
@@ -172,6 +182,7 @@ export const FlowerProvider = ({ children }) => {
         canvasRef,
         imagesInfo,
         getClipBounds,
+        tempObjectRef,
       }}
     >
       {children}

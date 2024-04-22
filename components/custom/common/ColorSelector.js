@@ -73,8 +73,12 @@ import { CiCircleCheck, CiCircleChevLeft } from 'react-icons/ci'
 const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   const [selectedColor, setSelectedColor] = useState(null)
   const colors = useColors()
-  const { addImageToCanvas, commitImageToCanvas, removeCurrentImage } =
-    useFlower()
+  const {
+    addImageToCanvas,
+    commitImageToCanvas,
+    removeCurrentImage,
+    tempObjectRef,
+  } = useFlower()
 
   const handleSelectFlower = (attribute) => {
     removeCurrentImage()
@@ -89,7 +93,9 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
 
   const handleConfirm = () => {
     // Commit the current preview to be permanently on the canvas
-    commitImageToCanvas()
+    if (tempObjectRef.current) {
+      commitImageToCanvas(tempObjectRef.current) // 传递当前的预览对象
+    }
     onConfirm(selectedColor)
   }
 
