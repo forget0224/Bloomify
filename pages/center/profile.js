@@ -29,7 +29,6 @@ export default function Profile() {
 
   const { auth } = useAuth()
   const [userProfile, setUserProfile] = useState(initUserProfile)
-  const [hasProfile, setHasProfile] = useState(false)
   const [selectedFile, setSelectedFile] = useState(null)
 
   // auth中只能獲得id和帳號
@@ -38,7 +37,7 @@ export default function Profile() {
   // {id: 1, username: 'herry@test.com', iat: 1713511167, exp: 1713770367}
   console.log(auth.userData.id)
 
-  // 獲取登入會員資料-phone.address......
+  // 由id從後端獲取登入會員資料-phone.address.avatar......
   const getUserData = async () => {
     const res = await fetch(
       `http://localhost:3005/api/share-members/${auth.userData.id}`,
@@ -55,8 +54,31 @@ export default function Profile() {
     console.log(data)
     console.log(data.data)
     // user: {id: 1, name: '哈利', username: 'herry@test.com', phone: '0906102808', city: '台北市', …}
+
+    if (data.status === 'success') {
+      // 以下為同步化目前後端資料庫資料，與這裡定義的初始化會員資料物件的資料
+      const dbUser = data.data.user
+      const dbUserProfile = { ...initUserProfile }
+
+      // key => name, username, ......
+      for (const key in dbUserProfile) {
+        if (Object.hasOwn(dbUser, key)) {
+          // dbUser[key] 是真值（即不是 null、undefined、false 等等），則返回 dbUser[key] 的值，否則，返回空字串 ''
+          // 這裡要將null值的預設值改為空字串 ''
+          dbUserProfile[key] = dbUser[key] || ''
+        }
+      }
+
+      // 設定到狀態中
+      setUserProfile(dbUserProfile)
+
+      alert('會員資料載入成功')
+    } else {
+      alert(`會員資料載入失敗`)
+    }
   }
 
+  // 會員認證成功 => 取得會員資料顯示
   // auth載入完成後向資料庫要會員資料
   useEffect(() => {
     if (auth.isAuth) {
@@ -65,16 +87,60 @@ export default function Profile() {
     // eslint-disable-next-line
   }, [auth])
 
-  // input 樣式
-  const inputStyles = {
-    label: 'text-base',
-    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
+  // 輸入一般資料用
+  const handleFieldChange = (e) => {
+    setUserProfile({ ...userProfile, [e.target.name]: e.target.value })
   }
 
   // 表單送出
   const handleSubmit = async (e) => {
     // 阻擋表單預設送出行為
     e.preventDefault()
+
+    // 這裡可以作表單驗証
+
+    // 送到伺服器進行更新
+    // 更新會員資料用，排除avatar
+    let isUpdated = false
+
+    // 將 userProfile 物件中的 avatar 屬性解構賦值給 avatar 變數，並將其餘的屬性解構賦值給 user 物件。
+    const { avatar, ...user } = userProfile
+    const res = await fetch(
+      `http://localhost:3005/api/share-members/center/${auth.userData.id}/profile`,
+      {
+        credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+        body: JSON.stringify(user), // 將使用者資料轉換成 JSON 字串傳送
+      }
+    )
+    const data = await res.json() // 將回傳的 Response 物件轉換成 JSON 格式
+    console.log(data)
+  }
+
+  // 將日期字串轉換成特定格式的函式
+  const formatDate = (dateString) => {
+    // 建立 Date 物件
+    const date = new Date(dateString)
+
+    // 取得年、月、日資訊
+    const year = date.getFullYear()
+    const month = (date.getMonth() + 1).toString().padStart(2, '0') // 月份需補零
+    const day = date.getDate().toString().padStart(2, '0') // 日需補零
+
+    // 拼接成想要的日期格式
+    const formattedDate = `${year}-${month}-${day}`
+
+    return formattedDate
+  }
+
+  // input 樣式
+  const inputStyles = {
+    label: 'text-base',
+    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
 
   return (
@@ -103,9 +169,25 @@ export default function Profile() {
                 <h1 className="text-xl lg:text-3xl mb-12 mt-14">個人資訊</h1>
                 {/* 大頭貼位置 */}
                 <div className="image-upload flex flex-col items-center">
-                  <label>
-                    <img src="" alt="" width="200" height="200" />
-                  </label>
+                  {userProfile.avatar !== '' ? (
+                    <label>
+                      <img
+                        src={`/assets/member/member/${userProfile.avatar}.jpg`}
+                        alt="使用者大頭貼"
+                        width="200"
+                        height="200"
+                      />
+                    </label>
+                  ) : (
+                    <label>
+                      <img
+                        src="/assets/member/member/default.png"
+                        alt="預設大頭貼"
+                        width="200"
+                        height="200"
+                      />
+                    </label>
+                  )}
                   <input
                     id="file-input"
                     type="file"
@@ -113,6 +195,20 @@ export default function Profile() {
                     className="invisible"
                     // onChange={handleFileChang}
                   />
+                </div>
+                <div>
+                  <p>點按頭像可以選擇新照片</p>
+                </div>
+                <div>
+                  <img
+                    src="/assets/member/member/default.png"
+                    alt=""
+                    width="200"
+                    height="200"
+                  />
+                  <div>
+                    <button onClick={handleSubmit}> </button>
+                  </div>
                 </div>
                 {/* 表單 */}
                 <form
@@ -127,8 +223,8 @@ export default function Profile() {
                     labelPlacement="outside"
                     placeholder="姓名"
                     type="text"
-                    // value={auth.username}
-                    // onChange={handleFieldChange}
+                    value={userProfile.name}
+                    onChange={handleFieldChange}
                     isRequired
                     className={{ ...inputStyles }}
                   />
@@ -139,7 +235,7 @@ export default function Profile() {
                     labelPlacement="outside"
                     placeholder="帳號"
                     type="text"
-                    // value={user.username}
+                    value={userProfile.username}
                     // onChange={handleFieldChange}
                     disabled
                     className={{ ...inputStyles }}
@@ -151,8 +247,8 @@ export default function Profile() {
                     labelPlacement="outside"
                     placeholder="手機號碼"
                     type="text"
-                    // value={user.username}
-                    // onChange={handleFieldChange}
+                    value={userProfile.phone}
+                    onChange={handleFieldChange}
                     isRequired
                     className={{ ...inputStyles }}
                   />
@@ -163,8 +259,8 @@ export default function Profile() {
                     labelPlacement="outside"
                     placeholder="城市"
                     type="text"
-                    // value={user.username}
-                    // onChange={handleFieldChange}
+                    value={userProfile.city}
+                    onChange={handleFieldChange}
                     isRequired
                     className={{ ...inputStyles }}
                   />
@@ -175,8 +271,8 @@ export default function Profile() {
                     labelPlacement="outside"
                     placeholder="鄉鎮市區"
                     type="text"
-                    // value={user.username}
-                    // onChange={handleFieldChange}
+                    value={userProfile.district}
+                    onChange={handleFieldChange}
                     isRequired
                     className={{ ...inputStyles }}
                   />
@@ -187,8 +283,8 @@ export default function Profile() {
                     labelPlacement="outside"
                     placeholder="街道名稱"
                     type="text"
-                    // value={user.username}
-                    // onChange={handleFieldChange}
+                    value={userProfile.address}
+                    onChange={handleFieldChange}
                     isRequired
                     className={{ ...inputStyles }}
                   />
@@ -199,7 +295,7 @@ export default function Profile() {
                     labelPlacement="outside"
                     placeholder="日期"
                     type="text"
-                    // value={user.username}
+                    value={formatDate(userProfile.join_date)}
                     // onChange={handleFieldChange}
                     disabled
                     className={{ ...inputStyles }}
