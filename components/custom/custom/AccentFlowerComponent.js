@@ -3,19 +3,18 @@ import ColorSelector from '../common/ColorSelector'
 import DraggableBar from './DraggableBar'
 import ChangeComponent from './ChangeComponent'
 const AccentFlowerComponent = ({ onNext, onPrev, items }) => {
-  const [selectedFlower, setSelectedFlower] = useState(null)
-
-  const handleSelectColor = (color) => {
-    setSelectedFlower(null)
+  const [selectedItem, setSelectedItem] = useState(null)
+  const handleSelectItem = (attributes, categoryName) => {
+    setSelectedItem({ attributes, categoryName })
   }
 
   return (
     <>
-      {selectedFlower ? (
+      {selectedItem ? (
         <ColorSelector
-          itemName={selectedFlower.name}
-          itemColors={selectedFlower.colors}
-          onConfirm={handleSelectColor}
+          itemAttribute={selectedItem.attributes}
+          categoryName={selectedItem.categoryName}
+          onConfirm={() => setSelectedItem(null)}
         />
       ) : (
         <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center ">
@@ -28,7 +27,7 @@ const AccentFlowerComponent = ({ onNext, onPrev, items }) => {
           <div className="w-full h-full relative">
             <DraggableBar
               items={items}
-              onItemSelect={setSelectedFlower}
+              onItemSelect={handleSelectItem}
               itemHeight={35}
               dragBuffer={50}
               className="w-[150px] h-[580px] mx-auto pt-2"

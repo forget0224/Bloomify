@@ -172,6 +172,7 @@ export default function FlowersIndex() {
     },
   ]
   //sortList end
+
   return (
     <DefaultLayout
       activePage={activePage}
@@ -193,7 +194,7 @@ export default function FlowersIndex() {
               </div>
             ))}
           </div>
-          {/* ------------花圖鑑首頁banner  ------------start*/}
+          {/* ------------花圖鑑首頁banner start ------------*/}
           {/* banner圖  */}
           <div className="relative w-full">
             {/* banner圖 */}
@@ -203,7 +204,6 @@ export default function FlowersIndex() {
               className="rounded-2xl"
             />
             {/* 文字方塊 */}
-
             <Card className="flex flex-row p-3 columns-2 m-4 md:m-10 absolute top-0 left-0 z-10 rounded-lg opacity-80">
               <CardBody className="p-0">
                 <div className="flex flex-col gap-1 items-start justify-between">
@@ -212,24 +212,29 @@ export default function FlowersIndex() {
                     doux, la nuit, de regarder le ciel."─Le petit Prince
                   </h1> */}
                   <p>
-                    「如果你愛著一朵盛開在浩瀚星海裡的花，那麼當你抬頭仰望繁星時，便會感到幸福。」─《小王子Le Petit Prince》
+                    「如果你愛著一朵盛開在浩瀚星海裡的花，那麼當你抬頭仰望繁星時，便會感到幸福。」─《小王子Le
+                    Petit Prince》
                   </p>
                 </div>
               </CardBody>
             </Card>
           </div>
+          {/* ------------花圖鑑首頁banner end------------*/}
 
-          {/* ------------花圖鑑首頁banner ------------end*/}
-
-          {/* 卡片群組 */}
+          {/* ------------清水模背景區塊 start------------*/}
           <div className="bg-[url('/assets/intro/vintage_speckles.png')]">
-            <div className="m-8 bg-transparent">
+            
+
+            <div className="m-8">
+              {/* --------search & select & sort end--------*/}
+
               <Subtitle text="花圖鑑" />
-              {/* search & select start */}
               <div className="flex py-10 px-15 justify-between w-full">
-                {/* searchbar */}
+                {/* ------------searchbar start------------*/}
                 <SearchBtn />
-                {/* filter */}
+                {/* ------------searchbar end------------ */}
+
+                {/* ------------filter start------------*/}
                 <div className="flex flex-cols items-center space-x-2">
                   <Select
                     placeholder="Select"
@@ -294,6 +299,8 @@ export default function FlowersIndex() {
                     ))}
                   </Select>
                 </div>
+                {/* ------------filter end------------*/}
+                {/* ------------sort start------------*/}
                 <div className="flex flex-cols items-center space-x-4">
                   <p className="text-lg text-tertiary-black whitespace-nowrap">
                     排序
@@ -313,16 +320,21 @@ export default function FlowersIndex() {
                     ))}
                   </Select>
                 </div>
+                {/* ------------sort end------------*/}
               </div>
-              {/* search & select end */}
+              {/* --------search & select & sort end--------*/}
             </div>
+
+            {/* --------花朵卡片群組-------- */}
             <div className="grid gap-y-4 my-14 ">
               <CardGroupClean />
               <div class="flex justify-center">
                 <MyButton>查看更多</MyButton>
               </div>
             </div>
+            {/* --------花朵卡片群組-------- */}
           </div>
+          {/* ------------清水模背景區塊 end------------*/}
         </div>
       </main>
     </DefaultLayout>

@@ -6,19 +6,13 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   useDisclosure,
 } from '@nextui-org/react'
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Image,
-  CardFooter,
-} from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { BsChevronRight } from 'react-icons/bs'
 import { FaStar, FaShareAlt } from 'react-icons/fa'
+import HeartButton from '@/components/course/btn-heart'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -27,15 +21,12 @@ import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import CardNews from '@/components/course/card-news'
 import CardTime from '@/components/course/card-time'
-import CoursePagination from '@/components/course/pagination'
-import CourseRating from '@/components/course/rating'
-import CourseFavorite from '@/components/course/btn-favorite'
 import ShareModal from '@/components/common/modal-share'
 import CourseMap from '@/components/course/card-map'
 import ImageSlider from '@/components/course/image-slider'
 import CourseComment from '@/components/course/div-comment'
-import CourseRatingFilter from '@/components/course/filter-rating'
 import CardGroup from '@/components/course/card-group'
+import AverageStars from '@/components/course/star-average'
 
 export default function CourseDetails() {
   const { close, open, isLoading } = useLoader()
@@ -43,6 +34,7 @@ export default function CourseDetails() {
   const { cid } = router.query
   const [courseDetails, setCourseDetails] = useState([cid])
   const [randomCourses, setRandomCourses] = useState([])
+  const [averageStars, setAverageStars] = useState([])
 
   // 點擊加入購物車/直接購買，滑動到選擇日期區塊
   const dateRef = useRef(null)
@@ -80,8 +72,22 @@ export default function CourseDetails() {
           if (data.status === 'success') {
             // 處理全部課程數據
             setCourseDetails(data.data.course)
+
+            // 計算並更新全部星級
+            const reviews = data.data.course.reviews
+            if (reviews && reviews.length > 0) {
+              const totalStars = reviews.reduce(
+                (acc, review) => acc + review.stars,
+                0
+              )
+              const avgStars = (totalStars / reviews.length).toFixed(1)
+              setAverageStars(parseFloat(avgStars)) // 更新平均星級狀態
+              console.log(parseFloat(avgStars))
+            } else {
+              setAverageStars('目前沒有評價')
+            }
           }
-          close(3) // 設置一個延時來關閉 loader
+          close(1.5) // 設置一個延時來關閉 loader
         } catch (error) {
           console.error('Error fetching course details:', error)
         }
@@ -131,7 +137,7 @@ export default function CourseDetails() {
   const display = (
     <DefaultLayout
       // activePage={activePage}
-      className="justify-center flex-col items-center"
+      className="justify-center flex flex-col items-center relative"
     >
       <CenterLayout>
         {/* 麵包屑 */}
@@ -144,10 +150,10 @@ export default function CourseDetails() {
           </Breadcrumbs>
         </div>
         {/* 課程圖和課程資訊 */}
-        <div className="flex flex-col gap-6 lg:flex-row mb-12 w-full">
+        <div className="flex flex-col gap-14 lg:flex-row mb-12 w-full">
           {/* 課程圖 */}
           <div className="w-full flex justify-center items-center lg:w-6/12 mb-6 md:mb-0">
-            <ImageSlider />
+            <ImageSlider images={courseDetails.images} />
           </div>
           {/* 課程資訊 */}
           <div className="w-full lg:w-6/12 flex flex-col gap-6">
@@ -156,16 +162,23 @@ export default function CourseDetails() {
               <div className="w-full">
                 <p className="text-3xl font-medium">{courseDetails.name}</p>
                 <div className="flex justify-between mt-2">
-                  <CourseRating />
-                  <div className="flex flex-row">
-                    <button>
-                      <CourseFavorite />
-                    </button>
+                  <div className="flex flex-row gap-2">
+                    <AverageStars averageStars={averageStars} />
+                    <span className="text-base">
+                      {averageStars || 'Loading...'}
+                    </span>
+                  </div>
+                  <div className="flex flex-row items-center">
+                    <HeartButton
+                      opacity="text-opacity-0"
+                      isActive={false}
+                      onToggle={() => console.log('toggle clicked')}
+                    />
                     <button
                       onClick={onShareOpen}
                       className="flex flex-row items-center h-6 w-6 justify-center text-secondary-100 hover:text-[#FFAC9A]"
                     >
-                      <FaShareAlt className="w-5 h-5" />
+                      <FaShareAlt className="w-5 h-5 cursor-pointer" />
                     </button>
                   </div>
                 </div>
@@ -231,10 +244,10 @@ export default function CourseDetails() {
             </Card>
           </div>
         </div>
-        {/* 其他所有資訊 */}
-        <div className="flex flex-col lg:flex-row w-full gap-16 static overflow:auto">
+        {/* main 所有資訊 */}
+        <div className="flex flex-col lg:flex-row w-full gap-16 relative">
           {/* 開課商家資訊 */}
-          <div className="w-full lg:w-5/12 order-0 lg:order-1 h-fit sticky top-0">
+          <div className="w-full lg:w-5/12 order-0 lg:order-1 h-fit">
             <CourseMap store={courseDetails.store} />
           </div>
           {/* 其他詳細資訊 */}
@@ -258,33 +271,18 @@ export default function CourseDetails() {
               <Subtitle text="課程評價" />
               {/* 總評分 */}
               <div className="flex flex-row gap-2">
-                <span className="text-2xl">4.0</span>
-                <span className="text-2xl">/</span>
-                <span className="text-2xl">5</span>
-                <div className="flex flex-row items-center text-secondary-100">
-                  <FaStar className="w-5 h-5" />
-                  <FaStar className="w-5 h-5" />
-                  <FaStar className="w-5 h-5" />
-                  <FaStar className="w-5 h-5 text-secondary-200" />
-                  <FaStar className="w-5 h-5 text-secondary-200" />
-                </div>
+                <span className="text-2xl">
+                  {averageStars || 'Loading...'}/5
+                </span>
+                <AverageStars averageStars={averageStars} />
               </div>
-              {/* filter */}
-              <div>
-                <CourseRatingFilter />
-              </div>
-              {/* 評價 */}
               <div>
                 <CourseComment reviews={courseDetails.reviews} />
-              </div>
-              <div>
-                <CoursePagination />
               </div>
             </div>
             {/* 推薦課程 */}
             <div className="flex flex-col gap-5 mb-[80px]">
               <Subtitle text="推薦課程" />
-              {/* <CardGroup className="overflow-x-auto" /> */}
               <CardGroup courses={randomCourses} />
             </div>
           </div>

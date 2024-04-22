@@ -16,13 +16,7 @@ export default function MyApp({ Component, pageProps }) {
     <NextUIProvider>
       <AuthProvider>
         <LoaderProvider>
-          <ColorProvider>
-            <OccProvider>
-              <RoleProvider>
-                <Component {...pageProps} />
-              </RoleProvider>
-            </OccProvider>
-          </ColorProvider>
+          <Component {...pageProps} />
         </LoaderProvider>
       </AuthProvider>
     </NextUIProvider>

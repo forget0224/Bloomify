@@ -31,12 +31,6 @@ export default function SwiperCarousel({ items, onItemSelect }) {
     }
   }
 
-  // const handleClick = (product) => {
-  //   if (!isDragging) {
-  //     setSelectedFlower(product)
-  //   }
-  // }
-
   return (
     <div className="w-full h-full overflow-hidden">
       <motion.div
@@ -49,23 +43,27 @@ export default function SwiperCarousel({ items, onItemSelect }) {
         onDragEnd={onDragEnd}
         className="flex justify-start cursor-grab active:cursor-grabbing h-full"
       >
-        {items &&
+        {items ? (
           items.map((item, index) => (
             <div key={index} className="flex flex-col items-center mr-4">
               <div
-                // onClick={() => handleClick(item)}
                 onClick={() =>
-                  onItemSelect({
-                    name: item.category_name,
-                    colors: item.colors,
-                  })
+                  onItemSelect(item.attributes, item.category_name)
                 }
                 style={{ backgroundImage: `url(${item.category_url})` }}
                 className="bg-cover bg-center aspect-square w-[125px] rounded-xl object-cover"
               ></div>
               <p>{item.category_name}</p>
             </div>
-          ))}
+          ))
+        ) : (
+          <div
+            className="flex justify-center items-center w-full "
+            style={{ height: 'calc(100% - 64px)' }}
+          >
+            <p>目前店家尚未上架商品</p>
+          </div>
+        )}
       </motion.div>
     </div>
   )

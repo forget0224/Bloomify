@@ -1,11 +1,7 @@
-import { useState, useEffect, cloneElement } from 'react'
-import logo from '@/assets/singleLogo.svg'
-import Image from 'next/image'
-import { CiUndo } from 'react-icons/ci'
-import { MyButton } from '@/components/btn/mybutton'
+import { useState, useEffect } from 'react'
+
 import BottomSheetButton from '@/components/custom/custom/BottomSheetButton'
 import 'react-spring-bottom-sheet/dist/style.css'
-// import items from '@/components/custom/custom/items'
 import MainFlowerComponent from '@/components/custom/custom/MainFlowerComponent'
 import AccentFlowerComponent from '@/components/custom/custom/AccentFlowerComponent'
 import LeafComponent from '@/components/custom/custom/LeafComponent'
@@ -14,8 +10,13 @@ import CardComponent from '@/components/custom/custom/CardComponent'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { IoLayersOutline } from 'react-icons/io5'
 import ShareModal from '@/components/custom/common/Modal'
-import Link from 'next/link'
-
+import WorkingArea from '@/components/custom/custom/WorkingArea'
+import { ColorProvider } from '@/hooks/use-color'
+import { RoleProvider } from '@/hooks/use-role'
+import { OccProvider } from '@/hooks/use-occ'
+import { FlowerProvider } from '@/hooks/use-flower'
+import { StoreProvider } from '@/hooks/use-store'
+import CustomNav from '@/components/custom/custom/customNav'
 import {
   Popover,
   PopoverTrigger,
@@ -29,7 +30,6 @@ import {
   PiGiftLight,
   PiPencilLineLight,
 } from 'react-icons/pi'
-// import { IoLayersOutline } from 'react-icons/io5'
 import FlowerContent from '@/components/custom/custom/FlowerContent'
 import LeafContent from '@/components/custom/custom/LeafContent'
 import PackageContent from '@/components/custom/custom/PackageContent'
@@ -41,8 +41,9 @@ export default function Custom() {
   const [currentPage, setCurrentPage] = useState('main')
   const [storeData, setStoreData] = useState(null)
   const [currentComponentIndex, setCurrentComponentIndex] = useState(0)
-  const [currentItemIndex, setCurrentItemIndex] = useState(0)
+  // const [currentItemIndex, setCurrentItemIndex] = useState(0)
   const [items, setItems] = useState([])
+  // const storeData = useStore()
   const components = [
     { component: MainFlowerComponent, name: 'main' },
     { component: AccentFlowerComponent, name: 'accent' },
@@ -55,7 +56,7 @@ export default function Custom() {
   const handleConfirm = (store) => {
     setSelectedStore(store)
     setModalOpen(false)
-    fetchStoreData(store.id)
+    fetchStoreData(store.store_id)
   }
 
   useEffect(() => {
@@ -185,126 +186,136 @@ export default function Custom() {
     })
   }
 
-  return (
-    <>
-      {selectedStore ? (
-        <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
-          <div className="flex flex-col sm:w-8/12 h-full ">
-            <nav className="w-full h-14 flex flex-row items-center px-5 gap-4 sm:h-16">
-              <div className="text-center w-10 sm:h-16 cursor-pointer">
-                <Link href="/">
-                  <Image className="w-full h-full" src={logo} alt="" />
-                </Link>
-              </div>
-              <div className="w-full h-full flex flex-row justify-between items-center">
-                <div className="text-xl text-tertiary-black flex flex-col items-center mt-2 sm:mt-1 sm:text-3xl cursor-pointer">
-                  <CiUndo />
-                  <p className="text-xs">reset</p>
-                </div>
-                <div className="sm:hidden ">
-                  <Link href="/cart">
-                    <MyButton size="xs" color="secondary200">
-                      完成
-                    </MyButton>
-                  </Link>
-                </div>
-                <div className="hidden sm:block">
-                  <Link href="/cart">
-                    <MyButton size="md" color="secondary200">
-                      完成
-                    </MyButton>
-                  </Link>
-                </div>
-              </div>
-            </nav>
+  const [imageUrl, setImageUrl] = useState('')
 
-            <main className="flex-1 w-full h-auto relative">
-              <div className="hidden sm:block">
-                <Popover placement="bottom-start">
-                  <PopoverTrigger>
-                    <Button
-                      isIconOnly
-                      className="rounded-full border-1 text-tertiary-black border-tertiary-black w-12 h-12 bg-secondary-200 flex flex-col items-center justify-center m-4"
-                    >
-                      <IoLayersOutline className="text-3xl" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent>
-                    <LayerContent />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </main>
-          </div>
-          <div className="sm:w-4/12  bg-white sm:flex hidden sm:flex-col h-screen">
-            <div className="py-2 mx-4">
-              <Breadcrumbs
-                separator="/"
-                itemClasses={{
-                  separator: 'px-2',
-                }}
-                underline="active"
-                onAction={handleAction}
-              >
-                <BreadcrumbItem key="main" isCurrent={currentPage === 'main'}>
-                  主花
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  key="accent"
-                  isCurrent={currentPage === 'accent'}
-                >
-                  配花
-                </BreadcrumbItem>
-                <BreadcrumbItem key="leaf" isCurrent={currentPage === 'leaf'}>
-                  葉材
-                </BreadcrumbItem>
-                <BreadcrumbItem
-                  key="package"
-                  isCurrent={currentPage === 'package'}
-                >
-                  包裝
-                </BreadcrumbItem>
-                <BreadcrumbItem key="card" isCurrent={currentPage === 'card'}>
-                  賀卡
-                </BreadcrumbItem>
-              </Breadcrumbs>
-            </div>
-            <div className="h-full">
-              {storeData && (
-                <CurrentComponent
-                  items={currentData}
-                  onPrev={handlePrevComponent}
-                  onNext={handleNextComponent}
-                />
-              )}
-              {/* 電腦版的currenData 順利傳進去 */}
-            </div>
-          </div>
-          {/* 底部  */}
-          <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden">
-            <div className="flex flex-row gap-2 justify-evenly items-center h-full">
-              {items &&
-                items.map((item, index) => (
-                  <BottomSheetButton
-                    key={index}
-                    {...item}
-                    isOpen={openedIndex === index}
-                    onOpen={() => handleOpen(index)}
-                    onClose={handleClose}
-                    onPrev={handlePrev}
-                    onNext={handleNext}
+  const handleSelectImage = (selectedUrl) => {
+    setImageUrl(selectedUrl)
+  }
+  return (
+    <StoreProvider>
+      <FlowerProvider>
+        <ColorProvider>
+          <OccProvider>
+            <RoleProvider>
+              <>
+                {selectedStore ? (
+                  <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
+                    <div className="flex flex-col sm:w-8/12 h-full ">
+                      <CustomNav />
+                      <main className="flex-1 w-full h-auto relative">
+                        {/* 圖層的區塊 */}
+                        <div className="hidden sm:block">
+                          <Popover placement="bottom-start">
+                            <PopoverTrigger>
+                              <Button
+                                isIconOnly
+                                className="rounded-full border-1 text-tertiary-black border-tertiary-black w-12 h-12 bg-secondary-200 flex flex-col items-center justify-center m-4"
+                              >
+                                <IoLayersOutline className="text-3xl" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <LayerContent />
+                            </PopoverContent>
+                          </Popover>
+                        </div>
+
+                        <div
+                          className="bg-secondary-200 sm:w-[500px] sm:h-[550px] m-auto relative w-[375px] h-auto"
+                          style={{
+                            backgroundImage:
+                              'url("/custom/custom/canvasBg.png")',
+                            backgroundSize: 'contain',
+                            backgroundPosition: 'center',
+                            backgroundRepeat: 'no-repeat',
+                          }}
+                        >
+                          <WorkingArea />
+                        </div>
+                      </main>
+                    </div>
+                    <div className="sm:w-4/12  bg-white sm:flex hidden sm:flex-col h-screen">
+                      <div className="py-2 mx-4">
+                        <Breadcrumbs
+                          separator="/"
+                          itemClasses={{
+                            separator: 'px-2',
+                          }}
+                          underline="active"
+                          onAction={handleAction}
+                        >
+                          <BreadcrumbItem
+                            key="main"
+                            isCurrent={currentPage === 'main'}
+                          >
+                            主花
+                          </BreadcrumbItem>
+                          <BreadcrumbItem
+                            key="accent"
+                            isCurrent={currentPage === 'accent'}
+                          >
+                            配花
+                          </BreadcrumbItem>
+                          <BreadcrumbItem
+                            key="leaf"
+                            isCurrent={currentPage === 'leaf'}
+                          >
+                            葉材
+                          </BreadcrumbItem>
+                          <BreadcrumbItem
+                            key="package"
+                            isCurrent={currentPage === 'package'}
+                          >
+                            包裝
+                          </BreadcrumbItem>
+                          <BreadcrumbItem
+                            key="card"
+                            isCurrent={currentPage === 'card'}
+                          >
+                            賀卡
+                          </BreadcrumbItem>
+                        </Breadcrumbs>
+                      </div>
+                      <div className="h-full">
+                        {storeData && (
+                          <CurrentComponent
+                            items={currentData}
+                            onPrev={handlePrevComponent}
+                            onNext={handleNextComponent}
+                          />
+                        )}
+                      </div>
+                    </div>
+                    {/* 底部  */}
+                    <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden">
+                      <div className="flex flex-row gap-2 justify-evenly items-center h-full">
+                        {items &&
+                          items.map((item, index) => (
+                            <BottomSheetButton
+                              key={index}
+                              {...item}
+                              isOpen={openedIndex === index}
+                              onOpen={() => handleOpen(index)}
+                              onClose={handleClose}
+                              onPrev={handlePrev}
+                              onNext={handleNext}
+                            />
+                          ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <ShareModal
+                    isModalOpen={isModalOpen}
+                    onConfirm={handleConfirm} // 確保這裡傳入的是函數
+                    onClose={() => setModalOpen(false)}
                   />
-                ))}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <ShareModal
-          isModalOpen={isModalOpen}
-          onConfirm={handleConfirm} // 確保這裡傳入的是函數
-          onClose={() => setModalOpen(false)}
-        />
-      )}
-    </>
+                )}
+              </>
+            </RoleProvider>
+          </OccProvider>
+        </ColorProvider>
+      </FlowerProvider>
+    </StoreProvider>
   )
 }

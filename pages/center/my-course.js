@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useLoader } from '@/hooks/use-loader'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import { useDisclosure } from '@nextui-org/react'
@@ -6,31 +7,63 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
 import { BsChevronRight } from 'react-icons/bs'
+import moment from 'moment'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
+import Loader from '@/components/common/loader'
 import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
 import Review from '@/components/shop/center/review'
 import CourseSearch from '@/components/course/search'
+import CourseDropdown from '@/components/course/dropdown'
 
-export default function CenterCourse() {
-  const imageList = [
-    {
-      src: '/assets/course/img_course_01_01.png',
-    },
+export default function MyCourse() {
+  const { close, open, isLoading } = useLoader()
+  const [orders, setOrders] = useState([])
+
+  // 排序query string更新
+  const [sortOption, setSortOption] = useState('預設排序')
+  const sortOptions = [
+    { value: 'latest', label: '由新到舊' },
+    { value: 'cheapest', label: '價格低到高' },
+    { value: 'expensive', label: '價格高到低' },
   ]
-  const list = [
-    {
-      title: 'Orange',
-    },
-    {
-      title: 'Tangerine',
-    },
-    {
-      title: 'Raspberry',
-    },
-  ]
+  const handleSortChange = (value) => {
+    // 查找對應的標籤
+    const option = sortOptions.find((option) => option.value === value)
+    const label = option ? option.label : '最新上架'
+
+    setSortOption(label) // 更新狀態為選中的中文標籤
+
+    // 不需要再次定義sortOptions
+    // router.push({
+    //   pathname: '/course/search',
+    //   query: { ...router.query, sort: value },
+    // })
+  }
+
+  useEffect(() => {
+    open() // 在 API 請求開始前，開啟 loader
+
+    async function fetchOrders() {
+      try {
+        const response = await fetch('http://localhost:3005/api/course-orders')
+        const data = await response.json()
+        console.log('API data:', data) // 確認數據已接收
+        if (response.ok && data.status === 'success') {
+          setOrders(data.data)
+        } else {
+          throw new Error('Failed to fetch orders or wrong data structure')
+        }
+        close(1.5) // 設置一個延時來關閉 loader
+      } catch (error) {
+        console.error('Error fetching all orders:', error)
+      }
+    }
+
+    fetchOrders()
+  }, [])
 
   //外層手風琴樣式
   const accordionStyle = {
@@ -44,75 +77,71 @@ export default function CenterCourse() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   const [activePage, setActivePage] = useState('course')
-  return (
+
+  const display = (
     <DefaultLayout activePage={activePage}>
-      {
-        <>
-          <CenterLayout>
-            {/* 麵包屑 */}
-            <div className="w-full py-6 invisible md:visible">
-              <Breadcrumbs>
-                <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem>會員中心</BreadcrumbItem>
-                <BreadcrumbItem>合作課程</BreadcrumbItem>
-                <BreadcrumbItem>我的課程</BreadcrumbItem>
-              </Breadcrumbs>
-            </div>
+      <CenterLayout>
+        {/* 麵包屑 */}
+        <div className="w-full py-6 invisible md:visible">
+          <Breadcrumbs>
+            <BreadcrumbItem>首頁</BreadcrumbItem>
+            <BreadcrumbItem>會員中心</BreadcrumbItem>
+            <BreadcrumbItem>合作課程</BreadcrumbItem>
+            <BreadcrumbItem>我的課程</BreadcrumbItem>
+          </Breadcrumbs>
+        </div>
 
-            {/* 主要內容 */}
-            <div className="flex flex-row w-full justify-center">
-              {/* 側邊欄 */}
-              <Sidebar />
+        {/* 主要內容 */}
+        <div className="flex flex-row w-full justify-center">
+          {/* 側邊欄 */}
+          <Sidebar />
 
-              {/* 歷史訂單 */}
-              <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
-                {/* 訂單明細 */}
-                <Title text="我的課程" />
-                <div className="flex w-full flex-col">
-                  <Tabs
-                    key={''}
-                    radius={'full'}
-                    color={'primary'}
-                    aria-label="Tabs radius"
-                    className="pt-4"
-                  >
-                    {/* Tab1 - 全部訂單 */}
-                    <Tab key="all" title="全部訂單">
-                      {/* 搜尋與排序 */}
-                      <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
-                        {/* searchbar */}
-                        <div className="w-full md:w-[320px]">
-                          <CourseSearch />
-                        </div>
-                        {/* filter */}
-                        <div className="flex flex-cols items-center space-x-4">
-                          <p className=" text-tertiary-black whitespace-nowrap">
-                            排序
-                          </p>
-                          <Select
-                            placeholder="Select"
-                            defaultSelectedKeys={['Orange']}
-                            className="max-w-xs md:w-48 w-full"
-                            scrollShadowProps={{
-                              isEnabled: false,
-                            }}
-                          >
-                            {list.map((item, index) => (
-                              <SelectItem key={item.title} value={item.title}>
-                                {item.title}
-                              </SelectItem>
-                            ))}
-                          </Select>
-                        </div>
-                      </div>
-                      {/* 歷史訂單卡片 */}
-                      <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
-                        {/* 卡片包手風琴 */}
-                        <Card className="shadow-none border-1 border-tertiary-gray-200">
+          {/* 歷史訂單 */}
+          <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
+            {/* 訂單明細 */}
+            <Title text="我的課程" />
+            <div className="flex w-full flex-col">
+              <Tabs
+                key={''}
+                radius={'full'}
+                color={'primary'}
+                aria-label="Tabs radius"
+                className="pt-4"
+              >
+                {/* Tab1 - 全部訂單 */}
+                <Tab key="all" title="全部訂單">
+                  {/* 搜尋與排序 */}
+                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                    {/* searchbar */}
+                    <div className="w-full md:w-[320px]">
+                      <CourseSearch />
+                    </div>
+                    {/* filter */}
+                    <div className="w-full md: w-fit flex flex-cols items-center">
+                      <span className="mr-4 text-tertiary-black text-nowrap">
+                        排序
+                      </span>
+                      <CourseDropdown
+                        label="預設排序"
+                        options={sortOptions}
+                        selectedOption={sortOption}
+                        onChange={handleSortChange}
+                      />
+                    </div>
+                  </div>
+                  {/* 歷史訂單卡片 */}
+                  <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
+                    {/* 卡片包手風琴 */}
+                    {orders.map((order) =>
+                      order.items.map((item, index) => (
+                        <Card
+                          key={item.id}
+                          className="shadow-none border-1 border-tertiary-gray-200"
+                        >
                           <Accordion itemClasses={accordionStyle}>
                             <AccordionItem
-                              key="1"
-                              aria-label="Accordion 1"
+                              key={item.id}
+                              aria-label={`Accordion ${index}`}
                               title={
                                 <div className="flex flex-row gap-2 items-center">
                                   <svg
@@ -127,7 +156,7 @@ export default function CenterCourse() {
                                       fill="#68A392"
                                     />
                                   </svg>
-                                  <span>韓系乾燥花課程</span>
+                                  <span>{item.course.name}</span>
                                 </div>
                               }
                             >
@@ -138,7 +167,7 @@ export default function CenterCourse() {
                                     width={200}
                                     height={100}
                                     alt="課程圖片"
-                                    src="/assets/course/category-1/img-course-01-01.jpg"
+                                    src={item.course.images[0].path} // TODO:連不到
                                     className="p-2 border-1 rounded-lg mt-2"
                                   />
                                 </div>
@@ -146,19 +175,30 @@ export default function CenterCourse() {
                                 <div className="flex flex-col w-full gap-2">
                                   <div className="flex flex-col md:flex-row py-1 md:py-0 border-b-1 md:border-0 border-tertiary-gray-200">
                                     <div>課程期別：</div>
-                                    <div>1期</div>
+                                    <div>{item.period}期</div>
                                   </div>
                                   <div className="flex flex-col md:flex-row py-1 md:py-0 border-b-1 md:border-0 border-tertiary-gray-200">
                                     <div>上課時間：</div>
-                                    <div>2024.03.11, 18:00-20:00</div>
+                                    {item.course.datetimes &&
+                                    item.course.datetimes.length > 0
+                                      ? `${moment(
+                                          item.course.datetimes[0].date
+                                        ).format('YYYY/MM/DD')}, ${moment(
+                                          item.course.datetimes[0].start_time,
+                                          'HH:mm:ss'
+                                        ).format('HH:mm')}~${moment(
+                                          item.course.datetimes[0].end_time,
+                                          'HH:mm:ss'
+                                        ).format('HH:mm')}`
+                                      : '未設定'}
                                   </div>
                                   <div className="flex flex-col md:flex-row py-1 md:py-0 border-b-1 md:border-0 border-tertiary-gray-200">
                                     <div>開課單位：</div>
-                                    <div>花疫室</div>
+                                    <div>{item.course.store.store_name}</div>
                                   </div>
                                   <div className="flex flex-col md:flex-row py-1 md:py-0">
                                     <div>上課地點：</div>
-                                    <div>台北市中山區大直街666號</div>
+                                    <div>{item.course.store.store_address}</div>
                                   </div>
                                   <div
                                     className="flex flex-row py-1 md:py-0 items-center text-primary-100 cursor-pointer"
@@ -172,144 +212,143 @@ export default function CenterCourse() {
                             </AccordionItem>
                           </Accordion>
                         </Card>
-                      </div>
-                    </Tab>
-                    {/* Tab2 - 未完成訂單 */}
-                    <Tab key="unfinished" title="未完成">
-                      {/* 搜尋與排序 */}
-                      <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
-                        {/* searchbar */}
-                        <div className="w-full md:w-[320px]">
-                          <CourseSearch />
-                        </div>
-                        {/* filter */}
-                        <div className="flex flex-cols items-center space-x-4">
-                          <p className=" text-tertiary-black whitespace-nowrap">
-                            排序
-                          </p>
-                          <Select
-                            placeholder="Select"
-                            defaultSelectedKeys={['Orange']}
-                            className="max-w-xs md:w-48 w-full"
-                            scrollShadowProps={{
-                              isEnabled: false,
-                            }}
-                          >
-                            {list.map((item, index) => (
-                              <SelectItem key={item.title} value={item.title}>
-                                {item.title}
-                              </SelectItem>
-                            ))}
-                          </Select>
-                        </div>
-                      </div>
-                      {/* 卡片 */}
-                      <div className="flex flex-col gap-4 mt-4 md:mt-0">
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                          <CardBody className="p-0">
-                            範例範例範例範例範例範例
-                          </CardBody>
-                        </Card>
-                      </div>
-                    </Tab>
-                    {/* Tab3 - 已完成訂單 */}
-                    <Tab key="finished" title="已完成">
-                      {/* 搜尋與排序 */}
-                      <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
-                        {/* searchbar */}
-                        <div className="w-full md:w-[320px]">
-                          <CourseSearch />
-                        </div>
-                        {/* filter */}
-                        <div className="flex flex-cols items-center space-x-4">
-                          <p className=" text-tertiary-black whitespace-nowrap">
-                            排序
-                          </p>
-                          <Select
-                            placeholder="Select"
-                            defaultSelectedKeys={['Orange']}
-                            className="max-w-xs md:w-48 w-full"
-                            scrollShadowProps={{
-                              isEnabled: false,
-                            }}
-                          >
-                            {list.map((item, index) => (
-                              <SelectItem key={item.title} value={item.title}>
-                                {item.title}
-                              </SelectItem>
-                            ))}
-                          </Select>
-                        </div>
-                      </div>
-                      {/* 卡片 */}
-                      <div className="flex flex-col gap-4 mt-4 md:mt-0">
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                          <CardBody className="p-0">
-                            範例範例範例範例範例範例
-                          </CardBody>
-                        </Card>
-                      </div>
-                    </Tab>
-                    {/* Tab4 - 待評價 */}
-                    <Tab key="review" title="待評價">
-                      {/* 搜尋與排序 */}
-                      <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
-                        {/* searchbar */}
-                        <div className="w-full md:w-[320px]">
-                          <CourseSearch />
-                        </div>
-                        {/* filter */}
-                        <div className="flex flex-cols items-center space-x-4">
-                          <p className=" text-tertiary-black whitespace-nowrap">
-                            排序
-                          </p>
-                          <Select
-                            placeholder="Select"
-                            defaultSelectedKeys={['Orange']}
-                            className="max-w-xs md:w-48 w-full"
-                            scrollShadowProps={{
-                              isEnabled: false,
-                            }}
-                          >
-                            {list.map((item, index) => (
-                              <SelectItem key={item.title} value={item.title}>
-                                {item.title}
-                              </SelectItem>
-                            ))}
-                          </Select>
-                        </div>
-                      </div>
-                      {/* 卡片 */}
-                      <div className="flex flex-col gap-4 mt-4 md:mt-0">
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                          <CardBody className="p-0">
-                            範例範例範例範例範例範例
-                          </CardBody>
-                        </Card>
-                      </div>
-                    </Tab>
-                  </Tabs>
-                </div>
-
-                {/* pagination */}
-                <Pagination
-                  color="secondary-100"
-                  initialPage={3}
-                  total={10}
-                  className="flex justify-center mt-6"
-                />
-              </div>
+                      ))
+                    )}
+                  </div>
+                </Tab>
+                {/* Tab2 - 未完成訂單 */}
+                <Tab key="unfinished" title="未完成">
+                  {/* 搜尋與排序 */}
+                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
+                    {/* searchbar */}
+                    <div className="w-full md:w-[320px]">
+                      <CourseSearch />
+                    </div>
+                    {/* filter */}
+                    <div className="flex flex-cols items-center space-x-4">
+                      <p className=" text-tertiary-black whitespace-nowrap">
+                        排序
+                      </p>
+                      {/* <Select
+                        placeholder="Select"
+                        defaultSelectedKeys={['Orange']}
+                        className="max-w-xs md:w-48 w-full"
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                      >
+                        {list.map((item, index) => (
+                          <SelectItem key={item.title} value={item.title}>
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select> */}
+                    </div>
+                  </div>
+                  {/* 卡片 */}
+                  <div className="flex flex-col gap-4 mt-4 md:mt-0">
+                    <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
+                      <CardBody className="p-0">
+                        範例範例範例範例範例範例
+                      </CardBody>
+                    </Card>
+                  </div>
+                </Tab>
+                {/* Tab3 - 已完成訂單 */}
+                <Tab key="finished" title="已完成">
+                  {/* 搜尋與排序 */}
+                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
+                    {/* searchbar */}
+                    <div className="w-full md:w-[320px]">
+                      <CourseSearch />
+                    </div>
+                    {/* filter */}
+                    <div className="flex flex-cols items-center space-x-4">
+                      <p className=" text-tertiary-black whitespace-nowrap">
+                        排序
+                      </p>
+                      {/* <Select
+                        placeholder="Select"
+                        defaultSelectedKeys={['Orange']}
+                        className="max-w-xs md:w-48 w-full"
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                      >
+                        {list.map((item, index) => (
+                          <SelectItem key={item.title} value={item.title}>
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select> */}
+                    </div>
+                  </div>
+                  {/* 卡片 */}
+                  <div className="flex flex-col gap-4 mt-4 md:mt-0">
+                    <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
+                      <CardBody className="p-0">
+                        範例範例範例範例範例範例
+                      </CardBody>
+                    </Card>
+                  </div>
+                </Tab>
+                {/* Tab4 - 待評價 */}
+                <Tab key="review" title="待評價">
+                  {/* 搜尋與排序 */}
+                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
+                    {/* searchbar */}
+                    <div className="w-full md:w-[320px]">
+                      <CourseSearch />
+                    </div>
+                    {/* filter */}
+                    <div className="flex flex-cols items-center space-x-4">
+                      <p className=" text-tertiary-black whitespace-nowrap">
+                        排序
+                      </p>
+                      {/* <Select
+                        placeholder="Select"
+                        defaultSelectedKeys={['Orange']}
+                        className="max-w-xs md:w-48 w-full"
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                      >
+                        {list.map((item, index) => (
+                          <SelectItem key={item.title} value={item.title}>
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select> */}
+                    </div>
+                  </div>
+                  {/* 卡片 */}
+                  <div className="flex flex-col gap-4 mt-4 md:mt-0">
+                    <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
+                      <CardBody className="p-0">
+                        範例範例範例範例範例範例
+                      </CardBody>
+                    </Card>
+                  </div>
+                </Tab>
+              </Tabs>
             </div>
 
-            {/* 評價 Modal */}
-            <Review
-              onOpen={onOpen}
-              isOpen={isOpen}
-              onOpenChange={onOpenChange}
+            {/* pagination */}
+            <Pagination
+              color="secondary-100"
+              initialPage={3}
+              total={10}
+              className="flex justify-center mt-6"
             />
-          </CenterLayout>
-        </>
-      }
+          </div>
+        </div>
+
+        {/* 評價 Modal */}
+        <Review onOpen={onOpen} isOpen={isOpen} onOpenChange={onOpenChange} />
+      </CenterLayout>
     </DefaultLayout>
   )
+
+  // 使用 isLoading 狀態決定是顯示 loader 還是顯示頁面內容
+  return isLoading ? <Loader /> : display
 }
