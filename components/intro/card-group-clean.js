@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import introData from "../../data/introData.json";
+import introData from '../../data/introData.json'
 import { MyButton } from '@/components/btn/mybutton'
 import {
   Modal,
@@ -25,14 +25,13 @@ export default function CardGroupClean() {
     setSize(size)
     onOpen()
     // 將卡片的相關資料傳遞給模態視窗
-    setModalData(item);
+    setModalData(item)
   }
-// useState hook 用於存儲模態視窗中顯示的資料
-const [modalData, setModalData] = useState(null);
- 
+  // useState hook 用於存儲模態視窗中顯示的資料
+  const [modalData, setModalData] = useState(null)
+
   return (
     <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
-    
       <Modal size={sizes} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
@@ -51,13 +50,10 @@ const [modalData, setModalData] = useState(null);
                 </div>
                 <div className="flex flex-col m-12 justify-center">
                   <ul>
-                    <li>
-                    {modalData ? modalData.intro : ''}
-                    </li>
+                    <li>{modalData ? modalData.intro : ''}</li>
 
                     <hr className="h-px my-8 border-1 border-secondary-100" />
                     <div className="list-disc">
-                      
                       <li>花期:{modalData ? modalData.season : ''}</li>
                       <li>常見顏色:{modalData ? modalData.color : ''}</li>
                       <li>適合對象:{modalData ? modalData.role : ''}</li>
@@ -83,7 +79,6 @@ const [modalData, setModalData] = useState(null);
 
       {introData.map((item, index) => (
         <Card
-        
           key={index}
           onPress={() => handleOpen(item)} // 將卡片的相關資料傳遞給 handleOpen 函數
           shadow="none"
@@ -93,8 +88,8 @@ const [modalData, setModalData] = useState(null);
           <CardBody className="static overflow-visible p-0 bg-transparent">
             <div className="bg-transparent">
               <Image
-              isZoomed
-              removeWrapper
+                isZoomed
+                removeWrapper
                 shadow="none"
                 radius="none"
                 width="130%"
