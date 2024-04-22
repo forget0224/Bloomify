@@ -54,7 +54,7 @@ export default function CardGroupStore() {
               />
             </CardBody>
             <CardFooter className="w-full block text-center bg-white">
-              <p className="w-full text-xl">{store.store_name}</p>
+              <p className="w-full text-xl truncate">{store.store_name}</p>
             </CardFooter>
           </Link>
         </Card>

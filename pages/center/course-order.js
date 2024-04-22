@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import { useDisclosure } from '@nextui-org/react'
@@ -6,6 +6,7 @@ import { Accordion, AccordionItem } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
 import { BsChevronRight } from 'react-icons/bs'
+import moment from 'moment'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -14,11 +15,27 @@ import Title from '@/components/common/title'
 import CourseSearch from '@/components/course/search'
 
 export default function CenterCourse() {
-  const imageList = [
-    {
-      src: '/assets/course/img_course_01_01.png',
-    },
-  ]
+  const [orders, setOrders] = useState([])
+
+  useEffect(() => {
+    async function fetchAllCourses() {
+      try {
+        const response = await fetch('http://localhost:3005/api/course-orders')
+        const data = await response.json()
+        console.log('API data:', data) // 確認數據已接收
+        if (response.ok && data.status === 'success') {
+          setOrders(data.data)
+        } else {
+          throw new Error('Failed to fetch courses')
+        }
+      } catch (error) {
+        console.error('Error fetching all orders:', error)
+      }
+    }
+
+    fetchAllCourses()
+  }, [])
+
   const list = [
     {
       title: 'Orange',
@@ -104,95 +121,97 @@ export default function CenterCourse() {
                       {/* 歷史訂單卡片 */}
                       <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
                         {/* 卡片包手風琴 */}
-                        <Card className="shadow-none border-1 border-tertiary-gray-200">
-                          <Accordion itemClasses={accordionStyle}>
-                            <AccordionItem
-                              key="1"
-                              aria-label="Accordion 1"
-                              title={
-                                <>
-                                  <div className="flex flex-row gap-2 items-center">
-                                    訂單號碼
-                                    <span className="text-primary-100">
-                                      #1234567812345678
-                                    </span>
-                                  </div>
-                                  <div className="pt-2">
-                                    <div className="flex flex-col md:flex-row text-base border-b-1 py-1">
-                                      <span className="md:w-[350px] truncate">
-                                        韓系乾燥花課程
-                                      </span>
-                                      <span className="md:w-[150px]">
-                                        NT$1000
+                        {orders.map((order) => (
+                          <Card
+                            key={order.id}
+                            className="shadow-none border-1 border-tertiary-gray-200"
+                          >
+                            <Accordion itemClasses={accordionStyle}>
+                              <AccordionItem
+                                key={''}
+                                aria-label={'Accordion 1'}
+                                title={
+                                  <>
+                                    <div className="flex flex-row gap-2 items-center text-nowrap">
+                                      訂單號碼
+                                      <span className="text-primary-100">
+                                        #{order.order_number}
                                       </span>
                                     </div>
-                                    <div className="flex flex-col md:flex-row text-base border-b-1 py-1">
-                                      <span className="md:w-[350px] truncate">
-                                        多肉小盆栽課程
-                                      </span>
-                                      <span className="md:w-[150px]">
-                                        NT$800
-                                      </span>
+                                    <div className="pt-2">
+                                      {order.items.map((item) => (
+                                        <div
+                                          key={item.id}
+                                          className="flex flex-col md:flex-row text-base border-b-1 py-1"
+                                        >
+                                          <span className="md:w-[350px] truncate">
+                                            {item.course.name}
+                                          </span>
+                                          <span className="md:w-[150px]">
+                                            {item.course.price}
+                                          </span>
+                                        </div>
+                                      ))}
                                     </div>
-                                    <div className="flex flex-col md:flex-row text-base py-1">
-                                      <span className="md:w-[350px] truncate">
-                                        母親節花束製作課程
-                                      </span>
-                                      <span className="md:w-[150px]">
-                                        NT$200
-                                      </span>
-                                    </div>
-                                  </div>
-                                </>
-                              }
-                            >
-                              {/* 手風琴內容 */}
-                              <div className="flex flex-col md:flex-row gap-4 items-center md:items-start">
-                                {/* 新表格 */}
-                                <div className="flex flex-col w-full gap-2">
-                                  <div className="flex flex-col border-1 border-tertiary-gray-200 rounded-lg p-4 mt-2">
-                                    <div className="flex justify-between md:justify-start">
-                                      訂單原價：
-                                      <span className="ml-1">NT$3600</span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      折扣優惠：
-                                      <span className="ml-1 text-primary-100">
-                                        NT$50
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      訂單總價：
-                                      <span className="ml-1">NT$3550</span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      訂單狀態：
-                                      <span className="ml-1">
-                                        已完成/未完成
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      付款狀態：
-                                      <span className="ml-1">
-                                        已付款/未付款
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      付款方式：
-                                      <span className="ml-1">LINE PAY</span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      成立時間：
-                                      <span className="ml-1">
-                                        2024/04/14 16:53:08
-                                      </span>
+                                  </>
+                                }
+                              >
+                                {/* 手風琴內容 */}
+                                <div className="flex flex-col md:flex-row gap-4 items-center md:items-start">
+                                  {/* 新表格 */}
+                                  <div className="flex flex-col w-full gap-2">
+                                    <div className="flex flex-col border-1 border-tertiary-gray-200 rounded-lg p-4 mt-2">
+                                      <div className="flex justify-between md:justify-start">
+                                        訂單原價：
+                                        <span className="ml-1">
+                                          NT${order.payment_amount}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between md:justify-start">
+                                        折扣優惠：
+                                        <span className="ml-1 text-primary-100">
+                                          NT${order.discount}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between md:justify-start">
+                                        訂單總價：
+                                        <span className="ml-1">
+                                          NT${order.total_cost}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between md:justify-start">
+                                        訂單狀態：
+                                        <span className="ml-1">
+                                          {order.order_status.name}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between md:justify-start">
+                                        付款狀態：
+                                        <span className="ml-1">
+                                          {order.payment_status.name}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between md:justify-start">
+                                        付款方式：
+                                        <span className="ml-1">
+                                          {order.payment.name}
+                                        </span>
+                                      </div>
+                                      <div className="flex justify-between md:justify-start">
+                                        購買日期：
+                                        <span className="ml-1">
+                                          {moment(order.created_at).format(
+                                            'YYYY/MM/DD'
+                                          )}
+                                        </span>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </AccordionItem>
-                          </Accordion>
-                        </Card>
+                              </AccordionItem>
+                            </Accordion>
+                          </Card>
+                        ))}
                       </div>
                     </Tab>
                     {/* Tab2 - 未完成訂單 */}

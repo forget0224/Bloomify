@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Button,
-} from '@nextui-org/react'
 import Datepicker from 'react-tailwindcss-datepicker'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
@@ -19,10 +12,22 @@ import CourseDropdown from '@/components/course/dropdown'
 
 export default function CourseSearch() {
   const router = useRouter()
-  const [courses, setCourses] = useState([]) // fetch 課程資料
-  const [courseCount, setCourseCount] = useState(0) // fetch 課程資料筆數
-  const [stores, setStores] = useState([]) // fetch 商家資料
-  const [categories, setCategories] = useState([]) // fetch 商家資料
+  const [courses, setCourses] = useState([]) // set 課程資料
+  const [courseCount, setCourseCount] = useState(0) // set 課程資料筆數
+  const [stores, setStores] = useState([]) // set 商家資料
+  const [categories, setCategories] = useState([]) // set 商家資料
+
+  const [currentPage, setCurrentPage] = useState(1) // 當前頁碼
+  const [totalPages, setTotalPages] = useState(0) // 總頁數
+  const cardsPerPage = 12 // 每頁顯示的卡片數量
+  // 頁碼變更處理函數
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
+  // 分页显示当前课程的逻辑
+  const indexOfLastCourse = currentPage * cardsPerPage
+  const indexOfFirstCourse = indexOfLastCourse - cardsPerPage
+  const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse)
 
   // datepicker 變數
   const [value, setValue] = useState({
@@ -117,6 +122,8 @@ export default function CourseSearch() {
           setCourses(processCourses(data.data.courses))
           // 更新資料筆數
           setCourseCount(data.data.courses.length)
+          // 計算並更新總頁數
+          setTotalPages(Math.ceil(data.data.courses.length / cardsPerPage))
         }
       } catch (error) {
         console.error('Error fetching courses:', error)
@@ -158,7 +165,7 @@ export default function CourseSearch() {
     fetchCategories()
   }, [router.query])
 
-  // 處理課程函數
+  // 處理主圖函數
   function processCourses(coursesArray) {
     return coursesArray.map((course) => {
       const mainImage =
@@ -168,7 +175,7 @@ export default function CourseSearch() {
         ...course,
         mainImage: mainImage
           ? mainImage.path
-          : '/assets/course/category-1/img-course-01-01.jpg',
+          : '/assets/course/img-default.jpg',
       }
     })
   }
@@ -198,25 +205,6 @@ export default function CourseSearch() {
               </Button> */}
 
               {/* 課程分類 */}
-              {/* <Dropdown>
-                <DropdownTrigger>
-                  <Button
-                    variant="bordered"
-                    className="border-tertiary-gray-200"
-                  >
-                    課程分類
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  aria-label="Select category"
-                  onAction={(key) => handleCategoryChange(key)}
-                >
-                  <DropdownItem key="1">花藝基礎課程</DropdownItem>
-                  <DropdownItem key="2">植栽相關課程</DropdownItem>
-                  <DropdownItem key="3">節慶主題課程</DropdownItem>
-                  <DropdownItem key="4">進階商業課程</DropdownItem>
-                </DropdownMenu>
-              </Dropdown> */}
               <CourseDropdown
                 label="選擇分類"
                 options={categoryOptions}
@@ -263,13 +251,21 @@ export default function CourseSearch() {
               </Link>
             </div>
           </div>
+
           {/* 搜尋結果卡片 */}
           <div className="grid gap-y-16 my-14 w-full">
-            <CardGroup courses={courses} />
+            {/* <CardGroup courses={courses} /> */}
+            <CardGroup courses={currentCourses} />
           </div>
 
           {/* 頁碼 */}
-          <CoursePagination />
+          <div className="mt-4">
+            <CoursePagination
+              current={currentPage}
+              total={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
       </main>
     </DefaultLayout>

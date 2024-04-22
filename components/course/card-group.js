@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import Link from 'next/link'
 import { BsFillStarFill } from 'react-icons/bs'
@@ -44,20 +44,14 @@ export default function CardGroup({ courses, isActive, onToggle }) {
                 <p className="text-base flex items-center">
                   <BsFillStarFill className="text-secondary-100 mr-1" />
                   {/* TODO: */}
-                  {/* {course.star} */}5
+                  {course.averageStars}
                 </p>
               </div>
             </CardFooter>
           </Link>
-          {/* <BsFillHeartFill
-            className="text-secondary-100 absolute top-4 right-4 z-10 w-6 h-6 cursor-pointer"
-            onClick={(e) => {
-              e.stopPropagation() // 阻止事件冒泡到卡片的 onPress
-              alert('Heart clicked', course.id)
-              // 這裡添加切換收藏的邏輯
-            }}
-          /> */}
-          <HeartButton />
+          <div className="absolute top-0 right-0 p-4">
+            <HeartButton opacity="text-opacity-40" />
+          </div>
         </Card>
       ))}
     </div>

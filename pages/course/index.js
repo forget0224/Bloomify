@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Image } from '@nextui-org/react'
-import { Card, CardBody, CardFooter, Link } from '@nextui-org/react'
+import { Card, CardBody, Link } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'

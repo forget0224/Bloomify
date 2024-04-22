@@ -17,7 +17,11 @@ export default function CourseMap({ store }) {
         <iframe
           className="w-full h-[280px]"
           title="商家地圖"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.007875795804!2d121.5404192760508!3d25.03380678829804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1711707763962!5m2!1szh-TW!2stw"
+          src={`https://www.google.com/maps?q=${encodeURIComponent(
+            store.store_address
+          )}&output=embed`}
+          allowFullScreen=""
+          loading="lazy"
         ></iframe>
       </CardBody>
 
