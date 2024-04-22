@@ -189,7 +189,7 @@ export default function Custom() {
   const [imageUrl, setImageUrl] = useState('')
 
   const handleSelectImage = (selectedUrl) => {
-    setImageUrl(selectedUrl) // 假設你有方式從選擇器獲取 URL
+    setImageUrl(selectedUrl)
   }
   return (
     <StoreProvider>
@@ -221,7 +221,7 @@ export default function Custom() {
                         </div>
 
                         <div
-                          className="bg-secondary-200 sm:w-[500px] sm:h-[550px] m-auto "
+                          className="bg-secondary-200 sm:w-[500px] sm:h-[550px] m-auto relative w-[375px] h-auto"
                           style={{
                             backgroundImage:
                               'url("/custom/custom/canvasBg.png")',
