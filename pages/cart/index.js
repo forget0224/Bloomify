@@ -1,26 +1,10 @@
 import React, { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
-import {
-  Tabs,
-  Tab,
-  Card,
-  Image,
-  CardBody,
-  CardFooter,
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Button,
-  Input,
-} from '@nextui-org/react'
+import { Tabs, Tab } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
 import { MyButton } from '@/components/btn/mybutton'
 import Link from 'next/link.js'
-import { FaMinus, FaPlus } from 'react-icons/fa6'
 import ShopCart from '@/components/shop/shop-cart'
 import CourseCart from '@/components/course/page-cart'
 

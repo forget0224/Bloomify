@@ -6,11 +6,10 @@ export default function SearchBtn({ onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
     if (onSearch) {
       onSearch(searchTerm)
     }
-    setSearchTerm('')
+    // setSearchTerm('')
   }
 
   return (
