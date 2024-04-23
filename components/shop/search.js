@@ -4,10 +4,12 @@ import { CiSearch } from 'react-icons/ci'
 export default function SearchBtn({ onSearch }) {
   const [searchTerm, setSearchTerm] = useState('')
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    // Call the onSearch function passed as a prop with the searchTerm
-    onSearch(searchTerm)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    if (onSearch) {
+      onSearch(searchTerm)
+    }
     setSearchTerm('')
   }
 

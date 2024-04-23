@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -35,8 +35,6 @@ import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
 import { FaToolbox } from 'react-icons/fa'
 import { IoFilterCircleOutline } from 'react-icons/io5'
 import { SlMagnifier } from 'react-icons/sl'
-// 要使用chunk(分塊)函式用
-import _ from 'lodash'
 // import { useWindowSize } from 'react-use'
 
 export default function Shop() {
@@ -44,15 +42,17 @@ export default function Shop() {
   const queryParentId = searchParams.get('parent_id')
   const router = useRouter()
   const [activePage, setActivePage] = useState('shop')
-  const limit = 6
-  const [loadPage, setLoadPage] = useState(1) // Track the current page
-  console.log('load', loadPage)
-
   // 列表用(原始資料)
   const [products, setProducts] = useState([])
   // 第一層選項 產生資料用
   const [categories, setCategories] = useState([])
   // console.log(categories)
+  // 顏色資料
+  const [colors, setColors] = useState([])
+  // console.log(colors)
+  // 紀錄被選擇的顏色
+  const [selectedColors, setSelectedColors] = useState([])
+  // console.log(selectedColors)
   // 第一層選項用
   const [activeCategory, setActiveCategory] = useState(1)
   // console.log(activeCategory)
@@ -60,6 +60,13 @@ export default function Shop() {
   const [selectedCategoryId, setSelectedCategoryId] = useState([])
   // 切換第二層篩選
   const [selectedSubcategoryIds, setSelectedSubcategoryIds] = useState([])
+  // 關鍵字
+  const [searchTerm, setSearchTerm] = useState('')
+  console.log(searchTerm)
+  // 分頁用
+  const [loadPage, setLoadPage] = useState(1) // Track the current page
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  // console.log(isButtonDisabled)
 
   // didMount 後端資料從這裏來的
   useEffect(() => {
@@ -71,12 +78,6 @@ export default function Shop() {
         const data = await res.json()
         if (data.status === 'success') {
           setProducts(data.data.products)
-          // if (loadPage > 1) {
-          //   setProducts([...products, ...data.data.products])
-          // } else {
-          //   setProducts(data.data.products)
-          // }
-          // setProductTotal(data.data.count)
         } else {
           console.error('Failed to fetch products:', data.message)
         }
@@ -155,6 +156,7 @@ export default function Shop() {
     // console.log('Category clicked:', id)
     setSelectedSubcategoryIds([]) // This line clears the subcategory selections
     setSelectedColors([])
+    setSearchTerm('')
     setLoadPage(1)
     setActiveCategory(id)
     handleCategoryChange(id) // Update the query string in the URL, which will then trigger the useEffect
@@ -189,7 +191,12 @@ export default function Shop() {
         return currentIds.filter((id) => id !== subcategoryId)
       }
     })
-    // setLoadPage(1)
+  }
+
+  // 關鍵字篩選
+  const handleSearch = (term) => {
+    console.log('Received search term:', term) // 确认接收到的搜索词
+    setSearchTerm(term.toLowerCase())
   }
 
   useEffect(() => {
@@ -198,13 +205,7 @@ export default function Shop() {
   }, [queryParentId])
   // console.log('check', categories, activeCategory, selectedSubcategoryIds)
 
-  // 顏色資料
-  const [colors, setColors] = useState([])
-  // console.log(colors)
-  // 紀錄被選擇的顏色
-  const [selectedColors, setSelectedColors] = useState([])
-  // console.log(selectedColors)
-
+  // 獲得顏色資料
   const fetchColors = async () => {
     try {
       const response = await fetch('http://localhost:3005/api/share-colors')
@@ -231,7 +232,6 @@ export default function Shop() {
         return currentSelectedColors.filter((id) => id !== colorId)
       }
     })
-    // setLoadPage(1)
   }
 
   // 清除條件
@@ -240,6 +240,17 @@ export default function Shop() {
     setSelectedSubcategoryIds([])
     setSelectedColors([])
   }
+
+  // 分頁
+  const limit = 6
+  const handleLoadMore = () => {
+    setLoadPage((prevLoadPage) => prevLoadPage + 1)
+  }
+  // 查看更多 無商品時按鈕禁用
+  useEffect(() => {
+    // 檢查過濾後的商品數量是否少於當前已加載的商品數量
+    setIsButtonDisabled(filterProduct.length <= limit * loadPage)
+  }, [products, loadPage]) // 當商品列表或當前頁面改變時重新計算
 
   // Carousel State
   const [page, setPage] = useState(0)
@@ -272,10 +283,6 @@ export default function Shop() {
     return () => clearInterval(timer)
   }, [page])
 
-  // Function to handle clicking the "Load More" button
-  const handleLoadMore = () => {
-    setLoadPage((prevLoadPage) => prevLoadPage + 1)
-  }
   const notify = () => toast.success('已成功加入購物車')
   // RWD Sorting and Filtering Modal State
   const {
@@ -291,9 +298,31 @@ export default function Shop() {
   const [modalPlacement, setModalPlacement] = useState('bottom-center')
   const [order, setOrder] = useState('priceAsc')
 
-  const getFilterProduct = () => {
-    console.log('order', order)
-    return (
+  // const filterProduct = () => {
+  //   // console.log('order', order)
+  //   return (
+  //     products
+  //       // 子分類
+  //       .filter((product) =>
+  //         selectedSubcategoryIds.length > 0
+  //           ? selectedSubcategoryIds.includes(product.product_category_id)
+  //           : true
+  //       )
+  //       // 顏色
+  //       .filter((product) =>
+  //         selectedColors.length > 0
+  //           ? selectedColors.includes(product.share_color_id)
+  //           : true
+  //       )
+  //       .sort((productA, productB) =>
+  //         order === 'priceAsc'
+  //           ? productA.price - productB.price
+  //           : productB.price - productA.price
+  //       )
+  //   )
+  // }
+  const filterProduct = useMemo(
+    () =>
       products
         // 子分類
         .filter((product) =>
@@ -307,13 +336,16 @@ export default function Shop() {
             ? selectedColors.includes(product.share_color_id)
             : true
         )
+        //關鍵字
+        .filter((product) => product.name.includes(searchTerm))
+        // 排序
         .sort((productA, productB) =>
           order === 'priceAsc'
             ? productA.price - productB.price
             : productB.price - productA.price
-        )
-    )
-  }
+        ),
+    [products, selectedSubcategoryIds, selectedColors, order, searchTerm]
+  )
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -357,7 +389,7 @@ export default function Shop() {
               </div>
               {/* carousel end */}
               {/* 第一層選項 start */}
-              <div className="flex justify-center my-8 w-full whitespace-nowrap gap-2">
+              <div className="flex justify-center mt-4 sm:my-8 w-full whitespace-nowrap gap-2">
                 {categories
                   .filter((category) => category.parent_id === 0)
                   .map((category) => {
@@ -392,17 +424,44 @@ export default function Shop() {
                   })}
               </div>
               {/* select categories end */}
+              {/* RWD START */}
+              <div className="sm:hidden">
+                {categories
+                  .filter((category) => {
+                    if (activeCategory === 1) {
+                      return category.parent_id !== 0
+                    }
+                    // Otherwise, filter sub-categories based on the active top-level category
+                    return category.parent_id === activeCategory
+                  })
+                  .map((category) => (
+                    <Checkbox
+                      key={category.id}
+                      className="mr-2"
+                      isSelected={selectedSubcategoryIds.includes(category.id)}
+                      onValueChange={(isChecked) =>
+                        handleCheckboxChange(category.id, isChecked)
+                      }
+                    >
+                      <p className="text-tertiary-black">{category.name}</p>
+                    </Checkbox>
+                  ))}
+              </div>
+
+              {/* RWD END */}
 
               {/* search & select start */}
               <div className="w-full py-4 flex justify-between">
                 {/* searchbar */}
                 <div className="hidden sm:block sm:w-3/12">
-                  <SearchBtn />
+                  <SearchBtn onSearch={handleSearch} />
                 </div>
                 {/* filter */}
                 {/* RWD start*/}
                 <p className="text-tertiary-black sm:hidden">
-                  {/* 共 {productTotal} 項結果 */}
+                  共 {''}
+                  {filterProduct.length}
+                  {''} 項結果
                 </p>
                 {/* RWD end*/}
                 <div className="flex items-center space-x-4">
@@ -450,7 +509,7 @@ export default function Shop() {
                             </ModalHeader>
                             <ModalBody>
                               <div className="sm:hidden block">
-                                <SearchBtn />
+                                <SearchBtn onSearch={handleSearch} />
                               </div>
                               <div className="flex space-x-2">
                                 <p className="text-primary">HOT</p>
@@ -504,11 +563,9 @@ export default function Shop() {
                               </p>
                               <div className="my-5">
                                 {/* <RadioGroup>
-                                    {selectList.map((item, index) => (
                                       <Radio key={index} value={item}>
                                         {item.label}
                                       </Radio>
-                                    ))}
                                   </RadioGroup> */}
                               </div>
                             </div>
@@ -516,49 +573,6 @@ export default function Shop() {
                               <p className="text-primary text-center py-0.5 bg-primary-300">
                                 篩選
                               </p>
-                              <div className="my-5">
-                                <p className="text-tertiary-black my-2">子類</p>
-                                <div className="space-y-2 grid grid-cols-2">
-                                  {categories
-                                    .filter((category) => {
-                                      // If no top-level category is active, or 'all' is selected, show all sub-categories
-                                      if (activeCategory === null) {
-                                        return category.parent_id !== 0
-                                      }
-                                      // Otherwise, filter sub-categories based on the active top-level category
-                                      return (
-                                        category.parent_id === activeCategory
-                                      )
-                                    })
-                                    .map((category) => (
-                                      <Checkbox
-                                        key={category.id}
-                                        className="mr-2"
-                                      >
-                                        <p className="text-tertiary-black">
-                                          {category.name}
-                                        </p>
-                                      </Checkbox>
-                                    ))}
-                                </div>
-                              </div>
-                              <hr />
-                              <div className="my-5">
-                                <p className="text-tertiary-black my-2">價格</p>
-                                <div className="flex justify-between items-center">
-                                  <input
-                                    type="text"
-                                    placeholder="最低價格"
-                                    className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                  />
-                                  <div className="h-px w-10 bg-gray-400"></div>
-                                  <input
-                                    type="text"
-                                    placeholder="最高價格"
-                                    className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                  />
-                                </div>
-                              </div>
                               <hr />
                               <div className="my-5">
                                 <p className="text-tertiary-black my-2">顏色</p>
@@ -622,7 +636,7 @@ export default function Shop() {
                     <Subtitle text="篩選" />
                     <p className=" text-tertiary-black">
                       共{''}
-                      {getFilterProduct(products).length}
+                      {filterProduct.length}
                       {''}項結果
                     </p>
                     <div className="space-y-4">
@@ -656,23 +670,6 @@ export default function Shop() {
                     </div>
                     <hr className="my-6 border-t border-gray-300" />
                     <div className="space-y-4">
-                      <p className="text-lg text-tertiary-black">價格</p>
-                      <div className="flex justify-between items-center">
-                        <input
-                          type="text"
-                          placeholder="最低價格"
-                          className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        <div className="h-px w-10 bg-gray-400"></div>
-                        <input
-                          type="text"
-                          placeholder="最高價格"
-                          className="w-1/2 p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        />
-                      </div>
-                    </div>
-                    <hr className="my-6 border-t border-gray-300" />
-                    <div className="space-y-4">
                       <p className="text-lg text-tertiary-black">顏色</p>
                       <div className="space-y-2 grid grid-cols-2">
                         {colors.map((color) => (
@@ -697,7 +694,12 @@ export default function Shop() {
                       </div>
                     </div>
                     <div className="flex justify-center pb-8">
-                      <MyButton color="primary" size="xl" isOutline>
+                      <MyButton
+                        color="primary"
+                        size="xl"
+                        isOutline
+                        onClick={resetSelection}
+                      >
                         清除條件
                       </MyButton>
                     </div>
@@ -705,98 +707,94 @@ export default function Shop() {
                 </div>
                 {/* filter end */}
                 {/* products starts */}
-                <div className="sm:w-10/12">
+                <div className="sm:w-10/12 sm:flex-1">
                   <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
-                    {getFilterProduct(products)
-                      .slice(0, limit * loadPage)
-                      .map((product) => {
-                        {
-                          /* console.log(product.images) */
-                        }
-                        // Find the image where is_thumbnail is false
-                        let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
+                    {filterProduct.slice(0, limit * loadPage).map((product) => {
+                      {
+                        /* console.log(product.images) */
+                      }
+                      // Find the image where is_thumbnail is false
+                      let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
 
-                        if (Array.isArray(product.images)) {
-                          const nonThumbnailImage = product.images.find(
-                            (image) => !image.is_thumbnail
-                          )
-                          // console.log(nonThumbnailImage)
-
-                          // If nonThumbnailImage is not found, use a fallback image URL
-                          if (nonThumbnailImage)
-                            imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
-
-                          //console.log(nonThumbnailImage)
-                        }
-
-                        return (
-                          <Card
-                            shadow="sm"
-                            key={product.id}
-                            isPressable
-                            onPress={() => console.log('item pressed')}
-                          >
-                            <CardBody className="relative overflow-visible p-0">
-                              <Link
-                                href={{
-                                  pathname: '/shop/[pid]', // dynamic route
-                                  query: { pid: product.id }, // setting pid to product ID
-                                }}
-                                className="block relative"
-                              >
-                                <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                                {/* Use the non-thumbnail image URL for the image src */}
-                                <Image
-                                  isZoomed
-                                  shadow="none"
-                                  radius="none"
-                                  width="100%"
-                                  alt={product.name}
-                                  className="w-full object-cover h-[250px] z-0"
-                                  src={imageUrl}
-                                />
-                              </Link>
-                            </CardBody>
-                            <CardHeader className="block text-left">
-                              <div className="flex justify-between">
-                                <p className="text-xl truncate">
-                                  {product.name}
-                                </p>
-                                <p className="text-base flex items-center space-x-1">
-                                  <BsFillStarFill className="text-secondary-100" />
-                                  {product.star}
-                                  <span>{product.overall_review}</span>
-                                </p>
-                              </div>
-                              <p className="text-base text-tertiary-gray-100">
-                                {product.stores.store_name}
-                              </p>
-                              <div className="flex flex-wrap">
-                                {product.tags.map((tag) => (
-                                  <p
-                                    key={tag.id}
-                                    className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
-                                  >
-                                    {tag.name}
-                                  </p>
-                                ))}
-                              </div>
-                            </CardHeader>
-                            <CardFooter className="text-small justify-between">
-                              <p className="text-xl truncate">
-                                NT${product.price}
-                              </p>
-                              <div
-                                className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                                onClick={notify}
-                              >
-                                <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
-                              </div>
-                              <Toaster />
-                            </CardFooter>
-                          </Card>
+                      if (Array.isArray(product.images)) {
+                        const nonThumbnailImage = product.images.find(
+                          (image) => !image.is_thumbnail
                         )
-                      })}
+                        // console.log(nonThumbnailImage)
+
+                        // If nonThumbnailImage is not found, use a fallback image URL
+                        if (nonThumbnailImage)
+                          imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
+
+                        //console.log(nonThumbnailImage)
+                      }
+
+                      return (
+                        <Card
+                          shadow="sm"
+                          key={product.id}
+                          isPressable
+                          onPress={() => console.log('item pressed')}
+                        >
+                          <CardBody className="relative overflow-visible p-0">
+                            <Link
+                              href={{
+                                pathname: '/shop/[pid]', // dynamic route
+                                query: { pid: product.id }, // setting pid to product ID
+                              }}
+                              className="block relative"
+                            >
+                              <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
+                              {/* Use the non-thumbnail image URL for the image src */}
+                              <Image
+                                isZoomed
+                                shadow="none"
+                                radius="none"
+                                width="100%"
+                                alt={product.name}
+                                className="w-full object-cover h-[250px] z-0"
+                                src={imageUrl}
+                              />
+                            </Link>
+                          </CardBody>
+                          <CardHeader className="block text-left">
+                            <div className="flex justify-between">
+                              <p className="text-xl truncate">{product.name}</p>
+                              <p className="text-base flex items-center space-x-1">
+                                <BsFillStarFill className="text-secondary-100" />
+                                {product.star}
+                                <span>{product.overall_review}</span>
+                              </p>
+                            </div>
+                            <p className="text-base text-tertiary-gray-100">
+                              {product.stores.store_name}
+                            </p>
+                            <div className="flex flex-wrap">
+                              {product.tags.map((tag) => (
+                                <p
+                                  key={tag.id}
+                                  className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
+                                >
+                                  {tag.name}
+                                </p>
+                              ))}
+                            </div>
+                          </CardHeader>
+                          <CardFooter className="text-small justify-between">
+                            <p className="text-xl truncate">
+                              NT${product.price}
+                            </p>
+                            <div
+                              className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
+                              onClick={notify}
+                            >
+                              <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                            </div>
+                            <Toaster />
+                          </CardFooter>
+                        </Card>
+                      )
+                    })}
                   </div>
                 </div>
                 {/* products end */}
@@ -808,10 +806,12 @@ export default function Shop() {
                     color="primary"
                     size="xl"
                     onClick={handleLoadMore}
-                    // getFilterProduct(products).length, limit, loadPage
-                    // disabled={
-                    //   getFilterProduct(products).length < limit * loadPage
-                    // }
+                    disabled={isButtonDisabled}
+                    className={`transition ease-in-out duration-300 ${
+                      isButtonDisabled
+                        ? 'bg-gray-400 text-white cursor-not-allowed opacity-50'
+                        : 'bg-primary-200 hover:primary-100 text-white'
+                    }`}
                   >
                     查看更多
                   </MyButton>
