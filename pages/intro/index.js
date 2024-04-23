@@ -1,22 +1,118 @@
 import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
-import { Image } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-import CardGroupClean from '@/components/intro/card-group-clean'
+// import CardGroupClean from '@/components/intro/card-group-clean'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/intro/subtitle'
-import { Card, CardHeader, CardBody, CardFooter, Link } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
-import SearchBtn from '@/components/intro/search-btn'
+// import SearchBtn from '@/components/intro/search-btn'
 import { CiSearch } from 'react-icons/ci'
+import introData from '../../data/introData.json'
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+} from '@nextui-org/react'
 
 export default function FlowersIndex() {
-  const [activePage, setActivePage] = useState('course')
+  // ----------搜尋宣告部分start----------
+  const [searchTerm, setSearchTerm] = useState('') // 儲存輸入框的值
+  const handleSearch = () => {
+    // 在這裡使用 searchTerm 執行搜尋
+    const filteredData = introData.filter((flower) =>
+      Object.values(flower).some(
+        (value) =>
+          typeof value === 'string' && value.toLowerCase().includes(searchTerm)
+      )
+    )
+    setFlowerData(filteredData)
+  }
+
+  // ----------搜尋宣告部分end------------
+
+  // ----------排序宣告部分start----------
+  const [flowerData, setFlowerData] = useState(introData) // 初始花卡片資料
+  const [sortOption, setSortOption] = useState('A→Z') // 初始排序選項
+
+  // 選擇器改變時的處理函數
+  const handleSortChange = (e) => {
+    console.log(e)
+    console.log(e.target)
+    console.log(e.target.value)
+    setSortOption(e.target.value)
+    // 根據選項的標題來確定排序方向
+    if (e.target.value === 'A→Z') {
+      sortFlowers('A→Z')
+    } else {
+      sortFlowers('Z→A')
+    }
+  }
+
+  // 排序花卡片資料的函數
+  // const sortFlowers = (direction) => {
+  //   const sortedData = [...flowerData].sort((a, b) => {
+  //     if (direction === 'A→Z') {
+  //       console.log(sortedData)
+  //       console.log('123')
+  //       return a.engname.localeCompare(b.engname) // A 到 Z
+  //     } else if (direction === 'Z→A') {
+  //       // console.log('123')
+  //       // console.log(a.engname)
+  //       return b.engname.localeCompare(a.engname) // Z 到 A
+  //     }
+  //     // 如果 direction 不是 A→Z 或 Z→A，則預設遞增排序
+  //     return a.engname.localeCompare(b.engname)
+  //   })
+  //   setFlowerData(sortedData)
+  // }
+  const sortFlowers = (direction) => {
+    setFlowerData((flowerData) => {
+      return flowerData.sort((a, b) => {
+        if (direction === 'A→Z') {
+          return a.engname.localeCompare(b.engname) // A 到 Z
+        } else if (direction === 'Z→A') {
+          return b.engname.localeCompare(a.engname) // Z 到 A
+        }
+        // 如果 direction 不是 A→Z 或 Z→A，則預設遞增排序
+        return a.engname.localeCompare(b.engname)
+      })
+    })
+  }
+
+  // ----------排序宣告部分end----------
+
+  // ----------花卡片的宣告部分start----------
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [size, setSize] = useState('md')
+  const sizes = ['2xl']
+  // 修改 handleOpen 函數，使其接收卡片的相關資料
+  const handleOpen = (item) => {
+    setSize(size)
+    onOpen()
+    // 將卡片的相關資料傳遞給模態視窗
+    setModalData(item)
+  }
+  // useState hook 用於存儲模態視窗中顯示的資料
+  const [modalData, setModalData] = useState(null)
+
+  // ----------花卡片的宣告部分end----------
+
+  // ----------篩選資料Data宣告start----------
+  const [activePage, setActivePage] = useState('intro')
   const underlines = ['none']
 
   //occList start
   const occList = [
-    { id: 0, title: '場合' },
+    { id: 0, title: '所有場合' },
     { id: 1, title: '生日慶祝' },
     { id: 2, title: '情人節' },
     { id: 3, title: '新婚喜慶' },
@@ -41,7 +137,7 @@ export default function FlowersIndex() {
   const colorList = [
     {
       id: 0,
-      title: '顏色',
+      title: '所有顏色',
     },
     {
       id: 1,
@@ -95,7 +191,7 @@ export default function FlowersIndex() {
   const roleList = [
     {
       id: 0,
-      title: '對象',
+      title: '所有對象',
     },
     {
       id: 1,
@@ -137,7 +233,7 @@ export default function FlowersIndex() {
   const seasonList = [
     {
       id: 0,
-      title: '季節',
+      title: '所有季節',
     },
     {
       id: 1,
@@ -158,20 +254,21 @@ export default function FlowersIndex() {
 
   //sortList start
   const sortList = [
-    {
-      id: 0,
-      title: '預設排序',
-    },
+    // {
+    //   id: 0,
+    //   title: 'A→Z',
+    // },
     {
       id: 1,
-      title: 'A-Z',
+      title: 'A→Z',
     },
     {
       id: 2,
-      title: 'Z-A',
+      title: 'Z→A',
     },
   ]
   //sortList end
+  // ----------篩選資料Data宣告end----------
 
   return (
     <DefaultLayout
@@ -223,22 +320,41 @@ export default function FlowersIndex() {
 
           {/* ------------清水模背景區塊 start------------*/}
           <div className="bg-[url('/assets/intro/vintage_speckles.png')]">
-            
-
             <div className="m-8">
               {/* --------search & select & sort end--------*/}
 
               <Subtitle text="花圖鑑" />
               <div className="flex py-10 px-15 justify-between w-full">
                 {/* ------------searchbar start------------*/}
-                <SearchBtn />
+                <div className="flex max-w-xs">
+                  {/* 輸入框 */}
+                  <div className="flex w-full rounded-md shadow-sm">
+                    <input
+                      type="text"
+                      name="search"
+                      id="search"
+                      className="block text-base w-full rounded-l-xl px-4 py-2 text-tertiary placeholder:text-tertiary-gray-100 border-1 border-tertiary-gray-200 focus:ring-0 focus:outline-none focus:border-teal focus:border-primary-100"
+                      placeholder="輸入關鍵字"
+                      value={searchTerm} // 將輸入框的值綁定到 searchTerm
+                      onChange={(e) => setSearchTerm(e.target.value)} // 更新 searchTerm 的值
+                    />
+                    <button
+                      className="bg-primary-100 w-12 flex justify-center items-center rounded-r-xl hover:bg-[#85B5A7]"
+                      onClick={handleSearch}
+                    >
+                      <CiSearch fill="white" className="w-6 h-6" />
+                    </button>
+                  </div>
+                </div>
                 {/* ------------searchbar end------------ */}
 
                 {/* ------------filter start------------*/}
-                <div className="flex flex-cols items-center space-x-2">
+                <div className="hidden sm:flex flex-cols items-center space-x-2 ">
                   <Select
                     placeholder="Select"
-                    defaultSelectedKeys={['場合']}
+                    defaultSelectedKeys={['所有場合']}
+                    label="場合"
+                    labelPlacement="inside"
                     className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
@@ -251,11 +367,13 @@ export default function FlowersIndex() {
                     ))}
                   </Select>
                 </div>
-                <div className="flex flex-cols items-center space-x-4">
+                <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
                     placeholder="Select"
-                    defaultSelectedKeys={['顏色']}
-                    className="max-w-xs w-24"
+                    defaultSelectedKeys={['所有顏色']}
+                    label="顏色"
+                    labelPlacement="inside"
+                    className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
@@ -267,11 +385,13 @@ export default function FlowersIndex() {
                     ))}
                   </Select>
                 </div>
-                <div className="flex flex-cols items-center space-x-4">
+                <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
                     placeholder="Select"
-                    defaultSelectedKeys={['對象']}
-                    className="max-w-xs w-24"
+                    defaultSelectedKeys={['所有對象']}
+                    label="對象"
+                    labelPlacement="inside"
+                    className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
@@ -283,11 +403,13 @@ export default function FlowersIndex() {
                     ))}
                   </Select>
                 </div>
-                <div className="flex flex-cols items-center space-x-4">
+                <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
                     placeholder="Select"
-                    defaultSelectedKeys={['季節']}
-                    className="max-w-xs w-24"
+                    defaultSelectedKeys={['所有季節']}
+                    label="季節"
+                    labelPlacement="inside"
+                    className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
@@ -301,17 +423,18 @@ export default function FlowersIndex() {
                 </div>
                 {/* ------------filter end------------*/}
                 {/* ------------sort start------------*/}
-                <div className="flex flex-cols items-center space-x-4">
-                  <p className="text-lg text-tertiary-black whitespace-nowrap">
-                    排序
-                  </p>
+                <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
                     placeholder="Select"
-                    defaultSelectedKeys={['預設排序']}
+                    defaultSelectedKeys={[sortOption]}
+                    // defaultValue={['A→Z']}
+                    label="排序"
+                    labelPlacement="inside"
                     className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
+                    onChange={(e) => handleSortChange(e)}
                   >
                     {sortList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
@@ -327,8 +450,99 @@ export default function FlowersIndex() {
 
             {/* --------花朵卡片群組-------- */}
             <div className="grid gap-y-4 my-14 ">
-              <CardGroupClean />
-              <div class="flex justify-center">
+              <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
+                <Modal size={sizes} isOpen={isOpen} onClose={onClose}>
+                  <ModalContent>
+                    {(onClose) => (
+                      <>
+                        <ModalHeader className="flex flex-col gap-1 text-center">
+                          詳細介紹
+                        </ModalHeader>
+                        <ModalBody className="flex flex-row">
+                          <div className="max-w-60 mx-auto ">
+                            <Image
+                              isZoomed
+                              removeWrapper
+                              alt="flowerCard"
+                              src={modalData ? modalData.flower_image_2 : ''}
+                            />
+                          </div>
+                          <div className="flex flex-col m-12 justify-center">
+                            <ul>
+                              <li>{modalData ? modalData.intro : ''}</li>
+
+                              <hr className="h-px my-8 border-1 border-secondary-100" />
+                              <div className="list-disc">
+                                <li>
+                                  花期:{modalData ? modalData.season : ''}
+                                </li>
+                                <li>
+                                  常見顏色:{modalData ? modalData.color : ''}
+                                </li>
+                                <li>
+                                  適合對象:{modalData ? modalData.role : ''}
+                                </li>
+                                <li>
+                                  適合場合:{modalData ? modalData.occ : ''}
+                                </li>
+                              </div>
+                            </ul>
+                            <div className="justify-center flex m-3">
+                              <MyButton color="secondary" size="md">
+                                販售店家
+                              </MyButton>
+                            </div>
+                          </div>
+                        </ModalBody>
+                        <ModalFooter>
+                          <Button
+                            color="danger"
+                            variant="light"
+                            onPress={onClose}
+                          >
+                            Close
+                          </Button>
+                        </ModalFooter>
+                      </>
+                    )}
+                  </ModalContent>
+                </Modal>
+
+                {flowerData.map((item, index) => (
+                  <Card
+                    key={index}
+                    onPress={() => handleOpen(item)} // 將卡片的相關資料傳遞給 handleOpen 函數
+                    shadow="none"
+                    isPressable
+                    className="bg-transparent"
+                  >
+                    <CardBody className="static overflow-visible p-0 bg-transparent">
+                      <div className="bg-transparent">
+                        <Image
+                          isZoomed
+                          removeWrapper
+                          shadow="none"
+                          radius="none"
+                          width="130%"
+                          alt={item.name}
+                          className="w-auto object-cover h-auto opacity-100"
+                          src={item.flower_image_1}
+                        />
+                      </div>
+                    </CardBody>
+                    <CardHeader className="block text-center bg-transparent">
+                      <div>
+                        <p className="text-xl truncate ...">{item.name}</p>
+                      </div>
+                      <div>
+                        <p className="text-base truncate ...">{item.engname}</p>
+                      </div>
+                    </CardHeader>
+                    {/* <CardFooter className="text-small justify-between"></CardFooter> */}
+                  </Card>
+                ))}
+              </div>
+              <div className="flex justify-center">
                 <MyButton>查看更多</MyButton>
               </div>
             </div>
