@@ -24,6 +24,57 @@ import {
 } from '@nextui-org/react'
 
 export default function FlowersIndex() {
+  // ----------花卡片的排序宣告部分start----------
+  const [flowerData, setFlowerData] = useState(introData) // 初始花卡片資料
+  const [sortOption, setSortOption] = useState('A→Z') // 初始排序選項
+
+  // 選擇器改變時的處理函數
+  const handleSortChange = (e) => {
+    console.log(e)
+    console.log(e.target)
+    console.log(e.target.value)
+    setSortOption(e.target.value)
+    // 根據選項的標題來確定排序方向
+    if (e.target.value === 'A→Z') {
+      sortFlowers('A→Z')
+    } else {
+      sortFlowers('Z→A')
+    }
+  }
+
+  // 排序花卡片資料的函數
+  // const sortFlowers = (direction) => {
+  //   const sortedData = [...flowerData].sort((a, b) => {
+  //     if (direction === 'A→Z') {
+  //       console.log(sortedData)
+  //       console.log('123')
+  //       return a.engname.localeCompare(b.engname) // A 到 Z
+  //     } else if (direction === 'Z→A') {
+  //       // console.log('123')
+  //       // console.log(a.engname)
+  //       return b.engname.localeCompare(a.engname) // Z 到 A
+  //     }
+  //     // 如果 direction 不是 A→Z 或 Z→A，則預設遞增排序
+  //     return a.engname.localeCompare(b.engname)
+  //   })
+  //   setFlowerData(sortedData)
+  // }
+  const sortFlowers = (direction) => {
+    setFlowerData((flowerData) => {
+      return flowerData.sort((a, b) => {
+        if (direction === 'A→Z') {
+          return a.engname.localeCompare(b.engname) // A 到 Z
+        } else if (direction === 'Z→A') {
+          return b.engname.localeCompare(a.engname) // Z 到 A
+        }
+        // 如果 direction 不是 A→Z 或 Z→A，則預設遞增排序
+        return a.engname.localeCompare(b.engname)
+      })
+    })
+  }
+
+  // ----------花卡片的排序宣告部分end----------
+
   // ----------花卡片的宣告部分start----------
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [size, setSize] = useState('md')
@@ -39,8 +90,9 @@ export default function FlowersIndex() {
   const [modalData, setModalData] = useState(null)
 
   // ----------花卡片的宣告部分end----------
-  // ----------篩選部分的資料宣告start----------
-  const [activePage, setActivePage] = useState('course')
+
+  // ----------篩選資料Data宣告start----------
+  const [activePage, setActivePage] = useState('intro')
   const underlines = ['none']
 
   //occList start
@@ -189,19 +241,20 @@ export default function FlowersIndex() {
   const sortList = [
     // {
     //   id: 0,
-    //   title: '預設排序',
+    //   title: 'A→Z',
     // },
     {
       id: 1,
-      title: 'A-Z',
+      title: 'A→Z',
     },
     {
       id: 2,
-      title: 'Z-A',
+      title: 'Z→A',
     },
   ]
   //sortList end
-  // ----------篩選部分的資料宣告end----------
+  // ----------篩選資料Data宣告end----------
+
   return (
     <DefaultLayout
       activePage={activePage}
@@ -351,18 +404,17 @@ export default function FlowersIndex() {
                 {/* ------------filter end------------*/}
                 {/* ------------sort start------------*/}
                 <div className="hidden sm:flex flex-cols items-center space-x-4">
-                  {/* <p className="text-lg text-tertiary-black whitespace-nowrap">
-                    排序
-                  </p> */}
                   <Select
                     placeholder="Select"
-                    defaultSelectedKeys={['A-Z']}
+                    defaultSelectedKeys={[sortOption]}
+                    // defaultValue={['A→Z']}
                     label="排序"
                     labelPlacement="inside"
                     className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
+                    onChange={(e) => handleSortChange(e)}
                   >
                     {sortList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
@@ -436,7 +488,7 @@ export default function FlowersIndex() {
                   </ModalContent>
                 </Modal>
 
-                {introData.map((item, index) => (
+                {flowerData.map((item, index) => (
                   <Card
                     key={index}
                     onPress={() => handleOpen(item)} // 將卡片的相關資料傳遞給 handleOpen 函數
@@ -460,17 +512,17 @@ export default function FlowersIndex() {
                     </CardBody>
                     <CardHeader className="block text-center bg-transparent">
                       <div>
-                        <p class="text-xl truncate ...">{item.name}</p>
+                        <p className="text-xl truncate ...">{item.name}</p>
                       </div>
                       <div>
-                        <p class="text-base truncate ...">{item.engname}</p>
+                        <p className="text-base truncate ...">{item.engname}</p>
                       </div>
                     </CardHeader>
                     {/* <CardFooter className="text-small justify-between"></CardFooter> */}
                   </Card>
                 ))}
               </div>
-              <div class="flex justify-center">
+              <div className="flex justify-center">
                 <MyButton>查看更多</MyButton>
               </div>
             </div>
