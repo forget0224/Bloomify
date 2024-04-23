@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Image, CardBody, CardFooter } from '@nextui-org/react'
+import { Card, Image } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import Link from 'next/link.js'
 import { FaRegTrashAlt } from 'react-icons/fa'
@@ -8,89 +8,87 @@ import { FaMinus } from 'react-icons/fa6'
 import { FaPlus } from 'react-icons/fa6'
 
 export default function ShopCart() {
-  const [cartContent, setCartContent] = useState([
-    {
-      id: '1',
-      image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
-      store: '花店名稱1',
-      name: '玫瑰花',
-      price: '30',
-    },
-    {
-      id: '2',
-      image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
-      store: '花店名稱2',
-      name: '太陽花',
-      price: '60',
-    },
-    {
-      id: '3',
-      image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
-      store: '花店名稱2',
-      name: '太陽花',
-      price: '60',
-    },
-  ])
+  // 拿取localstorage資料
+  const [cartItems, setCartItems] = useState([])
+  console.log(cartItems)
+  useEffect(() => {
+    // 從 localstorage獲取資料
+    const storedProduct = localStorage.getItem('productToCart')
+    if (storedProduct) {
+      setCartItems(JSON.parse(storedProduct))
+    }
+  }, [])
 
-  const deleteOrderItem = (id) => {
-    // 過濾掉具有指定id的項目
-    const updateCartContent = cartContent.filter((item) => item.id !== id)
-    setCartContent(updateCartContent)
-    // 更新數量和小計，移除已刪除項目的資料
-    const { [id]: value, ...remainingQuantities } = quantities
-    setQuantities(remainingQuantities)
+  // Save cart items to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('productToCart', JSON.stringify(cartItems))
+  }, [cartItems])
 
-    const { [id]: value2, ...remainingSubtotals } = subTotal
-    setSubtotal(remainingSubtotals)
-  }
-
-  const [quantities, setQuantities] = useState(
-    cartContent.reduce(
-      (accumulator, item) => ({ ...accumulator, [item.id]: 1 }),
-      {}
+  // 計算器
+  const handleIncrement = (itemId) => {
+    setCartItems((prevItems) =>
+      Object.values(prevItems).map((item) => {
+        if (item.id === itemId) {
+          return { ...item, quantity: item.quantity + 1 }
+        }
+        return item
+      })
     )
-  )
-  const handleIncrement = (id) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [id]: prevQuantities[id] + 1,
-    }))
   }
 
-  const handleDecrement = (id) => {
-    setQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [id]: Math.max(prevQuantities[id] - 1, 1),
-    }))
+  const handleDecrement = (itemId) => {
+    setCartItems((prevItems) =>
+      Object.values(prevItems).map((item) => {
+        if (item.id === itemId && item.quantity > 1) {
+          return { ...item, quantity: item.quantity - 1 }
+        }
+        return item
+      })
+    )
   }
-  const handleChange = (id, event) => {
-    const newQuantity = parseInt(event.target.value, 10)
-    console.log(`Changed quantity for item ${id}:`, newQuantity)
-    if (!isNaN(newQuantity) && newQuantity >= 1) {
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [id]: newQuantity,
-      }))
+
+  // 根據用戶的輸入更新某個項目的數量。
+  const handleChange = (itemId, e) => {
+    // 從輸入欄目前的值解析新的數量，確保它是一個整數。
+    const newQuantity = parseInt(e.target.value, 10)
+
+    // 從輸入欄目前的值解析新的數量，確保它是一個整數。
+    if (!isNaN(newQuantity) && newQuantity > 0) {
+      // 更新 cartItems 狀態。
+      setCartItems((prevItems) =>
+        // 遍歷之前的項目來找到需要更新的那一個。
+        prevItems.map((item) => {
+          // 當找到匹配 id 的項目時，更新其數量。
+          if (item.id === itemId) {
+            return { ...item, quantity: newQuantity }
+          }
+          // 對於所有其他項目，保持不變返回。
+          return item
+        })
+      )
     }
   }
 
   const [subTotal, setSubtotal] = useState(0)
   const calculateSubtotals = () => {
-    return cartContent.reduce((accumulator, item) => {
-      const itemTotal = item.price * quantities[item.id]
+    return Object.values(cartItems).reduce((accumulator, item) => {
+      const itemTotal = item.price * item.quantity
       return {
         ...accumulator,
         [item.id]: itemTotal,
       }
     }, {})
   }
+  // This effect hook is used to update the subtotals whenever cartItems changes.
   useEffect(() => {
     const newSubtotals = calculateSubtotals()
     setSubtotal(newSubtotals)
-  }, [quantities])
+  }, [cartItems])
 
+  // 總商品數量
+  const totalCartProducts = Object.values(cartItems).length
+  // 總商品小計
   const [totalSubtotal, setTotalSubtotal] = useState(0)
-
   useEffect(() => {
     const subtotals = calculateSubtotals()
     const total = Object.values(subtotals).reduce(
@@ -98,79 +96,101 @@ export default function ShopCart() {
       0
     )
     setTotalSubtotal(total)
-  }, [quantities])
+  }, [cartItems])
+
+  // 刪除
+  const deleteCartItem = (itemId) => {
+    // 找出要刪除的項目
+    const updatedCartItems = cartItems.filter((item) => item.id !== itemId)
+    setCartItems(updatedCartItems)
+
+    // Update the localStorage with the new cart items array.
+    localStorage.setItem('productToCart', JSON.stringify(updatedCartItems))
+  }
 
   return (
     <div className="flex flex-col w-[350px] md:w-[600px] lg:w-[800px] h-full gap-2 mt-4">
       {/* 購物車表格 */}
       <div className="flex flex-col gap-3 w-full p-4 rounded-lg">
         {/* 表內容 */}
-        {cartContent.map((item) => (
-          <Card
-            key={item.id}
-            className="shadow-none border-1 border-tertiary-gray-200 p-2 shadow-md"
-          >
-            <div className="flex flex-col md:flex-row items-center sm:justify-between">
-              <div className="flex-grow flex flex-row gap-2 items-center truncate px-2 py-1 md:py-2">
-                <Image
-                  width={80}
-                  height={40}
-                  alt={item.name}
-                  src={item.image}
-                  className="rounded-md"
-                />
-                <span className="md:ml-1 truncate">{item.name}</span>
+        {Object.values(cartItems).map((item) => {
+          let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
+          if (Array.isArray(item.images)) {
+            const nonThumbnailImage = item.images.find(
+              (image) => !image.is_thumbnail
+            )
+            if (nonThumbnailImage) {
+              imageUrl = `/assets/shop/products/${item.directory}/${nonThumbnailImage.url}`
+            }
+          }
+
+          return (
+            <Card
+              key={item.id}
+              className="shadow-none border-1 border-tertiary-gray-200 p-2 shadow-md"
+            >
+              <div className="flex flex-col md:flex-row items-center sm:justify-between">
+                <div className="flex-grow flex flex-row gap-2 items-center truncate px-2 py-1 md:py-2">
+                  <Image
+                    width={80}
+                    height={40}
+                    alt={item.name}
+                    src={imageUrl}
+                    className="rounded-md"
+                  />
+                  <span className="md:ml-1 truncate">{item.name}</span>
+                </div>
+                <div className="flex-grow flex items-center px-2 py-1 md:py-2">
+                  {item.stores.store_name}
+                </div>
+                <div className="flex-grow flex items-center px-2 py-1 md:py-2">
+                  NT${item.price}
+                </div>
+                <div className="flex-grow flex items-center justify-center px-2 py-1 md:py-2">
+                  <Button
+                    isIconOnly
+                    variant="faded"
+                    className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                    onClick={() => handleDecrement(item.id)}
+                  >
+                    <FaMinus />
+                  </Button>
+                  <Input
+                    type="text"
+                    value={item.quantity}
+                    onChange={(e) => handleChange(item.id, e)}
+                    className="max-w-20 w-full rounded-md p-1 text-center"
+                    style={{ textAlign: 'center' }}
+                  />
+                  <Button
+                    isIconOnly
+                    variant="faded"
+                    className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
+                    onClick={() => handleIncrement(item.id)}
+                  >
+                    <FaPlus />
+                  </Button>
+                </div>
+                <div className="flex-grow flex items-center px-2 py-1 md:py-2">
+                  NT$ {subTotal[item.id]}
+                </div>
+                <div className="flex-grow flex items-center justify-end px-2 py-1 md:py-2">
+                  <button
+                    className="text-primary md:px-2 py-1"
+                    onClick={() => deleteCartItem(item.id)}
+                  >
+                    <FaRegTrashAlt />
+                  </button>
+                </div>
               </div>
-              <div className="flex-grow flex items-center px-2 py-1 md:py-2">
-                {item.store}
-              </div>
-              <div className="flex-grow flex items-center px-2 py-1 md:py-2">
-                NT${item.price}
-              </div>
-              <div className="flex-grow flex items-center justify-center px-2 py-1 md:py-2">
-                <Button
-                  isIconOnly
-                  variant="faded"
-                  className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
-                  onClick={() => handleDecrement(item.id)}
-                >
-                  <FaMinus />
-                </Button>
-                <Input
-                  type="text"
-                  value={quantities[item.id]}
-                  onChange={(event) => handleChange(item.id, event)}
-                  className="max-w-20 w-full rounded-md p-1 text-center"
-                  style={{ textAlign: 'center' }}
-                />
-                <Button
-                  isIconOnly
-                  variant="faded"
-                  className="bg-transparent border-transparent border-1 border-primary-100 text-primary-100 hover:bg-primary-300"
-                  onClick={() => handleIncrement(item.id)}
-                >
-                  <FaPlus />
-                </Button>
-              </div>
-              <div className="flex-grow flex items-center px-2 py-1 md:py-2">
-                NT$ {subTotal[item.id]}
-              </div>
-              <div className="flex-grow flex items-center justify-end px-2 py-1 md:py-2">
-                <button
-                  className="text-primary md:px-2 py-1"
-                  onClick={() => deleteOrderItem(item.id)}
-                >
-                  <FaRegTrashAlt />
-                </button>
-              </div>
-            </div>
-          </Card>
-        ))}
+            </Card>
+          )
+        })}
 
         {/* 小計 */}
         <div className="flex flex-col justify-between mt-2 border-t-1 border-tertiary-gray-200 pt-4">
           <div className="text-right text-right">
-            共 {cartContent.length} 項商品
+            共 {totalCartProducts} 項商品
           </div>
           <div className="flex justify-end space-x-4">
             <span>小計</span>

@@ -44,6 +44,7 @@ export default function Shop() {
   const [activePage, setActivePage] = useState('shop')
   // 列表用(原始資料)
   const [products, setProducts] = useState([])
+  // console.log(products)
   // 第一層選項 產生資料用
   const [categories, setCategories] = useState([])
   // console.log(categories)
@@ -62,9 +63,10 @@ export default function Shop() {
   const [selectedSubcategoryIds, setSelectedSubcategoryIds] = useState([])
   // 關鍵字
   const [searchTerm, setSearchTerm] = useState('')
-  console.log(searchTerm)
+  // console.log(searchTerm)
   // 分頁用
   const [loadPage, setLoadPage] = useState(1) // Track the current page
+  // 查看更多按鈕
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   // console.log(isButtonDisabled)
 
@@ -246,11 +248,12 @@ export default function Shop() {
   const handleLoadMore = () => {
     setLoadPage((prevLoadPage) => prevLoadPage + 1)
   }
-  // 查看更多 無商品時按鈕禁用
+
+  // 查看更多 無商品時按鈕隱藏
   useEffect(() => {
     // 檢查過濾後的商品數量是否少於當前已加載的商品數量
     setIsButtonDisabled(filterProduct.length <= limit * loadPage)
-  }, [products, loadPage]) // 當商品列表或當前頁面改變時重新計算
+  }, [products, loadPage])
 
   // Carousel State
   const [page, setPage] = useState(0)
@@ -321,6 +324,7 @@ export default function Shop() {
   //       )
   //   )
   // }
+  // 排序、篩選、關鍵字
   const filterProduct = useMemo(
     () =>
       products
@@ -346,6 +350,38 @@ export default function Shop() {
         ),
     [products, selectedSubcategoryIds, selectedColors, order, searchTerm]
   )
+
+  // localStorage
+  const [cartItems, setCartItems] = useState({})
+  // console.log(Object.values(cartItems)) // convert the object values to an array
+
+  // Save cartItems to localStorage
+  useEffect(() => {
+    localStorage.setItem('productToCart', JSON.stringify(cartItems))
+  }, [cartItems])
+
+  // Load cartItems from localStorage
+  useEffect(() => {
+    const storedProducts = JSON.parse(localStorage.getItem('productToCart'))
+    if (storedProducts) {
+      setCartItems(storedProducts)
+    }
+  }, [])
+
+  // Function to handle adding to cart
+  const addToCart = (product) => {
+    // 檢查是否有對應的商品的鍵值，來看商品是否在購物車
+    // const productExists = cartItems[product.id]
+    // console.log(productExists)
+
+    // 透過展開運算符，創建新的購物車物件
+    // 由於狀態不可改變，要增加物件需創建新的購物車物件
+    const updatedCartItems = {
+      ...cartItems,
+      [product.id]: { ...product, quantity: 1 },
+    }
+    setCartItems(updatedCartItems) // Update state
+  }
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -447,9 +483,7 @@ export default function Shop() {
                     </Checkbox>
                   ))}
               </div>
-
               {/* RWD END */}
-
               {/* search & select start */}
               <div className="w-full py-4 flex justify-between">
                 {/* searchbar */}
@@ -710,10 +744,6 @@ export default function Shop() {
                 <div className="sm:w-10/12 sm:flex-1">
                   <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
                     {filterProduct.slice(0, limit * loadPage).map((product) => {
-                      {
-                        /* console.log(product.images) */
-                      }
-                      // Find the image where is_thumbnail is false
                       let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
 
                       if (Array.isArray(product.images)) {
@@ -786,7 +816,8 @@ export default function Shop() {
                             </p>
                             <div
                               className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                              onClick={notify}
+                              // onClick={notify}
+                              onClick={() => addToCart(product)}
                             >
                               <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
                             </div>
@@ -801,20 +832,21 @@ export default function Shop() {
               </div>
               <div className="flex justify-center my-8 w-full">
                 <div className="flex flex-col items-center">
-                  <h1 className="text-xl font-bold mb-4 sm:">繼續探索</h1>
-                  <MyButton
-                    color="primary"
-                    size="xl"
-                    onClick={handleLoadMore}
-                    disabled={isButtonDisabled}
-                    className={`transition ease-in-out duration-300 ${
-                      isButtonDisabled
-                        ? 'bg-gray-400 text-white cursor-not-allowed opacity-50'
-                        : 'bg-primary-200 hover:primary-100 text-white'
-                    }`}
-                  >
-                    查看更多
-                  </MyButton>
+                  {/* 當isButtonDisabled為false時，後面的元素才會渲染 */}
+                  {!isButtonDisabled && (
+                    <>
+                      <h1 className="text-xl font-bold mb-4 sm:">繼續探索</h1>
+                      <MyButton
+                        color="primary"
+                        size="xl"
+                        onClick={handleLoadMore}
+                        disabled={isButtonDisabled}
+                        className="hover:bg-primary-100"
+                      >
+                        查看更多
+                      </MyButton>{' '}
+                    </>
+                  )}
                 </div>
               </div>
               {/* main section end */}
