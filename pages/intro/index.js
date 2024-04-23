@@ -24,7 +24,22 @@ import {
 } from '@nextui-org/react'
 
 export default function FlowersIndex() {
-  // ----------花卡片的排序宣告部分start----------
+  // ----------搜尋宣告部分start----------
+  const [searchTerm, setSearchTerm] = useState('') // 儲存輸入框的值
+  const handleSearch = () => {
+    // 在這裡使用 searchTerm 執行搜尋
+    const filteredData = introData.filter((flower) =>
+      Object.values(flower).some(
+        (value) =>
+          typeof value === 'string' && value.toLowerCase().includes(searchTerm)
+      )
+    )
+    setFlowerData(filteredData)
+  }
+
+  // ----------搜尋宣告部分end------------
+
+  // ----------排序宣告部分start----------
   const [flowerData, setFlowerData] = useState(introData) // 初始花卡片資料
   const [sortOption, setSortOption] = useState('A→Z') // 初始排序選項
 
@@ -73,7 +88,7 @@ export default function FlowersIndex() {
     })
   }
 
-  // ----------花卡片的排序宣告部分end----------
+  // ----------排序宣告部分end----------
 
   // ----------花卡片的宣告部分start----------
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -317,11 +332,16 @@ export default function FlowersIndex() {
                     <input
                       type="text"
                       name="search"
-                      id="price"
+                      id="search"
                       className="block text-base w-full rounded-l-xl px-4 py-2 text-tertiary placeholder:text-tertiary-gray-100 border-1 border-tertiary-gray-200 focus:ring-0 focus:outline-none focus:border-teal focus:border-primary-100"
                       placeholder="輸入關鍵字"
+                      value={searchTerm} // 將輸入框的值綁定到 searchTerm
+                      onChange={(e) => setSearchTerm(e.target.value)} // 更新 searchTerm 的值
                     />
-                    <button className="bg-primary-100 w-12 flex justify-center items-center rounded-r-xl hover:bg-[#85B5A7]">
+                    <button
+                      className="bg-primary-100 w-12 flex justify-center items-center rounded-r-xl hover:bg-[#85B5A7]"
+                      onClick={handleSearch}
+                    >
                       <CiSearch fill="white" className="w-6 h-6" />
                     </button>
                   </div>
