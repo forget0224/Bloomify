@@ -102,12 +102,12 @@ export default function Detail() {
     )
     const basePath = categoryMapping
       ? categoryMapping.directory
-      : '/assets/shop/products/flowers/' // Use a default if not found
+      : '/assets/shop/products/default_fallback_image.jpg'
 
     const mainImage =
       product.images?.find((img) => img.is_thumbnail)?.url ||
       product.images?.[0]?.url ||
-      'default.jpg'
+      'default_fallback_image.jpg'
 
     return {
       ...product,
@@ -130,26 +130,6 @@ export default function Detail() {
     wrapper: 'text-base', // 整個表格
   }
 
-  // calculate start
-  const [quantity, setQuantity] = useState(1)
-  const handleIncrement = () => {
-    setQuantity(quantity + 1)
-  }
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1)
-    }
-  }
-  const handleChange = (event) => {
-    const newQuantity = parseInt(event.target.value)
-    if (!isNaN(newQuantity) && newQuantity >= 1) {
-      setQuantity(newQuantity)
-    } else if (event.target.value === '') {
-      setQuantity(1)
-    }
-  }
-  // calculate end
-
   // toaster start
   const notify = () => toast.success('已成功加入購物車')
   // toaster end
@@ -169,6 +149,72 @@ export default function Detail() {
     onOpen: onShareOpen,
     onOpenChange: onShareOpenChange,
   } = useDisclosure()
+
+  // localStorage
+  const [cartItems, setCartItems] = useState({})
+  // Save cartItems to localStorage
+  useEffect(() => {
+    localStorage.setItem('productToCart', JSON.stringify(cartItems))
+  }, [cartItems])
+
+  // Load cartItems from localStorage
+  useEffect(() => {
+    const storedProducts = JSON.parse(localStorage.getItem('productToCart'))
+    if (storedProducts) {
+      setCartItems(storedProducts)
+    }
+  }, [])
+  // Function to handle adding to cart
+  // const addToCart = (product) => {
+  //   const updatedCartItems = {
+  //     ...cartItems,
+  //     [product.id]: { ...product, quantity: 1 },
+  //   }
+  //   setCartItems(updatedCartItems) // Update state
+  // }
+  const addToCart = (product) => {
+    const newProduct = {
+      ...product,
+      quantity: quantity, // use the current quantity state
+    } // check if the product is already in the cart
+    const productAlreadyInCart = cartItems[product.id]
+
+    // create a new object for the updated cart
+    const updatedCartItems = {
+      ...cartItems,
+      [product.id]: productAlreadyInCart
+        ? {
+            ...productAlreadyInCart,
+            quantity: productAlreadyInCart.quantity + quantity,
+          }
+        : newProduct,
+    }
+    setCartItems(updatedCartItems)
+  }
+
+  // Save cart items to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('productToCart', JSON.stringify(cartItems))
+  }, [cartItems])
+
+  // 計算器
+  const [quantity, setQuantity] = useState(1)
+  const handleIncrement = () => {
+    setQuantity(quantity + 1)
+  }
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1)
+    }
+  }
+  const handleChange = (event) => {
+    const newQuantity = parseInt(event.target.value)
+    if (!isNaN(newQuantity) && newQuantity >= 1) {
+      setQuantity(newQuantity)
+    } else if (event.target.value === '') {
+      setQuantity(1)
+    }
+  }
 
   const display = (
     <>
@@ -377,16 +423,22 @@ export default function Detail() {
                     <MyButton
                       color="primary"
                       size="xl"
-                      onClick={notify}
+                      // onClick={notify}
                       isOutline
                       className="w-full"
+                      onClick={() => addToCart(product)}
                     >
                       加入購物車
                     </MyButton>
                   </div>
                   <Toaster />
                   <Link href="/cart" className="sm:flex-1">
-                    <MyButton color="primary" size="xl" className="w-full">
+                    <MyButton
+                      color="primary"
+                      size="xl"
+                      className="w-full"
+                      onClick={() => addToCart(product)}
+                    >
                       立即購買
                     </MyButton>
                   </Link>

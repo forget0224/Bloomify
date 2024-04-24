@@ -370,10 +370,6 @@ export default function Shop() {
 
   // Function to handle adding to cart
   const addToCart = (product) => {
-    // 檢查是否有對應的商品的鍵值，來看商品是否在購物車
-    // const productExists = cartItems[product.id]
-    // console.log(productExists)
-
     // 透過展開運算符，創建新的購物車物件
     // 由於狀態不可改變，要增加物件需創建新的購物車物件
     const updatedCartItems = {
@@ -459,7 +455,7 @@ export default function Shop() {
                     )
                   })}
               </div>
-              {/* select categories end */}
+              {/* 第一層選項 end */}
               {/* RWD START */}
               <div className="sm:hidden">
                 {categories
@@ -750,13 +746,10 @@ export default function Shop() {
                         const nonThumbnailImage = product.images.find(
                           (image) => !image.is_thumbnail
                         )
-                        // console.log(nonThumbnailImage)
 
                         // If nonThumbnailImage is not found, use a fallback image URL
                         if (nonThumbnailImage)
                           imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
-
-                        //console.log(nonThumbnailImage)
                       }
 
                       return (
@@ -814,13 +807,13 @@ export default function Shop() {
                             <p className="text-xl truncate">
                               NT${product.price}
                             </p>
-                            <div
+                            <button
                               className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
                               // onClick={notify}
                               onClick={() => addToCart(product)}
                             >
                               <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
-                            </div>
+                            </button>
                             <Toaster />
                           </CardFooter>
                         </Card>
@@ -844,7 +837,7 @@ export default function Shop() {
                         className="hover:bg-primary-100"
                       >
                         查看更多
-                      </MyButton>{' '}
+                      </MyButton>
                     </>
                   )}
                 </div>

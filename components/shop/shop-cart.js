@@ -101,7 +101,9 @@ export default function ShopCart() {
   // 刪除
   const deleteCartItem = (itemId) => {
     // 找出要刪除的項目
-    const updatedCartItems = cartItems.filter((item) => item.id !== itemId)
+    const updatedCartItems = Object.values(cartItems).filter(
+      (item) => item.id !== itemId
+    )
     setCartItems(updatedCartItems)
 
     // Update the localStorage with the new cart items array.
