@@ -17,12 +17,8 @@ import { OccProvider } from '@/hooks/use-occ'
 import { FlowerProvider } from '@/hooks/use-flower'
 import { StoreProvider } from '@/hooks/use-store'
 import CustomNav from '@/components/custom/custom/customNav'
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  Button,
-} from '@nextui-org/react'
+import GreetingCard from '@/components/custom/custom/GreetingCard'
+import LayerFloat from '@/components/custom/custom/LayerFloat'
 import LayerContent from '@/components/custom/custom/LayerContent'
 import {
   PiFlowerTulipLight,
@@ -40,9 +36,7 @@ export default function Custom() {
   const [currentPage, setCurrentPage] = useState('main')
   const [storeData, setStoreData] = useState(null)
   const [currentComponentIndex, setCurrentComponentIndex] = useState(0)
-  // const [currentItemIndex, setCurrentItemIndex] = useState(0)
   const [items, setItems] = useState([])
-  // const storeData = useStore()
   const components = [
     { component: MainFlowerComponent, name: 'main' },
     { component: AccentFlowerComponent, name: 'accent' },
@@ -71,8 +65,6 @@ export default function Custom() {
         setCurrentData([])
       }
     }
-    // setItemsWithCurrentData(getItems(currentData))
-    // console.log(currentData)
   }, [storeData, currentPage]) // 依賴 storeData 和 currentPage
   useEffect(() => {
     if (storeData && storeData.items) {
@@ -120,9 +112,8 @@ export default function Custom() {
       ]
       setItems(newItems)
     }
-  }, [storeData]) // 依賴 storeData 變化
+  }, [storeData])
 
-  // 確保有一個 state 來存儲當前的數據
   const [currentData, setCurrentData] = useState([])
 
   const fetchStoreData = async (storeId) => {
@@ -163,6 +154,7 @@ export default function Custom() {
   }
   const handleOpen = (index) => {
     setOpenedIndex(index)
+    setCurrentPage(items[index].name)
   }
 
   const handleClose = () => {
@@ -173,6 +165,7 @@ export default function Custom() {
     setOpenedIndex((prevIndex) => {
       const newIndex = prevIndex > 0 ? prevIndex - 1 : items.length - 1
       console.log('Prev index:', newIndex)
+      setCurrentPage(items[newIndex].name)
       return newIndex
     })
   }
@@ -181,6 +174,7 @@ export default function Custom() {
     setOpenedIndex((prevIndex) => {
       const newIndex = prevIndex < items.length - 1 ? prevIndex + 1 : 0
       console.log('Next index:', newIndex)
+      setCurrentPage(items[newIndex].name)
       return newIndex
     })
   }
@@ -201,36 +195,30 @@ export default function Custom() {
                   <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
                     <div className="flex flex-col sm:w-8/12 h-full ">
                       <CustomNav />
-                      <main className="flex-1 w-full h-auto relative">
+                      <main className="flex-1 w-full h-auto relative z-0">
                         {/* 圖層的區塊 */}
-                        <div className="hidden sm:block">
-                          <Popover placement="bottom-start">
-                            <PopoverTrigger>
-                              <Button
-                                isIconOnly
-                                className="rounded-full border-1 text-tertiary-black border-tertiary-black w-12 h-12 bg-secondary-200 flex flex-col items-center justify-center m-4"
-                              >
-                                <IoLayersOutline className="text-3xl" />
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="sm:max-h-[600px] overflow-auto">
-                              <LayerContent />
-                            </PopoverContent>
-                          </Popover>
-                        </div>
 
-                        <div
-                          className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full"
-                          style={{
-                            backgroundImage:
-                              'url("/custom/custom/canvasBg.png")',
-                            backgroundSize: 'contain',
-                            backgroundPosition: 'center',
-                            backgroundRepeat: 'no-repeat',
-                          }}
-                        >
-                          <WorkingArea />
-                        </div>
+                        {currentPage === 'card' ? (
+                          <GreetingCard />
+                        ) : (
+                          <>
+                            <div className="hidden sm:block">
+                              <LayerFloat />
+                            </div>
+                            <div
+                              className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full"
+                              style={{
+                                backgroundImage:
+                                  'url("/custom/custom/canvasBg.png")',
+                                backgroundSize: 'contain',
+                                backgroundPosition: 'center',
+                                backgroundRepeat: 'no-repeat',
+                              }}
+                            >
+                              <WorkingArea />
+                            </div>
+                          </>
+                        )}
                       </main>
                     </div>
                     <div className="sm:w-4/12  bg-white sm:flex hidden sm:flex-col h-screen">
@@ -286,7 +274,7 @@ export default function Custom() {
                       </div>
                     </div>
                     {/* 底部  */}
-                    <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden">
+                    <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden ">
                       <div className="flex flex-row gap-2 justify-evenly items-center h-full">
                         {items &&
                           items.map((item, index) => (

@@ -18,12 +18,13 @@ function BottomSheetButton({
   blocking = false,
 }) {
   return (
-    <div className="flex flex-col items-center justify-center text-tertiary-black z-9">
+    <div className="flex flex-col items-center justify-center text-tertiary-black">
       <div className={iconClass} onClick={onOpen}>
         {icon}
       </div>
       {showLabel && <p>{label}</p>}
       <BottomSheet
+        style={{ zIndex: 2000 }}
         open={isOpen}
         blocking={blocking}
         onDismiss={onClose}

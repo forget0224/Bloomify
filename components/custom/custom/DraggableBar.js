@@ -9,7 +9,7 @@ const DraggableBar = ({
 }) => {
   const dragY = useMotionValue(0)
   const [imgIndex, setImgIndex] = useState(0)
-  console.log(items)
+  // console.log(items)
   const onDragEnd = () => {
     const y = dragY.get()
     if (y <= -dragBuffer && imgIndex < items.length - 3) {
@@ -38,11 +38,11 @@ const DraggableBar = ({
               key={index}
               className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
               onClick={() => {
-                console.log(
-                  'Item clicked:',
-                  item.attributes,
-                  item.category_name
-                ) // 添加這個來確認點擊事件
+                // console.log(
+                //   'Item clicked:',
+                //   item.attributes,
+                //   item.category_name
+                // ) // 添加這個來確認點擊事件
                 onItemSelect(item.attributes, item.category_name)
               }}
             >
