@@ -2,8 +2,15 @@ import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { MdEdit } from 'react-icons/md'
 import { CiCircleCheck } from 'react-icons/ci'
+import { useMediaQuery } from 'react-responsive'
 
 const GreetingCard = () => {
+  const isDesktopOrLaptop = useMediaQuery({
+    query: '(min-width: 1024px)',
+  })
+  const isMobile = useMediaQuery({
+    query: '(max-width: 375px)',
+  })
   const [flipped, setFlipped] = useState(false)
   const [editing, setEditing] = useState(false)
   const [title, setTitle] = useState('壽星')
@@ -19,11 +26,12 @@ const GreetingCard = () => {
   const cardVariants = {
     initial: {
       scale: 1,
-      x: 0, // 初始时，没有平移
+      x: 0,
     },
     flipped: {
-      scale: 1.2, // 放大效果
-      x: '50%', // 向左平移卡片宽度的50%，以便卡片中心对齐
+      scale: isDesktopOrLaptop ? 1.2 : isMobile ? 1 : 1.1,
+      x: isMobile ? '0%' : '50%',
+      // y: isMobile ? '-10%' : '0%',
     },
   }
 
@@ -35,7 +43,6 @@ const GreetingCard = () => {
 
   const toggleEditing = () => {
     setEditing(!editing)
-    // 不再重置翻轉狀態，讓卡片保持當前的狀態
   }
 
   const handleInputChange = (setter) => (event) => {
@@ -43,54 +50,55 @@ const GreetingCard = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-full">
+    <div
+      className="flex items-center justify-center"
+      style={{ height: 'calc(100vh - 144px)' }}
+    >
       <motion.div
-        className="relative w-64 h-96 perspective-2500 cursor-pointer"
+        className="relative sm:w-64 sm:h-96  w-[188px] h-[282px] perspective-2500 cursor-pointer"
         onClick={toggleCard}
         animate={flipped ? 'flipped' : 'initial'}
         variants={cardVariants}
         transition={{ duration: 0.5, ease: 'easeInOut' }}
       >
-        {/* Edit/Finish Button */}
         <div
-          className="absolute bottom-2 right-2 bg-white rounded-sm p-2 flex items-center justify-center z-10"
-          style={{ width: '40px', height: '20px' }}
+          className="    absolute sm:bottom-2 right-2 sm:bg-transparent  rounded-full p-2 flex items-center justify-center z-10 bottom-0"
+          style={{ width: '30px', height: '30px' }}
           onClick={(e) => {
             e.stopPropagation()
             toggleEditing()
           }}
         >
           {editing ? (
-            <CiCircleCheck className="text-lg text-gray-600" />
+            <CiCircleCheck className="text-2xl text-gray-600 text-bold" />
           ) : (
-            <MdEdit className="text-xl text-gray-600" />
+            <MdEdit className="text-lg text-gray-600" />
           )}
         </div>
 
-        {/* Inside of the card */}
         <div
-          className="absolute top-0 left-0 w-full h-full bg-white shadow-xl" // Added shadow effect
+          className="absolute top-0 left-0 w-full h-full  bg-white shadow-xl" // Added shadow effect
         >
           <input
             type="text"
             value={title}
             onChange={handleInputChange(setTitle)}
-            className={`text-center w-full mt-8 text-xl font-bold ${
+            className={` text-center w-full sm:mt-8 text-xl font-bold ${
               editing ? 'bg-secondary-200' : ''
             }`}
             disabled={!editing}
           />
-          <div className="h-60 relative">
+          <div className="sm:h-60 h-48 relative">
             <textarea
               value={message}
               onChange={handleInputChange(setMessage)}
-              className={`w-full mt-2 px-8 py-3 h-full ${
+              className={`w-full sm:text:base text-sm py-4 px-4 mt-2 sm:px-8 sm:py-3 h-full ${
                 editing ? 'bg-secondary-200' : ''
               } resize-none`}
               disabled={!editing}
               maxLength={maxLength}
             />
-            <div className="text-xs text-gray-500 absolute right-2 bottom-2">
+            <div className="text-xs text-gray-500 absolute sm:right-2 bottom-2  right-4">
               {`${countCharacters(message)}/${maxLength}`}
             </div>
           </div>
@@ -98,12 +106,13 @@ const GreetingCard = () => {
             type="text"
             value={greeting}
             onChange={handleInputChange(setGreeting)}
-            className={`w-full mt-4 px-8 ${editing ? 'bg-secondary-200' : ''}`}
+            className={`w-full sm:text-base text-xs mt-4 px-4 text-right sm:mt-4 sm:px-8 ${
+              editing ? 'bg-secondary-200' : ''
+            }`}
             disabled={!editing}
           />
         </div>
 
-        {/* Front of the card */}
         <motion.div
           className="absolute top-0 left-0 w-full h-full bg-white shadow-xl z-20"
           style={{ transformStyle: 'preserve-3d', transformOrigin: 'left' }}
@@ -113,7 +122,6 @@ const GreetingCard = () => {
           <h3 className="text-center mt-8 text-xl font-bold bg-gradient-to-r from-yellow-300 to-pink-500">
             HAPPY BIRTHDAY Love!
           </h3>
-          {/* Balloons and other decorations */}
         </motion.div>
       </motion.div>
     </div>

@@ -17,7 +17,7 @@ import { OccProvider } from '@/hooks/use-occ'
 import { FlowerProvider } from '@/hooks/use-flower'
 import { StoreProvider } from '@/hooks/use-store'
 import CustomNav from '@/components/custom/custom/customNav'
-import GreetingCard from '@/components/custom/GreetingCard'
+import GreetingCard from '@/components/custom/custom/GreetingCard'
 import LayerFloat from '@/components/custom/custom/LayerFloat'
 import LayerContent from '@/components/custom/custom/LayerContent'
 import {
@@ -112,9 +112,8 @@ export default function Custom() {
       ]
       setItems(newItems)
     }
-  }, [storeData]) // 依賴 storeData 變化
+  }, [storeData])
 
-  // 確保有一個 state 來存儲當前的數據
   const [currentData, setCurrentData] = useState([])
 
   const fetchStoreData = async (storeId) => {
@@ -155,6 +154,7 @@ export default function Custom() {
   }
   const handleOpen = (index) => {
     setOpenedIndex(index)
+    setCurrentPage(items[index].name)
   }
 
   const handleClose = () => {
@@ -165,6 +165,7 @@ export default function Custom() {
     setOpenedIndex((prevIndex) => {
       const newIndex = prevIndex > 0 ? prevIndex - 1 : items.length - 1
       console.log('Prev index:', newIndex)
+      setCurrentPage(items[newIndex].name)
       return newIndex
     })
   }
@@ -173,6 +174,7 @@ export default function Custom() {
     setOpenedIndex((prevIndex) => {
       const newIndex = prevIndex < items.length - 1 ? prevIndex + 1 : 0
       console.log('Next index:', newIndex)
+      setCurrentPage(items[newIndex].name)
       return newIndex
     })
   }
@@ -193,7 +195,7 @@ export default function Custom() {
                   <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
                     <div className="flex flex-col sm:w-8/12 h-full ">
                       <CustomNav />
-                      <main className="flex-1 w-full h-auto relative">
+                      <main className="flex-1 w-full h-auto relative z-0">
                         {/* 圖層的區塊 */}
 
                         {currentPage === 'card' ? (
@@ -272,7 +274,7 @@ export default function Custom() {
                       </div>
                     </div>
                     {/* 底部  */}
-                    <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden">
+                    <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden ">
                       <div className="flex flex-row gap-2 justify-evenly items-center h-full">
                         {items &&
                           items.map((item, index) => (
