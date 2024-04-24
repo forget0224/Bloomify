@@ -8,7 +8,7 @@ import { FaMinus } from 'react-icons/fa6'
 import { FaPlus } from 'react-icons/fa6'
 
 export default function ShopCart() {
-  // 拿取localstorage資料
+  // 拿取localStorage資料
   const [cartItems, setCartItems] = useState([])
   console.log(cartItems)
   useEffect(() => {

@@ -28,7 +28,12 @@ import DefaultLayout from '@/components/layout/default-layout'
 import Subtitle from '@/components/common/subtitle.js'
 import { MyButton } from '@/components/btn/mybutton'
 import SearchBtn from '@/components/shop/search'
-import { BsFillGridFill, BsFillStarFill, BsHeart } from 'react-icons/bs'
+import {
+  BsFillGridFill,
+  BsFillStarFill,
+  BsHeart,
+  BsHeartFill,
+} from 'react-icons/bs'
 import { PiShoppingCartSimpleFill } from 'react-icons/pi'
 import { BiSolidLeaf } from 'react-icons/bi'
 import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
@@ -66,6 +71,56 @@ export default function Shop() {
   // console.log(searchTerm)
   // 分頁用
   const [loadPage, setLoadPage] = useState(1) // Track the current page
+
+  // 收藏用
+  const [isFavHovered, setIsFavHovered] = useState([])
+  const handleMouseEnter = (productId) => {
+    // prev:更新基於前一個狀態值
+    setIsFavHovered((prev) => [...prev, productId])
+  }
+  const handleMouseLeave = (productId) => {
+    setIsFavHovered((prev) => prev.filter((id) => id !== productId))
+  }
+  const [isFavClicked, setIsFavClicked] = useState([])
+  const toggleFavClick = (productId) => {
+    // 先判断产品是否已被标记为"喜爱"
+    const newFavStatus = !isFavClicked.includes(productId)
+
+    // 更新状态
+    setIsFavClicked((prev) => {
+      const updatedFavs = newFavStatus
+        ? [...prev, productId] // 添加新的喜爱产品
+        : prev.filter((id) => id !== productId) // 移除取消喜爱的产品
+      return updatedFavs
+    })
+
+    // 更新LocalStorage
+    if (newFavStatus) {
+      // 如果是新添加喜爱，找到该产品的信息并保存
+      const productToAdd = filterProduct.find(
+        (product) => product.id === productId
+      )
+      if (productToAdd) {
+        const favProducts = JSON.parse(
+          localStorage.getItem('favProducts') || '[]'
+        )
+        localStorage.setItem(
+          'favProducts',
+          JSON.stringify([...favProducts, productToAdd])
+        )
+      }
+    } else {
+      // 如果是取消喜爱，从LocalStorage中移除
+      const favProducts = JSON.parse(
+        localStorage.getItem('favProducts') || '[]'
+      )
+      const filteredProducts = favProducts.filter(
+        (product) => product.id !== productId
+      )
+      localStorage.setItem('favProducts', JSON.stringify(filteredProducts))
+    }
+  }
+
   // 查看更多按鈕
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   // console.log(isButtonDisabled)
@@ -741,82 +796,102 @@ export default function Shop() {
                   <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
                     {filterProduct.slice(0, limit * loadPage).map((product) => {
                       let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
-
                       if (Array.isArray(product.images)) {
                         const nonThumbnailImage = product.images.find(
                           (image) => !image.is_thumbnail
                         )
-
-                        // If nonThumbnailImage is not found, use a fallback image URL
                         if (nonThumbnailImage)
                           imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
                       }
 
                       return (
-                        <Card
-                          shadow="sm"
-                          key={product.id}
-                          isPressable
-                          onPress={() => console.log('item pressed')}
-                        >
-                          <CardBody className="relative overflow-visible p-0">
-                            <Link
-                              href={{
-                                pathname: '/shop/[pid]', // dynamic route
-                                query: { pid: product.id }, // setting pid to product ID
-                              }}
-                              className="block relative"
-                            >
-                              <BsHeart className="absolute right-3 top-3 sm:right-5 sm:top:5 sm:w-6 sm:h-6 z-10 text-secondary-100" />
-                              {/* Use the non-thumbnail image URL for the image src */}
-                              <Image
-                                isZoomed
-                                shadow="none"
-                                radius="none"
-                                width="100%"
-                                alt={product.name}
-                                className="w-full object-cover h-[250px] z-0"
-                                src={imageUrl}
-                              />
-                            </Link>
-                          </CardBody>
-                          <CardHeader className="block text-left">
-                            <div className="flex justify-between">
-                              <p className="text-xl truncate">{product.name}</p>
-                              <p className="text-base flex items-center space-x-1">
-                                <BsFillStarFill className="text-secondary-100" />
-                                {product.star}
-                                <span>{product.overall_review}</span>
-                              </p>
-                            </div>
-                            <p className="text-base text-tertiary-gray-100">
-                              {product.stores.store_name}
-                            </p>
-                            <div className="flex flex-wrap">
-                              {product.tags.map((tag) => (
-                                <p
-                                  key={tag.id}
-                                  className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
-                                >
-                                  {tag.name}
-                                </p>
-                              ))}
-                            </div>
-                          </CardHeader>
-                          <CardFooter className="text-small justify-between">
-                            <p className="text-xl truncate">
-                              NT${product.price}
-                            </p>
+                        <>
+                          <div className="relative">
                             <button
-                              className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                              // onClick={notify}
-                              onClick={() => addToCart(product)}
+                              onMouseEnter={() => handleMouseEnter(product.id)}
+                              onMouseLeave={() => handleMouseLeave(product.id)}
+                              onClick={() => toggleFavClick(product.id)}
+                              className="absolute z-20 text-secondary-100 ${isFavClicked.includes(product.id) ? 'selected-class' : ''}"
+                              style={{
+                                position: 'absolute',
+                                right: '1rem',
+                                top: '1rem',
+                              }}
                             >
-                              <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                              {isFavClicked.includes(product.id) ||
+                              isFavHovered.includes(product.id) ? (
+                                <BsHeartFill size={24} />
+                              ) : (
+                                <BsHeart size={24} />
+                              )}
                             </button>
-                            <Toaster />
-                          </CardFooter>
-                        </Card>
+                            <Card
+                              shadow="sm"
+                              key={product.id}
+                              isPressable
+                              onPress={() => console.log('item pressed')}
+                              className="w-full"
+                            >
+                              <CardBody className="overflow-visible p-0">
+                                <Link
+                                  href={{
+                                    pathname: '/shop/[pid]', // dynamic route
+                                    query: { pid: product.id }, // setting pid to product ID
+                                  }}
+                                  className="block relative"
+                                >
+                                  <Image
+                                    isZoomed
+                                    shadow="none"
+                                    radius="none"
+                                    width="100%"
+                                    alt={product.name}
+                                    className="w-full object-cover h-[250px] z-0"
+                                    src={imageUrl}
+                                  />
+                                </Link>
+                              </CardBody>
+                              <CardHeader className="block text-left">
+                                <div className="flex justify-between">
+                                  <p className="text-xl truncate">
+                                    {product.name}
+                                  </p>
+                                  <p className="text-base flex items-center space-x-1">
+                                    <BsFillStarFill className="text-secondary-100" />
+                                    {product.star}
+                                    <span>{product.overall_review}</span>
+                                  </p>
+                                </div>
+                                <p className="text-base text-tertiary-gray-100">
+                                  {product.stores.store_name}
+                                </p>
+                                <div className="flex flex-wrap">
+                                  {product.tags.map((tag) => (
+                                    <p
+                                      key={tag.id}
+                                      className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
+                                    >
+                                      {tag.name}
+                                    </p>
+                                  ))}
+                                </div>
+                              </CardHeader>
+                              <CardFooter className="text-small justify-between">
+                                <p className="text-xl truncate">
+                                  NT${product.price}
+                                </p>
+                                <button
+                                  className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
+                                  // onClick={notify}
+                                  onClick={() => addToCart(product)}
+                                >
+                                  <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                                </button>
+                                <Toaster />
+                              </CardFooter>
+                            </Card>
+                          </div>
+                        </>
                       )
                     })}
                   </div>

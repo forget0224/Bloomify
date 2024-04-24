@@ -164,14 +164,7 @@ export default function Detail() {
       setCartItems(storedProducts)
     }
   }, [])
-  // Function to handle adding to cart
-  // const addToCart = (product) => {
-  //   const updatedCartItems = {
-  //     ...cartItems,
-  //     [product.id]: { ...product, quantity: 1 },
-  //   }
-  //   setCartItems(updatedCartItems) // Update state
-  // }
+
   const addToCart = (product) => {
     const newProduct = {
       ...product,
