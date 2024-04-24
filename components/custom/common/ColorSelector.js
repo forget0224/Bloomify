@@ -83,7 +83,7 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   const handleSelectFlower = (attribute) => {
     removeCurrentImage()
     setSelectedColor(attribute.color)
-    // Preview the selected flower on the canvas
+
     addImageToCanvas(attribute.url, {
       color: attribute.color,
       name: categoryName,
@@ -92,15 +92,13 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   }
 
   const handleConfirm = () => {
-    // Commit the current preview to be permanently on the canvas
     if (tempObjectRef.current) {
-      commitImageToCanvas(tempObjectRef.current) // 传递当前的预览对象
+      commitImageToCanvas(tempObjectRef.current)
     }
     onConfirm(selectedColor)
   }
 
   const handleCancel = () => {
-    // Remove the current preview from the canvas
     removeCurrentImage()
     onConfirm(null)
   }

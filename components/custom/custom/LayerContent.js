@@ -157,27 +157,53 @@ export default function LayerContent() {
     }
   }
 
+  // const handleCopyImage = (img) => {
+  //   const clipPath = getClipBounds()
+  //   if (!clipPath) {
+  //     console.error('沒有遮罩')
+  //     return
+  //   }
+  //   const clipP = getClipBounds()
+  //   const newImageMetadata = {
+  //     url: img.url,
+  //     name: img.name,
+  //     left: img.left + 10 + clipP.left + clipP.width / 2,
+  //     top: img.top + 10 + clipP.top + clipP.height / 2,
+  //     scaleX: 0,
+  //     scaleY: 0,
+  //   }
+
+  //   addImageToCanvas(img.url, newImageMetadata)
+  //   setTimeout(() => {
+  //     commitImageToCanvas()
+  //   }, 100)
+  // }
+
   const handleCopyImage = (img) => {
-    const clipPath = getClipBounds()
-    if (!clipPath) {
+    const clipP = getClipBounds()
+    if (!clipP) {
       console.error('沒有遮罩')
       return
     }
-    const clipP = getClipBounds()
     const newImageMetadata = {
       url: img.url,
       name: img.name,
-      left: img.left + 10 + clipP.left + clipP.width / 2,
-      top: img.top + 10 + clipP.top + clipP.height / 2,
-      scaleX: 0,
-      scaleY: 0,
+      left: img.left + 10 + clipP.left + clipP.width / 2, // 簡單地在原位置基礎上向右移動10單位
+      top: img.top + 10 + clipP.top + clipP.height / 2, // 向下移動10單位
+      scaleX: img.scaleX || 1, // 使用原圖的縮放比例，如果未設定則為1
+      scaleY: img.scaleY || 1,
+      angle: img.angle, // 保持原角度
+      originX: 'center',
+      originY: 'center',
     }
 
     addImageToCanvas(img.url, newImageMetadata)
+    // 使用 setTimeout 確保圖像加載和設置完成後執行
     setTimeout(() => {
-      commitImageToCanvas()
+      commitImageToCanvas() // 確保這個函數適當地設置了圖像信息並且能反映在UI上
     }, 100)
   }
+
   const handleSelectImage = (imageId) => {
     const canvas = canvasRef.current.fabric
     const object = canvas.getObjects().find((obj) => obj.id === imageId)
@@ -246,6 +272,7 @@ export default function LayerContent() {
                     position: 'absolute',
                     left: `${img.left / 3.5}px`,
                     top: `${img.top / 3.5}px`,
+                    transform: `rotate(${img.angle}deg)`,
                   }}
                 />
               </div>

@@ -25,6 +25,53 @@ export const FlowerProvider = ({ children }) => {
     }
   }, [])
 
+  // const addImageToCanvas = useCallback((url, metadata) => {
+  //   if (!canvasRef.current || !canvasRef.current.fabric) {
+  //     console.error('Canvas is not initialized.')
+  //     return
+  //   }
+
+  //   const canvas = canvasRef.current.fabric
+
+  //   if (tempObjectRef.current) {
+  //     canvas.remove(tempObjectRef.current)
+  //     tempObjectRef.current = null
+  //   }
+
+  //   new fabric.Image.fromURL(url, (img) => {
+  //     if (!img) {
+  //       console.error('Failed to load image')
+  //       return
+  //     }
+  //     const clipBounds = canvas.clipPath.getBoundingRect()
+  //     img.set({
+  //       ...metadata,
+  //       id: metadata.id || fabric.util.getRandomInt(1000, 9999),
+  //       zIndex: metadata.zIndex || 1,
+  //       left:
+  //         metadata.left !== undefined
+  //           ? metadata.left
+  //           : clipBounds.left + clipBounds.width / 2,
+  //       top:
+  //         metadata.top !== undefined
+  //           ? metadata.top
+  //           : clipBounds.top + clipBounds.height / 2,
+  //       scaleX: metadata.scaleX !== undefined ? metadata.scaleX : 0.5,
+  //       scaleY: metadata.scaleY !== undefined ? metadata.scaleY : 0.5,
+  //       originX: 'center',
+  //       originY: 'center',
+  //       lockScalingX:
+  //         metadata.lockScalingX !== undefined ? metadata.lockScalingX : true,
+  //       lockScalingY:
+  //         metadata.lockScalingY !== undefined ? metadata.lockScalingY : true,
+  //     })
+
+  //     canvas.add(img)
+  //     canvas.setActiveObject(img)
+  //     canvas.renderAll()
+  //     tempObjectRef.current = img
+  //   })
+  // }, [])
   const addImageToCanvas = useCallback((url, metadata) => {
     if (!canvasRef.current || !canvasRef.current.fabric) {
       console.error('Canvas is not initialized.')
@@ -32,12 +79,12 @@ export const FlowerProvider = ({ children }) => {
     }
 
     const canvas = canvasRef.current.fabric
-    const clipBounds = canvas.clipPath.getBoundingRect()
-
-    if (tempObjectRef.current) {
-      canvas.remove(tempObjectRef.current)
-      tempObjectRef.current = null
+    if (!canvas.clipPath) {
+      console.error('Clip path is not set.')
+      return // 或者設置一個默認 clipPath，視需求而定
     }
+
+    const clipBounds = canvas.clipPath.getBoundingRect()
 
     new fabric.Image.fromURL(url, (img) => {
       if (!img) {
@@ -45,19 +92,24 @@ export const FlowerProvider = ({ children }) => {
         return
       }
 
-      const newId = fabric.util.getRandomInt(1000, 9999)
-
       img.set({
         ...metadata,
-        id: newId,
+        id: metadata.id || fabric.util.getRandomInt(1000, 9999),
         zIndex: metadata.zIndex || 1,
-        left: metadata.left || clipBounds.left + clipBounds.width / 2, // 如果没有提供left，使用原图的left加偏移
-        top: metadata.top || clipBounds.top + clipBounds.height / 2,
-        angle: 0,
-        scaleX: metadata.scaleX || 0.5, // 使用原图的scaleX，如果没有提供则使用原图的值
-        scaleY: metadata.scaleY || 0.5, // 使用原图的scaleY，如果没有提供则使用原图的值
+        left:
+          metadata.left !== undefined
+            ? metadata.left
+            : clipBounds.left + clipBounds.width / 2,
+        top:
+          metadata.top !== undefined
+            ? metadata.top
+            : clipBounds.top + clipBounds.height / 2,
+        scaleX: metadata.scaleX !== undefined ? metadata.scaleX : 0.5,
+        scaleY: metadata.scaleY !== undefined ? metadata.scaleY : 0.5,
         originX: 'center',
         originY: 'center',
+        angle: metadata.angle !== undefined ? metadata.angle : 0,
+        url: metadata.url,
         lockScalingX:
           metadata.lockScalingX !== undefined ? metadata.lockScalingX : true,
         lockScalingY:
