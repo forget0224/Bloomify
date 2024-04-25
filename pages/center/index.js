@@ -21,7 +21,7 @@ export default function Index() {
   const isActive = (pathname) => router.pathname === pathname
 
   // 登出
-  const { logout } = useAuth()
+  const { auth, logout } = useAuth()
 
   //  SweetAlert2 彈窗
   const MySwal = withReactContent(Swal)
@@ -65,6 +65,9 @@ export default function Index() {
       }, 2000)
     }
   }
+
+  // 未登入時，不會出現頁面內容
+  if (!auth.isAuth) return <></>
 
   return (
     <DefaultLayout activePage={activePage}>
