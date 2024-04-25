@@ -15,8 +15,9 @@ export default function CourseSearch() {
   const [courses, setCourses] = useState([]) // set 課程資料
   const [courseCount, setCourseCount] = useState(0) // set 課程資料筆數
   const [stores, setStores] = useState([]) // set 商家資料
-  const [categories, setCategories] = useState([]) // set 商家資料
+  const [categories, setCategories] = useState([]) // set 分類資料
 
+  // 分頁
   const [currentPage, setCurrentPage] = useState(1) // 當前頁碼
   const [totalPages, setTotalPages] = useState(0) // 總頁數
   const cardsPerPage = 12 // 每頁顯示的卡片數量
@@ -24,7 +25,6 @@ export default function CourseSearch() {
   const handlePageChange = (page) => {
     setCurrentPage(page)
   }
-  // 分页显示当前课程的逻辑
   const indexOfLastCourse = currentPage * cardsPerPage
   const indexOfFirstCourse = indexOfLastCourse - cardsPerPage
   const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse)
@@ -117,13 +117,18 @@ export default function CourseSearch() {
           `http://localhost:3005/api/courses/search?${queryStr}`
         )
         const data = await res.json()
-        if (data.status === 'success' && Array.isArray(data.data.courses)) {
+        if (
+          data.status === 'success' &&
+          Array.isArray(data.data.coursesisFavorites)
+        ) {
           // 處理全部課程數據
-          setCourses(processCourses(data.data.courses))
+          setCourses(processCourses(data.data.coursesisFavorites))
           // 更新資料筆數
-          setCourseCount(data.data.courses.length)
+          setCourseCount(data.data.coursesisFavorites.length)
           // 計算並更新總頁數
-          setTotalPages(Math.ceil(data.data.courses.length / cardsPerPage))
+          setTotalPages(
+            Math.ceil(data.data.coursesisFavorites.length / cardsPerPage)
+          )
         }
       } catch (error) {
         console.error('Error fetching courses:', error)

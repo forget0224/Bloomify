@@ -32,14 +32,13 @@ export default function CardGroupStore() {
       {stores.map((store) => (
         <Card
           shadow="sm"
-          key={store.id}
+          key={store.store_id}
           isPressable
           onPress={() => console.log('item pressed')}
           className="bg-danger"
         >
           <Link
             href={`/course/search?store_id=${store.store_id}`}
-            key={store.id}
             className="w-full"
           >
             <CardBody className="p-0">

@@ -11,7 +11,7 @@ import {
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { BsChevronRight } from 'react-icons/bs'
-import { FaStar, FaShareAlt } from 'react-icons/fa'
+import { FaShareAlt } from 'react-icons/fa'
 import HeartButton from '@/components/course/btn-heart'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
@@ -128,7 +128,7 @@ export default function CourseDetails() {
         ...course,
         mainImage: mainImage
           ? mainImage.path
-          : '/assets/course/category-1/img-course-01-01.jpg',
+          : '/assets/course/img-deafult.jpg',
       }
     })
   }
@@ -145,8 +145,16 @@ export default function CourseDetails() {
           <Breadcrumbs>
             <BreadcrumbItem href="/">首頁</BreadcrumbItem>
             <BreadcrumbItem href="/course/">合作課程</BreadcrumbItem>
-            <BreadcrumbItem href="/course/search">基礎花藝課程</BreadcrumbItem>
-            <BreadcrumbItem color="primary">韓系乾燥花束製作</BreadcrumbItem>
+            {courseDetails.category && (
+              <BreadcrumbItem
+                href={`/course/search?category_id=${courseDetails.category.id}`}
+              >
+                {courseDetails.category.name}
+              </BreadcrumbItem>
+            )}
+            <BreadcrumbItem color="primary">
+              {courseDetails.name}
+            </BreadcrumbItem>
           </Breadcrumbs>
         </div>
         {/* 課程圖和課程資訊 */}
@@ -281,7 +289,7 @@ export default function CourseDetails() {
               </div>
             </div>
             {/* 推薦課程 */}
-            <div className="flex flex-col gap-5 mb-[80px]">
+            <div className="flex flex-col gap-5 mb-[80px] cardgroup-wrapper">
               <Subtitle text="推薦課程" />
               <CardGroup courses={randomCourses} />
             </div>

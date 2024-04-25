@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 // 1. 建立context
 const AuthContext = createContext(null)
@@ -21,6 +22,58 @@ export function AuthProvider({ children }) {
   // 共享狀態
   const [auth, setAuth] = useState(initAuth)
 
+  const router = useRouter()
+
+  // 檢查會員認証用
+  // 每次重新到網站中，或重新整理，都會執行這個函式，用於向伺服器查詢取回原本登入會員的資料
+  const handleCheckAuth = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3005/api/share-members/check',
+        {
+          credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'GET',
+        }
+      )
+      // fetch到後端成功
+      if (response.ok) {
+        const data = await response.json()
+        // console.log(data)
+        if (data.status === 'success') {
+          setAuth({
+            isAuth: true,
+            userData: data.data.user,
+          })
+        } else {
+          console.log(data.message)
+          // 只有在驗證未通過才重定向
+          if (router.pathname.startsWith('/center')) {
+            router.push('/member/login')
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error)
+      setAuth(initAuth)
+    }
+  }
+
+  // didMount(初次渲染)後，向伺服器要求檢查會員是否登入中
+  useEffect(() => {
+    // router.isReady 是一個布林值，表示路由對象是否已經初始化完成。
+    // 路由對象（router）是在客戶端渲染（Client-Side Rendering，CSR）過程中加載的。
+    // 當應用程序首次加載時，router 對象可能尚未初始化完成。
+    if (router.isReady && !auth.isAuth) {
+      handleCheckAuth()
+    }
+    // 下面加入auth.isAuth，是為了要在向伺服器檢查後，
+    // 如果有比對到使用者未登入，就執行跳轉回登入頁面工作
+  }, [router.isReady, auth.isAuth])
+
   const login = (user) => {
     setAuth({
       // 代表有沒有登入中
@@ -33,6 +86,8 @@ export function AuthProvider({ children }) {
   const logout = () => {
     // 恢復預設值
     setAuth(initAuth)
+    // 登出後立即跳轉到登入頁面
+    router.push('/member/login')
   }
 
   return (

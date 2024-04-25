@@ -10,6 +10,7 @@ import {
 } from '@nextui-org/react'
 import { Link } from '@nextui-org/react'
 import { FaXTwitter, FaInstagram } from 'react-icons/fa6'
+import { useLocation } from 'react-use'
 
 export default function ShareModal({ isShareOpen, onShareOpenChange }) {
   // const { onShareOpen, onShareClose } = useDisclosure()
@@ -22,6 +23,9 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
     copyIcon: 'text-tertiary-black',
     checkIcon: 'text-tertiary-black',
   }
+
+  const location = useLocation()
+  const currentUrl = window.location.origin + location.pathname
 
   return (
     <>
@@ -46,9 +50,7 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
               fullWidth
               classNames={{ ...shareStyles }}
             >
-              <span className="truncate">
-                https://youtu.be/dQw4w9WgXcQ?si=eyZrA3Y26GT_SYYj
-              </span>
+              <span className="truncate">{currentUrl}</span>
             </Snippet>
 
             <hr />

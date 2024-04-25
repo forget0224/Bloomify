@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Image } from '@nextui-org/react'
-import { Card, CardBody, Link } from '@nextui-org/react'
+import { Image, Card, CardBody, Link } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
@@ -12,18 +11,21 @@ import CardGroupCategory from '@/components/course/card-group-category'
 import CardGroupStore from '@/components/course/card-group-store'
 
 export default function CourseIndex() {
-  const [courses, setCourses] = useState([])
-  const [latestCourses, setLatestCourses] = useState([])
-  const [randomCourses, setRandomCourses] = useState([])
+  const [courses, setCourses] = useState([]) // 全部課程的狀態管理
+  const [latestCourses, setLatestCourses] = useState([]) // 最新課程的狀態管理
+  const [randomCourses, setRandomCourses] = useState([]) // 隨機課程的狀態管理
 
   useEffect(() => {
     async function fetchAllCourses() {
       try {
         const response = await fetch('http://localhost:3005/api/courses')
         const data = await response.json()
-        if (data.status === 'success' && Array.isArray(data.data.courses)) {
-          // 處理全部課程數據
-          setCourses(processCourses(data.data.courses))
+        if (
+          data.status === 'success' &&
+          Array.isArray(data.data.coursesisFavorites)
+        ) {
+          // 處理課程主圖並將處理過後的資料儲存在狀態中
+          setCourses(processCourses(data.data.coursesisFavorites))
         }
       } catch (error) {
         console.error('Error fetching all courses:', error)
@@ -36,10 +38,10 @@ export default function CourseIndex() {
         const data = await response.json()
         if (
           data.status === 'success' &&
-          Array.isArray(data.data.latestCourses)
+          Array.isArray(data.data.coursesisFavorites)
         ) {
           // 處理最新課程數據
-          setLatestCourses(processCourses(data.data.latestCourses))
+          setLatestCourses(processCourses(data.data.coursesisFavorites))
         }
       } catch (error) {
         console.error('Error fetching latest courses:', error)
@@ -67,17 +69,18 @@ export default function CourseIndex() {
     fetchRandomCourses()
   }, [])
 
-  // 處理課程函數
+  // 處理資料添加mainImage屬性(前端處理，不會動到資料)
   function processCourses(coursesArray) {
     return coursesArray.map((course) => {
       const mainImage =
+        // 找到被標示為is_main的圖，或者是使用index=0的第一張圖，設定為mainImage
         (course.images && course.images.find((image) => image.is_main)) ||
         (course.images && course.images[0])
       return {
         ...course,
         mainImage: mainImage
           ? mainImage.path
-          : '/assets/course/category-1/img-course-01-01.jpg',
+          : '/assets/course/img-default.jpg',
       }
     })
   }

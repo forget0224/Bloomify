@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { BsFillStarFill } from 'react-icons/bs'
 import HeartButton from './btn-heart'
 
-export default function CardGroup({ courses, isActive, onToggle }) {
+export default function CardGroup({ courses }) {
   // 如果 courses 是 undefined 或者為空數組，就渲染一個提示訊息或者 loading...
   if (!courses || courses.length === 0) {
     return <div>課程資料正在加載中或者沒有可用的課程。</div>
@@ -16,15 +16,11 @@ export default function CardGroup({ courses, isActive, onToggle }) {
         <Card
           shadow="sm"
           key={course.id}
-          isPressable
-          onPress={() => console.log('item pressed', course.id)}
           className="relative"
+          // isPressable // 加這個會變成button包button，會報錯
+          // onPress={() => console.log('item pressed', course.id)}
         >
-          <Link
-            href={`/course/${course.id}`}
-            key={course.id}
-            className="block relative"
-          >
+          <Link href={`/course/${course.id}`} className="block relative">
             <CardBody className="relative overflow-visible p-0">
               <Image
                 isZoomed
@@ -43,14 +39,18 @@ export default function CardGroup({ courses, isActive, onToggle }) {
                 <p className="text-lg">NT${course.price}</p>
                 <p className="text-base flex items-center">
                   <BsFillStarFill className="text-secondary-100 mr-1" />
-                  {/* TODO: */}
-                  {course.averageStars}
+                  {course.average_stars}
                 </p>
               </div>
             </CardFooter>
           </Link>
           <div className="absolute top-0 right-0 p-4">
-            <HeartButton opacity="text-opacity-40" />
+            {/*  傳遞課程 ID 到愛心元件 */}
+            <HeartButton
+              courseId={course.id}
+              isActive={course.isFavorited}
+              opacity="text-opacity-40"
+            />
           </div>
         </Card>
       ))}

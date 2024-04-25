@@ -24,6 +24,21 @@ import {
 } from '@nextui-org/react'
 
 export default function FlowersIndex() {
+// ----------看更多宣告部分start----------
+const [visibleCards, setVisibleCards] = useState(12); // 控制當前顯示的卡片數量
+const [isLoadMoreDisabled, setIsLoadMoreDisabled] = useState(false); // 控制是否禁用「查看更多」按鈕
+
+const handleLoadMore = () => {
+  const newVisibleCards = visibleCards + 8; // 每次顯示8張卡片
+  setVisibleCards(newVisibleCards);
+  
+  if (newVisibleCards >= flowerData.length) {
+    setIsLoadMoreDisabled(true); // 如果已經顯示了所有卡片，禁用按鈕
+  }
+}
+
+ // ----------看更多宣告部分end------------
+
   // ----------搜尋宣告部分start----------
   const [searchTerm, setSearchTerm] = useState('') // 儲存輸入框的值
   const handleSearch = () => {
@@ -508,7 +523,7 @@ export default function FlowersIndex() {
                   </ModalContent>
                 </Modal>
 
-                {flowerData.map((item, index) => (
+                {flowerData.slice(0, visibleCards).map((item, index) => (
                   <Card
                     key={index}
                     onPress={() => handleOpen(item)} // 將卡片的相關資料傳遞給 handleOpen 函數
@@ -543,7 +558,7 @@ export default function FlowersIndex() {
                 ))}
               </div>
               <div className="flex justify-center">
-                <MyButton>查看更多</MyButton>
+                <MyButton  onClick={handleLoadMore} isDisabled={isLoadMoreDisabled}>查看更多</MyButton>
               </div>
             </div>
             {/* --------花朵卡片群組-------- */}

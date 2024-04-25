@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
-import Link from 'next/link'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -23,7 +22,13 @@ export default function FavoriteCourses() {
         const data = await response.json()
         console.log('API data:', data) // 確認數據已接收
         if (response.ok && data.status === 'success') {
-          setCourses(processCourses(data.data)) // 直接使用data.data因為他是課程數組
+          // 重新映射数据属性，同时保留其他属性
+          const formattedCourses = data.data.map((course) => ({
+            ...course, // 展开操作符保留所有其他属性
+            mainImage: course.image_path, // 重命名 image_path 为 mainImage
+          }))
+
+          setCourses(formattedCourses) // 直接使用data.data因為他是課程數組
         } else {
           throw new Error('Failed to fetch courses')
         }
@@ -36,31 +41,19 @@ export default function FavoriteCourses() {
   }, [])
 
   // 處理課程圖片函數
-  function processCourses(coursesArray) {
-    return coursesArray.map((course) => {
-      const mainImage =
-        (course.images && course.images.find((image) => image.is_main)) ||
-        (course.images && course.images[0])
-      return {
-        ...course,
-        mainImage: mainImage
-          ? mainImage.path
-          : '/assets/course/img-default.jpg',
-      }
-    })
-  }
-
-  const list = [
-    {
-      title: 'Orange',
-    },
-    {
-      title: 'Tangerine',
-    },
-    {
-      title: 'Raspberry',
-    },
-  ]
+  // function processCourses(coursesArray) {
+  //   return coursesArray.map((course) => {
+  //     const mainImage =
+  //       (course.images && course.images.find((image) => image.is_main)) ||
+  //       (course.images && course.images[0])
+  //     return {
+  //       ...course,
+  //       mainImage: mainImage
+  //         ? mainImage.path
+  //         : '/assets/course/img-default.jpg',
+  //     }
+  //   })
+  // }
 
   const [activePage, setActivePage] = useState('course')
 
@@ -95,20 +88,21 @@ export default function FavoriteCourses() {
                 {/* filter */}
                 <div className="flex flex-cols items-center space-x-4">
                   <p className=" text-tertiary-black whitespace-nowrap">排序</p>
-                  <Select
+                  {/* <Select
                     placeholder="Select"
                     defaultSelectedKeys={['Orange']}
                     className="max-w-xs md:w-48 w-full"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
+                    aria-label="排序方式"
                   >
                     {list.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
                         {item.title}
                       </SelectItem>
                     ))}
-                  </Select>
+                  </Select> */}
                 </div>
               </div>
 
@@ -125,14 +119,7 @@ export default function FavoriteCourses() {
                 className="flex justify-center mt-6"
               />
             </div>
-
-            {/* <div className="flex justify-center space-x-10 py-10">
-                  <MyButton color="primary" size="xl">
-                    繼續查看
-                  </MyButton>
-                </div> */}
           </div>
-          {/* order content end */}
         </CenterLayout>
       </>
     </DefaultLayout>

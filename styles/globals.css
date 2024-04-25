@@ -160,3 +160,22 @@ a {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+
+/* 搜尋螢光筆效果 */
+.highlight {
+  background-color: #DBEDDF;
+  color: #262626;
+}
+
+/* 課程卡片容器樣式 */
+.cardgroup-wrapper .grid {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 16px; /* 設定您想要的間距 */
+  margin-left: 12px;
+}
+.cardgroup-wrapper .grid > * {
+  flex: 0 0 auto;
+  width: calc(33.333% - 16px); /* 減去間距 */
+}
