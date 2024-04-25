@@ -41,28 +41,64 @@ export default function CenterShop() {
       title: 'Raspberry',
     },
   ]
-
-  //外層手風琴樣式
   const accordionStyle = {
-    base: ['p-0', 'text-tertiary-black'], // 訂單明細
-    content: ['p-0'], // 商品列表
-    title: ['text-tertiary-black'],
-    trigger: ['px-0', 'py-1', 'pb-4'],
+    root: ['bg-danger', 'py-0'],
+    base: ['py-0', 'text-tertiary-black', 'flex', 'flex-col'],
+    heading: [''],
+    titleWrapper: [''],
+    subtitle: ['sm:px-4', 'py-0', 'px-2'],
+    startContent: ['bg-black'],
+    indicator: ['sm:text-3xl', 'text-xl'],
+    content: ['', 'text-tertiary-black'],
+    title: ['sm:px-4', 'text-tertiary-black', 'py-0', 'px-2'],
+    trigger: ['py-0'],
   }
-
-  //訂單明細 table 樣式
-  const tableStyles = {
-    base: ['text-tertiary-black'],
-    th: ['text-base'], // 表頭
-    td: ['text-base', 'px-0', 'py-1'], // 表格
-    wrapper: ['text-base'], // 整個表格
-  }
-
-  //商品列表 table 樣式
-  const tableStylesContent = {
-    th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
-    td: ['text-base'], // 表格
-    wrapper: ['text-base', 'shadow-none', 'border-1'], // 整個表格
+  const cartCustomContent = {
+    store: '花疫室',
+    image: '/assets/course/img_course_card_04.png',
+    card: '生日快樂!祝你天天開心、賺大錢',
+    cartList: [
+      {
+        image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
+        name: '玫瑰花',
+        category: 'flower',
+        price: '30',
+        option: '粉紅色',
+        count: 2,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '向日葵',
+        category: 'flower',
+        price: '60',
+        option: '黃色',
+        count: 1,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '玫瑰花',
+        category: 'flower',
+        price: '60',
+        option: '黃色',
+        count: 3,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '包裝',
+        category: 'package',
+        price: '60',
+        option: '櫥窗提盒',
+        count: 1,
+      },
+      {
+        image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
+        name: '卡片',
+        category: 'card',
+        price: '25',
+        option: '生日卡',
+        count: 1,
+      },
+    ],
   }
 
   // 評價 Modal 變數
@@ -74,7 +110,6 @@ export default function CenterShop() {
       {
         <>
           <CenterLayout>
-            {/* 麵包屑 */}
             <div className="hidden sm:block w-full py-6">
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
@@ -83,13 +118,11 @@ export default function CenterShop() {
                 <BreadcrumbItem>商品訂單</BreadcrumbItem>
               </Breadcrumbs>
             </div>
-            {/* 主要內容 */}
             <div className="flex flex-row w-full justify-center mt-10 sm:mt-0">
-              {/* 側邊欄 */}
               <Sidebar />
 
               {/* 歷史訂單 */}
-              <div className="md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
+              <div className="sm:w-10/12 pl-0 sm:pl-10     w-screen">
                 {/* 訂單明細 */}
                 <Title text="商品訂單" />
                 <div className="flex w-full flex-col">
@@ -103,7 +136,7 @@ export default function CenterShop() {
                     {/* all order start */}
                     <Tab key="all" title="全部訂單">
                       {/* 搜尋框 */}
-                      <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-between pb-4 ">
+                      <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-between pb-4  w-[200px] sm:w-full">
                         {/* searchbar */}
                         <div>
                           <CourseSearch />
@@ -132,228 +165,173 @@ export default function CenterShop() {
                       {/* 歷史訂單卡片 */}
                       <div className="flex flex-col gap-4">
                         {/* 卡片一 */}
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
+                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none py-4  w-full">
                           <CardBody className="p-0">
                             {/* 手風琴 */}
                             <Accordion itemClasses={accordionStyle}>
                               <AccordionItem
                                 key="1"
                                 aria-label="Accordion 1"
-                                title="訂單編號#2024010901234567"
+                                title={
+                                  <div className="flex flex-row justify-between w-full">
+                                    <div className="sm:text-xl text-lg">
+                                      訂單編號 #2024010901234567
+                                    </div>
+                                    <div className="sm:text-md text-sm text-tertiary-gray-100">
+                                      2024.04.01
+                                    </div>
+                                  </div>
+                                }
                                 // 訂單資訊(手風琴標題)
                                 subtitle={
                                   <div className="flex flex-col gap-2 mt-2">
-                                    <Table
-                                      hideHeader
-                                      aria-label="Example static collection table"
-                                      removeWrapper
-                                      classNames={tableStyles}
-                                    >
-                                      <TableHeader>
-                                        <TableColumn>xx</TableColumn>
-                                        <TableColumn>xx</TableColumn>
-                                      </TableHeader>
-                                      <TableBody>
-                                        <TableRow
-                                          key="1"
-                                          className="flex gap-4"
-                                        >
-                                          <TableCell>訂單金額</TableCell>
-                                          <TableCell>NT$90</TableCell>
-                                        </TableRow>
-                                        <TableRow
-                                          key="2"
-                                          className="flex gap-4"
-                                        >
-                                          <TableCell>付款狀態</TableCell>
-                                          <TableCell>已付款</TableCell>
-                                        </TableRow>
-                                        <TableRow
-                                          key="3"
-                                          className="flex gap-4"
-                                        >
-                                          <TableCell>訂單狀態</TableCell>
-                                          <TableCell className="text-danger">
-                                            處理中
-                                          </TableCell>
-                                        </TableRow>
-                                      </TableBody>
-                                    </Table>
+                                    <div className="">花束名稱 / 店家名稱</div>
 
-                                    <div className="flex gap-2">
-                                      {imageList.map((image, index) => (
-                                        <Image
-                                          key={index}
-                                          src={image.src}
-                                          alt=""
-                                          className="w-24 h-24 rounded-md md:rounded-xl"
-                                        />
-                                      ))}
+                                    <div className="text-danger bg-secondary-200 w-16 text-center">
+                                      未出貨
+                                    </div>
+
+                                    <div className="flex flex-row justify-between items-end">
+                                      <div className="flex gap-2">
+                                        {imageList.map((image, index) => (
+                                          <Image
+                                            key={index}
+                                            src={image.src}
+                                            alt=""
+                                            className="w-24 h-24 rounded-md md:rounded-xl"
+                                          />
+                                        ))}
+                                      </div>
+                                      <div className="text-tertiary-black text-xl">
+                                        $1100
+                                      </div>
                                     </div>
                                   </div>
                                 }
                               >
-                                {/* 商品列表(手風琴內容) */}
-                                <div className="flex flex-col">
-                                  <Table
-                                    selectionMode="single"
-                                    defaultSelectedKeys={['2']}
-                                    aria-label="Example static collection table"
-                                    classNames={tableStylesContent}
-                                  >
-                                    <TableHeader className="bg-secondary-200">
-                                      <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
-                                        商品
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        單價
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        數量
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        小計
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        評價
-                                      </TableColumn>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow key="1">
-                                        <TableCell>
-                                          <div className="flex flex-row items-center sm:gap-4">
-                                            <Image
-                                              src={
-                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
-                                              }
-                                              alt=""
-                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
-                                            />
-                                            <div>
-                                              <p className="text-nowrap">
-                                                花的名稱
-                                              </p>
-                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
-                                                店家名稱
-                                              </p>
+                                <div className="flex flex-col w-full mt-2 bg-secondary-200 rounded-xl p-4">
+                                  <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
+                                    {cartCustomContent.cartList.map(
+                                      (item, itemIndex) => (
+                                        <div
+                                          key={itemIndex}
+                                          className="flex flex-row items-center sm:h-[70px] justify-between w-full text-sm  "
+                                        >
+                                          <div className="flex-grow">
+                                            <div
+                                              className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
+                                              style={{
+                                                backgroundImage: `url(${item.image})`,
+                                              }}
+                                            ></div>
+                                          </div>
+
+                                          <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1">
+                                            <div className="flex-grow flex sm:flex-row flex-col sm:justify-around">
+                                              <div className="sm:w-[100px] text-center">
+                                                {item.name}
+                                              </div>
+                                              <div className="sm:w-[100px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
+                                                {item.option}
+                                              </div>
+                                            </div>
+
+                                            <div className="sm:w-[100px] text-center text-sm   text-tertiary-black ">
+                                              {item.count}{' '}
+                                              {item.category === 'flower' &&
+                                                '朵'}
+                                              {item.category === 'card' && '張'}
+                                              {item.category === 'package' &&
+                                                '個'}
                                             </div>
                                           </div>
-                                        </TableCell>
-                                        <TableCell>NT$30</TableCell>
-                                        <TableCell>3</TableCell>
-                                        <TableCell>NT$90</TableCell>
-                                        <TableCell>
-                                          <MyButton
-                                            color="primary"
-                                            size="xs"
-                                            className="text-base"
-                                            isOutline
-                                            onClick={onOpen}
-                                          >
-                                            去評價
-                                          </MyButton>
-                                        </TableCell>
-                                      </TableRow>
-                                      <TableRow key="2">
-                                        <TableCell>
-                                          <div className="flex flex-row items-center sm:gap-4">
-                                            <Image
-                                              src={
-                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
-                                              }
-                                              alt=""
-                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
-                                            />
-                                            <div>
-                                              <p className="text-nowrap">
-                                                花的名稱
-                                              </p>
-                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
-                                                店家名稱
-                                              </p>
-                                            </div>
+                                          <div className="flex-grow text-center ">
+                                            <p>${item.price}</p>
                                           </div>
-                                        </TableCell>
-                                        <TableCell>NT$30</TableCell>
-                                        <TableCell>3</TableCell>
-                                        <TableCell>NT$90</TableCell>
-                                        <TableCell>
-                                          <MyButton
-                                            color="primary"
-                                            size="xs"
-                                            isOutline
-                                            className="text-base"
-                                            onClick={onOpen}
-                                          >
-                                            去評價
-                                          </MyButton>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                  {/* 付款資訊, 運送資訊 */}
-                                  <div className="flex flex-col pt-4 w-full">
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        付款方式
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+
+                                  <hr className="my-4 w-full border-[#8b8989]" />
+
+                                  <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col ">
+                                    <div className="flex flex-col sm:flex-1">
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送時間</div>
+                                        <div>2024/04/03 13:25</div>
                                       </div>
-                                      <div className="py-1 text-nowrap">
-                                        Line Pay
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送方式</div>
+                                        <div>配送</div>
                                       </div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        寄送方式
+
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送狀態</div>
+                                        <div>已送達</div>
                                       </div>
-                                      <div className="py-1">7-ELEVEN 超商</div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        運送資訊
-                                      </div>
-                                      <div className="py-1">已取貨</div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        發票種類
-                                      </div>
-                                      <div className="py-1">載具</div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        送達時間
-                                      </div>
-                                      <div className="py-1">
-                                        2024-02-27 11:02:08
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送方式</div>
+                                        <div>已付款</div>
                                       </div>
                                     </div>
-                                    <hr className="my-1" />
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        小計
+                                    <div className="flex flex-col flex-1">
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>收禮人姓名</div>
+                                        <div>閔熙珍</div>
                                       </div>
-                                      <div className="py-1">NT$90</div>
+
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>收禮人電話</div>
+                                        <div>0912345678</div>
+                                      </div>
+                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
+                                        <div>收禮人地址</div>
+                                        <div className="text-right">
+                                          台北市復興北路二段32巷3樓
+                                        </div>
+                                      </div>
+                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
+                                        <div>卡片內容</div>
+                                        <div className="text-right">
+                                          生日快樂!祝你身體健康，萬事如意~
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        運費
+                                  </div>
+                                  <hr className="w-full    my-4 border-[#8b8989]" />
+                                  <div className="flex sm:flex-row  flex-col  justify-between  px-4 py-2">
+                                    <div className="flex flex-col">
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>付款方式</div>
+                                        <div>Paypal</div>
                                       </div>
-                                      <div className="py-1">NT$60</div>
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>付款狀態</div>
+                                        <div>已付款</div>
+                                      </div>
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>發票種類</div>
+                                        <div>雲端發票</div>
+                                      </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        折扣
+                                    <div className="flex flex-col  sm:w-[200px] w-full">
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>運費</div>
+                                        <div className="min-w-[30px]">$100</div>
                                       </div>
-                                      <div className="py-1 text-primary-100">
-                                        -NT$50
+
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>折扣碼</div>
+                                        <div className="min-w-[30px]">
+                                          - $50
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap items-center">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        總計
-                                      </div>
-                                      <div className="py-1 text-lg font-medium">
-                                        NT$100
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>總金額</div>
+                                        <div className="min-w-[30px]">
+                                          $1100
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -363,227 +341,172 @@ export default function CenterShop() {
                           </CardBody>
                         </Card>
                         {/* 卡片二 */}
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
+                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none py-4">
                           <CardBody className="p-0">
                             {/* 手風琴 */}
                             <Accordion itemClasses={accordionStyle}>
                               <AccordionItem
                                 key="1"
                                 aria-label="Accordion 1"
-                                title="訂單編號#2024010901234567"
+                                title={
+                                  <div className="flex flex-row justify-between w-full">
+                                    <div className="sm:text-xl text-lg">
+                                      訂單編號 #2024010901234567
+                                    </div>
+                                    <div className="sm:text-md text-sm text-tertiary-gray-100">
+                                      2024.04.01
+                                    </div>
+                                  </div>
+                                }
                                 // 訂單資訊(手風琴標題)
                                 subtitle={
                                   <div className="flex flex-col gap-2 mt-2">
-                                    <Table
-                                      hideHeader
-                                      aria-label="Example static collection table"
-                                      removeWrapper
-                                      classNames={tableStyles}
-                                    >
-                                      <TableHeader>
-                                        <TableColumn>xx</TableColumn>
-                                        <TableColumn>xx</TableColumn>
-                                      </TableHeader>
-                                      <TableBody>
-                                        <TableRow
-                                          key="1"
-                                          className="flex gap-4"
-                                        >
-                                          <TableCell>訂單金額</TableCell>
-                                          <TableCell>NT$90</TableCell>
-                                        </TableRow>
-                                        <TableRow
-                                          key="2"
-                                          className="flex gap-4"
-                                        >
-                                          <TableCell>付款狀態</TableCell>
-                                          <TableCell>已付款</TableCell>
-                                        </TableRow>
-                                        <TableRow
-                                          key="3"
-                                          className="flex gap-4"
-                                        >
-                                          <TableCell>訂單狀態</TableCell>
-                                          <TableCell className="text-primary">
-                                            已完成
-                                          </TableCell>
-                                        </TableRow>
-                                      </TableBody>
-                                    </Table>
+                                    <div className="">花束名稱 / 店家名稱</div>
 
-                                    <div className="flex gap-2">
-                                      {imageList.map((image, index) => (
-                                        <Image
-                                          key={index}
-                                          src={image.src}
-                                          alt=""
-                                          className="w-24 h-24 rounded-md md:rounded-xl"
-                                        />
-                                      ))}
+                                    <div className="text-primary bg-primary-300 w-16 text-center">
+                                      已完成
+                                    </div>
+
+                                    <div className="flex flex-row justify-between items-end">
+                                      <div className="flex gap-2">
+                                        {imageList.map((image, index) => (
+                                          <Image
+                                            key={index}
+                                            src={image.src}
+                                            alt=""
+                                            className="w-24 h-24 rounded-md md:rounded-xl"
+                                          />
+                                        ))}
+                                      </div>
+                                      <div className="text-tertiary-black text-xl">
+                                        $1100
+                                      </div>
                                     </div>
                                   </div>
                                 }
                               >
-                                {/* 商品列表(手風琴內容) */}
-                                <div className="flex flex-col">
-                                  <Table
-                                    selectionMode="single"
-                                    defaultSelectedKeys={['2']}
-                                    aria-label="Example static collection table"
-                                    classNames={tableStylesContent}
-                                  >
-                                    <TableHeader className="bg-secondary-200">
-                                      <TableColumn className="w-1/2 md:w-1/3 lg:w-1/4 bg-primary-300">
-                                        商品
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        單價
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        數量
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        小計
-                                      </TableColumn>
-                                      <TableColumn className="w-1/4 md:w-1/5 lg:w-1/6 bg-primary-300">
-                                        評價
-                                      </TableColumn>
-                                    </TableHeader>
-                                    <TableBody>
-                                      <TableRow key="1">
-                                        <TableCell>
-                                          <div className="flex flex-row items-center sm:gap-4">
-                                            <Image
-                                              src={
-                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
-                                              }
-                                              alt=""
-                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
-                                            />
-                                            <div>
-                                              <p className="text-nowrap">
-                                                花的名稱
-                                              </p>
-                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
-                                                店家名稱
-                                              </p>
+                                <div className="flex flex-col w-full bg-primary-300 rounded-xl p-4">
+                                  <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
+                                    {cartCustomContent.cartList.map(
+                                      (item, itemIndex) => (
+                                        <div
+                                          key={itemIndex}
+                                          className="flex flex-row items-center sm:h-[70px] justify-between w-full text-sm  "
+                                        >
+                                          <div className="flex-grow">
+                                            <div
+                                              className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
+                                              style={{
+                                                backgroundImage: `url(${item.image})`,
+                                              }}
+                                            ></div>
+                                          </div>
+
+                                          <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1">
+                                            <div className="flex-grow flex sm:flex-row flex-col sm:justify-around">
+                                              <div className="sm:w-[100px] text-center">
+                                                {item.name}
+                                              </div>
+                                              <div className="sm:w-[100px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
+                                                {item.option}
+                                              </div>
+                                            </div>
+
+                                            <div className="sm:w-[100px] text-center text-sm   text-tertiary-black ">
+                                              {item.count}{' '}
+                                              {item.category === 'flower' &&
+                                                '朵'}
+                                              {item.category === 'card' && '張'}
+                                              {item.category === 'package' &&
+                                                '個'}
                                             </div>
                                           </div>
-                                        </TableCell>
-                                        <TableCell>NT$30</TableCell>
-                                        <TableCell>3</TableCell>
-                                        <TableCell>NT$90</TableCell>
-                                        <TableCell>
-                                          <MyButton
-                                            color="primary"
-                                            size="xs"
-                                            className="text-base"
-                                            isOutline
-                                            onClick={onOpen}
-                                          >
-                                            去評價
-                                          </MyButton>
-                                        </TableCell>
-                                      </TableRow>
-                                      <TableRow key="2">
-                                        <TableCell>
-                                          <div className="flex flex-row items-center sm:gap-4">
-                                            <Image
-                                              src={
-                                                '/assets/shop/products/flowers/pink_Gladiola_0.jpg'
-                                              }
-                                              alt=""
-                                              className="hidden sm:block sm:w-16 sm:h-16 mx-auto rounded-xl"
-                                            />
-                                            <div>
-                                              <p className="text-nowrap">
-                                                花的名稱
-                                              </p>
-                                              <p className="text-nowrap md:contents text-tertiary-gray-100">
-                                                店家名稱
-                                              </p>
-                                            </div>
+                                          <div className="flex-grow text-center ">
+                                            <p>${item.price}</p>
                                           </div>
-                                        </TableCell>
-                                        <TableCell>NT$30</TableCell>
-                                        <TableCell>3</TableCell>
-                                        <TableCell>NT$90</TableCell>
-                                        <TableCell>
-                                          <MyButton
-                                            color="primary"
-                                            size="xs"
-                                            isDisabled
-                                            className="text-base"
-                                          >
-                                            已評價
-                                          </MyButton>
-                                        </TableCell>
-                                      </TableRow>
-                                    </TableBody>
-                                  </Table>
-                                  {/* 付款資訊, 運送資訊 */}
-                                  <div className="flex flex-col pt-4 w-full">
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        付款方式
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                  <hr className="my-4 w-full border-[#8b8989]" />
+
+                                  <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col ">
+                                    <div className="flex flex-col sm:flex-1">
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送時間</div>
+                                        <div>2024/04/03 13:25</div>
                                       </div>
-                                      <div className="py-1 text-nowrap">
-                                        Line Pay
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送方式</div>
+                                        <div>配送</div>
                                       </div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        寄送方式
+
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送狀態</div>
+                                        <div>已送達</div>
                                       </div>
-                                      <div className="py-1">7-ELEVEN 超商</div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        運送資訊
-                                      </div>
-                                      <div className="py-1">已取貨</div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        發票種類
-                                      </div>
-                                      <div className="py-1">載具</div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        送達時間
-                                      </div>
-                                      <div className="py-1">
-                                        2024-02-27 11:02:08
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>寄送方式</div>
+                                        <div>已付款</div>
                                       </div>
                                     </div>
-                                    <hr className="my-1" />
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        小計
+                                    <div className="flex flex-col flex-1">
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>收禮人姓名</div>
+                                        <div>閔熙珍</div>
                                       </div>
-                                      <div className="py-1">NT$90</div>
+
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>收禮人電話</div>
+                                        <div>0912345678</div>
+                                      </div>
+                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
+                                        <div>收禮人地址</div>
+                                        <div className="text-right">
+                                          台北市復興北路二段32巷3樓
+                                        </div>
+                                      </div>
+                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
+                                        <div>卡片內容</div>
+                                        <div className="text-right">
+                                          生日快樂!祝你身體健康，萬事如意~
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        運費
+                                  </div>
+                                  <hr className="w-full    my-4 border-[#8b8989]" />
+                                  <div className="flex sm:flex-row  flex-col  justify-between  px-4 py-2">
+                                    <div className="flex flex-col">
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>付款方式</div>
+                                        <div>Paypal</div>
                                       </div>
-                                      <div className="py-1">NT$60</div>
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>付款狀態</div>
+                                        <div>已付款</div>
+                                      </div>
+                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
+                                        <div>發票種類</div>
+                                        <div>雲端發票</div>
+                                      </div>
                                     </div>
-                                    <div className="flex w-full text-nowrap">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        折扣
+                                    <div className="flex flex-col  sm:w-[200px] w-full">
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>運費</div>
+                                        <div className="min-w-[30px]">$100</div>
                                       </div>
-                                      <div className="py-1 text-primary-100">
-                                        -NT$50
+
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>折扣碼</div>
+                                        <div className="min-w-[30px]">
+                                          - $50
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div className="flex w-full text-nowrap items-center">
-                                      <div className="py-1 mr-2 text-tertiary-gray-100">
-                                        總計
-                                      </div>
-                                      <div className="py-1 text-lg font-medium">
-                                        NT$100
+                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                        <div>總金額</div>
+                                        <div className="min-w-[30px]">
+                                          $1100
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -638,22 +561,8 @@ export default function CenterShop() {
                     {/* review end */}
                   </Tabs>
                 </div>
-
-                {/* 按鈕群組 */}
-                <div className="flex justify-center py-10">
-                  <MyButton color="primary" size="xl">
-                    繼續查看
-                  </MyButton>
-                </div>
               </div>
             </div>
-
-            {/* 評價 Modal */}
-            <Review
-              onOpen={onOpen}
-              isOpen={isOpen}
-              onOpenChange={onOpenChange}
-            />
           </CenterLayout>
         </>
       }
