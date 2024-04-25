@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CustomFilter from '@/components/custom/product/CustomFilter'
-import Link from 'next/link'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import DH from '@/components/custom/product/DH'
 import { CiGrid41, CiGrid2H, CiBoxList } from 'react-icons/ci'
@@ -12,9 +11,13 @@ import FilterContent from '@/components/custom/product/FilterContent'
 import { useLoader } from '@/hooks/use-loader'
 import Loader from '@/components/common/loader'
 import { ColorProvider } from '@/hooks/use-color'
-import { RoleProvider } from '@/hooks/use-role'
+import { FlowerTypeProvider } from '@/hooks/use-flowerType'
 import { OccProvider } from '@/hooks/use-occ'
+import { useAuth } from '@/hooks/use-auth'
 export default function List() {
+  const { auth } = useAuth()
+  const { isAuth } = auth
+  console.log(auth)
   const [activePage, setActivePage] = useState('custom')
   const [isSheetOpen, setSheetOpen] = useState(false)
 
@@ -27,7 +30,7 @@ export default function List() {
   }
 
   const [selectedOccs, setSelectedOccs] = useState([])
-  const [selectedRoles, setSelectedRoles] = useState([])
+  const [selectedflowerType, setSelectedflowerType] = useState([])
   const [selectedColors, setSelectedColors] = useState([])
   const [sortOption, setSortOption] = useState({ field: '', order: '' })
   const [radioSelection, setRadioSelection] = useState('')
@@ -48,8 +51,8 @@ export default function List() {
       const data = await res.json()
       console.log(data)
 
-      if (Array.isArray(data.data.customTemplateLists)) {
-        setProducts(data.data.customTemplateLists)
+      if (Array.isArray(data.data.events)) {
+        setProducts(data.data.events)
       }
       close(1)
     } catch (e) {
@@ -100,7 +103,7 @@ export default function List() {
   const display = (
     <ColorProvider>
       <OccProvider>
-        <RoleProvider>
+        <FlowerTypeProvider>
           <DefaultLayout activePage={activePage}>
             <>
               <div className="bg-white  w-screen h-auto overflow-visible">
@@ -136,8 +139,8 @@ export default function List() {
                               onSortChange={handleSortChange}
                               selectedOccs={selectedOccs}
                               setSelectedOccs={setSelectedOccs}
-                              selectedRoles={selectedRoles}
-                              setSelectedRoles={setSelectedRoles}
+                              selectedflowerType={selectedflowerType}
+                              setSelectedflowerType={setSelectedflowerType}
                               selectedColors={selectedColors}
                               setSelectedColors={setSelectedColors}
                               sortOption={sortOption}
@@ -157,7 +160,7 @@ export default function List() {
                       </div>
 
                       <div className="">
-                        <div className="flex flex-col gap-2 ">
+                        {/* <div className="flex flex-col gap-2 ">
                           <div className="flex flex-row justify-between">
                             <p className="sm:text-3xl text-xl text-tertiary-black select-none	">
                               聖誕節
@@ -184,7 +187,46 @@ export default function List() {
                           <div className="w-full h-full relative overflow-hidden">
                             <DH productList={products} className="h-auto" />
                           </div>
-                        </div>
+
+                        
+
+
+
+                        </div> */}
+                        {products.length > 0 ? (
+                          products.map(
+                            ({ occ_name, products, occ_id }, index) => (
+                              <div
+                                key={occ_id}
+                                className="flex flex-col gap-2 "
+                              >
+                                <div className="flex flex-row justify-between">
+                                  <p className="sm:text-3xl text-xl text-tertiary-black select-none">
+                                    {occ_name}
+                                  </p>
+                                  {index === 0 && (
+                                    <div className="hidden sm:flex flex-row gap-1">
+                                      <SortButton
+                                        onSortChange={handleSortChange}
+                                      />
+                                    </div>
+                                  )}
+                                </div>
+
+                                <hr className="w-full" />
+
+                                <div className="w-full h-full relative overflow-hidden">
+                                  <DH
+                                    productList={products}
+                                    className="h-auto"
+                                  />
+                                </div>
+                              </div>
+                            )
+                          )
+                        ) : (
+                          <h3>請重新選擇查詢條件</h3>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -192,9 +234,13 @@ export default function List() {
               </div>
             </>
           </DefaultLayout>
-        </RoleProvider>
+        </FlowerTypeProvider>
       </OccProvider>
     </ColorProvider>
   )
+
+  if (!isAuth) {
+    return <p>請先登入</p>
+  }
   return <>{isLoading ? <Loader /> : display}</>
 }

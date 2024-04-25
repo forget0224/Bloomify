@@ -1,14 +1,6 @@
 import { useState } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@nextui-org/react'
 import { useDisclosure } from '@nextui-org/react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'

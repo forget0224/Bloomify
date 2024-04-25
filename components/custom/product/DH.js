@@ -87,7 +87,7 @@ const DraggableProductList = ({ productList }) => {
       >
         {productList.map((item) => {
           const colorCode = color.find(
-            (color) => color.name === item.color
+            (color) => color.name === item.color_name
           )?.code // 根據名稱找到顏色碼
           return (
             <Card
@@ -107,7 +107,7 @@ const DraggableProductList = ({ productList }) => {
               </CardBody>
               <CardHeader className="flex flex-col items-start">
                 <div className="flex flex-row items-center justify-between w-full">
-                  <h1 className="sm:text-lg text:md">{item.name}</h1>
+                  <h1 className="sm:text-lg text:md">{item.template_name}</h1>
                   <div className="cursor-pointer" onClick={handleHeartClick}>
                     {isHeart ? (
                       <IoIosHeartEmpty className="text-danger text-xl" />
@@ -117,13 +117,13 @@ const DraggableProductList = ({ productList }) => {
                   </div>
                 </div>
                 <p className="sm:text-sm text-xs  text-tertiary-gray-100 text-left">
-                  {item.store}
+                  {item.store_name}
                 </p>
                 {colorCode && (
                   <CustomCheckbox
                     width={'w-4'}
                     height={'h-4'}
-                    value={item.color}
+                    value={item.color_name}
                     bgColor={colorCode}
                   />
                 )}

@@ -4,14 +4,14 @@ import { MyButton } from '@/components/btn/mybutton'
 import CustomCheckbox from '../common/CustomCheckbox'
 import { useColors } from '@/hooks/use-color'
 import { useOccs } from '@/hooks/use-occ'
-import { useRoles } from '@/hooks/use-role'
+import { useFlowerTypes } from '@/hooks/use-flowerType'
 
 export default function CustomFilter({ onFilterChange }) {
   const colors = useColors()
   const occs = useOccs()
-  const roles = useRoles()
+  const flowerType = useFlowerTypes()
   const [selectedOccs, setSelectedOccs] = useState([])
-  const [selectedRoles, setSelectedRoles] = useState([])
+  const [selectedflowerType, setSelectedflowerType] = useState([])
   const [selectedColors, setSelectedColors] = useState([])
 
   const handleColorChange = (updateFunction) => {
@@ -20,7 +20,7 @@ export default function CustomFilter({ onFilterChange }) {
   const handleConfirm = () => {
     const query = {
       occ_id: selectedOccs.join(','),
-      role_id: selectedRoles.join(','),
+      category_id: selectedflowerType.join(','),
       color_id: selectedColors.join(','),
     }
 
@@ -30,7 +30,7 @@ export default function CustomFilter({ onFilterChange }) {
 
   const handleClear = () => {
     setSelectedOccs([])
-    setSelectedRoles([])
+    setSelectedflowerType([])
     setSelectedColors([])
     handleConfirm()
   }
@@ -64,23 +64,23 @@ export default function CustomFilter({ onFilterChange }) {
             </div>
           </div>
           <div className="">
-            <p className="text-lg text-tertiary-black">對象</p>
+            <p className="text-lg text-tertiary-black">主花</p>
             <hr className="" />
             <div className="">
               <CheckboxGroup
-                value={selectedRoles}
-                onValueChange={setSelectedRoles}
+                value={selectedflowerType}
+                onValueChange={setSelectedflowerType}
                 className="py-2"
                 color="primary"
               >
-                {roles.map(({ role_id, role }) => (
+                {flowerType.map(({ category_id, category_name }) => (
                   <Checkbox
-                    key={role_id}
+                    key={category_id}
                     className=""
                     radius="xs"
-                    value={role_id}
+                    value={category_id}
                   >
-                    {role}
+                    {category_name}
                   </Checkbox>
                 ))}
               </CheckboxGroup>

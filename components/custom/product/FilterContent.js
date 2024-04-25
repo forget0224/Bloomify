@@ -3,7 +3,7 @@ import { MyButton } from '@/components/btn/mybutton'
 import { RadioGroup, Radio, Checkbox, CheckboxGroup } from '@nextui-org/react'
 import { useColors } from '@/hooks/use-color'
 import { useOccs } from '@/hooks/use-occ'
-import { useRoles } from '@/hooks/use-role'
+import { useFlowerTypes } from '@/hooks/use-flowerType'
 import CustomCheckbox from '../common/CustomCheckbox'
 
 export default function FilterContent({
@@ -11,8 +11,8 @@ export default function FilterContent({
   onSortChange,
   selectedOccs,
   setSelectedOccs,
-  selectedRoles,
-  setSelectedRoles,
+  selectedflowerType,
+  setSelectedflowerType,
   selectedColors,
   setSelectedColors,
   sortOption,
@@ -22,12 +22,12 @@ export default function FilterContent({
 }) {
   const colors = useColors()
   const occs = useOccs()
-  const roles = useRoles()
+  const flowerType = useFlowerTypes()
 
   const handleConfirm = () => {
     onFilterChange({
       occ_id: selectedOccs.join(','),
-      role_id: selectedRoles.join(','),
+      category_id: selectedflowerType.join(','),
       color_id: selectedColors.join(','),
     })
     console.log(sortOption)
@@ -38,7 +38,7 @@ export default function FilterContent({
 
   const handleClear = () => {
     setSelectedOccs([])
-    setSelectedRoles([])
+    setSelectedflowerType([])
     setSelectedColors([])
     handleConfirm()
   }
@@ -51,7 +51,9 @@ export default function FilterContent({
     const [field, order] = value.split(',')
     setSortOption({ field, order })
   }
-
+  console.log(
+    `${flowerType}        console.log(flowerType)    console.log(flowerType)    console.log(flowerType)    console.log(flowerType)`
+  )
   return (
     <div className="flex flex-col px-4">
       <div className="flex flex-col h-auto pb-8   z-10">
@@ -104,27 +106,27 @@ export default function FilterContent({
               </div>
             </div>
           </div>
-          {/* 對象 */}
+          {/*  */}
           <div className="flex flex-col p-2  min-h-[200px]">
             <div className="">
-              <p className="text-lg text-tertiary-black">對象</p>
+              <p className="text-lg text-tertiary-black">主花</p>
               <hr className="" />
               <div className="">
                 <CheckboxGroup
-                  value={selectedRoles}
+                  value={selectedflowerType}
                   color="primary"
-                  onValueChange={setSelectedRoles}
+                  onValueChange={setSelectedflowerType}
                   className="py-2 "
                 >
                   <div className="grid grid-cols-2 gap-2 ">
-                    {roles.map(({ role_id, role }) => (
+                    {flowerType.map(({ category_id, category_name }) => (
                       <Checkbox
-                        key={role_id}
+                        key={category_id}
                         radius="xs"
                         className="h-10"
-                        value={role_id}
+                        value={category_id}
                       >
-                        {role}
+                        {category_name}
                       </Checkbox>
                     ))}
                   </div>
