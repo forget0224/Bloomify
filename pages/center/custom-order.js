@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
 import { useDisclosure } from '@nextui-org/react'
@@ -13,7 +13,7 @@ import Title from '@/components/common/title'
 import Review from '@/components/shop/center/review'
 import CourseSearch from '@/components/course/search'
 
-export default function CenterShop() {
+export default function CustomOrder() {
   const imageList = [
     {
       src: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
@@ -92,11 +92,30 @@ export default function CenterShop() {
       },
     ],
   }
+  const [orderList, setOrderList] = useState([])
+  const getOrderList = async () => {
+    const url = `http://localhost:3005/api/custom/orders`
+    try {
+      const res = await fetch(url)
+      if (!res.ok) {
+        throw new Error(`Failed to fetch: ${res.status}`)
+      }
+      const data = await res.json()
+      console.log(data)
 
-  // 評價 Modal 變數
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+      if (Array.isArray(data.data)) {
+        setOrderList(data.data)
+      }
+      close(1)
+    } catch (e) {
+      console.error('Failed to load products:', e)
+    }
+  }
 
-  const [activePage, setActivePage] = useState('shop')
+  useEffect(() => {
+    getOrderList()
+  }, [])
+  const [activePage, setActivePage] = useState('custom')
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -507,6 +526,116 @@ export default function CenterShop() {
                             </Accordion>
                           </CardBody>
                         </Card>
+
+                        {orderList.length > 0 ? (
+                          orderList.map((order, index) => (
+                            <Card
+                              key={order.order_id}
+                              className="rounded-xl border-tertiary-gray-200 border-1 shadow-none py-4 w-full"
+                            >
+                              <CardBody className="p-0">
+                                <Accordion itemClasses="你的accordionStyle變數或類別">
+                                  <AccordionItem
+                                    key={order.order_id}
+                                    aria-label={`Accordion ${index + 1}`}
+                                    title={
+                                      <div className="flex flex-row justify-between w-full">
+                                        <div className="sm:text-xl text-lg">
+                                          訂單編號 #{order.order_id}
+                                        </div>
+                                        <div className="sm:text-md text-sm text-tertiary-gray-100">
+                                          {new Date(
+                                            order.order_date
+                                          ).toLocaleDateString()}
+                                        </div>
+                                      </div>
+                                    }
+                                    subtitle={
+                                      <div className="flex flex-col gap-2 mt-2">
+                                        <div>
+                                          {order.store_name} /{' '}
+                                          {order.template_name}
+                                        </div>
+                                        <div
+                                          className={`text-danger bg-secondary-200 w-16 text-center ${
+                                            order.shipping_status === '未出貨'
+                                              ? ''
+                                              : '其他類別'
+                                          }`}
+                                        >
+                                          {order.shipping_status}
+                                        </div>
+                                        <div className="flex flex-row justify-between items-end">
+                                          <div className="flex gap-2">
+                                            <Image
+                                              src={order.image_url}
+                                              alt=""
+                                              className="w-24 h-24 rounded-md md:rounded-xl"
+                                            />
+                                          </div>
+                                          <div className="text-tertiary-black text-xl">
+                                            ${order.total_amount}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    }
+                                  >
+                                    <div className="flex flex-col w-full mt-2 bg-secondary-200 rounded-xl p-4">
+                                      <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
+                                        {/* Placeholder for actual product details */}
+                                      </div>
+                                      <hr className="my-4 w-full border-[#8b8989]" />
+                                      <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col ">
+                                        <div className="flex flex-col sm:flex-1">
+                                          <div className="flex flex-row gap-2 justify-between sm:justify-start">
+                                            <div>寄送時間</div>
+                                            <div>
+                                              {new Date(
+                                                order.delivery_date
+                                              ).toLocaleString()}
+                                            </div>
+                                          </div>
+                                          <div className="flex flex-row gap-2 justify-between sm:justify-start">
+                                            <div>寄送方式</div>
+                                            <div>{order.shipping_name}</div>
+                                          </div>
+                                          <div className="flex flex-row gap-2 justify-between sm:justify-start">
+                                            <div>寄送狀態</div>
+                                            <div>{order.shipping_status}</div>
+                                          </div>
+                                          <div className="flex flex-row gap-2 justify-between sm:justify-start">
+                                            <div>付款狀態</div>
+                                            <div>{order.payment_name}</div>
+                                          </div>
+                                        </div>
+                                        <div className="flex flex-col flex-1">
+                                          <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                            <div>收禮人姓名</div>
+                                            <div>{order.recipient_name}</div>
+                                          </div>
+                                          <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                            <div>收禮人電話</div>
+                                            <div>{order.recipient_tel}</div>
+                                          </div>
+                                          <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                            <div>收禮人地址</div>
+                                            <div>{order.recipient_address}</div>
+                                          </div>
+                                          <div className="flex flex-row gap-5 text-right justify-between w-full">
+                                            <div>卡片內容</div>
+                                            <div>{order.card_content}</div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </AccordionItem>
+                                </Accordion>
+                              </CardBody>
+                            </Card>
+                          ))
+                        ) : (
+                          <h1>尚未有訂單資訊</h1>
+                        )}
                       </div>
                     </Tab>
                     {/* all order end */}
@@ -537,20 +666,6 @@ export default function CenterShop() {
                         </Card>
                       </div>
                     </Tab>
-                    {/* finished end */}
-                    {/* review start */}
-                    <Tab key="review" title="待評價">
-                      <div className="flex flex-col gap-4">
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                          <CardBody className="p-0">
-                            Excepteur sint occaecat cupidatat non proident, sunt
-                            in culpa qui officia deserunt mollit anim id est
-                            laborum.
-                          </CardBody>
-                        </Card>
-                      </div>
-                    </Tab>
-                    {/* review end */}
                   </Tabs>
                 </div>
               </div>
