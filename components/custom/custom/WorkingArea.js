@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import { fabric } from 'fabric'
 import { useFlower } from '@/hooks/use-flower'
 
@@ -10,6 +10,8 @@ const WorkingArea = () => {
     setImagesInfo,
     addImageToCanvas,
   } = useFlower()
+
+  const [canvasReady, setCanvasReady] = useState(false)
 
   const updateImagesInfoOnCanvas = useCallback(
     (obj) => {
@@ -34,7 +36,7 @@ const WorkingArea = () => {
         originX: 'center',
         originY: 'center',
       }
-      console.log(updatedInfo)
+
       const foundIndex = imagesInfo.findIndex((info) => info.id === obj.id)
       if (foundIndex !== -1) {
         const newImagesInfo = [...imagesInfo]
@@ -248,6 +250,7 @@ const WorkingArea = () => {
       canvas.forEachObject((obj) => {
         if (obj.active || canvas.getActiveObject() === obj) {
           if (obj.hasBorders || obj.hasControls) {
+            setCanvasReady(true)
             obj.drawBorders(canvas.contextContainer)
             obj.drawControls(canvas.contextContainer)
           }
@@ -266,6 +269,7 @@ const WorkingArea = () => {
     updateImagesInfoOnCanvas,
     imagesInfo,
     addImageToCanvas,
+    canvasReady,
   ])
 
   const defineAndDrawShapes = (canvas, width, height) => {
@@ -315,6 +319,26 @@ const WorkingArea = () => {
       canvas.renderAll()
     })
   }
+
+  useEffect(() => {
+    const handleResize = () => {
+      let canvas = canvasRef.current?.fabric
+      if (canvas) {
+        canvas.dispose()
+        canvasRef.current.fabric = null
+      }
+      setTimeout(() => {
+        setCanvasReady(false)
+      }, 100)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+  // useEffect(() => {
+  //   console.log(canvasReady)
+
+  // }, [canvasReady])
 
   return (
     <>
