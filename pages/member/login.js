@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { useRouter } from 'next/router'
 
@@ -37,7 +37,7 @@ export default function Login() {
   const [activePage, setActivePage] = useState('member')
 
   // 登入狀態
-  const { login } = useAuth()
+  const { auth, login } = useAuth()
 
   // 網址
   const router = useRouter()
@@ -118,6 +118,13 @@ export default function Login() {
     label: 'text-base',
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
+
+  useEffect(() => {
+    // 已在登入狀態時，導向center頁面
+    if (auth.isAuth) {
+      router.push('/center')
+    }
+  }, [auth.isAuth, router])
 
   return (
     <DefaultLayout activePage={activePage}>

@@ -143,6 +143,9 @@ export default function Profile() {
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
 
+  // 未登入時，不會出現頁面內容
+  if (!auth.isAuth) return <></>
+
   return (
     <DefaultLayout activePage={activePage}>
       {
