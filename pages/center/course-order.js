@@ -109,6 +109,7 @@ export default function CenterCourse() {
                             scrollShadowProps={{
                               isEnabled: false,
                             }}
+                            aria-label="排序方式"
                           >
                             {list.map((item, index) => (
                               <SelectItem key={item.title} value={item.title}>
@@ -234,6 +235,7 @@ export default function CenterCourse() {
                             scrollShadowProps={{
                               isEnabled: false,
                             }}
+                            aria-label="排序方式"
                           >
                             {list.map((item, index) => (
                               <SelectItem key={item.title} value={item.title}>
@@ -272,6 +274,7 @@ export default function CenterCourse() {
                             scrollShadowProps={{
                               isEnabled: false,
                             }}
+                            aria-label="排序方式"
                           >
                             {list.map((item, index) => (
                               <SelectItem key={item.title} value={item.title}>
@@ -310,6 +313,7 @@ export default function CenterCourse() {
                             scrollShadowProps={{
                               isEnabled: false,
                             }}
+                            aria-label="排序方式"
                           >
                             {list.map((item, index) => (
                               <SelectItem key={item.title} value={item.title}>
