@@ -534,7 +534,7 @@ export default function CustomOrder() {
                               className="rounded-xl border-tertiary-gray-200 border-1 shadow-none py-4 w-full"
                             >
                               <CardBody className="p-0">
-                                <Accordion itemClasses="你的accordionStyle變數或類別">
+                                <Accordion itemClasses={accordionStyle}>
                                   <AccordionItem
                                     key={order.order_id}
                                     aria-label={`Accordion ${index + 1}`}
@@ -553,18 +553,21 @@ export default function CustomOrder() {
                                     subtitle={
                                       <div className="flex flex-col gap-2 mt-2">
                                         <div>
-                                          {order.store_name} /{' '}
-                                          {order.template_name}
+                                          {order.bouquet_name}/
+                                          {order.store_name}
                                         </div>
                                         <div
-                                          className={`text-danger bg-secondary-200 w-16 text-center ${
-                                            order.shipping_status === '未出貨'
-                                              ? ''
-                                              : '其他類別'
+                                          className={`w-16 text-center ${
+                                            order.order_status === '已完成'
+                                              ? 'text-primary bg-primary-300'
+                                              : order.order_status === '已取消'
+                                              ? 'text-tertiary-gray-100 bg-tertiary-gray-200'
+                                              : 'text-danger bg-secondary-200'
                                           }`}
                                         >
-                                          {order.shipping_status}
+                                          {order.order_status}
                                         </div>
+
                                         <div className="flex flex-row justify-between items-end">
                                           <div className="flex gap-2">
                                             <Image
@@ -580,7 +583,16 @@ export default function CustomOrder() {
                                       </div>
                                     }
                                   >
-                                    <div className="flex flex-col w-full mt-2 bg-secondary-200 rounded-xl p-4">
+                                    <div
+                                      className={`flex flex-col w-full mt-2 bg-secondary-200 rounded-xl p-4
+                                    ${
+                                      order.order_status === '已完成'
+                                        ? 'bg-primary-300'
+                                        : order.order_status === '已取消'
+                                        ? 'bg-tertiary-gray-200'
+                                        : 'bg-secondary-200'
+                                    }`}
+                                    >
                                       <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
                                         {/* Placeholder for actual product details */}
                                       </div>
