@@ -16,6 +16,7 @@ export function AuthProvider({ children }) {
     userData: {
       id: 0,
       username: '',
+      name: '',
     },
   }
 
