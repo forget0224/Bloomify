@@ -12,6 +12,10 @@ import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
 
+// sweetalert2
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
 // 定義要在此頁呈現/編輯的會員資料初始物件
 const initUserProfile = {
   name: '',
@@ -30,6 +34,30 @@ export default function Profile() {
   const { auth } = useAuth()
   const [userProfile, setUserProfile] = useState(initUserProfile)
   const [selectedFile, setSelectedFile] = useState(null)
+
+  //  SweetAlert2 彈窗
+  const MySwal = withReactContent(Swal)
+
+  // SweetAlert2 彈窗設定
+  const notify1 = (msg) => {
+    MySwal.fire({
+      //position: "top-end",
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
+
+  const notify2 = (msg) => {
+    MySwal.fire({
+      //position: "top-end",
+      icon: 'error',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
 
   // auth中只能獲得id和帳號
   console.log(auth)
@@ -68,13 +96,8 @@ export default function Profile() {
           dbUserProfile[key] = dbUser[key] || ''
         }
       }
-
       // 設定到狀態中
       setUserProfile(dbUserProfile)
-
-      alert('會員資料載入成功')
-    } else {
-      alert(`會員資料載入失敗`)
     }
   }
 
@@ -90,6 +113,34 @@ export default function Profile() {
   // 輸入一般資料用
   const handleFieldChange = (e) => {
     setUserProfile({ ...userProfile, [e.target.name]: e.target.value })
+  }
+
+  // 大頭貼更換
+  const handleFileChange = async (e) => {
+    // 選擇檔案
+    const file = e.target.files[0]
+    // 創建 FormData 對象，用於上傳檔案
+    const formData = new FormData()
+    formData.append('avatar', file) // 將選擇的圖片檔案添加到 FormData 中，欄位名稱為 avatar
+
+    // 使用 fetch 發送 POST 請求到後端上傳圖片
+    const response = await fetch(
+      'http://localhost:3005/api/share-members/upload-avatar',
+      {
+        method: 'POST',
+        credentials: 'include',
+        body: formData, // 將 FormData 物件作為請求主體
+      }
+    )
+
+    const data = await response.json() // 解析後端返回的 JSON 資料
+    console.log(data)
+
+    // 如果圖片上傳成功，則更新使用者的頭像資料
+    if (data.status === 'success') {
+      // 更新 userProfile 中的 avatar 屬性為新上傳的圖片檔名
+      setUserProfile({ ...userProfile, avatar: data.data.avatar })
+    }
   }
 
   // 表單送出
@@ -119,6 +170,13 @@ export default function Profile() {
     )
     const data = await res.json() // 將回傳的 Response 物件轉換成 JSON 格式
     console.log(data)
+    if (data.status == 'success') {
+      notify1('編輯成功')
+    } else {
+      notify2('沒有更改')
+    }
+
+    // user: {id: 1, name: '哈利fffxxs', username: 'herry@test.com', phone: '0906
   }
 
   // 將日期字串轉換成特定格式的函式
@@ -142,6 +200,11 @@ export default function Profile() {
     label: 'text-base',
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
+
+  // 大頭貼預設值
+  const DEFAULT_AVATAR = 'default.png'
+  userProfile.avatar =
+    userProfile.avatar === '' ? DEFAULT_AVATAR : userProfile.avatar
 
   // 未登入時，不會出現頁面內容
   if (!auth.isAuth) return <></>
@@ -172,46 +235,24 @@ export default function Profile() {
                 <h1 className="text-xl lg:text-3xl mb-12 mt-14">個人資訊</h1>
                 {/* 大頭貼位置 */}
                 <div className="image-upload flex flex-col items-center">
-                  {userProfile.avatar !== '' ? (
-                    <label>
-                      <img
-                        src={`/assets/member/member/${userProfile.avatar}.jpg`}
-                        alt="使用者大頭貼"
-                        width="200"
-                        height="200"
-                      />
-                    </label>
-                  ) : (
-                    <label>
-                      <img
-                        src="/assets/member/member/default.png"
-                        alt="預設大頭貼"
-                        width="200"
-                        height="200"
-                      />
-                    </label>
-                  )}
+                  <label htmlFor="file-input">
+                    <img
+                      src={`http://localhost:3005/member/avatar/${userProfile.avatar}`}
+                      alt="使用者大頭貼"
+                      width="200"
+                      height="200"
+                    />
+                  </label>
                   <input
                     id="file-input"
                     type="file"
                     name="file"
                     className="invisible"
-                    // onChange={handleFileChang}
+                    onChange={handleFileChange}
                   />
                 </div>
                 <div>
                   <p>點按頭像可以選擇新照片</p>
-                </div>
-                <div>
-                  <img
-                    src="/assets/member/member/default.png"
-                    alt=""
-                    width="200"
-                    height="200"
-                  />
-                  <div>
-                    <button onClick={handleSubmit}> </button>
-                  </div>
                 </div>
                 {/* 表單 */}
                 <form
