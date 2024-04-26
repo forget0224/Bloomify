@@ -17,9 +17,8 @@ import {
   NavbarMenu,
   NavbarMenuToggle,
 } from '@nextui-org/react'
-
-// icon
-import { IoPersonCircleOutline } from 'react-icons/io5'
+import { CiShoppingCart } from 'react-icons/ci'
+import { CiUser } from 'react-icons/ci'
 
 export default function HomeNav({ activePage }) {
   const menuItems = [
@@ -131,15 +130,14 @@ export default function HomeNav({ activePage }) {
         justify="end"
         // style={{ backgroundColor: 'blue', padding: '10px' }}
       >
+        <NavbarItem>
+          {' '}
+          <CiShoppingCart className="w-8 h-8 text-primary" />
+        </NavbarItem>
         <NavbarItem className="lg:flex">
           <Link href={auth.isAuth ? '/center' : '/member/login'}>
-            <IoPersonCircleOutline className="w-8 h-8" />
+            <CiUser className="w-8 h-8" />
           </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
-          </Button>
         </NavbarItem>
       </NavbarContent>
 
