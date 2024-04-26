@@ -1,5 +1,8 @@
 import { Fragment } from 'react'
 // import { useState } from 'react'
+
+import { useAuth } from '@/hooks/use-auth'
+
 import {
   Navbar,
   NavbarBrand,
@@ -48,19 +51,21 @@ export default function HomeNav({ activePage }) {
         { href: 'game', chineseName: '花占卜' },
       ],
     },
-    {
-      name: 'about',
-      chineseName: '關於我們',
-      href: '',
-      subMenu: [],
-    },
-    {
-      name: 'join',
-      chineseName: '加入我們',
-      href: '',
-      subMenu: [],
-    },
+    // {
+    //   name: 'about',
+    //   chineseName: '關於我們',
+    //   href: '',
+    //   subMenu: [],
+    // },
+    // {
+    //   name: 'join',
+    //   chineseName: '加入我們',
+    //   href: '',
+    //   subMenu: [],
+    // },
   ]
+
+  const { auth } = useAuth()
 
   return (
     <Navbar isBordered className="bg-primary-300">
@@ -126,8 +131,8 @@ export default function HomeNav({ activePage }) {
         justify="end"
         // style={{ backgroundColor: 'blue', padding: '10px' }}
       >
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/member/login">
+        <NavbarItem className="lg:flex">
+          <Link href={auth.isAuth ? '/center' : '/member/login'}>
             <IoPersonCircleOutline className="w-8 h-8" />
           </Link>
         </NavbarItem>

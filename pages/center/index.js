@@ -103,7 +103,7 @@ export default function Index() {
                   height={40}
                 />
                 <p className="text-xl text-tertiary-black font-medium">
-                  會員姓名
+                  {auth.isAuth ? auth.userData.name : auth.username}
                 </p>
               </div>
               {/* 會員資訊 end */}
@@ -247,14 +247,14 @@ export default function Index() {
                     >
                       個人資料
                     </Link>
-                    <Link
+                    {/* <Link
                       href="/center/coupon"
                       className={`hover:text-primary-100 ${
                         isActive('/center/coupon') ? 'text-primary-100' : ''
                       }`}
                     >
                       優惠券
-                    </Link>
+                    </Link> */}
                     <button
                       onClick={handleLogout}
                       className={'hover:text-primary-100'}

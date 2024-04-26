@@ -13,7 +13,7 @@ export default function Sidebar() {
   const isActive = (pathname) => router.pathname === pathname
 
   // 登出
-  const { logout } = useAuth()
+  const { auth, logout } = useAuth()
 
   //  SweetAlert2 彈窗
   const MySwal = withReactContent(Swal)
@@ -72,7 +72,7 @@ export default function Sidebar() {
             height={40}
           />
           <p className="text-xl text-tertiary-black font-medium hidden lg:block">
-            會員姓名
+            {auth.isAuth ? auth.userData.name : auth.username}
           </p>
         </div>
         {/* 會員資訊 end */}
@@ -190,14 +190,14 @@ export default function Sidebar() {
           >
             個人資料
           </Link>
-          <Link
+          {/* <Link
             href="/center/coupon"
             className={`hover:text-primary-100 ${
               isActive('/center/coupon') ? 'text-primary-100' : ''
             }`}
           >
             優惠券
-          </Link>
+          </Link> */}
           <button onClick={handleLogout} className={'hover:text-primary-100'}>
             登出
           </button>
