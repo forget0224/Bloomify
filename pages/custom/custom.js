@@ -12,7 +12,7 @@ import { IoLayersOutline } from 'react-icons/io5'
 import ShareModal from '@/components/custom/common/Modal'
 import WorkingArea from '@/components/custom/custom/WorkingArea'
 import { ColorProvider } from '@/hooks/use-color'
-import { RoleProvider } from '@/hooks/use-flowerType'
+import { FlowerTypeProvider } from '@/hooks/use-flowerType'
 import { OccProvider } from '@/hooks/use-occ'
 import { FlowerProvider } from '@/hooks/use-flower'
 import { StoreProvider } from '@/hooks/use-store'
@@ -189,7 +189,7 @@ export default function Custom() {
       <FlowerProvider>
         <ColorProvider>
           <OccProvider>
-            <RoleProvider>
+            <FlowerTypeProvider>
               <>
                 {selectedStore ? (
                   <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
@@ -299,7 +299,7 @@ export default function Custom() {
                   />
                 )}
               </>
-            </RoleProvider>
+            </FlowerTypeProvider>
           </OccProvider>
         </ColorProvider>
       </FlowerProvider>

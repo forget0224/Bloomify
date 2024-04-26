@@ -527,8 +527,8 @@ export default function CustomOrder() {
                           </CardBody>
                         </Card>
 
-                        {orderList.length > 0 ? (
-                          orderList.map((order, index) => (
+                        {orderList && orderList.length > 0 ? (
+                          orderList.map((order, index, { products }) => (
                             <Card
                               key={order.order_id}
                               className="rounded-xl border-tertiary-gray-200 border-1 shadow-none py-4 w-full"
@@ -594,7 +594,49 @@ export default function CustomOrder() {
                                     }`}
                                     >
                                       <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
-                                        {/* Placeholder for actual product details */}
+                                        {order.products &&
+                                          order.products.map(
+                                            (item, itemIndex) => (
+                                              <div
+                                                key={itemIndex}
+                                                className="flex flex-row items-center sm:h-[70px] justify-between w-full text-sm  "
+                                              >
+                                                <div className="flex-grow">
+                                                  <div
+                                                    className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
+                                                    style={{
+                                                      backgroundImage: `url(${item.image_url})`,
+                                                    }}
+                                                  ></div>
+                                                </div>
+
+                                                <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1">
+                                                  <div className="flex-grow flex sm:flex-row flex-col sm:justify-around">
+                                                    <div className="sm:w-[100px] text-center">
+                                                      {item.category_name}
+                                                    </div>
+                                                    <div className="sm:w-[100px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
+                                                      {item.color_name}
+                                                    </div>
+                                                  </div>
+
+                                                  <div className="sm:w-[100px] text-center text-sm   text-tertiary-black ">
+                                                    {/* {item.count}{' '} */}
+                                                    {item.category ===
+                                                      'flower' && '朵'}
+                                                    {item.category === 'card' &&
+                                                      '張'}
+                                                    {item.category ===
+                                                      'package' && '個'}
+                                                  </div>
+                                                </div>
+                                                <div className="flex-grow text-center ">
+                                                  {/* <p>${item.price}</p> */}
+                                                  <p>$30</p>
+                                                </div>
+                                              </div>
+                                            )
+                                          )}
                                       </div>
                                       <hr className="my-4 w-full border-[#8b8989]" />
                                       <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col ">
