@@ -175,358 +175,6 @@ export default function CustomOrder() {
                       </div>
                       {/* 歷史訂單卡片 */}
                       <div className="flex flex-col gap-4">
-                        {/* 卡片一 */}
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none py-4  w-full">
-                          <CardBody className="p-0">
-                            {/* 手風琴 */}
-                            <Accordion itemClasses={accordionStyle}>
-                              <AccordionItem
-                                key="1"
-                                aria-label="Accordion 1"
-                                title={
-                                  <div className="flex flex-row justify-between w-full">
-                                    <div className="sm:text-xl text-lg">
-                                      訂單編號 #2024010901234567
-                                    </div>
-                                    <div className="sm:text-md text-sm text-tertiary-gray-100">
-                                      2024.04.01
-                                    </div>
-                                  </div>
-                                }
-                                // 訂單資訊(手風琴標題)
-                                subtitle={
-                                  <div className="flex flex-col gap-2 mt-2">
-                                    <div className="">花束名稱 / 店家名稱</div>
-
-                                    <div className="text-danger bg-secondary-200 w-16 text-center">
-                                      未出貨
-                                    </div>
-
-                                    <div className="flex flex-row justify-between items-end">
-                                      <div className="flex gap-2">
-                                        {imageList.map((image, index) => (
-                                          <Image
-                                            key={index}
-                                            src={image.src}
-                                            alt=""
-                                            className="w-24 h-24 rounded-md md:rounded-xl"
-                                          />
-                                        ))}
-                                      </div>
-                                      <div className="text-tertiary-black text-xl">
-                                        $1100
-                                      </div>
-                                    </div>
-                                  </div>
-                                }
-                              >
-                                <div className="flex flex-col w-full mt-2 bg-secondary-200 rounded-xl p-4">
-                                  <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
-                                    {cartCustomContent.cartList.map(
-                                      (item, itemIndex) => (
-                                        <div
-                                          key={itemIndex}
-                                          className="flex flex-row items-center sm:h-[70px] justify-between w-full text-sm  "
-                                        >
-                                          <div className="flex-grow">
-                                            <div
-                                              className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
-                                              style={{
-                                                backgroundImage: `url(${item.image})`,
-                                              }}
-                                            ></div>
-                                          </div>
-
-                                          <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1">
-                                            <div className="flex-grow flex sm:flex-row flex-col sm:justify-around">
-                                              <div className="sm:w-[100px] text-center">
-                                                {item.name}
-                                              </div>
-                                              <div className="sm:w-[100px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
-                                                {item.option}
-                                              </div>
-                                            </div>
-
-                                            <div className="sm:w-[100px] text-center text-sm   text-tertiary-black ">
-                                              {item.count}{' '}
-                                              {item.category === 'flower' &&
-                                                '朵'}
-                                              {item.category === 'card' && '張'}
-                                              {item.category === 'package' &&
-                                                '個'}
-                                            </div>
-                                          </div>
-                                          <div className="flex-grow text-center ">
-                                            <p>${item.price}</p>
-                                          </div>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-
-                                  <hr className="my-4 w-full border-[#8b8989]" />
-
-                                  <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col ">
-                                    <div className="flex flex-col sm:flex-1">
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送時間</div>
-                                        <div>2024/04/03 13:25</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送方式</div>
-                                        <div>配送</div>
-                                      </div>
-
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送狀態</div>
-                                        <div>已送達</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送方式</div>
-                                        <div>已付款</div>
-                                      </div>
-                                    </div>
-                                    <div className="flex flex-col flex-1">
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>收禮人姓名</div>
-                                        <div>閔熙珍</div>
-                                      </div>
-
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>收禮人電話</div>
-                                        <div>0912345678</div>
-                                      </div>
-                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
-                                        <div>收禮人地址</div>
-                                        <div className="text-right">
-                                          台北市復興北路二段32巷3樓
-                                        </div>
-                                      </div>
-                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
-                                        <div>卡片內容</div>
-                                        <div className="text-right">
-                                          生日快樂!祝你身體健康，萬事如意~
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <hr className="w-full    my-4 border-[#8b8989]" />
-                                  <div className="flex sm:flex-row  flex-col  justify-between  px-4 py-2">
-                                    <div className="flex flex-col">
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>付款方式</div>
-                                        <div>Paypal</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>付款狀態</div>
-                                        <div>已付款</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>發票種類</div>
-                                        <div>雲端發票</div>
-                                      </div>
-                                    </div>
-                                    <div className="flex flex-col  sm:w-[200px] w-full">
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>運費</div>
-                                        <div className="min-w-[30px]">$100</div>
-                                      </div>
-
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>折扣碼</div>
-                                        <div className="min-w-[30px]">
-                                          - $50
-                                        </div>
-                                      </div>
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>總金額</div>
-                                        <div className="min-w-[30px]">
-                                          $1100
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </AccordionItem>
-                            </Accordion>
-                          </CardBody>
-                        </Card>
-                        {/* 卡片二 */}
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none py-4">
-                          <CardBody className="p-0">
-                            {/* 手風琴 */}
-                            <Accordion itemClasses={accordionStyle}>
-                              <AccordionItem
-                                key="1"
-                                aria-label="Accordion 1"
-                                title={
-                                  <div className="flex flex-row justify-between w-full">
-                                    <div className="sm:text-xl text-lg">
-                                      訂單編號 #2024010901234567
-                                    </div>
-                                    <div className="sm:text-md text-sm text-tertiary-gray-100">
-                                      2024.04.01
-                                    </div>
-                                  </div>
-                                }
-                                // 訂單資訊(手風琴標題)
-                                subtitle={
-                                  <div className="flex flex-col gap-2 mt-2">
-                                    <div className="">花束名稱 / 店家名稱</div>
-
-                                    <div className="text-primary bg-primary-300 w-16 text-center">
-                                      已完成
-                                    </div>
-
-                                    <div className="flex flex-row justify-between items-end">
-                                      <div className="flex gap-2">
-                                        {imageList.map((image, index) => (
-                                          <Image
-                                            key={index}
-                                            src={image.src}
-                                            alt=""
-                                            className="w-24 h-24 rounded-md md:rounded-xl"
-                                          />
-                                        ))}
-                                      </div>
-                                      <div className="text-tertiary-black text-xl">
-                                        $1100
-                                      </div>
-                                    </div>
-                                  </div>
-                                }
-                              >
-                                <div className="flex flex-col w-full bg-primary-300 rounded-xl p-4">
-                                  <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
-                                    {cartCustomContent.cartList.map(
-                                      (item, itemIndex) => (
-                                        <div
-                                          key={itemIndex}
-                                          className="flex flex-row items-center sm:h-[70px] justify-between w-full text-sm  "
-                                        >
-                                          <div className="flex-grow">
-                                            <div
-                                              className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
-                                              style={{
-                                                backgroundImage: `url(${item.image})`,
-                                              }}
-                                            ></div>
-                                          </div>
-
-                                          <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1">
-                                            <div className="flex-grow flex sm:flex-row flex-col sm:justify-around">
-                                              <div className="sm:w-[100px] text-center">
-                                                {item.name}
-                                              </div>
-                                              <div className="sm:w-[100px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
-                                                {item.option}
-                                              </div>
-                                            </div>
-
-                                            <div className="sm:w-[100px] text-center text-sm   text-tertiary-black ">
-                                              {item.count}{' '}
-                                              {item.category === 'flower' &&
-                                                '朵'}
-                                              {item.category === 'card' && '張'}
-                                              {item.category === 'package' &&
-                                                '個'}
-                                            </div>
-                                          </div>
-                                          <div className="flex-grow text-center ">
-                                            <p>${item.price}</p>
-                                          </div>
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                  <hr className="my-4 w-full border-[#8b8989]" />
-
-                                  <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col ">
-                                    <div className="flex flex-col sm:flex-1">
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送時間</div>
-                                        <div>2024/04/03 13:25</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送方式</div>
-                                        <div>配送</div>
-                                      </div>
-
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送狀態</div>
-                                        <div>已送達</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>寄送方式</div>
-                                        <div>已付款</div>
-                                      </div>
-                                    </div>
-                                    <div className="flex flex-col flex-1">
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>收禮人姓名</div>
-                                        <div>閔熙珍</div>
-                                      </div>
-
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>收禮人電話</div>
-                                        <div>0912345678</div>
-                                      </div>
-                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
-                                        <div>收禮人地址</div>
-                                        <div className="text-right">
-                                          台北市復興北路二段32巷3樓
-                                        </div>
-                                      </div>
-                                      <div className="flex sm:flex-row flex-col sm:gap-5 gap-1  sm:text-right items-right sm:justify-between w-full  ">
-                                        <div>卡片內容</div>
-                                        <div className="text-right">
-                                          生日快樂!祝你身體健康，萬事如意~
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <hr className="w-full    my-4 border-[#8b8989]" />
-                                  <div className="flex sm:flex-row  flex-col  justify-between  px-4 py-2">
-                                    <div className="flex flex-col">
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>付款方式</div>
-                                        <div>Paypal</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>付款狀態</div>
-                                        <div>已付款</div>
-                                      </div>
-                                      <div className="flex flex-row  gap-2   justify-between   sm:justify-start">
-                                        <div>發票種類</div>
-                                        <div>雲端發票</div>
-                                      </div>
-                                    </div>
-                                    <div className="flex flex-col  sm:w-[200px] w-full">
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>運費</div>
-                                        <div className="min-w-[30px]">$100</div>
-                                      </div>
-
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>折扣碼</div>
-                                        <div className="min-w-[30px]">
-                                          - $50
-                                        </div>
-                                      </div>
-                                      <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                        <div>總金額</div>
-                                        <div className="min-w-[30px]">
-                                          $1100
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </AccordionItem>
-                            </Accordion>
-                          </CardBody>
-                        </Card>
-
                         {orderList && orderList.length > 0 ? (
                           orderList.map((order, index, { products }) => (
                             <Card
@@ -593,7 +241,7 @@ export default function CustomOrder() {
                                         : 'bg-secondary-200'
                                     }`}
                                     >
-                                      <div className="flex flex-col gap-3 sm:h-auto min-h-[250px]">
+                                      <div className="flex flex-col gap-3 sm:h-auto min-h-[150px]">
                                         {order.products &&
                                           order.products.map(
                                             (item, itemIndex) => (
@@ -621,26 +269,27 @@ export default function CustomOrder() {
                                                   </div>
 
                                                   <div className="sm:w-[100px] text-center text-sm   text-tertiary-black ">
-                                                    {/* {item.count}{' '} */}
-                                                    {item.category ===
-                                                      'flower' && '朵'}
-                                                    {item.category === 'card' &&
-                                                      '張'}
-                                                    {item.category ===
+                                                    {item.count}
+                                                    {item.category_type ===
+                                                      'card' && '張'}
+                                                    {item.category_type ===
                                                       'package' && '個'}
+                                                    {item.category_type ===
+                                                      'accent' && '朵'}
+                                                    {item.category_type ===
+                                                      'main' && '朵'}
                                                   </div>
                                                 </div>
                                                 <div className="flex-grow text-center ">
-                                                  {/* <p>${item.price}</p> */}
-                                                  <p>$30</p>
+                                                  <p>${item.product_price}</p>
                                                 </div>
                                               </div>
                                             )
                                           )}
                                       </div>
                                       <hr className="my-4 w-full border-[#8b8989]" />
-                                      <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col ">
-                                        <div className="flex flex-col sm:flex-1">
+                                      <div className="flex sm:flex-row sm:justify-start w-full px-4 py-2 flex-col  ">
+                                        <div className="flex flex-col sm:flex-1 sm:text-base text-sm">
                                           <div className="flex flex-row gap-2 justify-between sm:justify-start">
                                             <div>寄送時間</div>
                                             <div>
@@ -662,22 +311,32 @@ export default function CustomOrder() {
                                             <div>{order.payment_name}</div>
                                           </div>
                                         </div>
-                                        <div className="flex flex-col flex-1">
+                                        <div className="flex flex-col flex-1 sm:text-base text-sm">
                                           <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                            <div>收禮人姓名</div>
+                                            <div className="text-nowrap">
+                                              收禮人姓名
+                                            </div>
                                             <div>{order.recipient_name}</div>
                                           </div>
                                           <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                            <div>收禮人電話</div>
+                                            <div className="text-nowrap">
+                                              收禮人電話
+                                            </div>
                                             <div>{order.recipient_tel}</div>
                                           </div>
                                           <div className="flex flex-row gap-5 text-right justify-between w-full">
-                                            <div>收禮人地址</div>
-                                            <div>{order.recipient_address}</div>
+                                            <div className="text-nowrap">
+                                              收禮人地址
+                                            </div>
+                                            <div className="text-pretty">
+                                              {order.recipient_address}
+                                            </div>
                                           </div>
                                           <div className="flex flex-row gap-5 text-right justify-between w-full">
                                             <div>卡片內容</div>
-                                            <div>{order.card_content}</div>
+                                            <div className="text-pretty">
+                                              {order.card_content}
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
