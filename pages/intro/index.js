@@ -24,23 +24,155 @@ import {
 } from '@nextui-org/react'
 
 export default function FlowersIndex() {
-// ----------看更多宣告部分start----------
-const [visibleCards, setVisibleCards] = useState(12); // 控制當前顯示的卡片數量
-const [isLoadMoreDisabled, setIsLoadMoreDisabled] = useState(false); // 控制是否禁用「查看更多」按鈕
+// ----------季節篩選器部分start----------
+// 花卡片的季節狀態及更新函數
+const [selectedSeason, setSelectedSeason] = useState('所有季節')
 
-const handleLoadMore = () => {
-  const newVisibleCards = visibleCards + 8; // 每次顯示8張卡片
-  setVisibleCards(newVisibleCards);
+// 季節選擇器改變時的處理函數
+const handleSeasonChange = (e) => {
+  // 清空搜尋字串
+  setSearchTerm('')
   
-  if (newVisibleCards >= flowerData.length) {
-    setIsLoadMoreDisabled(true); // 如果已經顯示了所有卡片，禁用按鈕
+  setSelectedOccasion('所有場合')
+    setSelectedColor('所有顏色')
+    setSelectedRole('所有對象')
+    setSortOption('A→Z')
+  const selectedSeason = e.target.value
+  console.log(selectedSeason)
+  setSelectedSeason(selectedSeason)
+
+  // 根據選擇的季節進行相應的操作
+  // 如果選擇了「所有季節」，則設置所有的花朵資料 否則，根據選擇的季節進行篩選
+  if (selectedSeason === '所有季節') {
+    setFlowerData(introData)
+  } else {
+    // 在這裡使用 selectedSeason 來篩選 introData 中的花朵資料
+    const filteredData = introData.filter((flower) =>
+      flower.season.includes(selectedSeason)
+    )
+    setFlowerData(filteredData)
   }
 }
+// ----------季節篩選器部分start----------
+  // ----------對象篩選器部分start----------
+  // 花卡片的對象狀態及更新函數
+  const [selectedRole, setSelectedRole] = useState('所有對象')
+  // 對象選擇器改變時的處理函數
+  const handleRoleChange = (e) => {
+    // 清空搜尋字串
+    setSearchTerm('')
+    
+    setSelectedOccasion('所有場合')
+    setSelectedColor('所有顏色')
+    setSelectedSeason('所有季節')
+    setSortOption('A→Z')
+    
+    const selectedRole = e.target.value
+    console.log(selectedRole)
+    setSelectedRole(selectedRole)
 
- // ----------看更多宣告部分end------------
+    // 根據選擇的對象進行相應的操作
+    // 如果選擇了「所有對象」，則設置所有的花朵資料 否則，根據選擇的對象進行篩選
+    if (selectedRole === '所有對象') {
+      setFlowerData(introData)
+    } else {
+      // 在這裡使用 selectedRole 來篩選 introData 中的花朵資料
+      const filteredData = introData.filter((flower) =>
+        flower.role.includes(selectedRole)
+      )
+      setFlowerData(filteredData)
+    }
+  }
+  // ----------對象篩選器部end----------
+  // ----------顏色篩選器部分start----------
+  // 花卡片的顏色狀態及更新函數
+  const [selectedColor, setSelectedColor] = useState('所有顏色')
+  // 花卡片的顏色選擇器改變時的處理函數
+  const handleColorChange = (e) => {
+    // 清空搜尋字串
+    setSearchTerm('')
+    
+    setSelectedOccasion('所有場合')
+    setSelectedRole('所有對象')
+    setSelectedSeason('所有季節')
+    setSortOption('A→Z')
+    const selectedColor = e.target.value
+    console.log(selectedColor)
+    setSelectedColor(selectedColor)
+
+    // 根據選擇的顏色進行相應的操作
+    // 在這裡可以執行顏色篩選或其他相應的操作
+    // 如果選擇了「所有場合」，則設置所有的花朵資料 否則，根據選擇的場合進行篩選
+    if (selectedColor === '所有顏色') {
+      setFlowerData(introData)
+    } else {
+      // 在這裡使用 selectedColor 來篩選 introData 中的花朵資料
+      const filteredData = introData.filter((flower) =>
+        flower.color.includes(selectedColor)
+      )
+      setFlowerData(filteredData)
+    }
+  }
+  // ----------顏色篩選器部分end----------
+
+  // ----------場合過濾器宣告部分start----------
+  // const [selectedOption, setSelectedOption] = useState('')
+
+  // 場合選擇狀態及更新函數
+  const [selectedOccasion, setSelectedOccasion] = useState('所有場合')
+
+  // 場合選擇器改變時的處理函數
+  const handleOccasionChange = (e) => {
+    // // 清空場合篩選器的選擇
+    // setSelectedOccasion('')
+    // 清空搜尋字串
+    setSearchTerm('')
+    
+    setSelectedColor('所有顏色')
+    setSelectedRole('所有對象')
+    setSelectedSeason('所有季節')
+    setSortOption('A→Z')
+    
+
+    const selectedOccasion = e.target.value
+    console.log(selectedOccasion)
+    console.log('12333333333')
+    setSelectedOccasion(selectedOccasion)
+
+    // 如果沒有選擇任何場合，則返回所有花朵資料
+    // 否則，根據選擇的場合進行篩選
+    // if (!selectedOccasion) {
+
+    // 如果選擇了「所有場合」，則設置所有的花朵資料 否則，根據選擇的場合進行篩選
+    if (selectedOccasion === '所有場合') {
+      setFlowerData(introData)
+    } else {
+      // 在這裡使用 selectedOccasion 來篩選 introData 中的花朵資料
+      const filteredData = introData.filter((flower) =>
+        flower.occ.includes(selectedOccasion)
+      )
+      setFlowerData(filteredData)
+    }
+  }
+  // ----------場合過濾器宣告部分end----------
+  // ----------看更多宣告部分start----------
+  const [visibleCards, setVisibleCards] = useState(12) // 控制當前顯示的卡片數量
+  const [isLoadMoreDisabled, setIsLoadMoreDisabled] = useState(false) // 控制是否禁用「查看更多」按鈕handleOccasionChange
+
+  const handleLoadMore = () => {
+    const newVisibleCards = visibleCards + 8 // 每次顯示8張卡片
+    setVisibleCards(newVisibleCards)
+
+    if (newVisibleCards >= flowerData.length) {
+      setIsLoadMoreDisabled(true) // 如果已經顯示了所有卡片，禁用按鈕
+    }
+  }
+
+  // ----------看更多宣告部分end------------
 
   // ----------搜尋宣告部分start----------
   const [searchTerm, setSearchTerm] = useState('') // 儲存輸入框的值
+
   const handleSearch = () => {
     // 在這裡使用 searchTerm 執行搜尋
     const filteredData = introData.filter((flower) =>
@@ -49,7 +181,38 @@ const handleLoadMore = () => {
           typeof value === 'string' && value.toLowerCase().includes(searchTerm)
       )
     )
+    // console.log(searchTerm) // 繡球
+    // console.log(filteredData) // 搜到的資料陣列 [2]
+
     setFlowerData(filteredData)
+
+    // let y = document.getElementById('selectItems')
+    // console.log(y)
+
+    // let x = document.querySelectorAll('.occitem')
+    // console.log(x)
+
+    // 設置場合選擇器的值為「所有XX」
+     
+    setSelectedOccasion('所有場合')
+    setSelectedColor('所有顏色')
+    setSelectedRole('所有對象')
+    setSelectedSeason('所有季節')
+    setSortOption('A→Z')
+  
+    // let selectedOccasion = '23'
+    // console.log(selectedOccasion)
+    // setSelectedOccasion(selectedOccasion)
+    // console.log(setSelectedOccasion(''))
+    // console.log('1222222222')
+
+    //   // 找到已選項目的值
+    // const selectedValue = selectedOccasion;
+    // if (selectedValue) {
+    //   // 從 selectedOccasion 中移除已選項目的值
+    //   const updatedSelectedOccasion = '';
+    //   setSelectedOccasion(updatedSelectedOccasion);
+    // }
   }
 
   // ----------搜尋宣告部分end------------
@@ -156,47 +319,47 @@ const handleLoadMore = () => {
     },
     {
       id: 1,
-      title: '紅色',
+      title: '紅',
     },
     {
       id: 2,
-      title: '橘色',
+      title: '橘',
     },
     {
       id: 3,
-      title: '黃色',
+      title: '黃',
     },
-    {
-      id: 4,
-      title: '綠色',
-    },
+    // {
+    //   id: 4,
+    //   title: '綠',
+    // },
     {
       id: 5,
-      title: '藍色',
+      title: '藍',
     },
     {
       id: 6,
-      title: '紫色',
+      title: '紫',
     },
     {
       id: 7,
-      title: '粉色',
+      title: '粉',
     },
-    {
-      id: 8,
-      title: '棕色',
-    },
-    {
-      id: 9,
-      title: '灰色',
-    },
-    {
-      id: 10,
-      title: '黑色',
-    },
+    // {
+    //   id: 8,
+    //   title: '棕',
+    // },
+    // {
+    //   id: 9,
+    //   title: '灰',
+    // },
+    // {
+    //   id: 10,
+    //   title: '黑',
+    // },
     {
       id: 11,
-      title: '白色',
+      title: '白',
     },
     { id: 12, title: '其他' },
   ]
@@ -366,17 +529,31 @@ const handleLoadMore = () => {
                 {/* ------------filter start------------*/}
                 <div className="hidden sm:flex flex-cols items-center space-x-2 ">
                   <Select
-                    placeholder="Select"
-                    defaultSelectedKeys={['所有場合']}
+                    placeholder="所有場合"
+                    clearable
+                    key={selectedOccasion}
+                    // defaultSelectedKeys={['所有場合']}
+                    // selectedKeys={[selectedOption]}
                     label="場合"
                     labelPlacement="inside"
                     className="max-w-xs w-36"
+                    // selectedKeys={selectedOccasion}
+                    // onSelectionChange={setSelectedOccasion}
+                    // value={setSelectedOccasion}
+                    // value={}
+                    defaultSelectedKeys={[selectedOccasion]}
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
+                    onChange={handleOccasionChange} // 在選項改變時觸發處理函數
+                    // id="selectItems"
                   >
                     {occList.map((item, index) => (
-                      <SelectItem key={item.title} value={item.title}>
+                      <SelectItem
+                        // className="occitem"
+                        key={item.title}
+                        value={item.title.trim()}
+                      >
                         {item.title}
                       </SelectItem>
                     ))}
@@ -384,14 +561,18 @@ const handleLoadMore = () => {
                 </div>
                 <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
-                    placeholder="Select"
-                    defaultSelectedKeys={['所有顏色']}
+                    placeholder="所有顏色"
+                    // defaultSelectedKeys={['所有顏色']}
                     label="顏色"
+                    clearable
+                    key={selectedColor}
                     labelPlacement="inside"
                     className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
+                    defaultSelectedKeys={[selectedColor]}
+                    onChange={handleColorChange} // 在選項改變時觸發處理函數
                   >
                     {colorList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
@@ -402,14 +583,18 @@ const handleLoadMore = () => {
                 </div>
                 <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
-                    placeholder="Select"
-                    defaultSelectedKeys={['所有對象']}
+                    placeholder="所有對象"
+                    // defaultSelectedKeys={['所有對象']}
                     label="對象"
+                    clearable
+                    key={selectedRole}
                     labelPlacement="inside"
                     className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
+                    defaultSelectedKeys={[selectedRole]}
+                    onChange={handleRoleChange}
                   >
                     {roleList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
@@ -420,14 +605,18 @@ const handleLoadMore = () => {
                 </div>
                 <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
-                    placeholder="Select"
-                    defaultSelectedKeys={['所有季節']}
+                    placeholder="所有季節"
+                    // defaultSelectedKeys={['所有季節']}
                     label="季節"
+                    clearable
+                    key={selectedSeason}
                     labelPlacement="inside"
                     className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
+                    onChange={handleSeasonChange}
+                    defaultSelectedKeys={[selectedSeason]}
                   >
                     {seasonList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
@@ -440,16 +629,19 @@ const handleLoadMore = () => {
                 {/* ------------sort start------------*/}
                 <div className="hidden sm:flex flex-cols items-center space-x-4">
                   <Select
-                    placeholder="Select"
+                    placeholder="請選擇"
                     defaultSelectedKeys={[sortOption]}
                     // defaultValue={['A→Z']}
                     label="排序"
+                    clearable
+                    key={sortOption}
                     labelPlacement="inside"
                     className="max-w-xs w-36"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
                     onChange={(e) => handleSortChange(e)}
+                    // defaultSelectedKeys={[sortOption]}
                   >
                     {sortList.map((item, index) => (
                       <SelectItem key={item.title} value={item.title}>
@@ -558,7 +750,12 @@ const handleLoadMore = () => {
                 ))}
               </div>
               <div className="flex justify-center">
-                <MyButton  onClick={handleLoadMore} isDisabled={isLoadMoreDisabled}>查看更多</MyButton>
+                <MyButton
+                  onClick={handleLoadMore}
+                  isDisabled={isLoadMoreDisabled}
+                >
+                  查看更多
+                </MyButton>
               </div>
             </div>
             {/* --------花朵卡片群組-------- */}
