@@ -5,6 +5,10 @@ import { AuthProvider } from '@/hooks/use-auth'
 // 1. import `NextUIProvider` component
 import { NextUIProvider } from '@nextui-org/react'
 import { LoaderProvider } from '@/hooks/use-loader'
+import { RoleProvider } from '@/hooks/use-role'
+import { ColorProvider } from '@/hooks/use-color'
+import { OccProvider } from '@/hooks/use-occ'
+import { CartProvider } from '@/context/shop-cart-context'
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout || ((page) => page)
@@ -13,7 +17,9 @@ export default function MyApp({ Component, pageProps }) {
     <NextUIProvider>
       <AuthProvider>
         <LoaderProvider>
-          <Component {...pageProps} />
+          <CartProvider>
+            <Component {...pageProps} />
+          </CartProvider>
         </LoaderProvider>
       </AuthProvider>
     </NextUIProvider>

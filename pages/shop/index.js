@@ -41,8 +41,16 @@ import { FaToolbox } from 'react-icons/fa'
 import { IoFilterCircleOutline } from 'react-icons/io5'
 import { SlMagnifier } from 'react-icons/sl'
 // import { useWindowSize } from 'react-use'
+import { useAuth } from '@/hooks/use-auth'
+import Swal from 'sweetalert2'
+import useLocalStorage from '@/hooks/use-localStorage'
+import { useCart } from '@/context/shop-cart-context'
 
 export default function Shop() {
+  const { cartItems, setCartItems } = useCart()
+  console.log(cartItems)
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
   const searchParams = useSearchParams()
   const queryParentId = searchParams.get('parent_id')
   const router = useRouter()
@@ -71,59 +79,13 @@ export default function Shop() {
   // console.log(searchTerm)
   // 分頁用
   const [loadPage, setLoadPage] = useState(1) // Track the current page
-
-  // 收藏用
-  const [isFavHovered, setIsFavHovered] = useState([])
-  const handleMouseEnter = (productId) => {
-    // prev:更新基於前一個狀態值
-    setIsFavHovered((prev) => [...prev, productId])
-  }
-  const handleMouseLeave = (productId) => {
-    setIsFavHovered((prev) => prev.filter((id) => id !== productId))
-  }
-  const [isFavClicked, setIsFavClicked] = useState([])
-  const toggleFavClick = (productId) => {
-    // 先判断产品是否已被标记为"喜爱"
-    const newFavStatus = !isFavClicked.includes(productId)
-
-    // 更新状态
-    setIsFavClicked((prev) => {
-      const updatedFavs = newFavStatus
-        ? [...prev, productId] // 添加新的喜爱产品
-        : prev.filter((id) => id !== productId) // 移除取消喜爱的产品
-      return updatedFavs
-    })
-
-    // 更新LocalStorage
-    if (newFavStatus) {
-      // 如果是新添加喜爱，找到该产品的信息并保存
-      const productToAdd = filterProduct.find(
-        (product) => product.id === productId
-      )
-      if (productToAdd) {
-        const favProducts = JSON.parse(
-          localStorage.getItem('favProducts') || '[]'
-        )
-        localStorage.setItem(
-          'favProducts',
-          JSON.stringify([...favProducts, productToAdd])
-        )
-      }
-    } else {
-      // 如果是取消喜爱，从LocalStorage中移除
-      const favProducts = JSON.parse(
-        localStorage.getItem('favProducts') || '[]'
-      )
-      const filteredProducts = favProducts.filter(
-        (product) => product.id !== productId
-      )
-      localStorage.setItem('favProducts', JSON.stringify(filteredProducts))
-    }
-  }
-
   // 查看更多按鈕
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
-  // console.log(isButtonDisabled)
+  // const [isButtonDisabled, setIsButtonDisabled] = useState(false)
+  // localStorage
+  // 透過本地端將商品收藏
+  const [favProducts, setFavProducts] = useLocalStorage('favProducts', [])
+  // console.log(favProducts)
+  const [isFavHovered, setIsFavHovered] = useState([])
 
   // didMount 後端資料從這裏來的
   useEffect(() => {
@@ -147,7 +109,7 @@ export default function Shop() {
       fetchProducts()
     }
   }, [activeCategory, loadPage])
-
+  console.log('cartItems shop', cartItems)
   // Product categories and icon setup
   const iconLookup = {
     1: <BsFillGridFill />,
@@ -162,35 +124,6 @@ export default function Shop() {
     fetchColors()
     // fetchData() // Existing call to fetch other data
   }, [])
-
-  // function getUniqueCategoryList(products) {
-  //   // Map products to their categories
-  //   const dataList = products.map((product) => product.category)
-
-  //   // Filter out duplicate categories based on their ID
-  //   const uniqueCategoryList = dataList.filter((category, index, self) => {
-  //     return index === self.findIndex((t) => t.id === category.id)
-  //   })
-  //   return uniqueCategoryList
-  // }
-
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch('http://localhost:3005/api/products')
-  //     const data = await response.json()
-
-  //     if (data.status === 'success') {
-  //       const uniqueCategories = getUniqueCategoryList(data.data.products)
-  //       console.log('Unique Categories:', uniqueCategories)
-
-  //       setProducts(data.data.products)
-  //     } else {
-  //       console.error('Failed to fetch colors:', data.message)
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching category data:', error)
-  //   }
-  // }
 
   const fetchCategories = async () => {
     try {
@@ -252,7 +185,7 @@ export default function Shop() {
 
   // 關鍵字篩選
   const handleSearch = (term) => {
-    console.log('Received search term:', term) // 确认接收到的搜索词
+    console.log('Received search term:', term) // 確認收到的關鍵字
     setSearchTerm(term.toLowerCase())
   }
 
@@ -305,25 +238,25 @@ export default function Shop() {
   }
 
   // 查看更多 無商品時按鈕隱藏
-  useEffect(() => {
-    // 檢查過濾後的商品數量是否少於當前已加載的商品數量
-    setIsButtonDisabled(filterProduct.length <= limit * loadPage)
-  }, [products, loadPage])
+  // useEffect(() => {
+  //   // 檢查過濾後的商品數量是否少於當前已加載的商品數量
+  //   setIsButtonDisabled(filterProduct.length <= limit * loadPage)
+  // }, [products, loadPage])
 
   // Carousel State
   const [page, setPage] = useState(0)
   const banners = [
     {
-      banner: '/assets/shop/products/flowers/blue_False_Indigoit_0.jpg',
-      title: 'a banner',
+      banner: '/assets/shop/banner/banner1.jpg',
+      title: 'a banner about a flower shop',
     },
     {
-      banner: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
-      title: 'a banner',
+      banner: '/assets/shop/banner/banner2.jpg',
+      title: 'a banner about flowers',
     },
     {
-      banner: '/assets/shop/products/flowers/red_Snapdragon_1.jpg',
-      title: 'a banner',
+      banner: '/assets/shop/banner/banner3.jpg',
+      title: 'a banner about flowers',
     },
   ]
   const prevPage = () => {
@@ -342,6 +275,12 @@ export default function Shop() {
   }, [page])
 
   const notify = () => toast.success('已成功加入購物車')
+  const handleCartClick = (product) => {
+    // 呼叫 toast 通知
+    notify()
+    // 將產品加入到購物車
+    addToCart(product)
+  }
   // RWD Sorting and Filtering Modal State
   const {
     isOpen: isMagnifierOpen,
@@ -356,29 +295,6 @@ export default function Shop() {
   const [modalPlacement, setModalPlacement] = useState('bottom-center')
   const [order, setOrder] = useState('priceAsc')
 
-  // const filterProduct = () => {
-  //   // console.log('order', order)
-  //   return (
-  //     products
-  //       // 子分類
-  //       .filter((product) =>
-  //         selectedSubcategoryIds.length > 0
-  //           ? selectedSubcategoryIds.includes(product.product_category_id)
-  //           : true
-  //       )
-  //       // 顏色
-  //       .filter((product) =>
-  //         selectedColors.length > 0
-  //           ? selectedColors.includes(product.share_color_id)
-  //           : true
-  //       )
-  //       .sort((productA, productB) =>
-  //         order === 'priceAsc'
-  //           ? productA.price - productB.price
-  //           : productB.price - productA.price
-  //       )
-  //   )
-  // }
   // 排序、篩選、關鍵字
   const filterProduct = useMemo(
     () =>
@@ -406,24 +322,7 @@ export default function Shop() {
     [products, selectedSubcategoryIds, selectedColors, order, searchTerm]
   )
 
-  // localStorage
-  const [cartItems, setCartItems] = useState({})
-  // console.log(Object.values(cartItems)) // convert the object values to an array
-
-  // Save cartItems to localStorage
-  useEffect(() => {
-    localStorage.setItem('productToCart', JSON.stringify(cartItems))
-  }, [cartItems])
-
-  // Load cartItems from localStorage
-  useEffect(() => {
-    const storedProducts = JSON.parse(localStorage.getItem('productToCart'))
-    if (storedProducts) {
-      setCartItems(storedProducts)
-    }
-  }, [])
-
-  // Function to handle adding to cart
+  // 加入購物車
   const addToCart = (product) => {
     // 透過展開運算符，創建新的購物車物件
     // 由於狀態不可改變，要增加物件需創建新的購物車物件
@@ -432,6 +331,56 @@ export default function Shop() {
       [product.id]: { ...product, quantity: 1 },
     }
     setCartItems(updatedCartItems) // Update state
+  }
+
+  // 收藏用
+  // 從後端獲取初始收藏狀態
+  useEffect(() => {
+    fetch('http://localhost:3005/api/product-favorites')
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 'success') {
+          // 使用後端提供的收藏商品ID列表更新本地狀態
+          const productIds = data.data.map((product) => product.id)
+          setFavProducts(productIds)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching favorites:', error)
+      })
+  }, [])
+
+  const handleMouseEnter = (productId) => {
+    // prev:更新基於前一個狀態值
+    setIsFavHovered((prev) => [...prev, productId])
+  }
+  const handleMouseLeave = (productId) => {
+    setIsFavHovered((prev) => prev.filter((id) => id !== productId))
+  }
+  const toggleFavClick = (product) => {
+    // 判斷商品是否已加入收藏
+    const isFavorited = favProducts.includes(product.id)
+    const newFavStatus = !isFavorited
+    // 更新LocalStorage
+    const updatedFavs = newFavStatus
+      ? [...favProducts, product.id]
+      : favProducts.filter((id) => id !== product.id)
+    setFavProducts(updatedFavs)
+    // 同步到後端
+    fetch('http://localhost:3005/api/product-favorites', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId: product.id, newFavStatus }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Favorites updated:', data)
+      })
+      .catch((error) => {
+        console.error('Error updating favorites:', error)
+      })
   }
 
   return (
@@ -560,7 +509,7 @@ export default function Shop() {
                     onChange={(e) => {
                       setOrder(e.target.value)
                       console.log('Selected value: ', e.target.value)
-                    }} // handle the change
+                    }}
                   >
                     <SelectItem key="priceAsc" value="priceAsc">
                       價格由小到大
@@ -810,15 +759,15 @@ export default function Shop() {
                             <button
                               onMouseEnter={() => handleMouseEnter(product.id)}
                               onMouseLeave={() => handleMouseLeave(product.id)}
-                              onClick={() => toggleFavClick(product.id)}
-                              className="absolute z-20 text-secondary-100 ${isFavClicked.includes(product.id) ? 'selected-class' : ''}"
+                              onClick={() => toggleFavClick(product)}
+                              className="absolute z-20 text-secondary-100 ${favProducts.includes(product.id) ? 'selected-class' : ''}"
                               style={{
                                 position: 'absolute',
                                 right: '1rem',
                                 top: '1rem',
                               }}
                             >
-                              {isFavClicked.includes(product.id) ||
+                              {favProducts.includes(product.id) ||
                               isFavHovered.includes(product.id) ? (
                                 <BsHeartFill size={24} />
                               ) : (
@@ -882,8 +831,7 @@ export default function Shop() {
                                 </p>
                                 <button
                                   className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                                  // onClick={notify}
-                                  onClick={() => addToCart(product)}
+                                  onClick={() => handleCartClick(product)}
                                 >
                                   <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
                                 </button>
@@ -901,14 +849,13 @@ export default function Shop() {
               <div className="flex justify-center my-8 w-full">
                 <div className="flex flex-col items-center">
                   {/* 當isButtonDisabled為false時，後面的元素才會渲染 */}
-                  {!isButtonDisabled && (
+                  {!(filterProduct.length <= limit * loadPage) && (
                     <>
                       <h1 className="text-xl font-bold mb-4 sm:">繼續探索</h1>
                       <MyButton
                         color="primary"
                         size="xl"
                         onClick={handleLoadMore}
-                        disabled={isButtonDisabled}
                         className="hover:bg-primary-100"
                       >
                         查看更多
@@ -918,8 +865,6 @@ export default function Shop() {
                 </div>
               </div>
               {/* main section end */}
-
-              {/* <ShopSlider products={products} /> */}
             </div>
           </main>
         </>
