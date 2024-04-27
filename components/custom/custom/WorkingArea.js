@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { fabric } from 'fabric'
 import { useFlower } from '@/hooks/use-flower'
 
@@ -15,32 +15,22 @@ const WorkingArea = () => {
 
   const updateImagesInfoOnCanvas = useCallback(
     (obj) => {
-      if (!canvasRef.current || !canvasRef.current.fabric.clipPath) {
-        console.error('Clip path not found.')
-        return
-      }
-      const clipBounds = canvasRef.current.fabric.clipPath.getBoundingRect()
-      const centerLeft = clipBounds.left + clipBounds.width / 2
-      const centerTop = clipBounds.top + clipBounds.height / 2
+      const canvas = canvasRef.current.fabric
 
-      const updatedInfo = {
-        id: obj.id,
-        name: obj.name,
-        url: obj.url,
-        left: obj.left - centerLeft,
-        top: obj.top - centerTop,
-        angle: obj.angle,
-        zIndex: obj.zIndex,
-        scaleX: obj.scaleX,
-        scaleY: obj.scaleY,
-        originX: 'center',
-        originY: 'center',
-      }
-
-      const foundIndex = imagesInfo.findIndex((info) => info.id === obj.id)
-      if (foundIndex !== -1) {
+      const centerX = canvas.width / 2
+      const centerY = canvas.height / 4
+      const existingIndex = imagesInfo.findIndex((info) => info.id === obj.id)
+      if (existingIndex !== -1) {
+        const updatedInfo = {
+          ...imagesInfo[existingIndex],
+          left: obj.left - centerX,
+          top: obj.top - centerY,
+          scaleX: obj.scaleX,
+          scaleY: obj.scaleY,
+          angle: obj.angle,
+        }
         const newImagesInfo = [...imagesInfo]
-        newImagesInfo[foundIndex] = updatedInfo
+        newImagesInfo[existingIndex] = updatedInfo
         setImagesInfo(newImagesInfo)
       } else {
         console.error(
@@ -75,132 +65,9 @@ const WorkingArea = () => {
     ctx.restore()
   }
 
-  // useEffect(() => {
-  //   const canvasContainer = canvasRef.current.parentElement
-  //   const setCanvasSize = () => {
-  //     if (canvasContainer) {
-  //       const width = canvasContainer.clientWidth
-  //       const height = canvasContainer.clientHeight
-
-  //       canvas.setWidth(width)
-  //       canvas.setHeight(height)
-  //       defineAndDrawShapes(canvas, width, height)
-  //     }
-  //   }
-  //   let canvas = canvasRef.current?.fabric
-  //   if (!canvas) {
-  //     canvas = new fabric.Canvas(canvasRef.current)
-
-  //     setCanvasSize()
-  //     setupCustomControls(canvas)
-
-  //     canvasRef.current.fabric = canvas
-  //   }
-
-  //   if (canvas.getObjects().length === 0 && imagesInfo.length > 0) {
-  //     // 画布上没有对象，且 imagesInfo 不为空
-  //     imagesInfo.forEach((img) => {
-  //       new fabric.Image.fromURL(img.url, (image) => {
-  //         // 设置图像的属性
-  //         image.set({
-  //           left: img.left,
-  //           top: img.top,
-  //           scaleX: img.scaleX,
-  //           scaleY: img.scaleY,
-  //           angle: img.angle,
-  //           hasControls: true,
-  //           hasBorders: true,
-  //           selectable: true,
-  //         })
-  //         // 将图像添加到画布
-  //         canvas.add(image)
-  //       })
-  //     })
-  //   }
-
-  //   // window.addEventListener('resize', setCanvasSize)
-  //   canvas.on('object:modified', (e) => updateImagesInfoOnCanvas(e.target))
-  //   canvas.on('object:moving', (e) => updateImagesInfoOnCanvas(e.target))
-
-  //   canvas.on('after:render', function () {
-  //     this.forEachObject((obj) => {
-  //       if (obj.active || this.getActiveObject() === obj) {
-  //         if (obj.hasBorders || obj.hasControls) {
-  //           obj.drawBorders(this.contextContainer)
-  //           obj.drawControls(this.contextContainer)
-  //         }
-  //       }
-  //     })
-  //   })
-  //   canvas.renderAll()
-  //   return () => {
-  //     canvas.off('object:modified')
-  //     canvas.off('object:moving')
-  //     canvas.off('after:render')
-  //   }
-  // }, [canvasRef, setupCustomControls, updateImagesInfoOnCanvas])
-  // useEffect(() => {
-  //   const canvasContainer = canvasRef.current.parentElement
-  //   const setCanvasSize = () => {
-  //     if (canvasContainer) {
-  //       const width = canvasContainer.clientWidth
-  //       const height = canvasContainer.clientHeight
-  //       canvas.setWidth(width)
-  //       canvas.setHeight(height)
-  //       defineAndDrawShapes(canvas, width, height)
-  //     }
-  //   }
-
-  //   let canvas = canvasRef.current?.fabric
-  //   if (!canvas) {
-  //     canvas = new fabric.Canvas(canvasRef.current)
-  //     setCanvasSize()
-  //     setupCustomControls(canvas)
-  //     canvasRef.current.fabric = canvas
-  //   }
-
-  //   if (canvas && canvas.getObjects().length === 0 && imagesInfo.length > 0) {
-  //     imagesInfo.forEach((img) => {
-  //       addImageToCanvas(img.url, {
-  //         url: img.url,
-  //         left: img.left,
-  //         top: img.top,
-  //         scaleX: img.scaleX,
-  //         scaleY: img.scaleY,
-  //         angle: img.angle,
-  //         id: img.id,
-  //         name: img.name,
-  //         zIndex: img.zIndex,
-  //         originX: 'center',
-  //         originY: 'center',
-  //         lockScalingX: img.lockScalingX,
-  //         lockScalingY: img.lockScalingY,
-  //       })
-  //     })
-  //   }
-
-  //   canvas.on('object:modified', (e) => updateImagesInfoOnCanvas(e.target))
-  //   canvas.on('object:moving', (e) => updateImagesInfoOnCanvas(e.target))
-
-  //   canvas.on('after:render', function () {
-  //     this.forEachObject((obj) => {
-  //       if (obj.active || this.getActiveObject() === obj) {
-  //         if (obj.hasBorders || obj.hasControls) {
-  //           obj.drawBorders(this.contextContainer)
-  //           obj.drawControls(this.contextContainer)
-  //         }
-  //       }
-  //     })
-  //   })
-  //   canvas.renderAll()
-  //   return () => {
-  //     canvas.off('object:modified')
-  //     canvas.off('object:moving')
-  //     canvas.off('after:render')
-  //   }
-  // }, [canvasRef, imagesInfo, addImageToCanvas, updateImagesInfoOnCanvas])
   useEffect(() => {
     const canvasContainer = canvasRef.current.parentElement
+
     const setCanvasSize = () => {
       if (canvasContainer) {
         const width = canvasContainer.clientWidth
@@ -208,6 +75,27 @@ const WorkingArea = () => {
         canvas.setWidth(width)
         canvas.setHeight(height)
         defineAndDrawShapes(canvas, width, height)
+        fabric.Image.fromURL('/custom/custom/canvasBg.png', function (img) {
+          img.selectable = false
+          img.evented = false
+          const canvasRatio = width / height
+          const imgRatio = img.width / img.height
+
+          if (canvasRatio < imgRatio) {
+            img.scaleToWidth(canvas.width)
+          } else {
+            img.scaleToHeight(canvas.height)
+          }
+          img.set({
+            originX: 'center',
+            originY: 'center',
+            left: canvas.width / 2,
+            top: canvas.height / 2,
+            selectable: false,
+          })
+
+          canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas))
+        })
       }
     }
 
@@ -219,27 +107,15 @@ const WorkingArea = () => {
       canvasRef.current.fabric = canvas
     }
 
-    const clipBounds = canvasRef.current.fabric.clipPath.getBoundingRect()
-    const centerLeft = clipBounds.left + clipBounds.width / 2
-    const centerTop = clipBounds.top + clipBounds.height / 2
+    const centerX = canvas.width / 2
+    const centerY = canvas.height / 4
     if (canvas && canvas.getObjects().length === 0 && imagesInfo.length > 0) {
+      console.log(imagesInfo)
       imagesInfo.forEach((img) => {
         addImageToCanvas(img.url, {
-          left: img.left + centerLeft,
-          top: img.top + centerTop,
-          scaleX: img.scaleX,
-          scaleY: img.scaleY,
-          angle: img.angle,
-          id: img.id,
-          name: img.name,
-          url: img.url,
-          zIndex: img.zIndex,
-          originX: 'center',
-          originY: 'center',
-          lockScalingX:
-            img.lockScalingX !== undefined ? img.lockScalingX : true,
-          lockScalingY:
-            img.lockScalingY !== undefined ? img.lockScalingY : true,
+          ...img,
+          left: img.left + centerX,
+          top: img.top + centerY,
         })
       })
     }
@@ -279,22 +155,6 @@ const WorkingArea = () => {
     const scale = width < 500 ? 0.87 : 1
     const left = width < 500 ? 22 : 64
     const top = width < 500 ? 53 : 0
-
-    const clipPath = new fabric.Path(svgPathData, {
-      fill: 'transparent',
-      stroke: 'transparent',
-      strokeWidth: 0,
-      selectable: false,
-      evented: false,
-      absolutePositioned: true,
-      scaleX: scale,
-      scaleY: scale,
-      left: left,
-      top: top,
-    })
-
-    canvas.clipPath = clipPath
-
     const visualPath = new fabric.Path(svgPathData, {
       fill: 'rgba(228, 228, 228, 0.50)',
       stroke: 'transparent',
@@ -318,6 +178,25 @@ const WorkingArea = () => {
       canvas.remove(canvas.visualPath)
       canvas.renderAll()
     })
+
+    canvas.on('object:added', (e) => {
+      if (e.target.type === 'image' && !e.target.background) {
+        const objClipPath = new fabric.Path(svgPathData, {
+          fill: 'transparent',
+          stroke: 'transparent',
+          strokeWidth: 0,
+          selectable: false,
+          evented: false,
+          absolutePositioned: true,
+          scaleX: scale,
+          scaleY: scale,
+          left: left,
+          top: top,
+        })
+        e.target.clipPath = objClipPath
+        canvas.requestRenderAll()
+      }
+    })
   }
 
   useEffect(() => {
@@ -335,14 +214,10 @@ const WorkingArea = () => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-  // useEffect(() => {
-  //   console.log(canvasReady)
-
-  // }, [canvasReady])
 
   return (
     <>
-      <canvas ref={canvasRef} className="sample-canvas" />
+      <canvas ref={canvasRef} />
     </>
   )
 }

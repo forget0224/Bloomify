@@ -180,27 +180,25 @@ export default function LayerContent() {
   // }
 
   const handleCopyImage = (img) => {
-    const clipP = getClipBounds()
-    if (!clipP) {
-      console.error('沒有遮罩')
-      return
-    }
+    const canvas = canvasRef.current.fabric
+    const centerX = canvas.width / 2
+    const centerY = canvas.height / 4
     const newImageMetadata = {
       url: img.url,
       name: img.name,
-      left: img.left + 10 + clipP.left + clipP.width / 2, // 簡單地在原位置基礎上向右移動10單位
-      top: img.top + 10 + clipP.top + clipP.height / 2, // 向下移動10單位
-      scaleX: img.scaleX || 1, // 使用原圖的縮放比例，如果未設定則為1
+      left: img.left + 10 - centerX,
+      top: img.top + 10 - centerY,
+      scaleX: img.scaleX || 1,
       scaleY: img.scaleY || 1,
-      angle: img.angle, // 保持原角度
+      angle: img.angle,
       originX: 'center',
       originY: 'center',
     }
 
     addImageToCanvas(img.url, newImageMetadata)
-    // 使用 setTimeout 確保圖像加載和設置完成後執行
+
     setTimeout(() => {
-      commitImageToCanvas() // 確保這個函數適當地設置了圖像信息並且能反映在UI上
+      commitImageToCanvas()
     }, 100)
   }
 
@@ -244,7 +242,7 @@ export default function LayerContent() {
       }
     }
   }, [canvasRef, setSelectedImageId])
-
+  console.log(imagesInfo)
   return (
     <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center">
       <div className="text-tertiary-gray-100 w-60 text-center py-4">

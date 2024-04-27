@@ -5,6 +5,8 @@ import { useDisclosure } from '@nextui-org/react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import { Select, SelectItem } from '@nextui-org/react'
+
+import OrderList from '@/components/custom/OrderList'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -137,22 +139,19 @@ export default function CustomOrder() {
                 {/* 訂單明細 */}
                 <Title text="商品訂單" />
                 <div className="flex w-full flex-col">
-                  <Tabs
+                  {/* <Tabs
                     key={''}
                     radius={'full'}
                     color={'primary'}
                     aria-label="Tabs radius"
                     className="pt-4"
                   >
-                    {/* all order start */}
                     <Tab key="all" title="全部訂單">
-                      {/* 搜尋框 */}
                       <div className="space-y-4 sm:space-y-0 sm:flex sm:justify-between pb-4  w-[200px] sm:w-full">
-                        {/* searchbar */}
                         <div>
                           <CourseSearch />
                         </div>
-                        {/* filter */}
+
                         <div className="flex flex-cols items-center space-x-4">
                           <p className=" text-tertiary-black whitespace-nowrap">
                             排序
@@ -173,7 +172,7 @@ export default function CustomOrder() {
                           </Select>
                         </div>
                       </div>
-                      {/* 歷史訂單卡片 */}
+
                       <div className="flex flex-col gap-4">
                         {orderList && orderList.length > 0 ? (
                           orderList.map((order, index, { products }) => (
@@ -351,8 +350,7 @@ export default function CustomOrder() {
                         )}
                       </div>
                     </Tab>
-                    {/* all order end */}
-                    {/* unfinished start */}
+
                     <Tab key="unfinished" title="未完成">
                       <div className="flex flex-col gap-4">
                         <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
@@ -366,8 +364,7 @@ export default function CustomOrder() {
                         </Card>
                       </div>
                     </Tab>
-                    {/* unfinished end */}
-                    {/* finished start */}
+
                     <Tab key="finished" title="已完成">
                       <div className="flex flex-col gap-4">
                         <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
@@ -379,7 +376,8 @@ export default function CustomOrder() {
                         </Card>
                       </div>
                     </Tab>
-                  </Tabs>
+                  </Tabs> */}
+                  <OrderList />
                 </div>
               </div>
             </div>

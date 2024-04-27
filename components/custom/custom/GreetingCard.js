@@ -3,8 +3,9 @@ import { motion } from 'framer-motion'
 import { MdEdit } from 'react-icons/md'
 import { CiCircleCheck } from 'react-icons/ci'
 import { useMediaQuery } from 'react-responsive'
-
+import { useFlower } from '@/hooks/use-flower'
 const GreetingCard = () => {
+  const { setCardInfo } = useFlower()
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 1024px)',
   })
@@ -19,6 +20,9 @@ const GreetingCard = () => {
     '生日快樂!!\n身體健康、萬事如意!\n\n\nHAPPY BIRTHDAY!'
   )
   const maxLength = 50
+  const cleanedMessage = message.replace(/\n/g, '')
+  const cardContent = `標題:${title}\n訊息:${cleanedMessage}\n署名:${greeting}`
+
   const countCharacters = (text) => {
     return text.replace(/\s/g, '').length
   }
@@ -30,14 +34,18 @@ const GreetingCard = () => {
     },
     flipped: {
       scale: isDesktopOrLaptop ? 1.2 : isMobile ? 1 : 1.1,
-      x: isMobile ? '0%' : '50%',
-      // y: isMobile ? '-10%' : '0%',
+      x: '50%',
     },
   }
 
   const toggleCard = () => {
     if (!editing) {
       setFlipped(!flipped)
+      const cardContent = `標題:${title}訊息: ${message.replace(
+        /\s/g,
+        ''
+      )}署名: ${greeting}`
+      setCardInfo({ content: cardContent })
     }
   }
 
@@ -48,7 +56,7 @@ const GreetingCard = () => {
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value)
   }
-
+  console.log(cardContent)
   return (
     <div
       className="flex items-center justify-center"
@@ -76,9 +84,7 @@ const GreetingCard = () => {
           )}
         </div>
 
-        <div
-          className="absolute top-0 left-0 w-full h-full  bg-white shadow-xl" // Added shadow effect
-        >
+        <div className="absolute top-0 left-0 w-full h-full  bg-white shadow-xl">
           <input
             type="text"
             value={title}
