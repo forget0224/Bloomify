@@ -9,7 +9,7 @@ export default function SearchBtn({ onSearch }) {
     if (onSearch) {
       onSearch(searchTerm)
     }
-    // setSearchTerm('')
+    setSearchTerm('')
   }
 
   return (

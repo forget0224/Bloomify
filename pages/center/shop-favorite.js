@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
@@ -15,125 +15,73 @@ import { Select, SelectItem } from '@nextui-org/react'
 import { BsFillStarFill, BsHeartFill, BsHeart } from 'react-icons/bs'
 import Link from 'next/link'
 // 小組元件
-import { MyButton } from '@/components/btn/mybutton'
-import CourseSearch from '@/components/course/search'
+// import { MyButton } from '@/components/btn/mybutton'
+import SearchBtn from '@/components/shop/search'
 
 export default function Favorite() {
-  // const list = [
-  //   {
-  //     title: 'Orange',
-  //   },
-  //   {
-  //     title: 'Tangerine',
-  //   },
-  //   {
-  //     title: 'Raspberry',
-  //   },
-  // ]
-  // const productList = [
-  //   {
-  //     img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-  //     title: 'Avocado',
-  //     starCount: '5.0',
-  //     shop: 'shop1',
-  //     tag: 'hot sale',
-  //     price: '$15.70',
-  //   },
-  //   {
-  //     img: '/assets/shop/products/flowers/red_Amaryllis_3.jpg',
-  //     title: 'Watermelon',
-  //     starCount: '4.0',
-  //     shop: 'shop2',
-  //     tag: 'hot sale',
-  //     price: '$8.70',
-  //   },
-  //   {
-  //     img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-  //     title: 'Apple',
-  //     starCount: '3.0',
-  //     shop: 'shop3',
-  //     tag: 'hot sale',
-  //     price: '$44.70',
-  //   },
-  //   {
-  //     img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-  //     title: 'Orange',
-  //     starCount: '5.0',
-  //     shop: 'shop4',
-  //     tag: 'hot sale',
-  //     price: '$78.70',
-  //   },
-  //   {
-  //     img: '/assets/shop/products/flowers/pink_Gladiola_0.jpg',
-  //     title: 'Peach',
-  //     starCount: '2.5',
-  //     shop: 'shop5',
-  //     tag: 'hot sale',
-  //     price: '$24.70',
-  //   },
-  // ]
+  const [activePage, setActivePage] = useState('shop')
+  const [favProducts, setFavProducts] = useState([])
+  console.log(favProducts)
 
-  // 拿取localStorage資料
-  const [isFavClicked, setIsFavClicked] = useState([])
-  console.log(isFavClicked)
   useEffect(() => {
-    // 從本地端拿資料
-    const storedFav = localStorage.getItem('favProducts')
-    if (storedFav) {
-      setIsFavClicked(JSON.parse(storedFav))
+    async function fetchFavProducts() {
+      try {
+        const res = await fetch(`http://localhost:3005/api/product-favorites`)
+        const data = await res.json()
+        if (data.status === 'success') {
+          setFavProducts(data.data)
+        } else {
+          console.error('Failed to fetch products:', data.message)
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error)
+      }
     }
+    fetchFavProducts()
   }, [])
 
-  // 收藏用
-  const [isFavHovered, setIsFavHovered] = useState([])
-  const handleMouseEnter = (productId) => {
-    // prev:更新基於前一個狀態值
-    setIsFavHovered((prev) => [...prev, productId])
-  }
-  const handleMouseLeave = (productId) => {
-    setIsFavHovered((prev) => prev.filter((id) => id !== productId))
-  }
+  // // 拿取localStorage資料
+  // const [isFavClicked, setIsFavClicked] = useState([])
+  // console.log(isFavClicked)
 
-  // const toggleFavClick = (productId) => {
-  //   // 判斷產品是否已是收藏
-  //   const newFavStatus = !isFavClicked.includes(productId)
-
-  //   // 更新狀態
-  //   setIsFavClicked((prev) => {
-  //     const updatedFavs = newFavStatus
-  //       ? [...prev, productId]
-  //       : prev.filter((id) => id !== productId)
-  //     return updatedFavs
-  //   })
-
-  //   // 更新LocalStorage
-  //   if (newFavStatus) {
-  //     // 新增收藏，找到該商品id並存入本地端
-  //     const productToAdd = isFavClicked.find(
-  //       (product) => product.id === productId
-  //     )
-  //     if (productToAdd) {
-  //       const favProducts = JSON.parse(
-  //         localStorage.getItem('favProducts') || '[]'
-  //       )
-  //       localStorage.setItem(
-  //         'favProducts',
-  //         JSON.stringify([...favProducts, productToAdd])
-  //       )
-  //     }
-  //   } else {
-  //     // 取消收藏，從LocalStorage移除
-  //     const favProducts = JSON.parse(
-  //       localStorage.getItem('favProducts') || '[]'
-  //     )
-  //     const filteredProducts = favProducts.filter(
-  //       (product) => product.id !== productId
-  //     )
-  //     localStorage.setItem('favProducts', JSON.stringify(filteredProducts))
+  // useEffect(() => {
+  //   // 從本地端拿資料
+  //   const storedFav = localStorage.getItem('favProducts')
+  //   if (storedFav) {
+  //     setIsFavClicked(JSON.parse(storedFav))
   //   }
-  // }
+  // }, [])
 
-  const [activePage, setActivePage] = useState('shop')
+  const toggleFavClick = (productId) => {
+    console.log('toggleFavClick called for productId: ', productId)
+
+    const deleteFavProduct = favProducts.filter((item) => item.id !== productId)
+    setFavProducts(deleteFavProduct)
+    localStorage.setItem('favProducts', JSON.stringify(deleteFavProduct))
+  }
+
+  const [searchTerm, setSearchTerm] = useState('')
+  console.log(searchTerm)
+  const handleSearch = (term) => {
+    console.log('Received search term:', term) // 確認收到的關鍵字
+    setSearchTerm(term.toLowerCase())
+  }
+  const [order, setOrder] = useState('priceAsc')
+  // 當 searchTerm 更新時，會重新計算過濾後的商品
+  const filteredFavProducts = useMemo(
+    () =>
+      favProducts
+        .filter((product) =>
+          product.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        .sort((productA, productB) =>
+          order === 'priceAsc'
+            ? productA.price - productB.price
+            : productB.price - productA.price
+        ),
+    [favProducts, order, searchTerm]
+  )
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -161,7 +109,7 @@ export default function Favorite() {
                 <div className="space-y-4 mt-4 mt-0 sm:space-y-0 sm:flex sm:justify-between pb-4 ">
                   {/* searchbar */}
                   <div>
-                    <CourseSearch />
+                    <SearchBtn onSearch={handleSearch} />
                   </div>
                   {/* filter */}
                   <div className="flex flex-cols items-center space-x-4">
@@ -169,127 +117,120 @@ export default function Favorite() {
                       排序
                     </p>
                     <Select
-                      placeholder="Select"
-                      defaultSelectedKeys={['Orange']}
-                      className="max-w-xs w-48"
-                      scrollShadowProps={{
-                        isEnabled: false,
+                      aria-label="排序"
+                      placeholder="排序"
+                      className="hidden sm:block sm:max-w-xs sm:w-48"
+                      onChange={(e) => {
+                        setOrder(e.target.value)
+                        console.log('Selected value: ', e.target.value)
                       }}
                     >
-                      {/* {list.map((item, index) => (
-                        <SelectItem key={item.title} value={item.title}>
-                          {item.title}
-                        </SelectItem>
-                      ))} */}
+                      <SelectItem key="priceAsc" value="priceAsc">
+                        價格由小到大
+                      </SelectItem>
+                      <SelectItem key="priceDesc" value="priceDesc">
+                        價格由大到小
+                      </SelectItem>
                     </Select>
                   </div>
                 </div>
                 {/* search & select end */}
 
                 {/* 卡片 */}
-                <div className="sm:w-10/12">
-                  <div className="bg-white p-4 rounded-lg gap-2 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
-                    {isFavClicked.map((product, index) => {
-                      let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
-                      if (Array.isArray(product.images)) {
-                        const nonThumbnailImage = product.images.find(
-                          (image) => !image.is_thumbnail
-                        )
-                        if (nonThumbnailImage) {
-                          imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
-                        }
-                      }
-                      return (
-                        <>
-                          <div className="relative">
-                            <button
-                              onMouseEnter={() => handleMouseEnter(product.id)}
-                              onMouseLeave={() => handleMouseLeave(product.id)}
-                              className="absolute z-20 text-secondary-100 ${isFavClicked.includes(product.id) ? 'selected-class' : ''}"
-                              style={{
-                                position: 'absolute',
-                                right: '1rem',
-                                top: '1rem',
-                              }}
-                            >
-                              {isFavClicked.includes(product.id) ||
-                              isFavHovered.includes(product.id) ? (
-                                <BsHeart size={24} />
-                              ) : (
-                                <BsHeartFill size={24} />
-                              )}
-                            </button>
-                            <Card
-                              shadow="sm"
-                              key={product.id}
-                              isPressable
-                              onPress={() => console.log('item pressed')}
-                              className="w-full"
-                            >
-                              <CardBody className="overflow-visible p-0">
-                                <Link
-                                  href={{
-                                    pathname: '/shop/[pid]', // dynamic route
-                                    query: { pid: product.id }, // setting pid to product ID
-                                  }}
-                                  className="block relative"
-                                >
-                                  <Image
-                                    isZoomed
-                                    shadow="none"
-                                    radius="none"
-                                    width="100%"
-                                    alt={product.name}
-                                    className="w-full object-cover h-[250px] z-0"
-                                    src={imageUrl}
-                                  />
-                                </Link>
-                              </CardBody>
-                              <CardHeader className="block text-left">
-                                <div className="flex justify-between">
-                                  <p className="text-xl truncate">
-                                    {product.name}
-                                  </p>
-                                  <p className="text-base flex items-center space-x-1">
-                                    <BsFillStarFill className="text-secondary-100" />
-                                    {product.star}
-                                    <span>{product.overall_review}</span>
-                                  </p>
-                                </div>
-                                <p className="text-base text-tertiary-gray-100">
-                                  {product.stores.store_name}
-                                </p>
-                                <div className="flex flex-wrap">
-                                  {product.tags.map((tag) => (
-                                    <p
-                                      key={tag.id}
-                                      className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
-                                    >
-                                      {tag.name}
-                                    </p>
-                                  ))}
-                                </div>
-                              </CardHeader>
-                              <CardFooter className="text-small justify-between">
-                                <p className="text-xl truncate">
-                                  NT${product.price}
-                                </p>
-                              </CardFooter>
-                            </Card>
-                          </div>
-                        </>
+                <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
+                  {filteredFavProducts.map((product) => {
+                    let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
+                    if (Array.isArray(product.images)) {
+                      const nonThumbnailImage = product.images.find(
+                        (image) => !image.is_thumbnail
                       )
-                    })}
-                  </div>
+                      if (nonThumbnailImage) {
+                        imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
+                      }
+                    }
+                    return (
+                      <>
+                        <div className="relative">
+                          <button
+                            onClick={() => toggleFavClick(product.id)}
+                            className="absolute z-20 text-secondary-100 ${isFavClicked.includes(product.id) ? 'selected-class' : ''}"
+                            style={{
+                              position: 'absolute',
+                              right: '1rem',
+                              top: '1rem',
+                            }}
+                          >
+                            <BsHeartFill size={24} />
+                          </button>
+                          <Card
+                            shadow="sm"
+                            key={product.id}
+                            isPressable
+                            onPress={() => console.log('item pressed')}
+                            className="w-full"
+                          >
+                            <CardBody className="overflow-visible p-0">
+                              <Link
+                                href={{
+                                  pathname: '/shop/[pid]', // dynamic route
+                                  query: { pid: product.id }, // setting pid to product ID
+                                }}
+                                className="block relative"
+                              >
+                                <Image
+                                  isZoomed
+                                  shadow="none"
+                                  radius="none"
+                                  width="100%"
+                                  alt={product.name}
+                                  className="w-full object-cover h-[250px] z-0"
+                                  src={imageUrl}
+                                />
+                              </Link>
+                            </CardBody>
+                            <CardHeader className="block text-left">
+                              <div className="flex justify-between">
+                                <p className="text-xl truncate">
+                                  {product.name}
+                                </p>
+                                <p className="text-base flex items-center space-x-1">
+                                  <BsFillStarFill className="text-secondary-100" />
+                                  <span>{product.overall_review}</span>
+                                </p>
+                              </div>
+                              <p className="text-base text-tertiary-gray-100">
+                                {product.stores?.store_name}
+                              </p>
+                              <div className="flex flex-wrap">
+                                {product.tags.map((tag) => (
+                                  <p
+                                    key={tag.id}
+                                    className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
+                                  >
+                                    {tag.name}
+                                  </p>
+                                ))}
+                              </div>
+                            </CardHeader>
+                            <CardFooter className="text-small justify-between">
+                              <p className="text-xl truncate">
+                                NT${product.price}
+                              </p>
+                            </CardFooter>
+                          </Card>
+                        </div>
+                      </>
+                    )
+                  })}
                 </div>
                 {/* products end */}
 
                 {/* 按鈕群組 */}
-                <div className="flex justify-center space-x-10 py-10">
+                {/* <div className="flex justify-center space-x-10 py-10">
                   <MyButton color="primary" size="xl">
                     繼續查看
                   </MyButton>
-                </div>
+                </div> */}
               </div>
               {/* order content end */}
             </div>

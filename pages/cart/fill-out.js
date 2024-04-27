@@ -1,4 +1,4 @@
-import { React, useState, Fragment } from 'react'
+import { React, useState, Fragment, useEffect } from 'react'
 import { Input } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
@@ -12,27 +12,63 @@ import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 
 export default function FillOut() {
-  // input 樣式
-  const inputStyles = {
-    label: 'text-base',
-    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
-  }
-  // select 樣式
-  const selectStyles = {
-    label: 'text-base',
-    value: ['text-base', 'text-tertiary-gray-100'],
+  const [activePage, setActivePage] = useState('cart')
+  const [payments, setPayments] = useState([])
+  const [shippings, setShippings] = useState([])
+  const [invoices, setInvoices] = useState([])
+  const [selectedValue, setSelectedValue] = useState('')
+
+  useEffect(() => {
+    fetchInvoices()
+    fetchShippings()
+    fetchPayments()
+  }, [])
+
+  // 獲取後端配送選項
+  const fetchShippings = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/share-shippings')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setShippings(data.data.shippings)
+      } else {
+        console.error('Failed to fetch shippings:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching shipping data:', error)
+    }
   }
 
-  const shippingMethods = [
-    {
-      value: '宅配',
-      label: '宅配',
-    },
-    {
-      value: '7-ELEVEN',
-      label: '7-ELEVEN',
-    },
-  ]
+  // 獲取後端付款選項
+  const fetchPayments = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/share-payments')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setPayments(data.data.payments)
+      } else {
+        console.error('Failed to fetch shippings:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching shipping data:', error)
+    }
+  }
+
+  // 獲取後端收據選項
+  const fetchInvoices = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/share-invoices')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setInvoices(data.data.invoices)
+      } else {
+        console.error('Failed to fetch invoices:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching invoice data:', error)
+    }
+  }
+
   const cities = [
     {
       value: '臺北市',
@@ -63,60 +99,40 @@ export default function FillOut() {
       label: '110',
     },
   ]
-  const paymentMethods = [
-    {
-      value: '信用卡',
-      icon: (
-        <Fragment>
-          <FaCcVisa className="h-6 w-6 text-tertiary-black" />
-          <FaCcMastercard className="h-6 w-6 text-primary-100 text-tertiary-black" />
-        </Fragment>
-      ),
-    },
-    {
-      value: 'Line Pay',
-      icon: '',
-    },
-    {
-      value: '綠界',
-      icon: '',
-    },
-    {
-      value: 'Apple Pay',
-      icon: (
-        <Fragment>
-          <FaCcApplePay className="h-6 w-6 text-tertiary-black" />
-        </Fragment>
-      ),
-    },
-    {
-      value: '藍星',
-      icon: '',
-    },
-    {
-      value: '現金',
-      icon: '',
-    },
-    {
-      value: '貨到付款',
-      icon: '',
-    },
-  ]
-  const [selectedValue, setSelectedValue] = useState('')
+  // const paymentMethods = [
+  //   {
+  //     value: 'Line Pay',
+  //     icon: '',
+  //   },
+  //   {
+  //     value: '綠界',
+  //     icon: '',
+  //   },
+  //   {
+  //     value: 'Apple Pay',
+  //     icon: (
+  //       <Fragment>
+  //         <FaCcApplePay className="h-6 w-6 text-tertiary-black" />
+  //       </Fragment>
+  //     ),
+  //   },
+  //   {
+  //     value: '藍星',
+  //     icon: '',
+  //   },
+  //   {
+  //     value: '現金',
+  //     icon: '',
+  //   },
+  //   {
+  //     value: '貨到付款',
+  //     icon: '',
+  //   },
+  // ]
 
   const handleRadioChange = (value) => {
     setSelectedValue(value)
   }
-  const invoiceTypes = [
-    {
-      value: '載具',
-      label: '載具',
-    },
-    {
-      value: '捐慈善機構',
-      label: '捐慈善機構',
-    },
-  ]
 
   // stepper
   const steps = [
@@ -152,8 +168,16 @@ export default function FillOut() {
   //   console.log('submitted')
   // }
 
-  const [activePage, setActivePage] = useState('cart')
-
+  // input 樣式
+  const inputStyles = {
+    label: 'text-base',
+    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
+  }
+  // select 樣式
+  const selectStyles = {
+    label: 'text-base',
+    value: ['text-base', 'text-tertiary-gray-100'],
+  }
   return (
     <>
       <DefaultLayout activePage={activePage}>
@@ -182,7 +206,7 @@ export default function FillOut() {
             {/* 主要內容 */}
             <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-12">
               {/*  buyer start */}
-              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
+              {/* <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                 <FormTag text="訂購人資訊" />
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
                   <Input
@@ -213,7 +237,7 @@ export default function FillOut() {
                     <span className="text-base">同會員資料</span>
                   </Checkbox>
                 </div>
-              </div>
+              </div> */}
               {/*  buyer end */}
 
               {/* shipping start */}
@@ -230,12 +254,9 @@ export default function FillOut() {
                     isRequired
                     classNames={{ ...selectStyles }}
                   >
-                    {shippingMethods.map((shippingMethod) => (
-                      <SelectItem
-                        key={shippingMethod.value}
-                        value={shippingMethod.value}
-                      >
-                        {shippingMethod.label}
+                    {shippings.map((shipping) => (
+                      <SelectItem key={shipping.id} value={shipping.name}>
+                        {shipping.name}
                       </SelectItem>
                     ))}
                   </Select>
@@ -374,12 +395,12 @@ export default function FillOut() {
                 </div>
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 bg-white border-1 rounded-lg">
                   <RadioGroup>
-                    {paymentMethods.map((paymentMethod, index) => (
+                    {payments.map((payment) => (
                       <label
-                        key={index}
-                        htmlFor={paymentMethod.value}
+                        key={payment.id}
+                        htmlFor={payment.name}
                         className={`border-solid border-1 rounded-xl px-4 py-3 mb-2 cursor-pointer hover:border-tertiary-gray-100 ${
-                          selectedValue === paymentMethod.value
+                          selectedValue === payment.name
                             ? 'border-primary-100'
                             : 'border-tertiary-gray-200'
                         }`}
@@ -387,19 +408,17 @@ export default function FillOut() {
                         <div className="flex items-center justify-between">
                           <div>
                             <Radio
-                              id={paymentMethod.value}
-                              value={paymentMethod.value}
-                              onChange={() =>
-                                handleRadioChange(paymentMethod.value)
-                              }
-                              checked={selectedValue === paymentMethod.value}
+                              id={payment.name}
+                              value={payment.name}
+                              onChange={() => handleRadioChange(payment.name)}
+                              checked={selectedValue === payment.name}
                               color="primary-100"
                               classNames={{ ...inputStyles }}
                             >
-                              {paymentMethod.value}
+                              {payment.name}
                             </Radio>
                           </div>
-                          <div className="flex gap-1">{paymentMethod.icon}</div>
+                          {/* <div className="flex gap-1">{paymentMethod.icon}</div> */}
                         </div>
                       </label>
                     ))}
@@ -422,13 +441,13 @@ export default function FillOut() {
                     isRequired
                     classNames={{ ...selectStyles }}
                   >
-                    {invoiceTypes.map((invoiceType) => (
+                    {invoices.map((invoice) => (
                       <SelectItem
-                        key={invoiceType.value}
-                        value={invoiceType.value}
+                        key={invoice.id}
+                        value={invoice.name}
                         classNames={{ ...selectStyles }}
                       >
-                        {invoiceType.label}
+                        {invoice.name}
                       </SelectItem>
                     ))}
                   </Select>

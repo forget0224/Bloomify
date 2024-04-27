@@ -19,36 +19,28 @@ import {
 import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
 // import ShopSlider from '@/components/shop/shop-slider'
-import { FaStar, FaShareAlt, FaRegHeart } from 'react-icons/fa'
+import { FaStar, FaShareAlt } from 'react-icons/fa'
+import { BsHeart, BsHeartFill } from 'react-icons/bs'
 import toast, { Toaster } from 'react-hot-toast'
 import moment from 'moment'
 import { useLoader } from '@/hooks/use-loader'
 import Loader from '@/components/common/loader'
+import { useAuth } from '@/hooks/use-auth'
+import { useCart } from '@/context/shop-cart-context'
 
 export default function Detail() {
+  const [loadPage, setLoadPage] = useState(1)
+  const { cartItems, setCartItems } = useCart()
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
   const [activePage, setActivePage] = useState('shop')
   const router = useRouter()
   const [product, setProduct] = useState({
-    id: '',
-    name: '',
-    product_category_id: 0,
-    share_color_id: '',
-    price: 0,
-    stock: 0,
-    purchase_count: 0,
-    info: '',
-    share_store_id: '',
-    size: '',
-    note: '',
-    overall_review: 0,
-    product_review_id: '',
-    created_at: '',
-    updated_at: '',
     images: [],
-    mainImage: '',
     reviews: [],
   })
-  const [stars, setStars] = useState([])
+  console.log(product)
+  const [quantity, setQuantity] = useState(1)
   const { close, open, isLoading } = useLoader()
 
   useEffect(() => {
@@ -58,6 +50,7 @@ export default function Detail() {
       try {
         // 取得單筆商品資料
         const { pid } = router.query
+
         const productResponse = await fetch(
           `http://localhost:3005/api/products/${pid}`
         )
@@ -84,7 +77,7 @@ export default function Detail() {
       }
     }
     fetchData()
-  }, [])
+  }, [loadPage])
 
   // images start
   function processProduct(product) {
@@ -132,6 +125,12 @@ export default function Detail() {
 
   // toaster start
   const notify = () => toast.success('已成功加入購物車')
+  const handleCartClick = (product) => {
+    // 呼叫 toast 通知
+    notify()
+    // 將產品加入到購物車
+    addToCart(product)
+  }
   // toaster end
 
   const renderStars = (rating) => {
@@ -150,48 +149,45 @@ export default function Detail() {
     onOpenChange: onShareOpenChange,
   } = useDisclosure()
 
-  // localStorage
-  const [cartItems, setCartItems] = useState({})
-  // Save cartItems to localStorage
-  useEffect(() => {
-    localStorage.setItem('productToCart', JSON.stringify(cartItems))
-  }, [cartItems])
+  // 加入購物車
+  const addToCart = () => {
+    // 透過展開運算符，創建新的購物車物件
+    // 由於狀態不可改變，要增加物件需創建新的購物車物件
 
-  // Load cartItems from localStorage
-  useEffect(() => {
-    const storedProducts = JSON.parse(localStorage.getItem('productToCart'))
-    if (storedProducts) {
-      setCartItems(storedProducts)
-    }
-  }, [])
-
-  const addToCart = (product) => {
-    const newProduct = {
-      ...product,
-      quantity: quantity, // use the current quantity state
-    } // check if the product is already in the cart
-    const productAlreadyInCart = cartItems[product.id]
-
-    // create a new object for the updated cart
     const updatedCartItems = {
       ...cartItems,
-      [product.id]: productAlreadyInCart
-        ? {
-            ...productAlreadyInCart,
-            quantity: productAlreadyInCart.quantity + quantity,
-          }
-        : newProduct,
+      [product.id]: { ...product, quantity: quantity },
     }
+
+    console.log('updatedCartItems', updatedCartItems)
+
     setCartItems(updatedCartItems)
   }
 
-  // Save cart items to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('productToCart', JSON.stringify(cartItems))
-  }, [cartItems])
+  console.log('cartItems', cartItems)
+  // 收藏
+  const [isFavHovered, setIsFavHovered] = useState(false)
+
+  // 評價分頁
+  const [stars, setStars] = useState([])
+  const [page, setPage] = useState(1)
+  // console.log(page)
+  const reviewsPerPage = 3
+
+  // 分頁用
+
+  const limit = 3
+  const handleLoadMore = () => {
+    setLoadPage((prevLoadPage) => prevLoadPage + 1)
+  }
+
+  const filterReviewsByStar = (reviews, starId) => {
+    return reviews.filter((review) =>
+      starId === 1 ? true : review.share_star_id === starId
+    )
+  }
 
   // 計算器
-  const [quantity, setQuantity] = useState(1)
   const handleIncrement = () => {
     setQuantity(quantity + 1)
   }
@@ -200,7 +196,7 @@ export default function Detail() {
       setQuantity(quantity - 1)
     }
   }
-  const handleChange = (event) => {
+  const handleQuantityChange = (event) => {
     const newQuantity = parseInt(event.target.value)
     if (!isNaN(newQuantity) && newQuantity >= 1) {
       setQuantity(newQuantity)
@@ -330,13 +326,18 @@ export default function Detail() {
                         </p>
                       </div>
                     </div>
-
                     <div className="flex space-x-2">
-                      <div className="flex flex-row items-center text-secondary-100 hover:text-[#FFAC9A] h-6 w-6 justify-center">
-                        {/* <FaHeart /> */}
-                        <FaRegHeart className="w-5 h-5" />
-                      </div>
-                      {/* <BsHeart className="text-secondary-100" /> */}
+                      <button
+                        onMouseEnter={() => setIsFavHovered(true)}
+                        onMouseLeave={() => setIsFavHovered(false)}
+                        className="text-secondary-100"
+                      >
+                        {isFavHovered ? (
+                          <BsHeartFill size={24} />
+                        ) : (
+                          <BsHeart size={24} />
+                        )}
+                      </button>
                       <button
                         onClick={onShareOpen}
                         className="flex flex-row items-center h-6 w-6 justify-center text-secondary-100 hover:text-[#FFAC9A]"
@@ -391,7 +392,7 @@ export default function Detail() {
                             <Input
                               type="text"
                               value={quantity}
-                              onChange={handleChange}
+                              onChange={handleQuantityChange}
                               min="1"
                               className="w-full rounded-md p-1 text-center"
                               style={{ textAlign: 'center' }}
@@ -416,10 +417,9 @@ export default function Detail() {
                     <MyButton
                       color="primary"
                       size="xl"
-                      // onClick={notify}
                       isOutline
                       className="w-full"
-                      onClick={() => addToCart(product)}
+                      onClick={() => handleCartClick(product)}
                     >
                       加入購物車
                     </MyButton>
@@ -546,14 +546,9 @@ export default function Detail() {
                       }
                     >
                       <Card>
-                        {Array.isArray(product.reviews) &&
-                        product.reviews.length > 0 ? (
-                          product.reviews
-                            .filter((review) =>
-                              star.id === 1
-                                ? true
-                                : review.share_star_id === star.id
-                            )
+                        {product.reviews.length > 0 ? (
+                          filterReviewsByStar(product.reviews, star.id)
+                            .slice(0, limit * loadPage)
                             .map((review, index) => (
                               <CardBody key={index} className="space-y-2 p-6">
                                 <div className="flex space-x-2 items-center">
@@ -578,21 +573,24 @@ export default function Detail() {
                           </CardBody>
                         )}
                       </Card>
-                      <div className="mt-6">
-                        <Pagination
-                          color="secondary-100"
-                          initialPage={3}
-                          total={10}
-                          className="flex justify-center"
-                        />
+
+                      <div className="mt-6 flex justify-center">
+                        {!(product.reviews.length <= limit * loadPage) && (
+                          <MyButton
+                            color="primary"
+                            size="xl"
+                            onClick={handleLoadMore}
+                            className="hover:bg-primary-100 my-2"
+                          >
+                            查看更多
+                          </MyButton>
+                        )}
                       </div>
                     </Tab>
                   )}
                 </Tabs>
               </div>
             </div>
-            <hr className="my-16" />
-            {/* <ShopSlider /> */}
           </div>
         </main>
         {/* 分享 Modal */}
@@ -606,6 +604,8 @@ export default function Detail() {
       </DefaultLayout>
     </>
   )
-
+  // if (!isAuth) {
+  //   return <p>請先登入</p>
+  // }
   return <>{isLoading ? <Loader /> : display}</>
 }
