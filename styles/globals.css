@@ -168,14 +168,18 @@ a {
 }
 
 /* 課程卡片容器樣式 */
+.cardgroup-wrapper {
+  padding-left: 2px;
+  overflow-x: hidden; /* 允許水平滾動 */
+}
+
 .cardgroup-wrapper .grid {
   display: flex;
   flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 16px; /* 設定您想要的間距 */
-  margin-left: 12px;
+  gap: 16px; /* 卡片之間的間距 */
 }
+
 .cardgroup-wrapper .grid > * {
   flex: 0 0 auto;
-  width: calc(33.333% - 16px); /* 減去間距 */
+  width: calc(33.333% - 16px); /* 設定卡片寬度，扣除間距 */
 }

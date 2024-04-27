@@ -9,6 +9,7 @@ export default function CardGroup({ courses }) {
   if (!courses || courses.length === 0) {
     return <div>課程資料正在加載中或者沒有可用的課程。</div>
   }
+  console.log(courses)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -47,8 +48,7 @@ export default function CardGroup({ courses }) {
           <div className="absolute top-0 right-0 p-4">
             {/*  傳遞課程 ID 到愛心元件 */}
             <HeartButton
-              courseId={course.id}
-              isActive={course.isFavorited}
+              courseId={course.course_id}
               opacity="text-opacity-40"
             />
           </div>

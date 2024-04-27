@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import Datepicker from 'react-tailwindcss-datepicker'
+// import Datepicker from 'react-tailwindcss-datepicker'
 // 小組元件
+import { useCourseFavorites } from '@/hooks/use-course-fav'
 import DefaultLayout from '@/components/layout/default-layout'
 import Title from '@/components/common/title'
 import CardGroup from '@/components/course/card-group'
@@ -16,10 +17,11 @@ export default function CourseSearch() {
   const [courseCount, setCourseCount] = useState(0) // set 課程資料筆數
   const [stores, setStores] = useState([]) // set 商家資料
   const [categories, setCategories] = useState([]) // set 分類資料
+  const { addFavoritesStatusToCourses } = useCourseFavorites()
 
   // 分頁
   const [currentPage, setCurrentPage] = useState(1) // 當前頁碼
-  const [totalPages, setTotalPages] = useState(0) // 總頁數
+  const [totalPages, setTotalPages] = useState() // 總頁數
   const cardsPerPage = 12 // 每頁顯示的卡片數量
   // 頁碼變更處理函數
   const handlePageChange = (page) => {
@@ -30,16 +32,15 @@ export default function CourseSearch() {
   const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse)
 
   // datepicker 變數
-  const [value, setValue] = useState({
-    startDate: new Date(),
-    endDate: new Date().setMonth(11),
-  })
+  // const [value, setValue] = useState({
+  //   startDate: new Date(),
+  //   endDate: new Date().setMonth(11),
+  // })
 
-  // TODO:
-  const handleValueChange = (newValue) => {
-    console.log('newValue:', newValue)
-    setValue(newValue)
-  }
+  // const handleValueChange = (newValue) => {
+  //   console.log('newValue:', newValue)
+  //   setValue(newValue)
+  // }
 
   // 分類dropdown menu
   const [selectedCategoryId, setSelectedCategoryId] = useState('')
@@ -117,18 +118,15 @@ export default function CourseSearch() {
           `http://localhost:3005/api/courses/search?${queryStr}`
         )
         const data = await res.json()
-        if (
-          data.status === 'success' &&
-          Array.isArray(data.data.coursesisFavorites)
-        ) {
+        if (data.status === 'success' && Array.isArray(data.data.courses)) {
+          // 使用 addFavoritesStatusToCourses 來整合收藏狀態
+          const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理全部課程數據
-          setCourses(processCourses(data.data.coursesisFavorites))
+          setCourses(processCourses(updatedCourses))
           // 更新資料筆數
-          setCourseCount(data.data.coursesisFavorites.length)
+          setCourseCount(updatedCourses.length)
           // 計算並更新總頁數
-          setTotalPages(
-            Math.ceil(data.data.coursesisFavorites.length / cardsPerPage)
-          )
+          setTotalPages(Math.ceil(updatedCourses.length / cardsPerPage))
         }
       } catch (error) {
         console.error('Error fetching courses:', error)
@@ -178,6 +176,7 @@ export default function CourseSearch() {
         (course.images && course.images[0])
       return {
         ...course,
+        course_id: course.id, // 新增字段 course_id 等於原 id 字段的值
         mainImage: mainImage
           ? mainImage.path
           : '/assets/course/img-default.jpg',
@@ -218,7 +217,7 @@ export default function CourseSearch() {
               />
 
               {/* 日期範圍 */}
-              <Datepicker
+              {/* <Datepicker
                 value={value}
                 onChange={handleValueChange}
                 primaryColor="primary-100"
@@ -228,7 +227,7 @@ export default function CourseSearch() {
                 placeholder={'選擇日期區間'}
                 minDate={new Date('2024-01-01')}
                 maxDate={new Date('2025-12-31')}
-              />
+              /> */}
 
               {/* 開課商家 */}
               <CourseDropdown

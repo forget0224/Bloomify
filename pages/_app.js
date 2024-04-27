@@ -5,7 +5,8 @@ import { AuthProvider } from '@/hooks/use-auth'
 // 1. import `NextUIProvider` component
 import { NextUIProvider } from '@nextui-org/react'
 import { LoaderProvider } from '@/hooks/use-loader'
-import { RoleProvider } from '@/hooks/use-role'
+import { CourseFavoritesProvider } from '@/hooks/use-course-fav'
+// import { RoleProvider } from '@/hooks/use-role'
 import { ColorProvider } from '@/hooks/use-color'
 import { OccProvider } from '@/hooks/use-occ'
 import { CartProvider } from '@/context/shop-cart-context'
@@ -16,11 +17,13 @@ export default function MyApp({ Component, pageProps }) {
   return getLayout(
     <NextUIProvider>
       <AuthProvider>
-        <LoaderProvider>
-          <CartProvider>
-            <Component {...pageProps} />
-          </CartProvider>
-        </LoaderProvider>
+        <CourseFavoritesProvider>
+          <LoaderProvider>
+            <CartProvider>
+              <Component {...pageProps} />
+            </CartProvider>
+          </LoaderProvider>
+        </CourseFavoritesProvider>
       </AuthProvider>
     </NextUIProvider>
   )
