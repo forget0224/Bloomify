@@ -9,6 +9,7 @@ export const MyButton = extendVariants(Button, {
       secondary: 'bg-secondary-100 hover:bg-danger text-tertiary-black',
       secondary200:
         'bg-secondary-200 hover:bg-secondary-100 text-tertiary-black',
+      white: 'bg-white text-tertiary-gray-100',
     },
     isDisabled: {
       true: 'bg-tertiary-gray-200 text-tertiary-gray-100 opacity-50 cursor-not-allowed  rounded-[30px]', // 禁用狀態

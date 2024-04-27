@@ -131,8 +131,9 @@ export default function HomeNav({ activePage }) {
         // style={{ backgroundColor: 'blue', padding: '10px' }}
       >
         <NavbarItem>
-          {' '}
-          <CiShoppingCart className="w-8 h-8 text-primary" />
+          <Link href={auth.isAuth ? '/cart' : '/member/login'}>
+            <CiShoppingCart className="w-8 h-8 text-primary" />
+          </Link>
         </NavbarItem>
         <NavbarItem className="lg:flex">
           <Link href={auth.isAuth ? '/center' : '/member/login'}>

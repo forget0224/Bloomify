@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Image, Card, CardBody, Link } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
+import { useAuth } from '@/hooks/use-auth'
 // 小組元件
+import { useCourseFavorites } from '@/hooks/use-course-fav'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Subtitle from '@/components/common/subtitle'
@@ -11,21 +13,23 @@ import CardGroupCategory from '@/components/course/card-group-category'
 import CardGroupStore from '@/components/course/card-group-store'
 
 export default function CourseIndex() {
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
   const [courses, setCourses] = useState([]) // 全部課程的狀態管理
   const [latestCourses, setLatestCourses] = useState([]) // 最新課程的狀態管理
   const [randomCourses, setRandomCourses] = useState([]) // 隨機課程的狀態管理
+  const { addFavoritesStatusToCourses } = useCourseFavorites()
 
   useEffect(() => {
     async function fetchAllCourses() {
       try {
         const response = await fetch('http://localhost:3005/api/courses')
         const data = await response.json()
-        if (
-          data.status === 'success' &&
-          Array.isArray(data.data.coursesisFavorites)
-        ) {
+        if (data.status === 'success' && Array.isArray(data.data.courses)) {
+          // 使用 addFavoritesStatusToCourses 來整合收藏狀態
+          const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理課程主圖並將處理過後的資料儲存在狀態中
-          setCourses(processCourses(data.data.coursesisFavorites))
+          setCourses(processCourses(updatedCourses))
         }
       } catch (error) {
         console.error('Error fetching all courses:', error)
@@ -36,12 +40,11 @@ export default function CourseIndex() {
       try {
         const response = await fetch('http://localhost:3005/api/courses/latest')
         const data = await response.json()
-        if (
-          data.status === 'success' &&
-          Array.isArray(data.data.coursesisFavorites)
-        ) {
+        if (data.status === 'success' && Array.isArray(data.data.courses)) {
+          // 使用 addFavoritesStatusToCourses 来整合收藏状态
+          const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理最新課程數據
-          setLatestCourses(processCourses(data.data.coursesisFavorites))
+          setLatestCourses(processCourses(updatedCourses))
         }
       } catch (error) {
         console.error('Error fetching latest courses:', error)
@@ -52,12 +55,11 @@ export default function CourseIndex() {
       try {
         const response = await fetch('http://localhost:3005/api/courses/random')
         const data = await response.json()
-        if (
-          data.status === 'success' &&
-          Array.isArray(data.data.randomCourses)
-        ) {
+        if (data.status === 'success' && Array.isArray(data.data.courses)) {
+          // 使用 addFavoritesStatusToCourses 来整合收藏状态
+          const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理隨機課程數據
-          setRandomCourses(processCourses(data.data.randomCourses))
+          setRandomCourses(processCourses(updatedCourses))
         }
       } catch (error) {
         console.error('Error fetching random courses:', error)
@@ -67,7 +69,7 @@ export default function CourseIndex() {
     fetchAllCourses()
     fetchNewestCourses()
     fetchRandomCourses()
-  }, [])
+  }, [addFavoritesStatusToCourses])
 
   // 處理資料添加mainImage屬性(前端處理，不會動到資料)
   function processCourses(coursesArray) {
@@ -78,6 +80,7 @@ export default function CourseIndex() {
         (course.images && course.images[0])
       return {
         ...course,
+        course_id: course.id, // 新增字段 course_id 等於原 id 字段的值
         mainImage: mainImage
           ? mainImage.path
           : '/assets/course/img-default.jpg',

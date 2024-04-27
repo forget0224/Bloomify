@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { useCourseFavorites } from '@/hooks/use-course-fav'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
+import { useAuth } from '@/hooks/use-auth'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -9,36 +11,70 @@ import CourseSearch from '@/components/course/search'
 import Title from '@/components/common/title'
 import Sidebar from '@/components/layout/sidebar'
 import CardGroup from '@/components/course/card-group'
+import CourseDropdown from '@/components/course/dropdown'
 
 export default function FavoriteCourses() {
-  const [courses, setCourses] = useState([])
+  const [activePage, setActivePage] = useState('course')
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
+  const { courseFavorites } = useCourseFavorites()
 
-  useEffect(() => {
-    async function fetchAllCourses() {
-      try {
-        const response = await fetch(
-          'http://localhost:3005/api/course-favorites'
-        )
-        const data = await response.json()
-        console.log('API data:', data) // 確認數據已接收
-        if (response.ok && data.status === 'success') {
-          // 重新映射数据属性，同时保留其他属性
-          const formattedCourses = data.data.map((course) => ({
-            ...course, // 展开操作符保留所有其他属性
-            mainImage: course.image_path, // 重命名 image_path 为 mainImage
-          }))
+  // 排序query string更新
+  const [sortOption, setSortOption] = useState('預設排序')
+  const sortOptions = [
+    { value: 'latest', label: '由新到舊' },
+    { value: 'cheapest', label: '價格低到高' },
+    { value: 'expensive', label: '價格高到低' },
+  ]
+  const handleSortChange = (value) => {
+    // 查找對應的標籤
+    const option = sortOptions.find((option) => option.value === value)
+    const label = option ? option.label : '最新上架'
 
-          setCourses(formattedCourses) // 直接使用data.data因為他是課程數組
-        } else {
-          throw new Error('Failed to fetch courses')
-        }
-      } catch (error) {
-        console.error('Error fetching all courses:', error)
-      }
-    }
+    setSortOption(label) // 更新狀態為選中的中文標籤
 
-    fetchAllCourses()
-  }, [])
+    // 不需要再次定義sortOptions
+    // router.push({
+    //   pathname: '/course/search',
+    //   query: { ...router.query, sort: value },
+    // })
+  }
+
+  // 原本的寫法，現在改成用context
+  // useEffect(() => {
+  //   async function fetchAllCourses() {
+  //     try {
+  //       const response = await fetch(
+  //         'http://localhost:3005/api/courses/get-fav',
+  //         {
+  //           credentials: 'include', // 設定cookie需要，有作授權或認證時都需要加這個
+  //           headers: {
+  //             Accept: 'application/json',
+  //             'Content-Type': 'application/json',
+  //           },
+  //           method: 'GET',
+  //         }
+  //       )
+  //       const data = await response.json()
+  //       console.log('API data:', data) // 確認數據已接收
+  //       if (response.ok && data.status === 'success') {
+  //         // 重新映射數據屬性，同時保留其他屬性
+  //         const formattedCourses = data.data.map((course) => ({
+  //           ...course, // 展開操作符保留所有其他屬性
+  //           mainImage: course.image_path, // 重命名 image_path 為 mainImage
+  //         }))
+
+  //         setCourses(formattedCourses) // 直接使用data.data因為他是課程數組
+  //       } else {
+  //         throw new Error('Failed to fetch courses')
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching all courses:', error)
+  //     }
+  //   }
+
+  //   fetchAllCourses()
+  // }, [])
 
   // 處理課程圖片函數
   // function processCourses(coursesArray) {
@@ -54,8 +90,6 @@ export default function FavoriteCourses() {
   //     }
   //   })
   // }
-
-  const [activePage, setActivePage] = useState('course')
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -86,29 +120,22 @@ export default function FavoriteCourses() {
                   <CourseSearch />
                 </div>
                 {/* filter */}
-                <div className="flex flex-cols items-center space-x-4">
-                  <p className=" text-tertiary-black whitespace-nowrap">排序</p>
-                  {/* <Select
-                    placeholder="Select"
-                    defaultSelectedKeys={['Orange']}
-                    className="max-w-xs md:w-48 w-full"
-                    scrollShadowProps={{
-                      isEnabled: false,
-                    }}
-                    aria-label="排序方式"
-                  >
-                    {list.map((item, index) => (
-                      <SelectItem key={item.title} value={item.title}>
-                        {item.title}
-                      </SelectItem>
-                    ))}
-                  </Select> */}
+                <div className="w-full md: w-fit flex flex-cols items-center">
+                  <span className="mr-4 text-tertiary-black text-nowrap">
+                    排序
+                  </span>
+                  <CourseDropdown
+                    label="預設排序"
+                    options={sortOptions}
+                    selectedOption={sortOption}
+                    onChange={handleSortChange}
+                  />
                 </div>
               </div>
 
               {/* 卡片群組 */}
               <div className="grid gap-y-10 gap-x-6 w-full mt-4">
-                <CardGroup courses={courses} />
+                <CardGroup courses={courseFavorites} />
               </div>
 
               {/* pagination */}

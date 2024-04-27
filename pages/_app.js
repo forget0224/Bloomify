@@ -4,6 +4,7 @@ import { AuthProvider } from '@/hooks/use-auth'
 // 1. import `NextUIProvider` component
 import { NextUIProvider } from '@nextui-org/react'
 import { LoaderProvider } from '@/hooks/use-loader'
+import { CourseFavoritesProvider } from '@/hooks/use-course-fav'
 import { CartProvider } from '@/context/shop-cart-context'
 import { FlowerCartProvider } from '@/hooks/use-flowerCart'
 export default function MyApp({ Component, pageProps }) {
@@ -14,11 +15,13 @@ export default function MyApp({ Component, pageProps }) {
     <NextUIProvider>
       <AuthProvider>
         <LoaderProvider>
-          <CartProvider>
-            <FlowerCartProvider>
-              <Component {...pageProps} />
-            </FlowerCartProvider>
-          </CartProvider>
+          <CourseFavoritesProvider>
+            <CartProvider>
+              <FlowerCartProvider>
+                <Component {...pageProps} />
+              </FlowerCartProvider>
+            </CartProvider>
+          </CourseFavoritesProvider>
         </LoaderProvider>
       </AuthProvider>
     </NextUIProvider>
