@@ -233,7 +233,7 @@ export default function FillOut() {
             {/* 主要內容 */}
             <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-12">
               {/*  buyer start */}
-              {/* <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
+              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                 <FormTag text="訂購人資訊" />
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
                   <Input
@@ -264,8 +264,8 @@ export default function FillOut() {
                     <span className="text-base">同會員資料</span>
                   </Checkbox>
                 </div>
-              </div> */}
-              {/*  buyer end */}
+              </div> 
+              {/*  buyer end
 
               {/* shipping start */}
               <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
