@@ -12,7 +12,7 @@ import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
-
+import CustomCheckOut from '@/components/custom/CustomCheckOut'
 export default function FillOut() {
   const [activePage, setActivePage] = useState('cart')
   const [payments, setPayments] = useState([])
@@ -543,7 +543,7 @@ export default function FillOut() {
                   <Link href="/">上一步</Link>
                 </MyButton>
                 <MyButton color="primary" size="xl" onClick={handleSubmit}>
-                  <Link href="/cart/checkout">下一步</Link>
+                  <Link href={`/cart/checkout?source=${source}`}>下一步</Link>
                 </MyButton>
               </div>
             </div>

@@ -40,7 +40,10 @@ export default function CustomCart() {
       <div className="w-screen sm:max-w-[600px] sm:h-full flex flex-col px-5 gap-2 relative  mt-4">
         <h1 className="sm:text-2xl text-xl sm:text-left text-center">
           {state.store_name}
+          {' - '}
+          {state.bouquet_name}
         </h1>
+
         <div
           className=" w-[300px] h-[180px] mx-auto bg-no-repeat bg-center bg-contain"
           style={{

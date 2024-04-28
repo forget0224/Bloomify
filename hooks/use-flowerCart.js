@@ -28,11 +28,11 @@ function cartReducer(state, action) {
     case 'SET_BOUQUET_INFO':
       return {
         ...state,
-        bouquet_name: action.payload.template_name || '客製化花束',
-        image_url: action.payload.image_url,
-        store_id: action.payload.store_id,
-        store_name: action.payload.store_name,
-        store_address: action.payload.store_address,
+        bouquet_name: action.payload.template_name || '客製化花束', // 如果沒有新值，保持舊值
+        image_url: action.payload.image_url || state.image_url, // 如果沒有新值，保持舊值
+        store_id: action.payload.store_id || state.store_id, // 如果沒有新值，保持舊值
+        store_name: action.payload.store_name || state.store_name, // 如果沒有新值，保持舊值
+        store_address: action.payload.store_address || state.store_address, // 如果沒有新值，保持舊
       }
     case 'ADD_PRODUCTS':
       return {
@@ -55,24 +55,21 @@ function cartReducer(state, action) {
 }
 
 export const FlowerCartProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(cartReducer, initialState, () => {
+  const initializer = () => {
     if (typeof window !== 'undefined') {
       const savedData = localStorage.getItem('flowerCartState')
       return savedData ? JSON.parse(savedData) : initialState
     }
     return initialState
-  })
+  }
 
-  // 监听 state 变化并更新 localStorage
+  const [state, dispatch] = useReducer(cartReducer, initialState, initializer)
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('flowerCartState', JSON.stringify(state))
     }
   }, [state])
-
-  // useEffect(() => {
-  //   localStorage.setItem('flowerCartState', JSON.stringify(state))
-  // }, [state])
 
   return (
     <FlowerCartContext.Provider value={{ state, dispatch }}>
