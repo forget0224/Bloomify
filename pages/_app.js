@@ -6,6 +6,7 @@ import { NextUIProvider } from '@nextui-org/react'
 import { LoaderProvider } from '@/hooks/use-loader'
 import { CourseFavoritesProvider } from '@/hooks/use-course-fav'
 import { CartProvider } from '@/context/shop-cart-context'
+import { FillOutProvider } from '../context/fill-out-context'
 import { FlowerCartProvider } from '@/hooks/use-flowerCart'
 import { FillOutProvider } from '@/context/fill-out-context'
 export default function MyApp({ Component, pageProps }) {
@@ -18,11 +19,11 @@ export default function MyApp({ Component, pageProps }) {
         <LoaderProvider>
           <CourseFavoritesProvider>
             <CartProvider>
-              <FlowerCartProvider>
-                <FillOutProvider>
+              <FillOutProvider>
+                <FlowerCartProvider>
                   <Component {...pageProps} />
-                </FillOutProvider>
-              </FlowerCartProvider>
+                </FlowerCartProvider>
+              </FillOutProvider>
             </CartProvider>
           </CourseFavoritesProvider>
         </LoaderProvider>
