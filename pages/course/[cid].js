@@ -10,9 +10,8 @@ import {
 } from '@nextui-org/react'
 import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
-import { BsChevronRight } from 'react-icons/bs'
 import { FaShareAlt } from 'react-icons/fa'
-import HeartButton from '@/components/course/btn-heart'
+import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -27,6 +26,7 @@ import ImageSlider from '@/components/course/image-slider'
 import CourseComment from '@/components/course/div-comment'
 import CardGroup from '@/components/course/card-group'
 import AverageStars from '@/components/course/star-average'
+import HeartButton from '@/components/course/btn-heart'
 
 export default function CourseDetails() {
   const { close, open, isLoading } = useLoader()
@@ -56,6 +56,17 @@ export default function CourseDetails() {
     onOpen: onShareOpen,
     onOpenChange: onShareOpenChange,
   } = useDisclosure()
+
+  const scrollContainerRef = useRef(null)
+
+  const scroll = (offset) => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft += offset
+    }
+  }
+
+  // 假設每張卡片的寬度加上間隔約是300px
+  const scrollAmount = 750 // 3張卡片的總寬度
 
   // FETCH 資料
   useEffect(() => {
@@ -289,9 +300,29 @@ export default function CourseDetails() {
               </div>
             </div>
             {/* 推薦課程 */}
-            <div className="flex flex-col gap-5 mb-[80px] cardgroup-wrapper">
+            <div className="flex flex-col gap-5 mb-[80px]">
               <Subtitle text="推薦課程" />
-              <CardGroup courses={randomCourses} />
+              <div className="flex flex-col relative">
+                <div className="cardgroup-wrapper" ref={scrollContainerRef}>
+                  <CardGroup courses={randomCourses} />
+                </div>
+                <MyButton
+                  onClick={() => scroll(-scrollAmount)}
+                  color="white"
+                  className="shadow-md rounded-full absolute z-20 left-0 -translate-x-1/2 transform top-1/2 -translate-y-1/2"
+                  isIconOnly
+                >
+                  <BsChevronLeft className="w-4 h-4" />
+                </MyButton>
+                <MyButton
+                  onClick={() => scroll(scrollAmount)}
+                  color="white"
+                  className="shadow-md rounded-full absolute z-20 right-0 translate-x-1/2 transform top-1/2 -translate-y-1/2"
+                  isIconOnly
+                >
+                  <BsChevronRight className="w-4 h-4" />
+                </MyButton>
+              </div>
             </div>
           </div>
         </div>

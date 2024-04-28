@@ -1,20 +1,63 @@
-import React from 'react'
+import { useEffect, useCallback } from 'react'
+import { useRouter } from 'next/router'
 import logo from '@/assets/singleLogo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CiUndo } from 'react-icons/ci'
 import { MyButton } from '@/components/btn/mybutton'
 import { useFlower } from '@/hooks/use-flower'
+import { useFlowerCart } from '@/hooks/use-flowerCart'
+
 export default function CustomNav() {
-  const { clearCanvas, snapshotCanvas } = useFlower()
+  const router = useRouter()
+  const { clearCanvas, snapshotCanvas, imagesInfo, cardInfo } = useFlower()
   const handleUndo = () => {
     clearCanvas()
   }
+  const { dispatch, state } = useFlowerCart()
 
-  const handleCapture = () => {
-    const imageData = snapshotCanvas()
-    // 處理 imageData，例如儲存或傳遞到其他頁面
-  }
+  const handleComplete = useCallback(() => {
+    const urlWorkingArea = snapshotCanvas()
+
+    console.log('Canvas URL:', urlWorkingArea)
+
+    if (urlWorkingArea) {
+      dispatch({
+        type: 'SET_BOUQUET_INFO',
+        payload: {
+          image_url: urlWorkingArea,
+        },
+      })
+
+      dispatch({
+        type: 'SET_CARD',
+        payload: { content: cardInfo },
+      })
+
+      const productPayload = imagesInfo.map((img) => ({
+        left: img.left,
+        top: img.top,
+        scaleX: img.scaleX,
+        scaleY: img.scaleY,
+        angle: img.angle,
+        product_id: img.product_id,
+        product_category: img.product_category,
+        product_price: img.product_price,
+        url: img.url,
+        color: img.color,
+        name: img.name,
+        zIndex: img.zIndex,
+      }))
+
+      dispatch({
+        type: 'ADD_PRODUCTS',
+        payload: productPayload,
+      })
+      router.push('/cart')
+    } else {
+      console.error('No canvas snapshot URL available')
+    }
+  }, [snapshotCanvas, imagesInfo, dispatch])
 
   return (
     <>
@@ -30,18 +73,14 @@ export default function CustomNav() {
             <p className="text-xs">reset</p>
           </div>
           <div className="sm:hidden ">
-            <Link href="/cart">
-              <MyButton size="xs" color="secondary200">
-                完成
-              </MyButton>
-            </Link>
+            <MyButton size="xs" color="secondary200" onClick={handleComplete}>
+              完成
+            </MyButton>
           </div>
           <div className="hidden sm:block">
-            <Link href="/cart">
-              <MyButton size="md" color="secondary200" onClick={handleCapture}>
-                完成
-              </MyButton>
-            </Link>
+            <MyButton size="md" color="secondary200" onClick={handleComplete}>
+              完成
+            </MyButton>
           </div>
         </div>
       </nav>

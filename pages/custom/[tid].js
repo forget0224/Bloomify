@@ -22,18 +22,20 @@ export default function Detail() {
   const router = useRouter()
 
   const [product, setProduct] = useState({
-    id: '',
+    template_id: '',
     src: '',
     template_name: '',
     store_name: '',
-    price: 0,
-    occ: '',
-    role: '',
+    template_occ: '',
+    total_price: 0,
+    discount: 0,
     products: [
       {
-        product_name: '',
-        product_price: 0,
-        quantity: 0,
+        product_id: 0,
+        category_name: '',
+        color: '',
+        price: 0,
+        positions: [{ top: 0, left: 0, zIndex: 0, rotate: 0 }],
       },
     ],
   })
@@ -52,15 +54,11 @@ export default function Detail() {
         // 進一步檢查 data 是否具有預期的結構
         setProduct({
           id: data.template_id,
-          src: data.image_url,
+          image_url: data.image_url,
           template_name: data.template_name,
           store_name: data.store_name,
           occ: data.template_occ,
-          role: data.template_role,
-          price: data.products.reduce(
-            (acc, item) => acc + item.product_price * item.quantity,
-            0
-          ), // 計算總價
+          total_price: data.total_price, // 計算總價
           products: data.products, // 直接設定產品列表
         })
       }
@@ -95,7 +93,7 @@ export default function Detail() {
             <div
               className=" w-[300px] h-[300px] sm:w-[500px]  relative my-5 sm:h-[500px]"
               style={{
-                backgroundImage: `url('${product.src}')`,
+                backgroundImage: `url('${product.image_url}')`,
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center center',
                 backgroundSize: 'contain',
@@ -124,7 +122,7 @@ export default function Detail() {
                 <p className="text-tertiary-gray-100 text-xs">
                   {product.store_name}
                 </p>
-                <p className="text-right sm:hidden">${product.price}</p>
+                <p className="text-right sm:hidden">${product.total_price}</p>
               </div>
               {/* 詳細資訊 */}
               <div className="w-[300px] text-sm h-full sm:h-auto flex-col gap-3 py-6 hidden sm:flex sm:w-full">
@@ -140,10 +138,10 @@ export default function Detail() {
                     >
                       <p className="flex-grow">{item.category_name}</p>
                       <p className="flex-grow">{item.color}</p>
-                      <p className="w-6 text-center flex-grow">
-                        ${item.product_price}
+                      <p className="w-6 text-center flex-grow">${item.price}</p>
+                      <p className="flex-grow">
+                        x{item.positions ? item.positions.length : 0}
                       </p>
-                      <p className="flex-grow">x{item.quantity}</p>
                     </div>
                   ))}
                 </div>
@@ -151,29 +149,35 @@ export default function Detail() {
 
               <hr className="w-full hidden sm:block" />
               <div className="px-5 py-6 hidden sm:block">
-                <p className="text-right text-3xl">${product.price}</p>
+                <p className="text-right text-3xl">${product.total_price}</p>
               </div>
               {/* 按鈕 */}
-              <div className="flex flex-row w-full gap-6  justify-around items-center sm:px-5 ">
-                <div className="hidden sm:block" onClick={handleHeartClick}>
+              <div className="flex flex-row sm:w-full  w-[300px]  gap-6  justify-around items-center sm:px-5 ">
+                <div
+                  className="hidden flex-shrink-0 sm:block w-12"
+                  onClick={handleHeartClick}
+                >
                   {isHeart ? (
                     <IoIosHeartEmpty className="text-danger text-2xl " />
                   ) : (
                     <IoIosHeart className="text-danger text-2xl " />
                   )}
                 </div>
-
-                <Link href="/custom/custom">
-                  {' '}
-                  <MyButton color="secondary200" size="xl">
-                    客製化
-                  </MyButton>
-                </Link>
-                <Link href="/cart">
-                  <MyButton color="secondary" size="xl">
-                    結帳
-                  </MyButton>
-                </Link>
+                <div className=" flex-1">
+                  <Link href="/custom/custom">
+                    {' '}
+                    <MyButton color="secondary200" size="xl">
+                      客製化
+                    </MyButton>
+                  </Link>
+                </div>
+                <div className=" flex-1">
+                  <Link href="/cart">
+                    <MyButton color="secondary" size="xl">
+                      結帳
+                    </MyButton>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -192,10 +196,10 @@ export default function Detail() {
                 >
                   <p className="flex-grow">{item.category_name}</p>
                   <p className="flex-grow">{item.color}</p>
-                  <p className="w-6 text-center flex-grow">
-                    ${item.product_price}
+                  <p className="w-6 text-center flex-grow">${item.price}</p>
+                  <p className="flex-grow">
+                    x{item.positions ? item.positions.length : 0}
                   </p>
-                  <p className="flex-grow">x{item.quantity}</p>
                 </div>
               ))}
             </div>

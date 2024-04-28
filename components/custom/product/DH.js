@@ -92,12 +92,12 @@ const DraggableProductList = ({ productList }) => {
           return (
             <Card
               shadow="sm"
-              key={item.id}
+              key={item.template_id}
               className="cursor-grab active:cursor-grabbing"
               style={{ width: `${cardMinWidth}px` }}
               isPressable
               // onPress={handleCardClick(item.id)}
-              onClick={() => handleCardClick(item.id)}
+              onClick={() => handleCardClick(item.template_id)}
             >
               <CardBody className="p-0">
                 <div

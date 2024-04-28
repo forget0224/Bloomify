@@ -16,7 +16,16 @@ export const FlowerProvider = ({ children }) => {
   const canvasRef = useRef(null)
   const tempObjectRef = useRef(null)
   const [imagesInfo, setImagesInfo] = useState([])
-
+  const [cardInfo, setCardInfo] = useState({
+    product_id: '',
+    content: '',
+    card_url: '',
+  })
+  const [packageInfo, setPackageInfo] = useState({
+    product_id: '',
+    package_name: '',
+    package_url: '',
+  })
   useEffect(() => {
     if (canvasRef.current && !canvasRef.current.fabric) {
       const fabricCanvas = new fabric.Canvas(canvasRef.current)
@@ -72,67 +81,188 @@ export const FlowerProvider = ({ children }) => {
   //     tempObjectRef.current = img
   //   })
   // }, [])
-  const addImageToCanvas = useCallback((url, metadata) => {
-    if (!canvasRef.current || !canvasRef.current.fabric) {
-      console.error('Canvas is not initialized.')
-      return
-    }
+  // const addImageToCanvas = useCallback((url, metadata) => {
+  //   if (!canvasRef.current || !canvasRef.current.fabric) {
+  //     console.error('Canvas is not initialized.')
+  //     return
+  //   }
 
-    const canvas = canvasRef.current.fabric
-    if (!canvas.clipPath) {
-      console.error('Clip path is not set.')
-      return // 或者設置一個默認 clipPath，視需求而定
-    }
+  //   const canvas = canvasRef.current.fabric
+  //   // if (!canvas.clipPath) {
+  //   //   console.error('Clip path is not set.')
+  //   //   return // 或者設置一個默認 clipPath，視需求而定
+  //   // }
 
-    const clipBounds = canvas.clipPath.getBoundingRect()
+  //   // const clipBounds = canvas.clipPath.getBoundingRect() ||canvas.clipPath.getBoundingRect() || 0
+  //   const clipBounds = 0
 
-    new fabric.Image.fromURL(url, (img) => {
-      if (!img) {
-        console.error('Failed to load image')
+  //   new fabric.Image.fromURL(url, (img) => {
+  //     if (!img) {
+  //       console.error('Failed to load image')
+  //       return
+  //     }
+
+  //     img.set({
+  //       ...metadata,
+  //       id: metadata.id || fabric.util.getRandomInt(1000, 9999),
+  //       product_id: metadata.product_id,
+  //       zIndex: metadata.zIndex || 1,
+  //       left:
+  //         metadata.left !== undefined
+  //           ? metadata.left
+  //           : clipBounds.left + clipBounds.width / 2,
+  //       top:
+  //         metadata.top !== undefined
+  //           ? metadata.top
+  //           : clipBounds.top + clipBounds.height / 2,
+  //       scaleX: metadata.scaleX !== undefined ? metadata.scaleX : 0.5,
+  //       scaleY: metadata.scaleY !== undefined ? metadata.scaleY : 0.5,
+  //       originX: 'center',
+  //       originY: 'center',
+  //       angle: metadata.angle !== undefined ? metadata.angle : 0,
+  //       url: metadata.url,
+  //       lockScalingX:
+  //         metadata.lockScalingX !== undefined ? metadata.lockScalingX : true,
+  //       lockScalingY:
+  //         metadata.lockScalingY !== undefined ? metadata.lockScalingY : true,
+  //     })
+
+  //     canvas.add(img)
+  //     canvas.setActiveObject(img)
+  //     canvas.renderAll()
+  //     tempObjectRef.current = img
+  //   })
+  // }, [])
+  // const addImageToCanvas = useCallback(
+  //   (url, metadata) => {
+  //     if (!canvasRef.current || !canvasRef.current.fabric) {
+  //       console.error('Canvas is not initialized.')
+  //       return
+  //     }
+
+  //     // 如果已有正在处理的图像，先移除
+  //     if (tempObjectRef.current) {
+  //       canvasRef.current.fabric.remove(tempObjectRef.current)
+  //       tempObjectRef.current = null
+  //     }
+
+  //     // 标记正在加载图像
+  //     if (tempObjectRef.isLoading) {
+  //       console.log('Image is already loading, please wait.')
+  //       return // 如果当前有图像正在加载，则不进行新的加载
+  //     }
+  //     tempObjectRef.isLoading = true
+
+  //     new fabric.Image.fromURL(url, (img) => {
+  //       tempObjectRef.isLoading = false // 加载完成后清除加载标志
+
+  //       if (!img) {
+  //         console.error('Failed to load image')
+  //         return
+  //       }
+
+  //       const canvas = canvasRef.current.fabric
+  //       const centerX = canvas.width / 2
+  //       const centerY = canvas.height / 4
+
+  //       const newId = metadata.id || fabric.util.getRandomInt(1000, 9999)
+  //       img.set({
+  //         ...metadata,
+  //         id: newId,
+  //         product_id: metadata.product_id,
+  //         zIndex: metadata.zIndex || 1,
+  //         left: metadata.left !== undefined ? metadata.left : centerX,
+  //         top: metadata.top !== undefined ? metadata.top : centerY,
+  //         scaleX: metadata.scaleX !== undefined ? metadata.scaleX : 0.5,
+  //         scaleY: metadata.scaleY !== undefined ? metadata.scaleY : 0.5,
+  //         originX: 'center',
+  //         originY: 'center',
+  //         angle: metadata.angle !== undefined ? metadata.angle : 0,
+  //         url: metadata.url,
+  //         lockScalingX:
+  //           metadata.lockScalingX !== undefined ? metadata.lockScalingX : true,
+  //         lockScalingY:
+  //           metadata.lockScalingY !== undefined ? metadata.lockScalingY : true,
+  //       })
+  //       canvas.add(img)
+  //       canvas.setActiveObject(img)
+  //       canvas.renderAll()
+  //       tempObjectRef.current = img
+  //     })
+  //   },
+  //   [canvasRef]
+  // )
+
+  const addImageToCanvas = useCallback(
+    (url, metadata) => {
+      if (!canvasRef.current || !canvasRef.current.fabric) {
+        console.error('Canvas is not initialized.')
         return
       }
 
-      img.set({
-        ...metadata,
-        id: metadata.id || fabric.util.getRandomInt(1000, 9999),
-        zIndex: metadata.zIndex || 1,
-        left:
-          metadata.left !== undefined
-            ? metadata.left
-            : clipBounds.left + clipBounds.width / 2,
-        top:
-          metadata.top !== undefined
-            ? metadata.top
-            : clipBounds.top + clipBounds.height / 2,
-        scaleX: metadata.scaleX !== undefined ? metadata.scaleX : 0.5,
-        scaleY: metadata.scaleY !== undefined ? metadata.scaleY : 0.5,
-        originX: 'center',
-        originY: 'center',
-        angle: metadata.angle !== undefined ? metadata.angle : 0,
-        url: metadata.url,
-        lockScalingX:
-          metadata.lockScalingX !== undefined ? metadata.lockScalingX : true,
-        lockScalingY:
-          metadata.lockScalingY !== undefined ? metadata.lockScalingY : true,
-      })
+      // 如果当前已有预览对象，且将要加载的图像是新图像（无ID），则清除当前预览对象
+      if (!metadata.id && tempObjectRef.current) {
+        canvasRef.current.fabric.remove(tempObjectRef.current)
+        tempObjectRef.current = null
+      }
 
-      canvas.add(img)
-      canvas.setActiveObject(img)
-      canvas.renderAll()
-      tempObjectRef.current = img
-    })
-  }, [])
+      new fabric.Image.fromURL(url, (img) => {
+        if (!img) {
+          console.error('Failed to load image')
+          return
+        }
+
+        const canvas = canvasRef.current.fabric
+        const centerX = canvas.width / 2
+        const centerY = canvas.height / 4
+
+        img.set({
+          ...metadata,
+          id: metadata.id || fabric.util.getRandomInt(1000, 9999), // 生成或使用现有 ID
+          product_id: metadata.product_id,
+          product_category: metadata.product_category,
+          product_price: metadata.product_price,
+          zIndex: metadata.zIndex || 1,
+          left: metadata.left !== undefined ? metadata.left : centerX,
+          top: metadata.top !== undefined ? metadata.top : centerY,
+          scaleX: metadata.scaleX !== undefined ? metadata.scaleX : 0.5,
+          scaleY: metadata.scaleY !== undefined ? metadata.scaleY : 0.5,
+          originX: 'center',
+          originY: 'center',
+          angle: metadata.angle !== undefined ? metadata.angle : 0,
+          url: metadata.url,
+          lockScalingX:
+            metadata.lockScalingX !== undefined ? metadata.lockScalingX : true,
+          lockScalingY:
+            metadata.lockScalingY !== undefined ? metadata.lockScalingY : true,
+        })
+
+        canvas.add(img)
+        canvas.setActiveObject(img)
+        canvas.renderAll()
+
+        // 如果这是一个新图像（没有ID），则设置为当前预览对象
+        if (!metadata.id) {
+          tempObjectRef.current = img
+        }
+      })
+    },
+    [canvasRef]
+  )
 
   const commitImageToCanvas = useCallback(() => {
-    if (tempObjectRef.current && canvasRef.current.fabric.clipPath) {
+    if (tempObjectRef.current) {
       const img = tempObjectRef.current
-      const clipBounds = canvasRef.current.fabric.clipPath.getBoundingRect()
+      const canvas = canvasRef.current.fabric
 
       const imgInfo = {
         id: img.id,
+        product_id: img.product_id,
+        product_category: img.product_category,
+        product_price: img.product_price,
         url: img.url,
-        left: img.left - clipBounds.left - clipBounds.width / 2,
-        top: img.top - clipBounds.top - clipBounds.height / 2,
+        left: img.left - canvas.width / 2,
+        top: img.top - canvas.height / 4,
         name: img.name,
         color: img.color,
         zIndex: img.zIndex,
@@ -142,8 +272,18 @@ export const FlowerProvider = ({ children }) => {
         locked: false,
       }
 
-      setImagesInfo((prev) => [...prev, imgInfo])
+      // 更新 imagesInfo，添加新图像信息前先检查是否存在重复的 ID
+      setImagesInfo((prev) => {
+        const index = prev.findIndex((info) => info.id === img.id)
+        if (index > -1) {
+          const newImagesInfo = [...prev]
+          newImagesInfo[index] = imgInfo
+          return newImagesInfo
+        }
+        return [...prev, imgInfo]
+      })
 
+      // 清空当前预览对象的引用
       tempObjectRef.current = null
     }
   }, [])
@@ -205,9 +345,8 @@ export const FlowerProvider = ({ children }) => {
   }, [canvasRef])
 
   const snapshotCanvas = useCallback(() => {
-    if (!canvasRef.current || !canvasRef.current.fabric) return null
-
-    return canvasRef.current.fabric.toDataURL()
+    let canvas = canvasRef.current?.fabric
+    return canvas ? canvas.toDataURL({ format: 'png', quality: 0.8 }) : null
   }, [])
 
   const getClipBounds = useCallback(() => {
@@ -235,6 +374,10 @@ export const FlowerProvider = ({ children }) => {
         imagesInfo,
         getClipBounds,
         tempObjectRef,
+        cardInfo,
+        setCardInfo,
+        packageInfo,
+        setPackageInfo,
       }}
     >
       {children}

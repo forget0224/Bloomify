@@ -9,15 +9,8 @@ export default function CourseCart() {
     <div className="flex flex-col w-[350px] md:w-[600px] lg:w-[800px] h-full gap-2 mt-4">
       {/* 購物車表格 */}
       <div className="flex flex-col gap-3 w-full p-4 rounded-lg">
-        {/* 表頭 */}
-        {/* <div className="flex flex-row justify-between bg-primary-300 rounded-md">
-            <div className="w-1/3 p-2 text-nowrap">課程名稱</div>
-            <div className="w-1/3 p-2 text-nowrap">課程時間</div>
-            <div className="w-1/6 p-2 text-nowrap">價格</div>
-            <div className="w-1/6 p-2 text-right text-nowrap">移除</div>
-          </div> */}
         {/* 表內容 */}
-        <Card className="shadow-none border-1 border-tertiary-gray-200 p-2">
+        <Card className="shadow-md border-1 border-tertiary-gray-200 p-2">
           <div className="flex flex-col md:flex-row justify-between">
             <Link
               className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate px-2 py-1 md:py-2"
@@ -45,7 +38,7 @@ export default function CourseCart() {
           </div>
         </Card>
         {/* 表內容 */}
-        <Card className="shadow-none border-1 border-tertiary-gray-200 p-2">
+        <Card className="shadow-md border-1 border-tertiary-gray-200 p-2">
           <div className="flex flex-col md:flex-row justify-between">
             <Link
               className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate px-2 py-1 md:py-2"
@@ -73,7 +66,7 @@ export default function CourseCart() {
           </div>
         </Card>
         {/* 表內容 */}
-        <Card className="shadow-none border-1 border-tertiary-gray-200 p-2">
+        <Card className="shadow-md border-1 border-tertiary-gray-200 p-2">
           <div className="flex flex-col md:flex-row justify-between">
             <Link
               className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate px-2 py-1 md:py-2"
@@ -101,7 +94,7 @@ export default function CourseCart() {
           </div>
         </Card>
         {/* 表內容 */}
-        <Card className="shadow-none border-1 border-tertiary-gray-200 p-2">
+        <Card className="shadow-md border-1 border-tertiary-gray-200 p-2">
           <div className="flex flex-col md:flex-row justify-between">
             <Link
               className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate px-2 py-1 md:py-2"
@@ -129,7 +122,7 @@ export default function CourseCart() {
           </div>
         </Card>
         {/* 表內容 */}
-        <Card className="shadow-none border-1 border-tertiary-gray-200 p-2">
+        <Card className="shadow-md border-1 border-tertiary-gray-200 p-2">
           <div className="flex flex-col md:flex-row justify-between">
             <Link
               className="w-full md:w-1/3 flex flex-row gap-2 items-center truncate px-2 py-1 md:py-2"

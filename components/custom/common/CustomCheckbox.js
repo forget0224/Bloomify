@@ -23,21 +23,10 @@ const CustomCheckbox = forwardRef(
     const textColor =
       bgColor === '#000' || bgColor === '#000000' ? 'white' : 'black'
 
-    // const handleChange = (e) => {
-    //   if (isMultiple) {
-    //     onChange(e.target.checked)
-    //   } else {
-    //     if (e.target.checked) {
-    //       onChange(value)
-    //     }
-    //   }
-    // }
     const handleChange = (e) => {
       const isChecked = e.target.checked
 
       if (isMultiple) {
-        // 多选模式：直接调用 onChange
-        // 这里应当传递完整的更新后的数组，而不是单一的状态改变
         onChange((prev) => {
           const newValue = isChecked
             ? [...prev, value]
@@ -45,12 +34,10 @@ const CustomCheckbox = forwardRef(
           return newValue
         })
       } else {
-        // 单选模式：只有在勾选复选框时才调用 onChange
         if (isChecked) {
           onChange(value)
         } else {
-          // 如果需要支持取消选择，则添加逻辑处理取消选择的情况
-          onChange('') // 或者传递一个 null 或其他标识没有选择的值
+          onChange('')
         }
       }
     }
@@ -79,6 +66,6 @@ const CustomCheckbox = forwardRef(
   }
 )
 
-CustomCheckbox.displayName = 'CustomCheckbox' // 显式设置显示名称
+CustomCheckbox.displayName = 'CustomCheckbox'
 
 export default CustomCheckbox

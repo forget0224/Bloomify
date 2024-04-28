@@ -30,7 +30,7 @@ import FlowerContent from '@/components/custom/custom/FlowerContent'
 import LeafContent from '@/components/custom/custom/LeafContent'
 import PackageContent from '@/components/custom/custom/PackageContent'
 import GiftCardContent from '@/components/custom/custom/GiftCardContent'
-
+import { useFlowerCart } from '@/hooks/use-flowerCart'
 export default function Custom() {
   const [openedIndex, setOpenedIndex] = useState(null)
   const [currentPage, setCurrentPage] = useState('main')
@@ -184,6 +184,7 @@ export default function Custom() {
   const handleSelectImage = (selectedUrl) => {
     setImageUrl(selectedUrl)
   }
+
   return (
     <StoreProvider>
       <FlowerProvider>
@@ -205,16 +206,7 @@ export default function Custom() {
                             <div className="hidden sm:block">
                               <LayerFloat />
                             </div>
-                            <div
-                              className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full"
-                              style={{
-                                backgroundImage:
-                                  'url("/custom/custom/canvasBg.png")',
-                                backgroundSize: 'contain',
-                                backgroundPosition: 'center',
-                                backgroundRepeat: 'no-repeat',
-                              }}
-                            >
+                            <div className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full">
                               <WorkingArea />
                             </div>
                           </>

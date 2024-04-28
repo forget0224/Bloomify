@@ -1,12 +1,17 @@
 import { useState, useEffect } from 'react'
 import { Select, SelectItem, Button } from '@nextui-org/react'
 import { useStore } from '@/hooks/use-store'
+import { useFlowerCart } from '@/hooks/use-flowerCart'
 
 export default function StoreSelector({ onConfirm }) {
   const [selectedCity, setSelectedCity] = useState('')
   const [selectedDistrict, setSelectedDistrict] = useState('')
   const [selectedStore, setSelectedStore] = useState({})
   const storeData = useStore()
+  const { dispatch, state } = useFlowerCart()
+
+  useEffect(() => {}, [state.items])
+
   const handleCityChange = (city) => {
     setSelectedCity(city)
     setSelectedDistrict('')
@@ -27,7 +32,20 @@ export default function StoreSelector({ onConfirm }) {
 
   const handleSubmit = () => {
     console.log(selectedStore)
-    onConfirm(selectedStore)
+    if (selectedStore && selectedStore.store_id) {
+      dispatch({
+        type: 'SET_BOUQUET_INFO',
+        payload: {
+          store_id: selectedStore.store_id,
+          template_name: '客製化花束',
+          store_name: selectedStore.store_name,
+          store_address: selectedStore.store_address,
+        },
+      })
+      onConfirm(selectedStore)
+    } else {
+      console.error('No store selected')
+    }
   }
 
   return (
