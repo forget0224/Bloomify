@@ -43,7 +43,6 @@ import { SlMagnifier } from 'react-icons/sl'
 // import { useWindowSize } from 'react-use'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
-import useLocalStorage from '@/hooks/use-localStorage'
 import { useCart } from '@/context/shop-cart-context'
 
 export default function Shop() {
@@ -83,8 +82,8 @@ export default function Shop() {
   // const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   // localStorage
   // 透過本地端將商品收藏
-  const [favProducts, setFavProducts] = useLocalStorage('favProducts', [])
-  // console.log(favProducts)
+  // const [favProducts, setFavProducts] = useLocalStorage('favProducts', [])
+  // // console.log(favProducts)
   const [isFavHovered, setIsFavHovered] = useState([])
 
   // didMount 後端資料從這裏來的
@@ -331,56 +330,6 @@ export default function Shop() {
       [product.id]: { ...product, quantity: 1 },
     }
     setCartItems(updatedCartItems) // Update state
-  }
-
-  // 收藏用
-  // 從後端獲取初始收藏狀態
-  useEffect(() => {
-    fetch('http://localhost:3005/api/product-favorites')
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === 'success') {
-          // 使用後端提供的收藏商品ID列表更新本地狀態
-          const productIds = data.data.map((product) => product.id)
-          setFavProducts(productIds)
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching favorites:', error)
-      })
-  }, [])
-
-  const handleMouseEnter = (productId) => {
-    // prev:更新基於前一個狀態值
-    setIsFavHovered((prev) => [...prev, productId])
-  }
-  const handleMouseLeave = (productId) => {
-    setIsFavHovered((prev) => prev.filter((id) => id !== productId))
-  }
-  const toggleFavClick = (product) => {
-    // 判斷商品是否已加入收藏
-    const isFavorited = favProducts.includes(product.id)
-    const newFavStatus = !isFavorited
-    // 更新LocalStorage
-    const updatedFavs = newFavStatus
-      ? [...favProducts, product.id]
-      : favProducts.filter((id) => id !== product.id)
-    setFavProducts(updatedFavs)
-    // 同步到後端
-    fetch('http://localhost:3005/api/product-favorites', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ productId: product.id, newFavStatus }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Favorites updated:', data)
-      })
-      .catch((error) => {
-        console.error('Error updating favorites:', error)
-      })
   }
 
   return (
