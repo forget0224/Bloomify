@@ -6,9 +6,13 @@ export const FillOutProvider = ({ children }) => {
   const [fillOutDetails, setFillOutDetails] = useLocalStorage(
     'fillOutDetails',
     {
+      senderName: '',
+      senderNumber: '',
+      senderEmail: '',
       recipientName: '', // 收件人姓名
-      contactNumber: '', // 聯絡電話
+      recipientNumber: '', // 聯絡電話
       deliveryOption: '', // 運送選項
+      deliveryAddress: '',
       couponCode: '', // 優惠券代碼
       paymentMethod: '', // 付款方式
       invoiceOption: '', // 發票

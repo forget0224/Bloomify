@@ -102,7 +102,7 @@ export default function CustomCart() {
               <Link href="/">上一步</Link>
             </MyButton>
             <MyButton color="primary" size="xl">
-              <Link href="/cart/fill-out">下一步</Link>
+              <Link href="/cart/fill-out?source=flower">下一步</Link>
             </MyButton>
           </div>
         </div>
