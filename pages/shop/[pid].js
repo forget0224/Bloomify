@@ -29,20 +29,28 @@ import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/context/shop-cart-context'
 
 export default function Detail() {
-  const [loadPage, setLoadPage] = useState(1)
   const { cartItems, setCartItems } = useCart()
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
   const [activePage, setActivePage] = useState('shop')
   const router = useRouter()
+  const { close, open, isLoading } = useLoader()
+  // 商品的所有資料
   const [product, setProduct] = useState({
     images: [],
     reviews: [],
   })
-  console.log(product)
   const [quantity, setQuantity] = useState(1)
-  const { close, open, isLoading } = useLoader()
+  // 收藏
+  const [isFavHovered, setIsFavHovered] = useState(false)
+  // 頁碼，目前共三頁
+  const [page, setPage] = useState(1)
+  console.log(page)
+  // 星星tab
+  const [stars, setStars] = useState([])
+  console.log(stars)
 
+  // 獲取商品的所有資料
   useEffect(() => {
     open()
     async function fetchData() {
@@ -62,6 +70,7 @@ export default function Detail() {
         const starsResponse = await fetch(
           'http://localhost:3005/api/share-star'
         )
+        //獲得評論
         const starsData = await starsResponse.json()
         if (
           starsData.status === 'success' &&
@@ -77,7 +86,7 @@ export default function Detail() {
       }
     }
     fetchData()
-  }, [loadPage])
+  }, [])
 
   // images start
   function processProduct(product) {
@@ -133,6 +142,7 @@ export default function Detail() {
   }
   // toaster end
 
+  // 將星等化為星星
   const renderStars = (rating) => {
     return Array.from({ length: 5 }).map((_, index) => (
       <FaStar
@@ -153,32 +163,20 @@ export default function Detail() {
   const addToCart = () => {
     // 透過展開運算符，創建新的購物車物件
     // 由於狀態不可改變，要增加物件需創建新的購物車物件
-
     const updatedCartItems = {
       ...cartItems,
       [product.id]: { ...product, quantity: quantity },
     }
-
     console.log('updatedCartItems', updatedCartItems)
-
     setCartItems(updatedCartItems)
   }
 
-  console.log('cartItems', cartItems)
-  // 收藏
-  const [isFavHovered, setIsFavHovered] = useState(false)
-
-  // 評價分頁
-  const [stars, setStars] = useState([])
-  const [page, setPage] = useState(1)
-  // console.log(page)
-  const reviewsPerPage = 3
-
   // 分頁用
-
   const limit = 3
-  const handleLoadMore = () => {
-    setLoadPage((prevLoadPage) => prevLoadPage + 1)
+  const handlePagination = (starId, newPage) => {
+    // starId 是一個動態的鍵，其值將會設為 newPage。用於針對每個不同的 starId 單獨設定其對應的頁碼
+    setPage((prev) => ({ ...prev, [starId]: newPage }))
+    console.log('Changing page for starId:', starId, 'to:', newPage)
   }
 
   const filterReviewsByStar = (reviews, starId) => {
@@ -536,20 +534,31 @@ export default function Detail() {
                     tabContent: 'group-data-[selected=true]:text-[#68A392]',
                   }}
                 >
-                  {(star) => (
-                    <Tab
-                      key={star.id}
-                      title={
-                        <div className="flex items-center text-base space-x-2">
-                          {star.name}
-                        </div>
-                      }
-                    >
-                      <Card>
-                        {product.reviews.length > 0 ? (
-                          filterReviewsByStar(product.reviews, star.id)
-                            .slice(0, limit * loadPage)
-                            .map((review, index) => (
+                  {(star) => {
+                    console.log('Selected Star:', star)
+                    const currentPage = page[star.id] || 1
+                    const filteredReviews = filterReviewsByStar(
+                      product.reviews,
+                      star.id
+                    )
+                    console.log('Filtered Reviews:', filteredReviews)
+                    const paginatedReviews = filteredReviews.slice(
+                      (currentPage - 1) * limit,
+                      currentPage * limit
+                    )
+                    console.log('Paginated Reviews:', paginatedReviews)
+                    return (
+                      <Tab
+                        key={star.id}
+                        title={
+                          <div className="flex items-center text-base space-x-2">
+                            {star.name}
+                          </div>
+                        }
+                      >
+                        <Card>
+                          {paginatedReviews.length > 0 ? (
+                            paginatedReviews.map((review, index) => (
                               <CardBody key={index} className="space-y-2 p-6">
                                 <div className="flex space-x-2 items-center">
                                   <p className="text-xl">
@@ -567,27 +576,29 @@ export default function Detail() {
                                 <div>{review.comment}</div>
                               </CardBody>
                             ))
-                        ) : (
-                          <CardBody>
-                            <div>尚未有評價</div>
-                          </CardBody>
-                        )}
-                      </Card>
+                          ) : (
+                            <CardBody>
+                              <div>尚未有評價</div>
+                            </CardBody>
+                          )}
+                        </Card>
 
-                      <div className="mt-6 flex justify-center">
-                        {!(product.reviews.length <= limit * loadPage) && (
-                          <MyButton
-                            color="primary"
-                            size="xl"
-                            onClick={handleLoadMore}
-                            className="hover:bg-primary-100 my-2"
-                          >
-                            查看更多
-                          </MyButton>
-                        )}
-                      </div>
-                    </Tab>
-                  )}
+                        <div className="mt-6 flex justify-center">
+                          {filteredReviews.length > limit && (
+                            <Pagination
+                              total={Math.ceil(filteredReviews.length / limit)}
+                              initialPage={1}
+                              currentPage={currentPage}
+                              onChange={(newPage) => {
+                                console.log('Page changed:', newPage)
+                                handlePagination(star.id, newPage)
+                              }}
+                            />
+                          )}
+                        </div>
+                      </Tab>
+                    )
+                  }}
                 </Tabs>
               </div>
             </div>

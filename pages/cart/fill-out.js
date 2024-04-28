@@ -10,6 +10,7 @@ import Link from 'next/link'
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
+import { useFillOut } from '@/context/fill-out-context'
 
 export default function FillOut() {
   const [activePage, setActivePage] = useState('cart')
@@ -17,6 +18,46 @@ export default function FillOut() {
   const [shippings, setShippings] = useState([])
   const [invoices, setInvoices] = useState([])
   const [selectedValue, setSelectedValue] = useState('')
+  const { fillOutDetails, setFillOutDetails } = useFillOut()
+  const [recipientName, setRecipientName] = useState('')
+  const [contactNumber, setContactNumber] = useState('')
+  const [deliveryOption, setDeliveryOption] = useState('')
+  const [couponCode, setCouponCode] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState('')
+  const [invoiceOption, setInvoiceOption] = useState('')
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target
+    if (name === 'recipientName') {
+      setRecipientName(value)
+    } else if (name === 'contactNumber') {
+      setContactNumber(value)
+    } else if (name === 'deliveryOption') {
+      setDeliveryOption(value)
+    } else if (name === 'couponCode') {
+      setCouponCode(value)
+    } else if (name === 'paymentMethod') {
+      setPaymentMethod(value)
+    } else if (name === 'invoiceOption') {
+      setInvoiceOption(value)
+    }
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    // Construct the new form details
+    const newFormDetails = {
+      recipientName,
+      contactNumber,
+      deliveryOption,
+      couponCode,
+      paymentMethod,
+      invoiceOption,
+    }
+
+    // Update the context and localStorage
+    setFillOutDetails(newFormDetails)
+  }
 
   useEffect(() => {
     fetchInvoices()
@@ -69,6 +110,21 @@ export default function FillOut() {
     }
   }
 
+  // 點選相對應的運送方式會顯示的東西
+  const [selectedDeliveryOption, setSelectedDeliveryOption] = useState('')
+  const handleSelectDeliveryChange = (event) => {
+    const selected = event.target.value
+    setSelectedDeliveryOption(selected)
+  }
+  console.log(selectedDeliveryOption)
+
+  // 點選相對應的發票方式會顯示的東西
+  const [selectedInvoiceOption, setSelectedInvoiceOption] = useState('')
+  const handleSelectInvoiceChange = (event) => {
+    const selected = event.target.value
+    setSelectedInvoiceOption(selected)
+  }
+
   const cities = [
     {
       value: '臺北市',
@@ -99,36 +155,6 @@ export default function FillOut() {
       label: '110',
     },
   ]
-  // const paymentMethods = [
-  //   {
-  //     value: 'Line Pay',
-  //     icon: '',
-  //   },
-  //   {
-  //     value: '綠界',
-  //     icon: '',
-  //   },
-  //   {
-  //     value: 'Apple Pay',
-  //     icon: (
-  //       <Fragment>
-  //         <FaCcApplePay className="h-6 w-6 text-tertiary-black" />
-  //       </Fragment>
-  //     ),
-  //   },
-  //   {
-  //     value: '藍星',
-  //     icon: '',
-  //   },
-  //   {
-  //     value: '現金',
-  //     icon: '',
-  //   },
-  //   {
-  //     value: '貨到付款',
-  //     icon: '',
-  //   },
-  // ]
 
   const handleRadioChange = (value) => {
     setSelectedValue(value)
@@ -178,6 +204,7 @@ export default function FillOut() {
     label: 'text-base',
     value: ['text-base', 'text-tertiary-gray-100'],
   }
+
   return (
     <>
       <DefaultLayout activePage={activePage}>
@@ -246,20 +273,6 @@ export default function FillOut() {
                   <FormTag text="運送資訊" />
                 </div>
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
-                  <Select
-                    label="配送方式"
-                    placeholder="請選擇配送方式"
-                    labelPlacement="outside"
-                    disableSelectorIconRotation
-                    isRequired
-                    classNames={{ ...selectStyles }}
-                  >
-                    {shippings.map((shipping) => (
-                      <SelectItem key={shipping.id} value={shipping.name}>
-                        {shipping.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
                   <Input
                     type="text"
                     label="收件人姓名"
@@ -267,6 +280,8 @@ export default function FillOut() {
                     labelPlacement="outside"
                     isRequired
                     classNames={{ ...inputStyles }}
+                    name="recipientName"
+                    onChange={handleInputChange}
                   />
                   <Input
                     type="text"
@@ -275,88 +290,109 @@ export default function FillOut() {
                     labelPlacement="outside"
                     isRequired
                     classNames={{ ...inputStyles }}
+                    name="contactNumber"
+                    onChange={handleInputChange}
                   />
-                  <div className="w-full flex flex-col gap-1">
-                    <label htmlFor="pickup" className="block mb-1 text-base">
-                      取貨門市
-                    </label>
-                    <MyButton
-                      color="primary"
-                      size="xl"
-                      id="pickup"
-                      type="button"
-                      className="w-full"
-                      isOutline
-                    >
-                      7-ELEVEN
-                    </MyButton>
-                  </div>
-                  {/* address */}
-                  <div className="flex flex-col gap-3">
-                    <div className="space-y-3 sm:flex sm:gap-3 ">
-                      <Select
-                        label="配送地址"
-                        placeholder="請選擇城市"
-                        labelPlacement="outside"
-                        disableSelectorIconRotation
-                        isRequired
-                        classNames={{ ...selectStyles }}
+                  <Select
+                    label="配送方式"
+                    placeholder="請選擇配送方式"
+                    labelPlacement="outside"
+                    disableSelectorIconRotation
+                    isRequired
+                    classNames={{ ...selectStyles }}
+                    onChange={handleSelectDeliveryChange}
+                  >
+                    {shippings.map((shipping) => (
+                      <SelectItem key={shipping.id} value={shipping.name}>
+                        {shipping.name}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                  {selectedDeliveryOption === '3' && (
+                    <div className="w-full flex flex-col gap-1">
+                      <label htmlFor="pickup" className="block mb-1 text-base">
+                        取貨門市
+                      </label>
+                      <MyButton
+                        color="primary"
+                        size="xl"
+                        id="pickup"
+                        type="button"
+                        className="w-full"
+                        isOutline
                       >
-                        {cities.map((shippingMethod) => (
-                          <SelectItem
-                            key={shippingMethod.value}
-                            value={shippingMethod.value}
-                            classNames={{
-                              base: 'text-base',
-                            }}
-                          >
-                            {shippingMethod.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                      <Select
-                        label=""
-                        placeholder="請選擇鄉鎮"
-                        labelPlacement="outside"
-                        disableSelectorIconRotation
-                        isRequired
-                        classNames={{ ...selectStyles }}
-                      >
-                        {townships.map((shippingMethod) => (
-                          <SelectItem
-                            key={shippingMethod.value}
-                            value={shippingMethod.value}
-                          >
-                            {shippingMethod.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                      <Select
-                        label=""
-                        placeholder="郵遞區號"
-                        labelPlacement="outside"
-                        disableSelectorIconRotation
-                        isRequired
-                        classNames={{ ...selectStyles }}
-                      >
-                        {postalCodes.map((shippingMethod) => (
-                          <SelectItem
-                            key={shippingMethod.value}
-                            value={shippingMethod.value}
-                          >
-                            {shippingMethod.label}
-                          </SelectItem>
-                        ))}
-                      </Select>
+                        7-ELEVEN
+                      </MyButton>
                     </div>
-                    <Input
-                      type="text"
-                      labelPlacement="inside"
-                      placeholder="請填寫地址"
-                      isRequired
-                      classNames={{ ...inputStyles }}
-                    />
-                  </div>
+                  )}
+                  {/* address */}{' '}
+                  {selectedDeliveryOption === '1' && (
+                    <div className="flex flex-col gap-3">
+                      <div className="space-y-3 sm:flex sm:gap-3 ">
+                        <Select
+                          label="配送地址"
+                          placeholder="請選擇城市"
+                          labelPlacement="outside"
+                          disableSelectorIconRotation
+                          isRequired
+                          classNames={{ ...selectStyles }}
+                        >
+                          {cities.map((shippingMethod) => (
+                            <SelectItem
+                              key={shippingMethod.value}
+                              value={shippingMethod.value}
+                              classNames={{
+                                base: 'text-base',
+                              }}
+                            >
+                              {shippingMethod.label}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                        <Select
+                          label=""
+                          placeholder="請選擇鄉鎮"
+                          labelPlacement="outside"
+                          disableSelectorIconRotation
+                          isRequired
+                          classNames={{ ...selectStyles }}
+                        >
+                          {townships.map((shippingMethod) => (
+                            <SelectItem
+                              key={shippingMethod.value}
+                              value={shippingMethod.value}
+                            >
+                              {shippingMethod.label}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                        <Select
+                          label=""
+                          placeholder="郵遞區號"
+                          labelPlacement="outside"
+                          disableSelectorIconRotation
+                          isRequired
+                          classNames={{ ...selectStyles }}
+                        >
+                          {postalCodes.map((shippingMethod) => (
+                            <SelectItem
+                              key={shippingMethod.value}
+                              value={shippingMethod.value}
+                            >
+                              {shippingMethod.label}
+                            </SelectItem>
+                          ))}
+                        </Select>
+                      </div>
+                      <Input
+                        type="text"
+                        labelPlacement="inside"
+                        placeholder="請填寫地址"
+                        isRequired
+                        classNames={{ ...inputStyles }}
+                      />
+                    </div>
+                  )}
                   <Checkbox defaultSelected>
                     <span className="text-base">同訂購人資料</span>
                   </Checkbox>
@@ -376,6 +412,8 @@ export default function FillOut() {
                       placeholder="輸入優惠碼"
                       className="w-full mb-1"
                       classNames={{ ...inputStyles }}
+                      name="couponCode"
+                      onChange={handleInputChange}
                     />
                     <span className="text-primary-100 text-sm">
                       套用優惠券：滿NT$100，折NT$50
@@ -398,6 +436,7 @@ export default function FillOut() {
                     {payments.map((payment) => (
                       <label
                         key={payment.id}
+                        aria-label="請選擇付款方式"
                         htmlFor={payment.name}
                         className={`border-solid border-1 rounded-xl px-4 py-3 mb-2 cursor-pointer hover:border-tertiary-gray-100 ${
                           selectedValue === payment.name
@@ -414,11 +453,11 @@ export default function FillOut() {
                               checked={selectedValue === payment.name}
                               color="primary-100"
                               classNames={{ ...inputStyles }}
+                              name="paymentMethod"
                             >
                               {payment.name}
                             </Radio>
                           </div>
-                          {/* <div className="flex gap-1">{paymentMethod.icon}</div> */}
                         </div>
                       </label>
                     ))}
@@ -435,14 +474,18 @@ export default function FillOut() {
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
                   <Select
                     label="發票種類"
+                    aria-label="請選擇發票種類"
                     placeholder="請選擇發票種類"
                     labelPlacement="outside"
                     disableSelectorIconRotation
                     isRequired
                     classNames={{ ...selectStyles }}
+                    name="invoiceOption"
+                    onChange={handleSelectInvoiceChange}
                   >
                     {invoices.map((invoice) => (
                       <SelectItem
+                        aria-label="請選擇發票"
                         key={invoice.id}
                         value={invoice.name}
                         classNames={{ ...selectStyles }}
@@ -451,14 +494,17 @@ export default function FillOut() {
                       </SelectItem>
                     ))}
                   </Select>
-                  <Input
-                    type="text"
-                    label="手機條碼"
-                    placeholder="/ABC+123"
-                    labelPlacement="outside"
-                    isRequired
-                    classNames={{ ...inputStyles }}
-                  />
+                  {selectedInvoiceOption === '2' && (
+                    <Input
+                      type="text"
+                      label="手機條碼"
+                      aria-label="請輸入手機條碼"
+                      placeholder="/ABC+123"
+                      labelPlacement="outside"
+                      isRequired
+                      classNames={{ ...inputStyles }}
+                    />
+                  )}
                 </div>
               </div>
               {/* invoice end */}
@@ -468,7 +514,7 @@ export default function FillOut() {
                 <MyButton color="primary" size="xl" isOutline>
                   <Link href="/">上一步</Link>
                 </MyButton>
-                <MyButton color="primary" size="xl">
+                <MyButton color="primary" size="xl" onClick={handleSubmit}>
                   <Link href="/cart/checkout">下一步</Link>
                 </MyButton>
               </div>
