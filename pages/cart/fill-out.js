@@ -1,4 +1,5 @@
 import { React, useState, Fragment, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { Input } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
@@ -20,18 +21,24 @@ export default function FillOut() {
   const [selectedValue, setSelectedValue] = useState('')
   const { fillOutDetails, setFillOutDetails } = useFillOut()
   const [recipientName, setRecipientName] = useState('')
-  const [contactNumber, setContactNumber] = useState('')
+  const [recipientNumber, setRecipientNumber] = useState('')
   const [deliveryOption, setDeliveryOption] = useState('')
   const [couponCode, setCouponCode] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
+  const [senderName, setSenderName] = useState('')
+  const [senderNumber, setSenderNumber] = useState('')
+  const [senderEmail, setSenderEmail] = useState('')
+  const [deliveryAddress, setDeliveryAddress] = useState('')
   const [invoiceOption, setInvoiceOption] = useState('')
+  const route = useRouter()
+  const source = route.query.source
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
     if (name === 'recipientName') {
       setRecipientName(value)
-    } else if (name === 'contactNumber') {
-      setContactNumber(value)
+    } else if (name === 'recipientNumber') {
+      setRecipientNumber(value)
     } else if (name === 'deliveryOption') {
       setDeliveryOption(value)
     } else if (name === 'couponCode') {
@@ -40,6 +47,14 @@ export default function FillOut() {
       setPaymentMethod(value)
     } else if (name === 'invoiceOption') {
       setInvoiceOption(value)
+    } else if (name === 'senderName') {
+      setSenderName(value)
+    } else if (name === 'senderNumber') {
+      setSenderNumber(value)
+    } else if (name === 'senderEmail') {
+      setSenderEmail(value)
+    } else if (name === 'deliveryAddress') {
+      setDeliveryAddress(value)
     }
   }
 
@@ -47,12 +62,16 @@ export default function FillOut() {
     event.preventDefault()
     // Construct the new form details
     const newFormDetails = {
-      recipientName,
-      contactNumber,
-      deliveryOption,
-      couponCode,
-      paymentMethod,
-      invoiceOption,
+      senderName,
+      senderNumber,
+      senderEmail,
+      recipientName, // 收件人姓名
+      recipientNumber, // 聯絡電話
+      deliveryOption, // 運送選項
+      deliveryAddress,
+      couponCode, // 優惠券代碼
+      paymentMethod, // 付款方式
+      invoiceOption, // 發票
     }
 
     // Update the context and localStorage
@@ -233,39 +252,48 @@ export default function FillOut() {
             {/* 主要內容 */}
             <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-12">
               {/*  buyer start */}
-              <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
-                <FormTag text="訂購人資訊" />
-                <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
-                  <Input
-                    type="text"
-                    label="姓名"
-                    placeholder="請輸入姓名"
-                    labelPlacement="outside"
-                    isRequired
-                    classNames={{ ...inputStyles }}
-                  />
-                  <Input
-                    type="text"
-                    label="手機號碼"
-                    placeholder="09xxxxxxxx"
-                    labelPlacement="outside"
-                    isRequired
-                    classNames={{ ...inputStyles }}
-                  />
-                  <Input
-                    type="text"
-                    label="電子信箱"
-                    placeholder="123@example.com"
-                    labelPlacement="outside"
-                    isRequired
-                    classNames={{ ...inputStyles }}
-                  />
-                  <Checkbox defaultSelected>
-                    <span className="text-base">同會員資料</span>
-                  </Checkbox>
+              {source === 'flower' && (
+                <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
+                  <FormTag text="訂購人資訊" />
+                  <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
+                    <Input
+                      type="text"
+                      label="姓名"
+                      placeholder="請輸入姓名"
+                      labelPlacement="outside"
+                      isRequired
+                      classNames={{ ...inputStyles }}
+                      name="senderName"
+                      onChange={handleInputChange}
+                    />
+                    <Input
+                      type="text"
+                      label="手機號碼"
+                      placeholder="09xxxxxxxx"
+                      labelPlacement="outside"
+                      isRequired
+                      classNames={{ ...inputStyles }}
+                      name="senderNumber"
+                      onChange={handleInputChange}
+                    />
+                    <Input
+                      type="text"
+                      label="電子信箱"
+                      placeholder="123@example.com"
+                      labelPlacement="outside"
+                      isRequired
+                      classNames={{ ...inputStyles }}
+                      name="senderEmail"
+                      onChange={handleInputChange}
+                    />
+                    <Checkbox defaultSelected>
+                      <span className="text-base">同會員資料</span>
+                    </Checkbox>
+                  </div>
                 </div>
-              </div> 
-              {/*  buyer end
+              )}
+
+              {/*  buyer end */}
 
               {/* shipping start */}
               <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
@@ -290,7 +318,7 @@ export default function FillOut() {
                     labelPlacement="outside"
                     isRequired
                     classNames={{ ...inputStyles }}
-                    name="contactNumber"
+                    name="recipientNumber"
                     onChange={handleInputChange}
                   />
                   <Select
