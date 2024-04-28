@@ -7,6 +7,7 @@ import { LoaderProvider } from '@/hooks/use-loader'
 import { CourseFavoritesProvider } from '@/hooks/use-course-fav'
 import { CartProvider } from '@/context/shop-cart-context'
 import { FlowerCartProvider } from '@/hooks/use-flowerCart'
+import { FillOutProvider } from '@/context/fill-out-context'
 export default function MyApp({ Component, pageProps }) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout || ((page) => page)
@@ -18,7 +19,9 @@ export default function MyApp({ Component, pageProps }) {
           <CourseFavoritesProvider>
             <CartProvider>
               <FlowerCartProvider>
-                <Component {...pageProps} />
+                <FillOutProvider>
+                  <Component {...pageProps} />
+                </FillOutProvider>
               </FlowerCartProvider>
             </CartProvider>
           </CourseFavoritesProvider>
