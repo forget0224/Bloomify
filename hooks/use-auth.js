@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
       id: 0,
       username: '',
       name: '',
+      google_uid: '',
     },
   }
 

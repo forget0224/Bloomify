@@ -230,9 +230,8 @@ export default function Profile() {
               <div>
                 <Title text="基本資料" />
               </div>
-              <hr />
               <div className="w-full max-w-2xl flex flex-col items-center mx-auto lg:px-10">
-                <h1 className="text-xl lg:text-3xl mb-12 mt-14">個人資訊</h1>
+                <div className="text-xl lg:text-3xl mb-6 mt-4">個人資訊</div>
                 {/* 大頭貼位置 */}
                 <div className="image-upload flex flex-col items-center">
                   <label htmlFor="file-input">
@@ -252,7 +251,7 @@ export default function Profile() {
                   />
                 </div>
                 <div>
-                  <p>點按頭像可以選擇新照片</p>
+                  <p className="mb-2">點按頭像可以選擇新照片</p>
                 </div>
                 {/* 表單 */}
                 <form
@@ -296,30 +295,33 @@ export default function Profile() {
                     isRequired
                     className={{ ...inputStyles }}
                   />
-                  <Input
-                    // input 要設定name
-                    name="city"
-                    label="城市"
-                    labelPlacement="outside"
-                    placeholder="城市"
-                    type="text"
-                    value={userProfile.city}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                  />
-                  <Input
-                    // input 要設定name
-                    name="district"
-                    label="鄉鎮市區"
-                    labelPlacement="outside"
-                    placeholder="鄉鎮市區"
-                    type="text"
-                    value={userProfile.district}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                  />
+                  <div className="flex gap-16">
+                    <Input
+                      // input 要設定name
+                      name="city"
+                      label="城市"
+                      labelPlacement="outside"
+                      placeholder="城市"
+                      type="text"
+                      value={userProfile.city}
+                      onChange={handleFieldChange}
+                      isRequired
+                      className={{ ...inputStyles }}
+                    />
+                    <Input
+                      // input 要設定name
+                      name="district"
+                      label="鄉鎮市區"
+                      labelPlacement="outside"
+                      placeholder="鄉鎮市區"
+                      type="text"
+                      value={userProfile.district}
+                      onChange={handleFieldChange}
+                      isRequired
+                      className={{ ...inputStyles }}
+                    />
+                  </div>
+
                   <Input
                     // input 要設定name
                     name="address"

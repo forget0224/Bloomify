@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/use-auth'
+import useFirebase from '@/hooks/use-firebase'
 import { useRouter } from 'next/router'
 
 // sweetalert2
@@ -18,6 +19,7 @@ import { MyButton } from '@/components/btn/mybutton'
 // icon
 import { PiEye } from 'react-icons/pi'
 import { PiEyeClosed } from 'react-icons/pi'
+import { FcGoogle } from 'react-icons/fc'
 
 // 解析accessToken用的函式
 // JWT 的範例：xxxxx.yyyyy.zzzzz (Header、Payload 和 Signature)
@@ -39,6 +41,41 @@ export default function Login() {
   // 登入狀態
   const { auth, login } = useAuth()
 
+  // loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
+  const { loginGoogleRedirect, initApp } = useFirebase()
+
+  // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
+  useEffect(() => {
+    initApp(callbackGoogleLoginRedirect)
+  }, [])
+
+  // 處理google登入後，要向伺服器進行登入動作
+  const callbackGoogleLoginRedirect = async (providerData) => {
+    console.log(providerData)
+    // {providerId: 'google.com', uid: '113028051709931150555', displayName: 'I Chen', email: 'easy09150915@gmail.com', phoneNumber: null,…}
+
+    // 如果目前react(next)已經登入中，不需要再作登入動作
+    if (auth.isAuth) return
+
+    // 向伺服器進行登入動作
+    const res = await fetch('http://localhost:3005/api/share-google-login', {
+      credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(providerData),
+    })
+    console.log(res.data)
+
+    // const res = await googleLogin(providerData)
+    // console.log(res.data)
+
+    const data = await res.json()
+    console.log(data)
+  }
+
   // 網址
   const router = useRouter()
 
@@ -51,20 +88,6 @@ export default function Login() {
     username: '',
     password: '',
   })
-
-  //  SweetAlert2 彈窗
-  const MySwal = withReactContent(Swal)
-
-  // SweetAlert2 彈窗設定
-  const notify = (msg) => {
-    MySwal.fire({
-      //position: "top-end",
-      icon: 'success',
-      title: msg,
-      showConfirmButton: false,
-      timer: 1500,
-    })
-  }
 
   // 輸入帳號密碼
   const handleFieldChange = (e) => {
@@ -113,6 +136,20 @@ export default function Login() {
     }
   }
 
+  //  SweetAlert2 彈窗
+  const MySwal = withReactContent(Swal)
+
+  // SweetAlert2 彈窗設定
+  const notify = (msg) => {
+    MySwal.fire({
+      //position: "top-end",
+      icon: 'success',
+      title: msg,
+      showConfirmButton: false,
+      timer: 1500,
+    })
+  }
+
   // input 樣式
   const inputStyles = {
     label: 'text-base',
@@ -125,7 +162,6 @@ export default function Login() {
       router.push('/center')
     }
   }, [auth.isAuth, router])
-
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -180,6 +216,13 @@ export default function Login() {
                   <MyButton className="bg-primary-100 text-white" type="submit">
                     登入
                   </MyButton>
+                  <hr />
+                  <button
+                    className="px-4 py-2 border-2 text-2xl cursor-pointer"
+                    onClick={() => loginGoogleRedirect()}
+                  >
+                    <FcGoogle /> Google登入
+                  </button>
                 </form>
                 <p className="mt-8 text-tertiary-gray-100">
                   尚未成為會員嗎？
