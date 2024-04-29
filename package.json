@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@nextui-org/react": "^2.2.10",
+    "@internationalized/date": "^3.5.2",
+    "@nextui-org/react": "^2.3.6",
+    "@react-aria/i18n": "^3.10.2",
     "@studio-freight/lenis": "^1.0.39",
     "@studio-freight/react-lenis": "^0.0.45",
     "@tailwindcss/forms": "^0.5.7",

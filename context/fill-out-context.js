@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react'
+import React, { createContext, useState, useContext, useEffect } from 'react'
 import useLocalStorage from '../hooks/use-localStorage'
 const FillOutContext = createContext()
 
@@ -12,15 +12,19 @@ export const FillOutProvider = ({ children }) => {
       recipientName: '', // 收件人姓名
       recipientNumber: '', // 聯絡電話
       deliveryOption: '', // 運送選項
+      deliveryShipping: 0,
       deliveryAddress: '',
+      deliveryDate: '',
+      deliveryTime: '',
       couponCode: '', // 優惠券代碼
       paymentMethod: '', // 付款方式
       invoiceOption: '', // 發票
+      mobileBarcode: '',
+      total: 0,
     }
   )
   console.log(fillOutDetails)
 
-  // 提供整個表單數據和更新函數給下面的組件
   return (
     <FillOutContext.Provider value={{ fillOutDetails, setFillOutDetails }}>
       {children}

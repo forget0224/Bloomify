@@ -1,18 +1,24 @@
 import { React, useState, Fragment, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Input } from '@nextui-org/react'
+import { Input, Popover, DatePicker, TimeInput } from '@nextui-org/react'
+import { Time, parseAbsoluteToLocal, now } from '@internationalized/date'
+import { CiClock2 } from 'react-icons/ci'
+import { I18nProvider } from '@react-aria/i18n'
 import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { RadioGroup, Radio } from '@nextui-org/react'
+import { useAuth } from '@/hooks/use-auth'
 import { FaCcMastercard, FaCcVisa, FaCcApplePay } from 'react-icons/fa6'
 import { Stepper } from 'react-dynamic-stepper'
+
 import Link from 'next/link'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
-import CustomCheckOut from '@/components/custom/CustomCheckOut'
+import { DateFormatter } from '@internationalized/date'
+
 export default function FillOut() {
   const [activePage, setActivePage] = useState('cart')
   const [payments, setPayments] = useState([])
@@ -29,53 +35,123 @@ export default function FillOut() {
   const [senderNumber, setSenderNumber] = useState('')
   const [senderEmail, setSenderEmail] = useState('')
   const [deliveryAddress, setDeliveryAddress] = useState('')
+  const [deliveryDate, setDeliveryDate] = useState('')
+  const [deliveryTime, setDeliveryTime] = useState('')
   const [invoiceOption, setInvoiceOption] = useState('')
+  const [deliveryShipping, setDeliveryShipping] = useState(0)
+  const [mobileBarcode, setMobileBarcode] = useState('')
+  const [syncData, setSyncData] = useState(false)
+  const { auth } = useAuth()
+  const { userData, isAuth } = auth
+  const [city, setCity] = useState('')
+  const [township, setTownship] = useState('')
+  const [postalCode, setPostalCode] = useState('')
+  const [addressDetail, setAddressDetail] = useState('')
+
+  const [date, setDate] = useState(now('Asia/Taipei'))
+  const [time, setTime] = useState('')
+  const times = ['不指定時間']
+  for (let hour = 9; hour <= 21; hour++) {
+    const formattedHour = hour < 10 ? `0${hour}:00` : `${hour}:00`
+    times.push(formattedHour)
+  }
+  const handleCityChange = (value) => {
+    setCity(value)
+    updateDeliveryAddress()
+  }
+
+  const handleTownshipChange = (value) => {
+    setTownship(value)
+    updateDeliveryAddress()
+  }
+
+  const handlePostalCodeChange = (value) => {
+    setPostalCode(value)
+    updateDeliveryAddress()
+  }
+
+  const handleAddressDetailChange = (value) => {
+    setAddressDetail(value)
+    updateDeliveryAddress()
+  }
+
+  const handleTimeChange = (e) => {
+    setDeliveryTime(e.target.value)
+    console.log(deliveryTime)
+  }
+
+  const handleDateChange = (value) => {
+    setDate(value)
+    setDeliveryDate(`${value.year}/${value.month}/${value.day}`)
+  }
+  const [useMemberInfo, setUseMemberInfo] = useState(false)
+
   const route = useRouter()
   const source = route.query.source
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
-    if (name === 'recipientName') {
-      setRecipientName(value)
-    } else if (name === 'recipientNumber') {
-      setRecipientNumber(value)
-    } else if (name === 'deliveryOption') {
-      setDeliveryOption(value)
-    } else if (name === 'couponCode') {
-      setCouponCode(value)
-    } else if (name === 'paymentMethod') {
-      setPaymentMethod(value)
-    } else if (name === 'invoiceOption') {
-      setInvoiceOption(value)
-    } else if (name === 'senderName') {
-      setSenderName(value)
-    } else if (name === 'senderNumber') {
-      setSenderNumber(value)
-    } else if (name === 'senderEmail') {
-      setSenderEmail(value)
-    } else if (name === 'deliveryAddress') {
-      setDeliveryAddress(value)
+    switch (name) {
+      case 'recipientName':
+        setRecipientName(value)
+        break
+      case 'recipientNumber':
+        setRecipientNumber(value)
+        break
+      case 'deliveryOption':
+        setDeliveryOption(value)
+        break
+      case 'couponCode':
+        setCouponCode(value)
+        break
+      case 'paymentMethod':
+        setPaymentMethod(value)
+        break
+      case 'invoiceOption':
+        setInvoiceOption(value)
+        break
+      case 'senderName':
+        setSenderName(value)
+        if (syncData) setRecipientName(value)
+        break
+      case 'senderNumber':
+        setSenderNumber(value)
+        if (syncData) setRecipientNumber(value)
+        break
+      case 'senderEmail':
+        setSenderEmail(value)
+        break
+      case 'deliveryAddress':
+        setDeliveryAddress(value)
+        break
+
+      default:
+        // 可以在这里处理默认情况或者当未匹配到任何键时的情况
+        console.log(`Unknown field: ${name}`)
     }
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    // Construct the new form details
     const newFormDetails = {
       senderName,
       senderNumber,
       senderEmail,
       recipientName, // 收件人姓名
       recipientNumber, // 聯絡電話
-      deliveryOption, // 運送選項
+      deliveryDate,
+      deliveryTime,
+      deliveryOption: selectedDeliveryOption.name, // 運送選項
+      deliveryShipping,
       deliveryAddress,
       couponCode, // 優惠券代碼
       paymentMethod, // 付款方式
       invoiceOption, // 發票
+      mobileBarcode,
     }
-
-    // Update the context and localStorage
-    setFillOutDetails(newFormDetails)
+    console.log(newFormDetails)
+    await setFillOutDetails(newFormDetails)
+    route.push(`/cart/checkout?source=${source}`)
   }
 
   useEffect(() => {
@@ -132,16 +208,26 @@ export default function FillOut() {
   // 點選相對應的運送方式會顯示的東西
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState('')
   const handleSelectDeliveryChange = (event) => {
-    const selected = event.target.value
-    setSelectedDeliveryOption(selected)
+    const shipping = shippings.find(
+      (sh) => sh.id === Number(event.target.value)
+    )
+    if (shipping) {
+      setDeliveryShipping(shipping.cost)
+      setSelectedDeliveryOption(shipping) // 直接存储整个shipping对象
+    }
   }
-  console.log(selectedDeliveryOption)
 
   // 點選相對應的發票方式會顯示的東西
   const [selectedInvoiceOption, setSelectedInvoiceOption] = useState('')
   const handleSelectInvoiceChange = (event) => {
-    const selected = event.target.value
-    setSelectedInvoiceOption(selected)
+    const selectedInvoice = invoices.find(
+      (invoice) => invoice.id === Number(event.target.value)
+    )
+    setSelectedInvoiceOption(selectedInvoice)
+  }
+
+  const handleBarcodeChange = (event) => {
+    setMobileBarcode(event.target.value) // Update state when user types in the barcode
   }
 
   const cities = [
@@ -174,9 +260,14 @@ export default function FillOut() {
       label: '110',
     },
   ]
+  function updateDeliveryAddress() {
+    if (city && township && postalCode && addressDetail) {
+      setDeliveryAddress(`${city} ${township} ${postalCode} ${addressDetail}`)
+    }
+  }
 
   const handleRadioChange = (value) => {
-    setSelectedValue(value)
+    setPaymentMethod(value)
   }
 
   // stepper
@@ -224,6 +315,25 @@ export default function FillOut() {
     value: ['text-base', 'text-tertiary-gray-100'],
   }
 
+  const handleCheckboxChange = () => {
+    setUseMemberInfo(!useMemberInfo)
+  }
+  const handleRecipientChange = (event) => {
+    const isChecked = event.target.checked
+    setSyncData(isChecked)
+    if (isChecked) {
+      setRecipientName(senderName)
+      setRecipientNumber(senderNumber)
+    }
+  }
+
+  useEffect(() => {
+    if (useMemberInfo && userData) {
+      setSenderName(userData.name || '')
+      setSenderNumber(userData.phone || '')
+      setSenderEmail(userData.username || '')
+    }
+  }, [useMemberInfo, userData])
   return (
     <>
       <DefaultLayout activePage={activePage}>
@@ -264,6 +374,7 @@ export default function FillOut() {
                       isRequired
                       classNames={{ ...inputStyles }}
                       name="senderName"
+                      value={senderName}
                       onChange={handleInputChange}
                     />
                     <Input
@@ -274,6 +385,7 @@ export default function FillOut() {
                       isRequired
                       classNames={{ ...inputStyles }}
                       name="senderNumber"
+                      value={senderNumber}
                       onChange={handleInputChange}
                     />
                     <Input
@@ -284,9 +396,13 @@ export default function FillOut() {
                       isRequired
                       classNames={{ ...inputStyles }}
                       name="senderEmail"
+                      value={senderEmail}
                       onChange={handleInputChange}
                     />
-                    <Checkbox defaultSelected>
+                    <Checkbox
+                      checked={useMemberInfo}
+                      onChange={handleCheckboxChange}
+                    >
                       <span className="text-base">同會員資料</span>
                     </Checkbox>
                   </div>
@@ -309,6 +425,7 @@ export default function FillOut() {
                     isRequired
                     classNames={{ ...inputStyles }}
                     name="recipientName"
+                    value={recipientName}
                     onChange={handleInputChange}
                   />
                   <Input
@@ -319,8 +436,12 @@ export default function FillOut() {
                     isRequired
                     classNames={{ ...inputStyles }}
                     name="recipientNumber"
+                    value={recipientNumber}
                     onChange={handleInputChange}
                   />
+                  <Checkbox checked={syncData} onChange={handleRecipientChange}>
+                    <span className="text-base">同訂購人資料</span>
+                  </Checkbox>
                   <Select
                     label="配送方式"
                     placeholder="請選擇配送方式"
@@ -331,99 +452,145 @@ export default function FillOut() {
                     onChange={handleSelectDeliveryChange}
                   >
                     {shippings.map((shipping) => (
-                      <SelectItem key={shipping.id} value={shipping.name}>
+                      <SelectItem key={shipping.id} value={shipping.id}>
                         {shipping.name}
                       </SelectItem>
                     ))}
                   </Select>
-                  {selectedDeliveryOption === '3' && (
-                    <div className="w-full flex flex-col gap-1">
-                      <label htmlFor="pickup" className="block mb-1 text-base">
-                        取貨門市
-                      </label>
-                      <MyButton
-                        color="primary"
-                        size="xl"
-                        id="pickup"
-                        type="button"
-                        className="w-full"
-                        isOutline
-                      >
-                        7-ELEVEN
-                      </MyButton>
-                    </div>
-                  )}
-                  {/* address */}{' '}
-                  {selectedDeliveryOption === '1' && (
-                    <div className="flex flex-col gap-3">
-                      <div className="space-y-3 sm:flex sm:gap-3 ">
-                        <Select
-                          label="配送地址"
-                          placeholder="請選擇城市"
-                          labelPlacement="outside"
-                          disableSelectorIconRotation
-                          isRequired
-                          classNames={{ ...selectStyles }}
+                  {selectedDeliveryOption &&
+                    selectedDeliveryOption.id === 3 && (
+                      <div className="w-full flex flex-col gap-1">
+                        <label
+                          htmlFor="pickup"
+                          className="block mb-1 text-base"
                         >
-                          {cities.map((shippingMethod) => (
-                            <SelectItem
-                              key={shippingMethod.value}
-                              value={shippingMethod.value}
-                              classNames={{
-                                base: 'text-base',
-                              }}
-                            >
-                              {shippingMethod.label}
-                            </SelectItem>
-                          ))}
-                        </Select>
-                        <Select
-                          label=""
-                          placeholder="請選擇鄉鎮"
-                          labelPlacement="outside"
-                          disableSelectorIconRotation
-                          isRequired
-                          classNames={{ ...selectStyles }}
+                          取貨門市
+                        </label>
+                        <MyButton
+                          color="primary"
+                          size="xl"
+                          id="pickup"
+                          type="button"
+                          className="w-full"
+                          isOutline
                         >
-                          {townships.map((shippingMethod) => (
-                            <SelectItem
-                              key={shippingMethod.value}
-                              value={shippingMethod.value}
-                            >
-                              {shippingMethod.label}
-                            </SelectItem>
-                          ))}
-                        </Select>
-                        <Select
-                          label=""
-                          placeholder="郵遞區號"
-                          labelPlacement="outside"
-                          disableSelectorIconRotation
-                          isRequired
-                          classNames={{ ...selectStyles }}
-                        >
-                          {postalCodes.map((shippingMethod) => (
-                            <SelectItem
-                              key={shippingMethod.value}
-                              value={shippingMethod.value}
-                            >
-                              {shippingMethod.label}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                          7-ELEVEN
+                        </MyButton>
                       </div>
-                      <Input
-                        type="text"
-                        labelPlacement="inside"
-                        placeholder="請填寫地址"
-                        isRequired
-                        classNames={{ ...inputStyles }}
+                    )}
+                  {/* address */}{' '}
+                  {selectedDeliveryOption &&
+                    selectedDeliveryOption.id === 1 && (
+                      <div className="flex flex-col gap-3">
+                        <div className="space-y-3 sm:flex sm:gap-3 ">
+                          <Select
+                            label="配送地址"
+                            placeholder="請選擇城市"
+                            labelPlacement="outside"
+                            disableSelectorIconRotation
+                            isRequired
+                            classNames={{ ...selectStyles }}
+                            onChange={(e) => handleCityChange(e.target.value)}
+                          >
+                            {cities.map((shippingMethod) => (
+                              <SelectItem
+                                key={shippingMethod.value}
+                                value={shippingMethod.value}
+                                classNames={{
+                                  base: 'text-base',
+                                }}
+                              >
+                                {shippingMethod.label}
+                              </SelectItem>
+                            ))}
+                          </Select>
+                          <Select
+                            label=""
+                            placeholder="請選擇鄉鎮"
+                            labelPlacement="outside"
+                            disableSelectorIconRotation
+                            isRequired
+                            classNames={{ ...selectStyles }}
+                            onChange={(e) =>
+                              handleTownshipChange(e.target.value)
+                            }
+                          >
+                            {townships.map((shippingMethod) => (
+                              <SelectItem
+                                key={shippingMethod.value}
+                                value={shippingMethod.value}
+                              >
+                                {shippingMethod.label}
+                              </SelectItem>
+                            ))}
+                          </Select>
+                          <Select
+                            label=""
+                            placeholder="郵遞區號"
+                            labelPlacement="outside"
+                            disableSelectorIconRotation
+                            isRequired
+                            classNames={{ ...selectStyles }}
+                            onChange={(e) =>
+                              handlePostalCodeChange(e.target.value)
+                            }
+                          >
+                            {postalCodes.map((shippingMethod) => (
+                              <SelectItem
+                                key={shippingMethod.value}
+                                value={shippingMethod.value}
+                              >
+                                {shippingMethod.label}
+                              </SelectItem>
+                            ))}
+                          </Select>
+                        </div>
+                        <Input
+                          type="text"
+                          labelPlacement="inside"
+                          placeholder="請填寫地址"
+                          isRequired
+                          classNames={{ ...inputStyles }}
+                          // onChange={handleAddressDetailChange}
+                          onValueChange={handleAddressDetailChange}
+                        />
+                      </div>
+                    )}
+                  <div className="flex w-full  gap-4">
+                    <I18nProvider locale="zh-TW">
+                      <DatePicker
+                        showMonthAndYearPickers
+                        variant="bordered"
+                        className=""
+                        calendarProps={{
+                          size: 'lg', // 設置為中等尺寸
+                        }}
+                        granularity="day"
+                        label="配送日期"
+                        value={date}
+                        onChange={handleDateChange}
                       />
-                    </div>
-                  )}
-                  <Checkbox defaultSelected>
-                    <span className="text-base">同訂購人資料</span>
-                  </Checkbox>
+                    </I18nProvider>
+                  </div>
+                  <div className="container">
+                    <Select
+                      size="sm"
+                      clearable
+                      label="配送時間"
+                      placeholder="選擇時間"
+                      value={deliveryTime}
+                      onChange={handleTimeChange}
+                      startContent={
+                        <CiClock2 className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
+                      }
+                    >
+                      {times.map((time, index) => (
+                        <SelectItem key={index} value={time}>
+                          {time}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
                 </div>
               </div>
               {/* shipping end */}
@@ -522,7 +689,7 @@ export default function FillOut() {
                       </SelectItem>
                     ))}
                   </Select>
-                  {selectedInvoiceOption === '2' && (
+                  {selectedInvoiceOption === 2 && (
                     <Input
                       type="text"
                       label="手機條碼"
@@ -530,6 +697,8 @@ export default function FillOut() {
                       placeholder="/ABC+123"
                       labelPlacement="outside"
                       isRequired
+                      value={mobileBarcode}
+                      onChange={handleBarcodeChange}
                       classNames={{ ...inputStyles }}
                     />
                   )}
@@ -545,6 +714,11 @@ export default function FillOut() {
                 <MyButton color="primary" size="xl" onClick={handleSubmit}>
                   <Link href={`/cart/checkout?source=${source}`}>下一步</Link>
                 </MyButton>
+                <div>
+                  {/* <MyButton color="primary" size="xl" onClick={handleSubmit}>
+                    下一步
+                  </MyButton> */}
+                </div>
               </div>
             </div>
           </div>

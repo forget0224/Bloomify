@@ -31,7 +31,7 @@ export default function CustomNav() {
 
       dispatch({
         type: 'SET_CARD',
-        payload: { content: cardInfo },
+        payload: cardInfo,
       })
 
       const productPayload = imagesInfo.map((img) => ({
