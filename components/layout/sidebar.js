@@ -151,6 +151,14 @@ export default function Sidebar() {
             我的課程
           </Link>
           <Link
+            href="/center/course-calendar"
+            className={`hover:text-primary-100 ${
+              isActive('/center/course-calendar') ? 'text-primary-100' : ''
+            }`}
+          >
+            我的課表
+          </Link>
+          <Link
             href="/center/course-favorite"
             className={`hover:text-primary-100 ${
               isActive('/center/course-favorite') ? 'text-primary-100' : ''

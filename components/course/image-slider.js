@@ -4,7 +4,11 @@ import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
 
 export default function CourseImageSlider({ images }) {
   useEffect(() => {
-    console.log(images)
+    if (images && images.length > 0) {
+      const mainImage = images.find((img) => img.is_main) || images[0]
+      setSelectedImage(mainImage)
+    }
+    // console.log(images)
   }, [images])
 
   // 假定 images 陣列已經有值，並且已經包含了 is_main 屬性。

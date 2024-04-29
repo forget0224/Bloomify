@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { Slider } from '@nextui-org/react'
 // import Datepicker from 'react-tailwindcss-datepicker'
 // 小組元件
 import { useCourseFavorites } from '@/hooks/use-course-fav'
@@ -31,20 +32,10 @@ export default function CourseSearch() {
   const indexOfFirstCourse = indexOfLastCourse - cardsPerPage
   const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse)
 
-  // datepicker 變數
-  // const [value, setValue] = useState({
-  //   startDate: new Date(),
-  //   endDate: new Date().setMonth(11),
-  // })
-
-  // const handleValueChange = (newValue) => {
-  //   console.log('newValue:', newValue)
-  //   setValue(newValue)
-  // }
-
-  // 分類dropdown menu
+  // 分類 dropdown menu ------------------------------------------------------------
   const [selectedCategoryId, setSelectedCategoryId] = useState('')
   const [categoryMap, setCategoryMap] = useState({})
+
   useEffect(() => {
     const map = {}
     categories.forEach((Category) => {
@@ -52,7 +43,21 @@ export default function CourseSearch() {
     })
     setCategoryMap(map)
   }, [categories])
-  // 分類 query string更新
+
+  useEffect(() => {
+    // 檢查 URL 中是否有 category_id 查詢參數
+    const queryCategoryId = router.query.category_id
+
+    if (queryCategoryId) {
+      // 如果有 category_id 參數，設置 selectedCategoryId
+      setSelectedCategoryId(queryCategoryId)
+    } else {
+      // 如果没有 category_id 參數，重置 selectedCategoryId
+      setSelectedCategoryId('')
+    }
+  }, [router.query])
+
+  // 處理交互，接收新的categoryId並更新selectedCategoryId，並更新路由
   const handleCategoryChange = (categoryId) => {
     setSelectedCategoryId(categoryId)
     router.push({
@@ -60,14 +65,17 @@ export default function CourseSearch() {
       query: { ...router.query, category_id: categoryId },
     })
   }
+
+  // 生成下拉清單選項，印出分類的value(id)和label(name)
   const categoryOptions = categories.map((category) => ({
     value: category.id,
     label: category.name,
   }))
 
-  // 商家dropdown menu
+  // 商家 dropdown menu ------------------------------------------------------------
   const [selectedStoreId, setSelectedStoreId] = useState('')
   const [storeMap, setStoreMap] = useState({})
+
   useEffect(() => {
     const map = {}
     stores.forEach((store) => {
@@ -75,7 +83,21 @@ export default function CourseSearch() {
     })
     setStoreMap(map)
   }, [stores])
-  // 商家query string更新
+
+  useEffect(() => {
+    // 檢查 URL 中是否有 store_id 查詢參數
+    const queryStoreId = router.query.store_id
+
+    if (queryStoreId) {
+      // 如果有 store_id 參數，設置 selectedStoreId
+      setSelectedStoreId(queryStoreId)
+    } else {
+      // 如果没有 store_id 參數，重置 selectedStoreId
+      setSelectedStoreId('')
+    }
+  }, [router.query])
+
+  // 處理交互，接收新的storeId並更新selectedStoreId，並更新路由
   const handleStoreChange = (storeId) => {
     setSelectedStoreId(storeId)
     router.push({
@@ -83,18 +105,38 @@ export default function CourseSearch() {
       query: { ...router.query, store_id: storeId },
     })
   }
+
+  // 生成下拉清單選項，印出分類的value(id)和label(name)
   const storeOptions = stores.map((store) => ({
     value: store.store_id,
     label: store.store_name,
   }))
 
-  // 排序query string更新
+  // 價格 range slider -------------------------------------------------------------
+  const [priceRange, setPriceRange] = useState([100, 500]) // 預設值
+
+  // 處理slider值變化的函數
+  const handlePriceChange = (value) => {
+    setPriceRange(value) // 更新狀態
+    updateRoute(value) // 更新路由
+  }
+
+  const updateRoute = (priceRange) => {
+    const queryParams = new URLSearchParams(window.location.search)
+    queryParams.set('min_price', priceRange[0])
+    queryParams.set('max_price', priceRange[1])
+    router.push(`/course/search?${queryParams.toString()}`)
+  }
+
+  // 排序 dropdown menu ------------------------------------------------------------
   const [sortOption, setSortOption] = useState('最新上架')
   const sortOptions = [
     { value: 'latest', label: '最新上架' },
+    { value: 'highestRated', label: '評價最高' },
     { value: 'cheapest', label: '價格低到高' },
     { value: 'expensive', label: '價格高到低' },
   ]
+
   const handleSortChange = (value) => {
     // 查找對應的標籤
     const option = sortOptions.find((option) => option.value === value)
@@ -108,6 +150,17 @@ export default function CourseSearch() {
       query: { ...router.query, sort: value },
     })
   }
+
+  // datepicker 變數
+  // const [value, setValue] = useState({
+  //   startDate: new Date(),
+  //   endDate: new Date().setMonth(11),
+  // })
+
+  // const handleValueChange = (newValue) => {
+  //   console.log('newValue:', newValue)
+  //   setValue(newValue)
+  // }
 
   // fetch 資料
   useEffect(() => {
@@ -216,6 +269,42 @@ export default function CourseSearch() {
                 onChange={handleCategoryChange}
               />
 
+              {/* 開課商家 */}
+              <CourseDropdown
+                label="選擇商家"
+                options={storeOptions}
+                selectedOption={storeMap[selectedStoreId] || '選擇商家'}
+                onChange={handleStoreChange}
+              />
+
+              {/* 價格範圍 */}
+              <Slider
+                label="Price Range"
+                size="md"
+                step={500}
+                minValue={0}
+                maxValue={5000}
+                value={priceRange} // 綁定狀態
+                onChange={handlePriceChange} // 綁定處理函數
+                formatOptions={{ style: 'currency', currency: 'NTD' }}
+                classNames={{
+                  base: 'max-w-xs',
+                  filler: '',
+                  labelWrapper: '',
+                  label: '',
+                  value: '',
+                }}
+              />
+
+              {/* 排序 */}
+              <span className="ml-4">排序</span>
+              <CourseDropdown
+                label="預設排序"
+                options={sortOptions}
+                selectedOption={sortOption}
+                onChange={handleSortChange}
+              />
+
               {/* 日期範圍 */}
               {/* <Datepicker
                 value={value}
@@ -229,36 +318,21 @@ export default function CourseSearch() {
                 maxDate={new Date('2025-12-31')}
               /> */}
 
-              {/* 開課商家 */}
-              <CourseDropdown
-                label="選擇商家"
-                options={storeOptions}
-                selectedOption={storeMap[selectedStoreId] || '選擇商家'}
-                onChange={handleStoreChange}
-              />
-
-              {/* 排序 */}
-              <span className="ml-4">排序</span>
-              <CourseDropdown
-                label="預設排序"
-                options={sortOptions}
-                selectedOption={sortOption}
-                onChange={handleSortChange}
-              />
-              <span className="text-tertiary-gray-100">
-                {courseCount}筆資料
-              </span>
-              <Link href={'/course/search'}>
-                <span className="text-primary-100 hover:text-primary-200">
-                  條件清空
+              <div className="flex flex-row gap-4 mt-2">
+                <span className="text-tertiary-gray-100">
+                  {courseCount}筆資料
                 </span>
-              </Link>
+                <Link href={'/course/search'}>
+                  <span className="text-primary-100 hover:text-primary-200">
+                    條件清空
+                  </span>
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* 搜尋結果卡片 */}
           <div className="grid gap-y-16 my-14 w-full">
-            {/* <CardGroup courses={courses} /> */}
             <CardGroup courses={currentCourses} />
           </div>
 

@@ -5,7 +5,6 @@ import { useDisclosure } from '@nextui-org/react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { Pagination } from '@nextui-org/react'
-import { BsChevronRight } from 'react-icons/bs'
 import moment from 'moment'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
@@ -20,7 +19,17 @@ export default function CenterCourse() {
   useEffect(() => {
     async function fetchAllCourses() {
       try {
-        const response = await fetch('http://localhost:3005/api/course-orders')
+        const response = await fetch(
+          `http://localhost:3005/api/course-orders`,
+          {
+            credentials: 'include',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            method: 'GET',
+          }
+        )
         const data = await response.json()
         console.log('API data:', data) // 確認數據已接收
         if (response.ok && data.status === 'success') {

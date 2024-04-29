@@ -13,6 +13,7 @@ import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { FaShareAlt } from 'react-icons/fa'
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
 // 小組元件
+import { useCourseFavorites } from '@/hooks/use-course-fav'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Loader from '@/components/common/loader'
@@ -27,6 +28,7 @@ import CourseComment from '@/components/course/div-comment'
 import CardGroup from '@/components/course/card-group'
 import AverageStars from '@/components/course/star-average'
 import HeartButton from '@/components/course/btn-heart'
+import { useCart } from '@/context/course-cart-context'
 
 export default function CourseDetails() {
   const { close, open, isLoading } = useLoader()
@@ -35,6 +37,7 @@ export default function CourseDetails() {
   const [courseDetails, setCourseDetails] = useState([cid])
   const [randomCourses, setRandomCourses] = useState([])
   const [averageStars, setAverageStars] = useState([])
+  const { addFavoritesStatusToCourses } = useCourseFavorites()
 
   // 點擊加入購物車/直接購買，滑動到選擇日期區塊
   const dateRef = useRef(null)
@@ -66,7 +69,7 @@ export default function CourseDetails() {
   }
 
   // 假設每張卡片的寬度加上間隔約是300px
-  const scrollAmount = 750 // 3張卡片的總寬度
+  const scrollAmount = 850 // 3張卡片的總寬度
 
   // FETCH 資料
   useEffect(() => {
@@ -109,12 +112,11 @@ export default function CourseDetails() {
       try {
         const response = await fetch('http://localhost:3005/api/courses/random')
         const data = await response.json()
-        if (
-          data.status === 'success' &&
-          Array.isArray(data.data.randomCourses)
-        ) {
+        if (data.status === 'success' && Array.isArray(data.data.courses)) {
+          // 使用 addFavoritesStatusToCourses 來整合收藏狀態
+          const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理隨機課程數據
-          setRandomCourses(processCourses(data.data.randomCourses))
+          setRandomCourses(processCourses(updatedCourses))
         }
       } catch (error) {
         console.error('Error fetching random courses:', error)
@@ -124,10 +126,6 @@ export default function CourseDetails() {
     fetchCourseDetails()
     fetchRandomCourses()
   }, [cid])
-
-  // if (!CourseDetails) {
-  //   return <div>Loading...</div>
-  // }
 
   // 處理課程函數
   function processCourses(coursesArray) {
@@ -282,7 +280,10 @@ export default function CourseDetails() {
             <div ref={dateRef} className="flex flex-col gap-6">
               <Subtitle text="上課日期" />
               <div className="flex flex-col gap-4">
-                <CardTime datetimes={courseDetails.datetimes} />
+                <CardTime
+                  courseDetails={courseDetails}
+                  datetimes={courseDetails.datetimes}
+                />
               </div>
             </div>
             {/* 課程評價 */}

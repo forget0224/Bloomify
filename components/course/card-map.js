@@ -7,6 +7,11 @@ import { Link } from '@nextui-org/react'
 import Subtitle from '../common/subtitle'
 
 export default function CourseMap({ store }) {
+  // 如果傳進來的值未定義
+  if (!store) {
+    return <div>Loading...</div>
+  }
+
   // 接收父組件的商家資訊
   return (
     <Card className="p-4 text-tertiary-black">

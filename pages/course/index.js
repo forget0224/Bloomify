@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Image, Card, CardBody, Link } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { useAuth } from '@/hooks/use-auth'
-// 小組元件
 import { useCourseFavorites } from '@/hooks/use-course-fav'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'

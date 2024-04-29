@@ -48,7 +48,17 @@ export default function MyCourse() {
 
     async function fetchOrders() {
       try {
-        const response = await fetch('http://localhost:3005/api/course-orders')
+        const response = await fetch(
+          `http://localhost:3005/api/course-orders`,
+          {
+            credentials: 'include',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            method: 'GET',
+          }
+        )
         const data = await response.json()
         console.log('API data:', data) // 確認數據已接收
         if (response.ok && data.status === 'success') {
