@@ -24,36 +24,36 @@ import {
 } from '@nextui-org/react'
 
 export default function FlowersIndex() {
-// ----------季節篩選器部分start----------
-// 花卡片的季節狀態及更新函數
-const [selectedSeason, setSelectedSeason] = useState('所有季節')
+  // ----------季節篩選器部分start----------
+  // 花卡片的季節狀態及更新函數
+  const [selectedSeason, setSelectedSeason] = useState('所有季節')
 
-// 季節選擇器改變時的處理函數
-const handleSeasonChange = (e) => {
-  // 清空搜尋字串
-  setSearchTerm('')
-  
-  setSelectedOccasion('所有場合')
+  // 季節選擇器改變時的處理函數
+  const handleSeasonChange = (e) => {
+    // 清空搜尋字串
+    setSearchTerm('')
+
+    setSelectedOccasion('所有場合')
     setSelectedColor('所有顏色')
     setSelectedRole('所有對象')
     setSortOption('A→Z')
-  const selectedSeason = e.target.value
-  console.log(selectedSeason)
-  setSelectedSeason(selectedSeason)
+    const selectedSeason = e.target.value
+    console.log(selectedSeason)
+    setSelectedSeason(selectedSeason)
 
-  // 根據選擇的季節進行相應的操作
-  // 如果選擇了「所有季節」，則設置所有的花朵資料 否則，根據選擇的季節進行篩選
-  if (selectedSeason === '所有季節') {
-    setFlowerData(introData)
-  } else {
-    // 在這裡使用 selectedSeason 來篩選 introData 中的花朵資料
-    const filteredData = introData.filter((flower) =>
-      flower.season.includes(selectedSeason)
-    )
-    setFlowerData(filteredData)
+    // 根據選擇的季節進行相應的操作
+    // 如果選擇了「所有季節」，則設置所有的花朵資料 否則，根據選擇的季節進行篩選
+    if (selectedSeason === '所有季節') {
+      setFlowerData(introData)
+    } else {
+      // 在這裡使用 selectedSeason 來篩選 introData 中的花朵資料
+      const filteredData = introData.filter((flower) =>
+        flower.season.includes(selectedSeason)
+      )
+      setFlowerData(filteredData)
+    }
   }
-}
-// ----------季節篩選器部分start----------
+  // ----------季節篩選器部分start----------
   // ----------對象篩選器部分start----------
   // 花卡片的對象狀態及更新函數
   const [selectedRole, setSelectedRole] = useState('所有對象')
@@ -61,12 +61,12 @@ const handleSeasonChange = (e) => {
   const handleRoleChange = (e) => {
     // 清空搜尋字串
     setSearchTerm('')
-    
+
     setSelectedOccasion('所有場合')
     setSelectedColor('所有顏色')
     setSelectedSeason('所有季節')
     setSortOption('A→Z')
-    
+
     const selectedRole = e.target.value
     console.log(selectedRole)
     setSelectedRole(selectedRole)
@@ -91,7 +91,7 @@ const handleSeasonChange = (e) => {
   const handleColorChange = (e) => {
     // 清空搜尋字串
     setSearchTerm('')
-    
+
     setSelectedOccasion('所有場合')
     setSelectedRole('所有對象')
     setSelectedSeason('所有季節')
@@ -127,12 +127,11 @@ const handleSeasonChange = (e) => {
     // setSelectedOccasion('')
     // 清空搜尋字串
     setSearchTerm('')
-    
+
     setSelectedColor('所有顏色')
     setSelectedRole('所有對象')
     setSelectedSeason('所有季節')
     setSortOption('A→Z')
-    
 
     const selectedOccasion = e.target.value
     console.log(selectedOccasion)
@@ -193,13 +192,13 @@ const handleSeasonChange = (e) => {
     // console.log(x)
 
     // 設置場合選擇器的值為「所有XX」
-     
+
     setSelectedOccasion('所有場合')
     setSelectedColor('所有顏色')
     setSelectedRole('所有對象')
     setSelectedSeason('所有季節')
     setSortOption('A→Z')
-  
+
     // let selectedOccasion = '23'
     // console.log(selectedOccasion)
     // setSelectedOccasion(selectedOccasion)
@@ -497,7 +496,7 @@ const handleSeasonChange = (e) => {
           {/* ------------花圖鑑首頁banner end------------*/}
 
           {/* ------------清水模背景區塊 start------------*/}
-          <div className="bg-[url('/assets/intro/vintage_speckles.png')]">
+          <div className="bg-[url('/assets/intro/vintage_speckles.png')] px-8">
             <div className="m-8">
               {/* --------search & select & sort end--------*/}
 
@@ -657,16 +656,20 @@ const handleSeasonChange = (e) => {
 
             {/* --------花朵卡片群組-------- */}
             <div className="grid gap-y-4 my-14 ">
-              <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
+              <div className="gap- grid grid-cols-2 sm:grid-cols-4">
                 <Modal size={sizes} isOpen={isOpen} onClose={onClose}>
                   <ModalContent>
                     {(onClose) => (
                       <>
-                        <ModalHeader className="flex flex-col gap-1 text-center">
+                        <ModalHeader className="flex flex-col gap-1 text-center text-3xl text-tertiary-black font-semibold">
                           詳細介紹
                         </ModalHeader>
-                        <ModalBody className="flex flex-row">
-                          <div className="max-w-60 mx-auto ">
+                        <ModalBody className="flex flex-row bg-blue">
+                          <div
+                            className="max-w-screen-2xl bg- px-12 pt-12
+
+                        "
+                          >
                             <Image
                               isZoomed
                               removeWrapper
@@ -674,12 +677,28 @@ const handleSeasonChange = (e) => {
                               src={modalData ? modalData.flower_image_2 : ''}
                             />
                           </div>
-                          <div className="flex flex-col m-12 justify-center">
+                          <div className="flex flex-col mt-6 justify-center bg-">
                             <ul>
-                              <li>{modalData ? modalData.intro : ''}</li>
+                              <li className="text-center text-2xl text-tertiary-black font-semibold">
+                                {modalData ? modalData.name : ''}
+                              </li>
+                              <li className="text-center text-xl text-tertiary-black font-semibold">
+                                {modalData ? modalData.engname : ''}
+                              </li>
+                              <br></br>
+                              {/* <li className="text-center text-xl text-tertiary-black font-semibold">
+                                {modalData ? modalData.lang : ''}
+                              </li>
+                              <br></br> */}
+                              <li className="break-all text-lg text-tertiary-black font-semibold">
+                                {modalData ? modalData.intro : ''}
+                              </li>
 
                               <hr className="h-px my-8 border-1 border-secondary-100" />
-                              <div className="list-disc">
+                              <div className="list-disc ml-6">
+                              {/* <li>
+                                  花語:{modalData ? modalData.lang : ''}
+                                </li> */}
                                 <li>
                                   花期:{modalData ? modalData.season : ''}
                                 </li>
@@ -694,18 +713,19 @@ const handleSeasonChange = (e) => {
                                 </li>
                               </div>
                             </ul>
-                            <div className="justify-center flex m-3">
+                            <div className="justify-center flex pt-7">
                               <MyButton color="secondary" size="md">
                                 販售店家
                               </MyButton>
                             </div>
                           </div>
                         </ModalBody>
-                        <ModalFooter>
+                        <ModalFooter className="bg-secondary">
                           <Button
                             color="danger"
                             variant="light"
                             onPress={onClose}
+                            className="font-bold"
                           >
                             Close
                           </Button>
@@ -723,8 +743,8 @@ const handleSeasonChange = (e) => {
                     isPressable
                     className="bg-transparent"
                   >
-                    <CardBody className="static overflow-visible p-0 bg-transparent">
-                      <div className="bg-transparent">
+                    <CardBody className="static overflow-visible bg-">
+                      <div className="bg- pt-8 mx-4">
                         <Image
                           isZoomed
                           removeWrapper
