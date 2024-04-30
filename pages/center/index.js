@@ -10,6 +10,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
+import { useEffect } from 'react'
 
 // sweetalert2
 import Swal from 'sweetalert2'
@@ -21,7 +22,7 @@ export default function Index() {
   const isActive = (pathname) => router.pathname === pathname
 
   // 登出
-  const { auth, logout } = useAuth()
+  const { auth, logout, userInfo, setUserInfo } = useAuth()
 
   //  SweetAlert2 彈窗
   const MySwal = withReactContent(Swal)
@@ -66,8 +67,8 @@ export default function Index() {
     }
   }
 
-  // 未登入時，不會出現頁面內容
-  if (!auth.isAuth) return <></>
+  // 預設圖片
+  const DEFAULT_AVATAR = 'pink_Gladiola_0.jpg'
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -77,8 +78,12 @@ export default function Index() {
             {/* 麵包屑 */}
             <div className="hidden sm:block sm:w-full sm:py-6">
               <Breadcrumbs>
-                <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem color="primary">會員中心</BreadcrumbItem>
+                <BreadcrumbItem>
+                  <Link href={'/'}>首頁</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem color="primary">
+                  <Link href={'/center'}>會員中心</Link>
+                </BreadcrumbItem>
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
@@ -93,17 +98,22 @@ export default function Index() {
             {/* RWD start */}
             <div className="w-full h-fit px-5 mt-12 space-y-6 sm:hidden">
               {/* 會員資訊 start */}
-              <div className="flex flex-row gap-2 items-center justify-center">
+              <div className="flex flex-col gap-4 items-center justify-center">
                 <Image
                   key={''}
-                  src="/assets/shop/products/flowers/pink_Gladiola_0.jpg"
+                  src={`http://localhost:3005/member/avatar/${
+                    userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar
+                  }`}
+                  // src="/assets/shop/products/flowers/pink_Gladiola_0.jpg"
                   alt=""
-                  className="w-8 h-8 rounded-full"
+                  className="w-20 h-20 rounded-full"
                   width={40}
                   height={40}
                 />
-                <p className="text-xl text-tertiary-black font-medium">
-                  {auth.isAuth ? auth.userData.name : auth.username}
+                <p className="text-xl text-tertiary-black font-medium overflow-hidden">
+                  {auth.userData.name
+                    ? auth.userData.name
+                    : auth.userData.username}
                 </p>
               </div>
               {/* 會員資訊 end */}

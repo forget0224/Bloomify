@@ -13,7 +13,7 @@ import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { FaShareAlt } from 'react-icons/fa'
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
 import { useAuth } from '@/hooks/use-auth'
-import { useCourseFavorites } from '@/hooks/use-course-fav'
+
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Loader from '@/components/common/loader'
@@ -28,6 +28,7 @@ import CourseComment from '@/components/course/div-comment'
 import CardGroup from '@/components/course/card-group'
 import AverageStars from '@/components/course/star-average'
 import HeartButton from '@/components/course/btn-heart'
+import { useCourseFavorites } from '@/hooks/use-course-fav'
 import { useCart } from '@/context/course-cart-context'
 
 export default function CourseDetails() {
@@ -37,12 +38,11 @@ export default function CourseDetails() {
   const router = useRouter()
 
   const { cid } = router.query
+
   const [courseDetails, setCourseDetails] = useState([cid])
   const [randomCourses, setRandomCourses] = useState([])
   const [averageStars, setAverageStars] = useState([])
-
-  const { addFavoritesStatusToCourses, addFavoriteStatusToCourseDetails } =
-    useCourseFavorites()
+  const { addFavoritesStatusToCourses, coursefavorites } = useCourseFavorites()
 
   // 點擊加入購物車/直接購買，滑動到選擇日期區塊
   const dateRef = useRef(null)
@@ -132,6 +132,8 @@ export default function CourseDetails() {
       }
     }
 
+    console.log(randomCourses)
+
     fetchCourseDetails()
     fetchRandomCourses()
   }, [cid])
@@ -144,6 +146,7 @@ export default function CourseDetails() {
         (course.images && course.images[0])
       return {
         ...course,
+        course_id: course.id,
         mainImage: mainImage
           ? mainImage.path
           : '/assets/course/img-deafult.jpg',
@@ -196,9 +199,8 @@ export default function CourseDetails() {
                   </div>
                   <div className="flex flex-row items-center">
                     <HeartButton
+                      courseId={courseDetails.id}
                       opacity="text-opacity-0"
-                      isActive={false}
-                      onToggle={() => console.log('toggle clicked')}
                     />
                     <button
                       onClick={onShareOpen}

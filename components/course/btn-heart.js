@@ -2,6 +2,7 @@ import React, { useEffect, useContext, useState } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { FaRegHeart, FaHeart } from 'react-icons/fa'
 import Swal from 'sweetalert2'
+import { toast } from 'react-hot-toast'
 import { useCourseFavorites } from '@/hooks/use-course-fav' // 從 context 中調課程 isCourseFavorited 來看
 
 export default function HeartButton({ opacity, courseId }) {
@@ -11,7 +12,7 @@ export default function HeartButton({ opacity, courseId }) {
     useCourseFavorites()
   const [active, setActive] = useState(isCourseFavorited(courseId)) // 狀態變量active，用於表示當前課程的收藏狀態，初始值通過調用`isCourseFavorited`函數來獲取
 
-  // 監聽 courseFavorites 和 courseId 的变化，更新 active 状态
+  // 監聽 courseFavorites 和 courseId 的變化，更新 active 狀態
   useEffect(() => {
     setActive(isCourseFavorited(courseId))
   }, [courseId, isCourseFavorited])
@@ -37,16 +38,16 @@ export default function HeartButton({ opacity, courseId }) {
       if (response.ok) {
         setActive(!active)
         const data = await response.json()
-        console.log(data) // 打印后端响应
+        console.log(data) // 打印後端響應
 
         if (method === 'DELETE') {
-          // 移除收藏后，过滤掉取消收藏的课程
+          // 移除收藏後，過濾掉取消收藏的課程
           setCourseFavorites((currentFavorites) =>
             currentFavorites.filter((course) => course.course_id !== courseId)
           )
         } else {
-          // 添加收藏后，你需要确定如何获取新添加的课程信息
-          // 这里假设后端在添加收藏时返回了新增的课程对象
+          // 添加收藏後，你需要確定如何獲取新添加的課程訊息
+          // 這裡假設後端在添加收藏時返回了新增的課程對象
           if (data.course) {
             setCourseFavorites((currentFavorites) => [
               ...currentFavorites,
@@ -55,23 +56,28 @@ export default function HeartButton({ opacity, courseId }) {
           }
         }
 
-        // 重新获取收藏列表以同步状态
+        // 重新獲取收藏列表以同步狀態
         await fetchFavorites()
 
         // 顯示成功提示
-        Swal.fire({
-          title: 'Success',
-          text: `成功${
-            method === 'POST' ? '新增' : '移除'
-          } course_id=${courseId}的課程`,
-          icon: 'success',
-          iconColor: '#68A392',
-          confirmButtonColor: '#68A392',
-          customClass: {
-            popup: 'rounded-xl',
-            confirmButton: 'w-[100px]',
-          },
-        })
+        toast.success(
+          `成功${
+            method === 'POST' ? '收藏' : '取消收藏'
+          } course_id=${courseId}的課程`
+        )
+        // Swal.fire({
+        //   title: 'Success',
+        //   text: `成功${
+        //     method === 'POST' ? '新增' : '移除'
+        //   } course_id=${courseId}的課程`,
+        //   icon: 'success',
+        //   iconColor: '#68A392',
+        //   confirmButtonColor: '#68A392',
+        //   customClass: {
+        //     popup: 'rounded-xl',
+        //     confirmButton: 'w-[100px]',
+        //   },
+        // })
       } else {
         throw new Error('Response not OK')
       }
@@ -82,13 +88,14 @@ export default function HeartButton({ opacity, courseId }) {
       setActive(active)
 
       // 顯示錯誤提示
-      Swal.fire({
-        title: 'Error',
-        text: error.message || '無法更新課程收藏狀態。',
-        icon: 'error',
-        iconColor: '#FFC1B4',
-        confirmButtonColor: '#FFC1B4',
-      })
+      toast.error(error.message || `無法更新課程收藏狀態。`)
+      // Swal.fire({
+      //   title: 'Error',
+      //   text: error.message || '無法更新課程收藏狀態。',
+      //   icon: 'error',
+      //   iconColor: '#FFC1B4',
+      //   confirmButtonColor: '#FFC1B4',
+      // })
     }
   }
 

@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
+
 import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
+import { useEffect } from 'react'
+import useFirebase from '@/hooks/use-firebase'
 
 // sweetalert2
 import Swal from 'sweetalert2'
@@ -12,8 +15,11 @@ export default function Sidebar() {
   const router = useRouter()
   const isActive = (pathname) => router.pathname === pathname
 
-  // 登出
-  const { auth, logout } = useAuth()
+  // google登出
+  const { logoutFirebase } = useFirebase()
+
+  // 會員資訊、登出
+  const { auth, logout, userInfo, setUserInfo } = useAuth()
 
   //  SweetAlert2 彈窗
   const MySwal = withReactContent(Swal)
@@ -31,6 +37,9 @@ export default function Sidebar() {
 
   // 處理登出
   const handleLogout = async () => {
+    // firebase logout(注意，這並不會登出google帳號，是登出firebase的帳號)
+    logoutFirebase()
+
     // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
     const res = await fetch('http://localhost:3005/api/share-members/logout', {
       credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
@@ -58,21 +67,59 @@ export default function Sidebar() {
     }
   }
 
+  useEffect(() => {
+    const getUserData = async () => {
+      const res = await fetch(
+        `http://localhost:3005/api/share-members/${auth.userData.id}`,
+        {
+          credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'GET',
+        }
+      )
+      const data = await res.json() // 將回傳的 Response 物件轉換成 JSON 格式
+
+      // user: {id: 1, name: '哈利', username: 'herry@test.com', phone: '0906102808', city: '台北市', …}
+
+      if (data.status === 'success') {
+        // 以下為同步化目前後端資料庫資料，與這裡定義的初始化會員資料物件的資料
+        const dbUser = data.data.user
+        const newUserInfo = { name: dbUser.name, avatar: dbUser.avatar }
+        // key => name, username, ......
+        if (
+          newUserInfo.name !== userInfo.name ||
+          newUserInfo.avatar !== userInfo.avatar
+        ) {
+          setUserInfo(newUserInfo)
+        }
+      }
+    }
+    getUserData()
+  }, [])
+
+  const DEFAULT_AVATAR = 'pink_Gladiola_0.jpg'
+
   return (
     <>
       <div className="hidden md:flex flex-col gap-8 lg:visible w-2/12 h-fit p-6 lg:p-10 border-1 rounded-xl border-tertiary-gray-200">
         {/* 會員資訊 start */}
-        <div className="flex flex-row gap-2 items-center">
+        <div className="flex flex-col gap-4 items-center">
           <Image
             key={''}
-            src="/assets/shop/products/flowers/pink_Gladiola_0.jpg"
+            src={`http://localhost:3005/member/avatar/${
+              userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar
+            }`}
+            // src="/assets/shop/products/flowers/pink_Gladiola_0.jpg"
             alt=""
-            className="w-8 h-8 md:w-8 md:h-8 rounded-full"
+            className="w-8 h-8 md:w-16 md:h-16 rounded-full"
             width={40}
             height={40}
           />
-          <p className="text-xl text-tertiary-black font-medium hidden lg:block">
-            {auth.isAuth ? auth.userData.name : auth.username}
+          <p className="text-xl text-tertiary-black font-medium hidden lg:block overflow-hidden">
+            {userInfo.name ? userInfo.name : auth.userData.username}
           </p>
         </div>
         {/* 會員資訊 end */}

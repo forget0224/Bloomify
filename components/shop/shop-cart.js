@@ -88,6 +88,7 @@ export default function ShopCart() {
         {/* 小計 */}
         <div className="text-right">
           <div>共 {totalCartProducts} 項商品</div>
+          {/* 共 {shopCartItems.length} 項商品，數量 {totalQuantity} 個 */}
           <div>
             小計{' '}
             <span className="text-primary text-right">NT$ {totalSubtotal}</span>
@@ -96,16 +97,13 @@ export default function ShopCart() {
       </div>
       {/* 按鈕群组 */}
       <div className="flex flex-col md:flex-row gap-3 w-full justify-center md:py-10">
-        <Link href="/shop">
-          <MyButton color="primary" size="xl" isOutline className="w-full">
-            繼續購物
-          </MyButton>
-        </Link>
-        <Link href="/cart/fill-out">
-          <MyButton color="primary" size="xl" className="w-full">
-            下一步
-          </MyButton>
-        </Link>
+        <MyButton color="primary" size="xl" isOutline className="w-full">
+          <Link href="/shop">繼續購物</Link>
+        </MyButton>
+
+        <MyButton color="primary" size="xl" className="w-full">
+          <Link href="/cart/fill-out">下一步</Link>
+        </MyButton>
       </div>
     </div>
   )

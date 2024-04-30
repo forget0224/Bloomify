@@ -21,7 +21,6 @@ const initUserProfile = {
   name: '',
   username: '',
   phone: '',
-  avatar: '',
   city: '',
   district: '',
   address: '',
@@ -31,8 +30,9 @@ const initUserProfile = {
 export default function Profile() {
   const [activePage, setActivePage] = useState('profile')
 
-  const { auth } = useAuth()
+  const { auth, userInfo, setUserInfo } = useAuth()
   const [userProfile, setUserProfile] = useState(initUserProfile)
+
   const [selectedFile, setSelectedFile] = useState(null)
 
   //  SweetAlert2 彈窗
@@ -96,8 +96,14 @@ export default function Profile() {
           dbUserProfile[key] = dbUser[key] || ''
         }
       }
+
+      //     const DEFAULT_AVATAR = 'default.png'
+
+      // userInfo.avatar === 'null' ? DEFAULT_AVATAR : userInfo.avatar
+
       // 設定到狀態中
       setUserProfile(dbUserProfile)
+      setUserInfo({ ...userInfo, avatar: dbUser.avatar })
     }
   }
 
@@ -139,7 +145,8 @@ export default function Profile() {
     // 如果圖片上傳成功，則更新使用者的頭像資料
     if (data.status === 'success') {
       // 更新 userProfile 中的 avatar 屬性為新上傳的圖片檔名
-      setUserProfile({ ...userProfile, avatar: data.data.avatar })
+      // setAvatar(data.data.avatar)
+      setUserInfo({ ...userInfo, avatar: data.data.avatar })
     }
   }
 
@@ -155,7 +162,7 @@ export default function Profile() {
     let isUpdated = false
 
     // 將 userProfile 物件中的 avatar 屬性解構賦值給 avatar 變數，並將其餘的屬性解構賦值給 user 物件。
-    const { avatar, ...user } = userProfile
+    const { ...user } = userProfile
     const res = await fetch(
       `http://localhost:3005/api/share-members/center/${auth.userData.id}/profile`,
       {
@@ -201,10 +208,8 @@ export default function Profile() {
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
 
-  // 大頭貼預設值
-  const DEFAULT_AVATAR = 'default.png'
-  userProfile.avatar =
-    userProfile.avatar === '' ? DEFAULT_AVATAR : userProfile.avatar
+  // 編輯大頭貼預設值
+  const DEFAULT_IMAGE = 'default.png'
 
   // 未登入時，不會出現頁面內容
   if (!auth.isAuth) return <></>
@@ -236,10 +241,15 @@ export default function Profile() {
                 <div className="image-upload flex flex-col items-center">
                   <label htmlFor="file-input">
                     <img
-                      src={`http://localhost:3005/member/avatar/${userProfile.avatar}`}
+                      src={`http://localhost:3005/member/avatar/${
+                        userInfo.avatar === null
+                          ? DEFAULT_IMAGE
+                          : userInfo.avatar
+                      }`}
                       alt="使用者大頭貼"
                       width="200"
                       height="200"
+                      className="w-60 h-60 rounded-full"
                     />
                   </label>
                   <input

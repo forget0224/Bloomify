@@ -55,7 +55,7 @@ export default function CourseIndex() {
         const response = await fetch('http://localhost:3005/api/courses/random')
         const data = await response.json()
         if (data.status === 'success' && Array.isArray(data.data.courses)) {
-          // 使用 addFavoritesStatusToCourses 来整合收藏状态
+          // 使用 addFavoritesStatusToCourses 来整合收藏狀態
           const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理隨機課程數據
           setRandomCourses(processCourses(updatedCourses))
