@@ -21,7 +21,7 @@ import {
   Input,
 } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-
+import ChangeCard from '@/components/index/changeCard'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
@@ -64,7 +64,7 @@ export default function Home() {
       ScrollTrigger.create({
         trigger: document.body,
         start: 'top center',
-        end: 'bottom top',
+        end: 'bottom bottom',
         onUpdate: (self) => {
           const progress = self.progress
           gsap.to(pathElement, {
@@ -225,13 +225,8 @@ export default function Home() {
           </div>
         </section>
       </ReactLenis>
-
-      <div className="flex min-h-screen flex-col items-center justify-between p-24">
-        <ImageList></ImageList>
-      </div>
-
       {/* sm:banner */}
-      <section className="w-screen h-screen bg-blue-100  text-black flex flex-col  justify-center items-center hidden sm:flex">
+      <section className="w-screen h-screen bg-blue-100  text-black sm:flex flex-col  justify-center items-center hidden sm:flex">
         <div className="border-1 border-pink w-[1000px] h-[400px] flex flex-row">
           <div className="w-full flex flex-col bg-white justify-center items-center text-center">
             <h1 className="text-2xl my-3">情人節活動</h1>
@@ -259,35 +254,10 @@ export default function Home() {
           <Link href="#">More</Link>
         </div>
       </section>
-      {/*card flip */}
-      <section className="bg-secondary w-screen h-screen">
-        {/* <div className="flex flex-row"> */}
-        <div className="flex min-h-screen flex-row justify-center bg-slate-800">
-          <div className="group sm:h-[375px] sm:w-[375px] h-36 w-36 [perspective:1000px]">
-            <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] ">
-              <div className="absolute inset-0 [backface-visibility:hidden]">
-                <div className="bg-secondary-100  h-full w-full rounded-2xl shadow-xl shadow-secondary/40  ">
-                  <div className="flex min-h-full flex-col justify-center items-center text-[32px] text-tertiary-black">
-                    代客送花
-                  </div>
-                </div>
-              </div>
-              <div className="absolute inset-0 h-full w-full rounded-2xl shadow-xl px-12 text-center text-slate-200 bg-primary-100   [transform:rotateY(180deg)] [backface-visibility:hidden]">
-                <div className="flex min-h-full flex-col justify-center items-center ">
-                  <h1 className="text-[22px]">情人節活動</h1>
-                  <p className="text-xs">
-                    無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="sm:h-[375px] sm:w-[375px] h-36 w-36">
-            <Image src={cardflip} alt="" className="w-auto h-auto"></Image>
-          </div>
-        </div>
-        {/* </div> */}
-      </section>
+
+      <div className="w-screen min-h-screen flex-col items-center justify-between relative ">
+        <ChangeCard />
+      </div>
 
       {/* cardsection */}
       <section className="bg-secondary-300 w-screen min-h-screen">
