@@ -1,19 +1,204 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import Image from 'next/image'
 import Link from 'next/link'
-
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
+import styles from './iindex.module.css'
 import cardflip from '@/assets/index_cardflip.png'
 import bannerFlower from '@/assets/banner-flower.jpg'
+import SmoothScroll from '@/components/index/SmoothScroll'
+import ImageList from '@/components/index/ImageList'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Button,
+  Input,
+} from '@nextui-org/react'
+import { MyButton } from '@/components/btn/mybutton'
+
+gsap.registerPlugin(ScrollTrigger)
+
 export default function Home() {
   const [activePage, setActivePage] = useState('home')
+
+  const options = {
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  }
+
+  const sectionRef = useRef(null)
+  const horizontalRef = useRef([])
+
+  useEffect(() => {
+    const section = sectionRef.current
+    const boxItems = horizontalRef.current
+
+    if (section && boxItems.length) {
+      gsap.to(boxItems, {
+        xPercent: -100 * (boxItems.length - 1),
+        ease: 'sine.out',
+        scrollTrigger: {
+          trigger: section,
+          pin: true,
+          scrub: 3,
+          snap: 1 / (boxItems.length - 1),
+          end: () => '+=' + section.offsetWidth,
+        },
+      })
+    }
+
+    return () => {
+      if (ScrollTrigger) {
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      }
+    }
+  }, [])
+
+  const addToRefs = (el) => {
+    if (el && !horizontalRef.current.includes(el)) {
+      horizontalRef.current.push(el)
+    }
+  }
+
+  const [hoverStates, setHoverStates] = useState(
+    Array.from({ length: 12 }, () => false)
+  )
+
+  const handleMouseEnter = (index) => {
+    setHoverStates((hoverStates) =>
+      hoverStates.map((state, i) => (i === index ? true : state))
+    )
+  }
+
+  const handleMouseLeave = (index) => {
+    setHoverStates((hoverStates) =>
+      hoverStates.map((state, i) => (i === index ? false : state))
+    )
+  }
   return (
     <DefaultLayout activePage={activePage}>
       {
         <>
-          <section className="w-screen h-screen bg-yellow-100 text-2xl text-black">
-            sdkfsdlsdfsdfdfkfjsldkf
-          </section>
+          <ReactLenis root options={options}>
+            <section
+              className={`flex flex-row overflow-hidden min-h-screen bg-secondary-300`}
+              ref={sectionRef}
+            >
+              <div className="">
+                <div className="w-full h-full flex flex-row">
+                  <div
+                    className="flex flex-row items-center w-screen"
+                    ref={addToRefs}
+                  >
+                    <div
+                      className="h-full w-[800px]"
+                      style={{
+                        backgroundImage: `url(/index/flowerstore.png)`,
+                      }}
+                    ></div>
+                    <div className="text-3xl flex-1  text-center">
+                      How it works?
+                    </div>
+                  </div>
+
+                  <div
+                    className="flex flex-row items-center w-screen bg-secondary-200"
+                    ref={addToRefs}
+                  >
+                    <div className="h-full w-full flex  justify-center relative">
+                      <div className="sm:w-[1000px] flex flex-wrap items-center ">
+                        {' '}
+                        {hoverStates.map((isHovered, i) => (
+                          <div
+                            key={i}
+                            onMouseEnter={() => handleMouseEnter(i)}
+                            onMouseLeave={() => handleMouseLeave(i)}
+                            className="w-1/6 h-1/4"
+                            style={{
+                              backgroundImage: `url(/assets/index/img-flower-${String(
+                                i + 1
+                              ).padStart(2, '0')}-${
+                                isHovered ? 'color' : 'gray'
+                              }.png)`,
+                              backgroundSize: 'contain',
+                              backgroundRepeat: 'no-repeat',
+                              transition: 'background-image 0.3s',
+                              backgroundPosition: 'center',
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <div className="text-4xl absolute top-1/2 ">
+                        Pick a flower
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className="flex flex-row items-center w-screen bg-primary-300"
+                    ref={addToRefs}
+                  >
+                    <div className="sm:w-[1000px] h-full flex flex-row justify-center items-center mx-auto">
+                      <div className="flex flex-col">
+                        <div className="text-[100px] flex-1  text-center ">
+                          Design
+                        </div>
+                        <div className="text-[100px] flex-1  text-center ">
+                          your
+                        </div>
+                        <div className="text-[100px] flex-1  text-center ">
+                          own
+                        </div>
+                        <div className="text-[100px] flex-1  text-center ">
+                          bouquet
+                        </div>
+                      </div>
+
+                      <div
+                        className="h-[600px] w-[400px]"
+                        style={{
+                          backgroundImage: `url(/index/bouquet.png)`,
+                          backgroundSize: 'contain',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'center bottom',
+                        }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div
+                    className="flex flex-row items-center w-screen bg-secondary-300"
+                    ref={addToRefs}
+                  >
+                    <div className="sm:w-[1000px] h-[600px] flex flex-row justify-center items-center mx-auto">
+                      <div
+                        className="h-[600px] w-[650px] flex items-end justify-start"
+                        style={{
+                          backgroundImage: `url(/index/car.png)`,
+                          backgroundSize: 'cover',
+                          backgroundRepeat: 'no-repeat',
+                          backgroundPosition: 'center bottom',
+                        }}
+                      >
+                        <div className="text-xl pb-10">
+                          we delievery for you
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </ReactLenis>
+
+          <div className="flex min-h-screen flex-col items-center justify-between p-24">
+            <ImageList></ImageList>
+          </div>
+
           {/* sm:banner */}
           <section className="w-screen h-screen bg-blue-100  text-black flex flex-col  justify-center items-center hidden sm:flex">
             <div className="border-1 border-pink w-[1000px] h-[400px] flex flex-row">
@@ -71,6 +256,68 @@ export default function Home() {
               </div>
             </div>
             {/* </div> */}
+          </section>
+
+          {/* cardsection */}
+          <section className="bg-secondary-300 w-screen min-h-screen">
+            <div className="flex sm:flex-row flex-col justify-center items-center min-h-screen gap-8">
+              <div className="sm:w-[580px] h-auto">
+                <Card className="col-span-12 sm:col-span-4 h-[750px] bg-secondary-200">
+                  <CardBody className="flex flex-col justify-center items-center">
+                    <div
+                      className="w-[225px] h-[480px] bg-contain bg-no-repeat"
+                      style={{
+                        backgroundImage: `url(/index/white_flower.png)`,
+                      }}
+                    ></div>
+
+                    <div>
+                      <Input
+                        radius="full"
+                        type="email"
+                        label="Email"
+                        placeholder="搶先取得最新優惠消息"
+                        className="max-w-[450px]"
+                        endContent={
+                          <MyButton color="secondary" size="md">
+                            寄送Email
+                          </MyButton>
+                        }
+                      />
+                    </div>
+                    <div className="text-2xl mt-4">
+                      輕鬆體驗定製化的購物體驗
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
+              <div className="sm:w-[580px] h-auto">
+                <Card
+                  className="col-span-12 sm:col-span-4 h-[750px] bg-primary-300 bg-no-repeat"
+                  style={{
+                    backgroundImage: `url(/index/plante.png)`,
+                  }}
+                >
+                  <CardBody className="flex h-[500px] justify-end items-end gap-5 py-16 px-8">
+                    <div className="text-tertiary-black text-2xl text-right gap-2 flex flex-col">
+                      {' '}
+                      <div className="">您的故事</div>
+                      <div className="">我們的平台</div>
+                      <div className="">成為我們的一部分</div>
+                    </div>
+                    <div>
+                      <MyButton
+                        size="xl"
+                        color="primary200"
+                        className="px-24 py-6"
+                      >
+                        加入我們
+                      </MyButton>
+                    </div>
+                  </CardBody>
+                </Card>
+              </div>
+            </div>
           </section>
         </>
       }

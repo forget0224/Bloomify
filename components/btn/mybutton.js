@@ -4,7 +4,7 @@ export const MyButton = extendVariants(Button, {
   variants: {
     // 修改或新增變體
     color: {
-      // primary: 'bg-primary-200 hover:bg-primary-100 text-white',
+      primary200: 'bg-primary-200 hover:bg-primary-100 text-white',
       primary: 'bg-primary-100 text-white',
       secondary: 'bg-secondary-100 hover:bg-danger text-tertiary-black',
       secondary200:
