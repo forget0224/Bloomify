@@ -10,23 +10,20 @@ import {
   Tabs,
   Tab,
   Card,
-  CardBody,
   Button,
   Input,
-  Pagination,
   useDisclosure,
 } from '@nextui-org/react'
 import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
-// import ShopSlider from '@/components/shop/shop-slider'
 import { FaStar, FaShareAlt } from 'react-icons/fa'
-import { BsHeart, BsHeartFill } from 'react-icons/bs'
 import toast, { Toaster } from 'react-hot-toast'
-import moment from 'moment'
 import { useLoader } from '@/hooks/use-loader'
 import Loader from '@/components/common/loader'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/context/shop-cart-context'
+import HeartButton from '@/components/shop/btn-heart'
+import ReviewTabPage from '@/components/shop/review-tab-page'
 
 export default function Detail() {
   const { cartItems, setCartItems } = useCart()
@@ -40,15 +37,15 @@ export default function Detail() {
     images: [],
     reviews: [],
   })
+  // 購物車商品數量用
   const [quantity, setQuantity] = useState(1)
-  // 收藏
-  const [isFavHovered, setIsFavHovered] = useState(false)
-  // 頁碼，目前共三頁
-  const [page, setPage] = useState(1)
-  console.log(page)
+
+  // // 頁碼，目前共三頁
+  // const [page, setPage] = useState(1) // number
+  // // console.log(page)
   // 星星tab
   const [stars, setStars] = useState([])
-  console.log(stars)
+  // console.log(stars)
 
   // 獲取商品的所有資料
   useEffect(() => {
@@ -78,11 +75,11 @@ export default function Detail() {
         ) {
           setStars(starsData.data.stars)
 
-          console.log('Reviews loaded:', product.reviews)
+          // console.log('Reviews loaded:', product.reviews)
         }
         close(3)
       } catch (error) {
-        console.error('Error fetching product:', error)
+        // console.error('Error fetching product:', error)
       }
     }
     fetchData()
@@ -167,19 +164,12 @@ export default function Detail() {
       ...cartItems,
       [product.id]: { ...product, quantity: quantity },
     }
-    console.log('updatedCartItems', updatedCartItems)
     setCartItems(updatedCartItems)
   }
 
-  // 分頁用
-  const limit = 3
-  const handlePagination = (starId, newPage) => {
-    // starId 是一個動態的鍵，其值將會設為 newPage。用於針對每個不同的 starId 單獨設定其對應的頁碼
-    setPage((prev) => ({ ...prev, [starId]: newPage }))
-    console.log('Changing page for starId:', starId, 'to:', newPage)
-  }
 
   const filterReviewsByStar = (reviews, starId) => {
+    // console.log(reviews)
     return reviews.filter((review) =>
       starId === 1 ? true : review.share_star_id === starId
     )
@@ -227,30 +217,26 @@ export default function Detail() {
               {/* imgs start */}
               <div className="hidden sm:w-full sm:block sm:flex">
                 <div className="space-y-2">
-                  {product.images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="flex justify-center items-center w-12 h-12 sm:w-15 sm:h-15 md: w-24 h-24"
-                      style={{
-                        overflow: 'hidden',
-                        cursor: 'pointer',
-                      }}
-                    >
+                  <div
+                    className="flex items-center w-12 h-12 sm:w-15 sm:h-15 md: w-24 h-24 gap-2"
+                    style={{
+                      cursor: 'pointer',
+                      position: 'relative',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    {product.images.map((image, index) => (
                       <Image
+                        key={index}
                         isZoomed
                         src={`${product.basePath}${image.url}`}
                         alt={`Thumbnail ${product.name}`}
-                        style={{
-                          maxWidth: '100%',
-                          maxHeight: '100%',
-                          objectFit: 'contain',
-                          width: 'auto',
-                          height: 'auto',
-                        }}
+                        fill
+                        className="w-full object-cover"
                         onClick={() => handleThumbnailClick(image.url)}
                       />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
                 <div className="ml-2 mr-8">
                   {product.mainImage && (
@@ -325,23 +311,18 @@ export default function Detail() {
                       </div>
                     </div>
                     <div className="flex space-x-2">
-                      <button
-                        onMouseEnter={() => setIsFavHovered(true)}
-                        onMouseLeave={() => setIsFavHovered(false)}
-                        className="text-secondary-100"
-                      >
-                        {isFavHovered ? (
-                          <BsHeartFill size={24} />
-                        ) : (
-                          <BsHeart size={24} />
-                        )}
-                      </button>
-                      <button
+                      <div>
+                        <HeartButton
+                          productId={product.id}
+                          opacity="text-opacity-40"
+                        />
+                      </div>
+                      <div
                         onClick={onShareOpen}
                         className="flex flex-row items-center h-6 w-6 justify-center text-secondary-100 hover:text-[#FFAC9A]"
                       >
                         <FaShareAlt className="w-5 h-5" />
-                      </button>
+                      </div>
                     </div>
                   </div>
                   <div>
@@ -535,18 +516,12 @@ export default function Detail() {
                   }}
                 >
                   {(star) => {
-                    console.log('Selected Star:', star)
-                    const currentPage = page[star.id] || 1
                     const filteredReviews = filterReviewsByStar(
                       product.reviews,
                       star.id
                     )
-                    console.log('Filtered Reviews:', filteredReviews)
-                    const paginatedReviews = filteredReviews.slice(
-                      (currentPage - 1) * limit,
-                      currentPage * limit
-                    )
-                    console.log('Paginated Reviews:', paginatedReviews)
+                    console.log('filteredReviews', filteredReviews)
+
                     return (
                       <Tab
                         key={star.id}
@@ -556,46 +531,10 @@ export default function Detail() {
                           </div>
                         }
                       >
-                        <Card>
-                          {paginatedReviews.length > 0 ? (
-                            paginatedReviews.map((review, index) => (
-                              <CardBody key={index} className="space-y-2 p-6">
-                                <div className="flex space-x-2 items-center">
-                                  <p className="text-xl">
-                                    {review.member.name}
-                                  </p>
-                                  <p className="text-tertiary-gray-100">
-                                    {moment(review.created_at).format(
-                                      'YYYY-MM-DD HH:MM'
-                                    )}
-                                  </p>
-                                </div>
-                                <div className="flex flex-row items-center text-secondary-100">
-                                  {renderStars(review.star.numbers)}
-                                </div>
-                                <div>{review.comment}</div>
-                              </CardBody>
-                            ))
-                          ) : (
-                            <CardBody>
-                              <div>尚未有評價</div>
-                            </CardBody>
-                          )}
-                        </Card>
-
-                        <div className="mt-6 flex justify-center">
-                          {filteredReviews.length > limit && (
-                            <Pagination
-                              total={Math.ceil(filteredReviews.length / limit)}
-                              initialPage={1}
-                              currentPage={currentPage}
-                              onChange={(newPage) => {
-                                console.log('Page changed:', newPage)
-                                handlePagination(star.id, newPage)
-                              }}
-                            />
-                          )}
-                        </div>
+                        <ReviewTabPage
+                          reviews={filteredReviews}
+                          renderStars={renderStars}
+                        />
                       </Tab>
                     )
                   }}

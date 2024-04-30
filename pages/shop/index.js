@@ -12,42 +12,30 @@ import {
   Image,
   Select,
   SelectItem,
-  RadioGroup,
-  Radio,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
 } from '@nextui-org/react'
 import Link from 'next/link.js'
 import toast, { Toaster } from 'react-hot-toast'
-// import ShopSlider from '../../components/shop/shop-slider.js'
 import DefaultLayout from '@/components/layout/default-layout'
 import Subtitle from '@/components/common/subtitle.js'
 import { MyButton } from '@/components/btn/mybutton'
 import SearchBtn from '@/components/shop/search'
-import {
-  BsFillGridFill,
-  BsFillStarFill,
-  BsHeart,
-  BsHeartFill,
-} from 'react-icons/bs'
+import { BsFillGridFill, BsFillStarFill } from 'react-icons/bs'
 import { PiShoppingCartSimpleFill } from 'react-icons/pi'
 import { BiSolidLeaf } from 'react-icons/bi'
 import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
 import { FaToolbox } from 'react-icons/fa'
-import { IoFilterCircleOutline } from 'react-icons/io5'
-import { SlMagnifier } from 'react-icons/sl'
+// import ShopRearchRwd from '@/components/shop/'
+
 // import { useWindowSize } from 'react-use'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { useCart } from '@/context/shop-cart-context'
+import { useProductFavorites } from '@/context/shop-fav-context'
+import HeartButton from '@/components/shop/btn-heart'
 
 export default function Shop() {
   const { cartItems, setCartItems } = useCart()
-  console.log(cartItems)
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
   const searchParams = useSearchParams()
@@ -78,13 +66,8 @@ export default function Shop() {
   // console.log(searchTerm)
   // 分頁用
   const [loadPage, setLoadPage] = useState(1) // Track the current page
-  // 查看更多按鈕
-  // const [isButtonDisabled, setIsButtonDisabled] = useState(false)
-  // localStorage
-  // 透過本地端將商品收藏
-  // const [favProducts, setFavProducts] = useLocalStorage('favProducts', [])
-  // // console.log(favProducts)
-  const [isFavHovered, setIsFavHovered] = useState([])
+  // 收藏
+  const { addFavoritesStatusToProducts } = useProductFavorites()
 
   // didMount 後端資料從這裏來的
   useEffect(() => {
@@ -95,7 +78,11 @@ export default function Shop() {
         )
         const data = await res.json()
         if (data.status === 'success') {
-          setProducts(data.data.products)
+          // setProducts(data.data.products)
+          const updatedProducts = addFavoritesStatusToProducts(
+            data.data.products
+          )
+          setProducts(updatedProducts)
         } else {
           console.error('Failed to fetch products:', data.message)
         }
@@ -107,8 +94,7 @@ export default function Shop() {
       // Only fetch products if a category is selected
       fetchProducts()
     }
-  }, [activeCategory, loadPage])
-  console.log('cartItems shop', cartItems)
+  }, [activeCategory, loadPage, addFavoritesStatusToProducts])
   // Product categories and icon setup
   const iconLookup = {
     1: <BsFillGridFill />,
@@ -121,7 +107,6 @@ export default function Shop() {
   useEffect(() => {
     fetchCategories()
     fetchColors()
-    // fetchData() // Existing call to fetch other data
   }, [])
 
   const fetchCategories = async () => {
@@ -143,13 +128,12 @@ export default function Shop() {
   // 篩選:第一層分類
   const handleCategoryClick = (id) => {
     // console.log('Category clicked:', id)
-    setSelectedSubcategoryIds([]) // This line clears the subcategory selections
+    setSelectedSubcategoryIds([])
     setSelectedColors([])
     setSearchTerm('')
     setLoadPage(1)
     setActiveCategory(id)
-    handleCategoryChange(id) // Update the query string in the URL, which will then trigger the useEffect
-    // setLoadPage(1)
+    handleCategoryChange(id)
   }
   const handleCategoryChange = (categoryId) => {
     setSelectedCategoryId(categoryId)
@@ -166,7 +150,6 @@ export default function Shop() {
 
   // 篩選:第二層分類
   const handleCheckboxChange = (subcategoryId, isChecked) => {
-    // Log the ID of the subcategory and its new checked status
     // console.log(`Subcategory ID: ${subcategoryId}, Checked: ${isChecked}`)
 
     setSelectedSubcategoryIds((currentIds) => {
@@ -236,12 +219,6 @@ export default function Shop() {
     setLoadPage((prevLoadPage) => prevLoadPage + 1)
   }
 
-  // 查看更多 無商品時按鈕隱藏
-  // useEffect(() => {
-  //   // 檢查過濾後的商品數量是否少於當前已加載的商品數量
-  //   setIsButtonDisabled(filterProduct.length <= limit * loadPage)
-  // }, [products, loadPage])
-
   // Carousel State
   const [page, setPage] = useState(0)
   const banners = [
@@ -280,18 +257,7 @@ export default function Shop() {
     // 將產品加入到購物車
     addToCart(product)
   }
-  // RWD Sorting and Filtering Modal State
-  const {
-    isOpen: isMagnifierOpen,
-    onOpen: onMagnifierOpen,
-    onOpenChange: onMagnifierOpenChange,
-  } = useDisclosure()
-  const {
-    isOpen: isFilterOpen,
-    onOpen: onFilterOpen,
-    onOpenChange: onFilterOpenChange,
-  } = useDisclosure()
-  const [modalPlacement, setModalPlacement] = useState('bottom-center')
+
   const [order, setOrder] = useState('priceAsc')
 
   // 排序、篩選、關鍵字
@@ -469,7 +435,7 @@ export default function Shop() {
                   </Select>
 
                   {/* RWD start */}
-                  <div className="flex flex-row space-x-3 sm:hidden">
+                  {/* <div className="flex flex-row space-x-3 sm:hidden">
                     <div className="flex gap-2 items-center text-xl hover:text-primary">
                       <SlMagnifier
                         onClick={onMagnifierOpen}
@@ -482,7 +448,7 @@ export default function Shop() {
                         onOpenChange={onMagnifierOpenChange}
                         className="mx-0 my-0 "
                         style={{
-                          borderRadius: '4% 4% 0% 0%',
+                          borderRadius: '6% 6% 0% 0%',
                         }}
                       >
                         <ModalContent>
@@ -491,26 +457,9 @@ export default function Shop() {
                               關鍵字搜尋
                             </ModalHeader>
                             <ModalBody>
-                              <div className="sm:hidden block">
+                              <div className="sm:hidden block mb-20">
                                 <SearchBtn onSearch={handleSearch} />
                               </div>
-                              <div className="flex space-x-2">
-                                <p className="text-primary">HOT</p>
-                                <p className="text-tertiary-gray-1">
-                                  熱門關鍵字
-                                </p>
-                              </div>
-                              <div className="flex space-x-1.5">
-                                <Link
-                                  href="/shop/details"
-                                  className="text-base px-2 py-0.5 bg-primary-300 hover:bg-primary-200"
-                                  style={{ cursor: 'pointer' }}
-                                >
-                                  哈哈
-                                </Link>
-                              </div>
-                              <p>玫瑰花</p>
-                              <p>桔梗</p>
                             </ModalBody>
                           </>
                         </ModalContent>
@@ -545,11 +494,10 @@ export default function Shop() {
                                 排序
                               </p>
                               <div className="my-5">
-                                {/* <RadioGroup>
-                                      <Radio key={index} value={item}>
-                                        {item.label}
-                                      </Radio>
-                                  </RadioGroup> */}
+                                <RadioGroup>
+                                  <Radio>價格由高到低</Radio>
+                                  <Radio>價格由低到高</Radio>
+                                </RadioGroup>
                               </div>
                             </div>
                             <div>
@@ -605,7 +553,7 @@ export default function Shop() {
                         </ModalContent>
                       </Modal>
                     </div>
-                  </div>
+                  </div> */}
                   {/* RWD end */}
                 </div>
               </div>
@@ -613,9 +561,12 @@ export default function Shop() {
 
               {/* main section start */}
               <div className="flex flex-col md:flex-row gap-4 w-full">
-                {/* filter start */}
-                <div className="hidden sm:block">
-                  <div className="bg-white p-4 rounded-lg shadow-md space-y-8 max-w-[335px]">
+                {/* sidebar start */}
+                <div className="hidden sm:block" style={{ height: '150vh' }}>
+                  <div
+                    className="bg-white p-4 rounded-lg shadow-md space-y-8 max-w-[335px]"
+                    style={{ position: 'sticky', top: '0px' }}
+                  >
                     <Subtitle text="篩選" />
                     <p className=" text-tertiary-black">
                       共{''}
@@ -688,8 +639,8 @@ export default function Shop() {
                     </div>
                   </div>
                 </div>
-                {/* filter end */}
-                {/* products starts */}
+                {/* sidebar end */}
+                {/* main starts */}
                 <div className="sm:w-10/12 sm:flex-1">
                   <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
                     {filterProduct.slice(0, limit * loadPage).map((product) => {
@@ -705,24 +656,18 @@ export default function Shop() {
                       return (
                         <>
                           <div className="relative">
-                            <button
-                              onMouseEnter={() => handleMouseEnter(product.id)}
-                              onMouseLeave={() => handleMouseLeave(product.id)}
-                              onClick={() => toggleFavClick(product)}
-                              className="absolute z-20 text-secondary-100 ${favProducts.includes(product.id) ? 'selected-class' : ''}"
+                            <div
                               style={{
                                 position: 'absolute',
                                 right: '1rem',
                                 top: '1rem',
                               }}
                             >
-                              {favProducts.includes(product.id) ||
-                              isFavHovered.includes(product.id) ? (
-                                <BsHeartFill size={24} />
-                              ) : (
-                                <BsHeart size={24} />
-                              )}
-                            </button>
+                              <HeartButton
+                                productId={product.id}
+                                opacity="text-opacity-40"
+                              />
+                            </div>
                             <Card
                               shadow="sm"
                               key={product.id}
@@ -778,12 +723,12 @@ export default function Shop() {
                                 <p className="text-xl truncate">
                                   NT${product.price}
                                 </p>
-                                <button
+                                <div
                                   className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
                                   onClick={() => handleCartClick(product)}
                                 >
                                   <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
-                                </button>
+                                </div>
                                 <Toaster />
                               </CardFooter>
                             </Card>
@@ -793,7 +738,7 @@ export default function Shop() {
                     })}
                   </div>
                 </div>
-                {/* products end */}
+                {/* main end */}
               </div>
               <div className="flex justify-center my-8 w-full">
                 <div className="flex flex-col items-center">

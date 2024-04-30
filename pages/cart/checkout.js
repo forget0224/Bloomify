@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Image } from '@nextui-org/react'
 import {
   Table,
@@ -16,8 +16,10 @@ import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
-import { MyButton } from '@/components/btn/mybutton'
-import Subtitle from '@/components/common/subtitle'
+// import { MyButton } from '@/components/btn/mybutton'
+// import Subtitle from '@/components/common/subtitle'
+
+import ShopCheckout from '@/components/shop/shop-checkout'
 
 export default function Confirm() {
   const { auth } = useAuth()
@@ -60,42 +62,26 @@ export default function Confirm() {
   // }
 
   //商品列表 table 樣式
-  const tableStyles = {
-    base: ['text-tertiary-black'],
-    th: ['text-base', 'text-tertiary-gray-100'], // 表頭
-    td: ['text-base', 'px-3', 'py-3'], // 表格
-    wrapper: [
-      'text-base',
-      'shadow-none',
-      'border-1',
-      'border-tertiary-100',
-      'rounded-xl',
-    ], // 整個表格
-  }
+  // const tableStyles = {
+  //   base: ['text-tertiary-black'],
+  //   th: ['text-base', 'text-tertiary-gray-100'], // 表頭
+  //   td: ['text-base', 'px-3', 'py-3'], // 表格
+  //   wrapper: [
+  //     'text-base',
+  //     'shadow-none',
+  //     'border-1',
+  //     'border-tertiary-100',
+  //     'rounded-xl',
+  //   ], // 整個表格
+  // }
 
   //明細 table 樣式
-  const tableStylesContent = {
-    th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
-    td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
-    wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
-  }
-
-  // cart content start
-  const cartContent = [
-    {
-      image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
-      store: '花店名稱1',
-      name: '玫瑰花',
-      price: '30',
-    },
-    {
-      image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
-      store: '花店名稱2',
-      name: '太陽花',
-      price: '60',
-    },
-  ]
-  // cart content end
+  // const tableStylesContent = {
+  //   th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
+  //   td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
+  //   wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
+  // }
+  
 
   return (
     <DefaultLayout activePage={activePage}>
