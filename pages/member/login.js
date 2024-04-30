@@ -74,6 +74,18 @@ export default function Login() {
 
     const data = await res.json()
     console.log(data)
+
+    if (data.status === 'success') {
+      // 出現登入成功對話訊息盒
+      notify('成功登入')
+      // 導向到會員個人資料頁
+      setTimeout(() => {
+        router.push('/center')
+      }, 1500)
+    } else {
+      // 登入失敗，顯示錯誤訊息
+      console.error('登入失敗，後端回應:', data)
+    }
   }
 
   // 網址

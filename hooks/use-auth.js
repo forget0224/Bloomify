@@ -18,12 +18,15 @@ export function AuthProvider({ children }) {
       username: '',
       name: '',
       google_uid: '',
+      google_email: '',
+      google_name: '',
+      google_pic: '',
     },
   }
 
   // 共享狀態
   const [auth, setAuth] = useState(initAuth)
-
+  const [userInfo, setUserInfo] = useState({ name: '', avatar: '' })
   const router = useRouter()
 
   // 檢查會員認証用
@@ -95,7 +98,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       // 使用value屬性提供資料給提供者階層以下的所有後代元件
-      value={{ auth, login, logout }}
+      value={{ auth, login, logout, userInfo, setUserInfo }}
     >
       {children}
     </AuthContext.Provider>
