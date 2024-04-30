@@ -52,7 +52,7 @@ export default function Login() {
   // 處理google登入後，要向伺服器進行登入動作
   const callbackGoogleLoginRedirect = async (providerData) => {
     console.log(providerData)
-    // {providerId: 'google.com', uid: '113028051709931150555', displayName: 'I Chen', email: 'easy09150915@gmail.com', phoneNumber: null,…}
+    // {providerId: 'google.com', uid: '118425329663792098351', displayName: 'Bloomify', email: 'bloomify0510@gmail.com', phoneNumber: null,…}
 
     // 如果目前react(next)已經登入中，不需要再作登入動作
     if (auth.isAuth) return
@@ -172,7 +172,7 @@ export default function Login() {
               {/* <Card className="flex flex-row  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               {/* Form */}
               <div className="w-full lg:w-1/2 h-full flex flex-col items-center px-10 py-12">
-                <h1 className="text-3xl mb-12 mt-14">會員登入</h1>
+                <h1 className="text-3xl mb-10 mt-10">會員登入</h1>
                 <form
                   className="flex flex-col space-y-12 w-full "
                   onSubmit={handleSubmit}
@@ -216,15 +216,15 @@ export default function Login() {
                   <MyButton className="bg-primary-100 text-white" type="submit">
                     登入
                   </MyButton>
-                  <hr />
-                  <button
-                    className="px-4 py-2 border-2 text-2xl cursor-pointer"
-                    onClick={() => loginGoogleRedirect()}
-                  >
-                    <FcGoogle /> Google登入
-                  </button>
                 </form>
-                <p className="mt-8 text-tertiary-gray-100">
+                <button
+                  className="w-full py-2 mt-8 border-2 text-2xl cursor-pointer flex justify-center items-center rounded-[30px] text-small hover:bg-gray-100"
+                  onClick={() => loginGoogleRedirect()}
+                >
+                  <FcGoogle fontSize={20} />
+                  <div className="mx-2">Google登入</div>
+                </button>
+                <p className="mt-4 text-tertiary-gray-100">
                   尚未成為會員嗎？
                   <Link
                     href="/member/register"

@@ -104,9 +104,9 @@ export default function Register() {
               {/* <Card className="flex flex-row-reverse  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               {/* Form */}
               <div className="w-full lg:w-1/2 h-full flex flex-col items-center px-10 py-12">
-                <h1 className="text-3xl mb-12 mt-14">會員註冊</h1>
+                <h1 className="text-3xl mb-10 mt-10">會員註冊</h1>
                 <form
-                  className="flex flex-col space-y-12 w-full"
+                  className="flex flex-col space-y-14 w-full mt-2"
                   onSubmit={handleSubmit}
                 >
                   <Input
