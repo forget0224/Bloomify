@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const path = require('path')
+
 const nextConfig = {
   reactStrictMode: false,
   sassOptions: {
@@ -14,16 +15,23 @@ const nextConfig = {
       },
     ],
   },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: { and: [/\.(js|ts)x?$/] },
+      use: ['@svgr/webpack'],
+    })
 
-  // comment for render twice issue
-  // avoid cors with proxy
+    return config
+  },
+  // 避免 CORS 問題的 API 代理設定，取消註釋以啟用
   // async rewrites() {
   //   return [
   //     {
   //       source: '/api/:path*',
   //       destination: 'http://localhost:3005/:path*', // Proxy to Backend
   //     },
-  //   ]
+  //   ];
   // },
 }
 

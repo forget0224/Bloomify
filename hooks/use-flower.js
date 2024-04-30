@@ -6,7 +6,7 @@ import {
   useState,
   useEffect,
 } from 'react'
-import { fabric } from 'fabric' // 确保引入fabric库
+import { fabric } from 'fabric'
 
 const FlowerContext = createContext()
 
