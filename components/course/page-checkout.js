@@ -24,7 +24,7 @@ export default function CourseCheckOut() {
   const { cart, removeFromCart, clearCart, totalSubtotal, totalCartProducts } =
     useCart()
 
-  // const [fillOutDetails, setFillOutDetails] = useFillOut()
+  const { fillOutDetails } = useFillOut()
 
   console.log(cart)
   console.log(cart[0])
@@ -33,8 +33,6 @@ export default function CourseCheckOut() {
     // 處理結帳邏輯...
     // 可能需要發送 cart 和 totalSubtotal 到後端
   }
-
-  // const courseStorage = () => {}
 
   // stepper
   const steps = [
@@ -64,22 +62,6 @@ export default function CourseCheckOut() {
       // content: <div>Third step content</div>,
       isError: false,
       isComplete: false,
-    },
-  ]
-
-  // 假資料
-  const cartContent = [
-    {
-      image: '/assets/shop/products/flowers/blue_Bellflower_1.jpg',
-      store: '花店名稱1',
-      name: '玫瑰花',
-      price: '30',
-    },
-    {
-      image: '/assets/shop/products/flowers/blue_Clematis_0.jpg',
-      store: '花店名稱2',
-      name: '太陽花',
-      price: '60',
     },
   ]
 
@@ -199,42 +181,36 @@ export default function CourseCheckOut() {
 
         {/* 配送/付款明細 */}
         <div className="flex flex-col justify-center w-full gap-6">
-          <Subtitle text="配送/付款明細" />
+          <Subtitle text="付款明細" />
           <Table
             hideHeader
             aria-label="Example static collection table"
             classNames={{ ...tableStylesContent }}
           >
             <TableHeader>
-              <TableColumn>配送方式</TableColumn>
+              <TableColumn>項目</TableColumn>
               <TableColumn>內容</TableColumn>
             </TableHeader>
             <TableBody>
               <TableRow key="1">
-                <TableCell className="pr-8 text-nowrap">配送方式</TableCell>
-                <TableCell className="w-full text-right">超商取貨</TableCell>
-              </TableRow>
-              <TableRow key="2">
-                <TableCell className="pr-8 text-nowrap">配送地址</TableCell>
-                <TableCell className="w-full text-right line-clamp-1">
-                  7-ELEVEN 大安門市 / 台北市大安區xxx路xxx號x樓
-                </TableCell>
-              </TableRow>
-              <TableRow key="3">
-                <TableCell className="pr-8 text-nowrap">收件人</TableCell>
+                <TableCell className="pr-8 text-nowrap">訂購人</TableCell>
                 <TableCell className="w-full text-right">芙莉蓮</TableCell>
               </TableRow>
-              <TableRow key="4">
+              <TableRow key="2">
                 <TableCell className="pr-8 text-nowrap">連絡電話</TableCell>
                 <TableCell className="w-full text-right">0912345678</TableCell>
               </TableRow>
-              <TableRow key="5">
+              <TableRow key="3">
                 <TableCell className="pr-8 text-nowrap">付款方式</TableCell>
-                <TableCell className="w-full text-right">Line Pay</TableCell>
+                <TableCell className="w-full text-right">
+                  {fillOutDetails.paymentMethod}
+                </TableCell>
               </TableRow>
-              <TableRow key="6">
+              <TableRow key="4">
                 <TableCell className="pr-8 text-nowrap">發票</TableCell>
-                <TableCell className="w-full text-right">載具</TableCell>
+                <TableCell className="w-full text-right">
+                  {fillOutDetails.invoiceOption}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

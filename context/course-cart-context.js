@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
 import useLocalStorage from '../hooks/use-localStorage' // 確保路徑正確
+import { toast } from 'react-hot-toast'
 
 const CourseCartContext = createContext({
   cart: [],
@@ -11,8 +12,6 @@ const CourseCartContext = createContext({
 })
 
 export const CourseCartProvider = ({ children }) => {
-  // const [cart, setCart] = useLocalStorage('courseCart', []) // 預設是空的
-  // 塞假資料試試看
   const [cart, setCart] = useLocalStorage('courseCart', [])
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export const CourseCartProvider = ({ children }) => {
 
     // 如果已存在，不添加到購物車，給用戶一個提示
     if (existingItemIndex !== -1) {
-      alert('此堂課程已在您的購物車中。')
+      toast.success(`此堂課程已在您的購物車中`)
       return
     }
 
@@ -53,11 +52,14 @@ export const CourseCartProvider = ({ children }) => {
 
     // 更新購物車狀態
     setCart([...cart, cartItem])
+    toast.success(`成功加入購物車`)
   }
 
   // 移除課程
+  // TODO:
   const removeFromCart = (courseId) => {
     setCart(cart.filter((item) => item.id !== courseId))
+    toast.success(`成功移除課程`)
   }
 
   // 清空購物車
