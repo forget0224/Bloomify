@@ -50,7 +50,7 @@ export const ProductFavoritesProvider = ({ children }) => {
           }
         })
         .catch((error) =>
-          console.error('Error fetching course favorites:', error)
+          console.error('Error fetching shop favorites:', error)
         )
     }
   }, [auth])

@@ -17,6 +17,7 @@ import Link from 'next/link'
 // 小組元件
 // import { MyButton } from '@/components/btn/mybutton'
 import SearchBtn from '@/components/shop/search'
+import HeartButton from '@/components/shop/btn-heart'
 
 export default function Favorite() {
   const [activePage, setActivePage] = useState('shop')
@@ -40,25 +41,13 @@ export default function Favorite() {
     fetchFavProducts()
   }, [])
 
-  // // 拿取localStorage資料
-  // const [isFavClicked, setIsFavClicked] = useState([])
-  // console.log(isFavClicked)
+  // const toggleFavClick = (productId) => {
+  //   console.log('toggleFavClick called for productId: ', productId)
 
-  // useEffect(() => {
-  //   // 從本地端拿資料
-  //   const storedFav = localStorage.getItem('favProducts')
-  //   if (storedFav) {
-  //     setIsFavClicked(JSON.parse(storedFav))
-  //   }
-  // }, [])
-
-  const toggleFavClick = (productId) => {
-    console.log('toggleFavClick called for productId: ', productId)
-
-    const deleteFavProduct = favProducts.filter((item) => item.id !== productId)
-    setFavProducts(deleteFavProduct)
-    localStorage.setItem('favProducts', JSON.stringify(deleteFavProduct))
-  }
+  //   const deleteFavProduct = favProducts.filter((item) => item.id !== productId)
+  //   setFavProducts(deleteFavProduct)
+  //   localStorage.setItem('favProducts', JSON.stringify(deleteFavProduct))
+  // }
 
   const [searchTerm, setSearchTerm] = useState('')
   console.log(searchTerm)
@@ -151,17 +140,18 @@ export default function Favorite() {
                     return (
                       <>
                         <div className="relative">
-                          <button
-                            onClick={() => toggleFavClick(product.id)}
-                            className="absolute z-20 text-secondary-100 ${isFavClicked.includes(product.id) ? 'selected-class' : ''}"
+                          <div
                             style={{
                               position: 'absolute',
                               right: '1rem',
                               top: '1rem',
                             }}
                           >
-                            <BsHeartFill size={24} />
-                          </button>
+                            <HeartButton
+                              productId={product.id}
+                              opacity="text-opacity-40"
+                            />
+                          </div>
                           <Card
                             shadow="sm"
                             key={product.id}

@@ -25,6 +25,8 @@ export const CartProvider = ({ children }) => {
     setCartItems(cartItems)
   }, [cartItems])
 
+  
+
   // 商品數量增加
   const handleIncrement = (itemId) => {
     const updatedItems = Object.values(cartItems).map((item) =>

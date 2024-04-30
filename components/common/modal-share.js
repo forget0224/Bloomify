@@ -8,9 +8,10 @@ import {
   ModalFooter,
   // useDisclosure,
 } from '@nextui-org/react'
-import { Link } from '@nextui-org/react'
+// import { Link } from '@nextui-org/react'
 import { FaXTwitter, FaInstagram } from 'react-icons/fa6'
-import { useLocation } from 'react-use'
+// import { useLocation } from 'react-use'
+import { useRouter } from 'next/router'
 
 export default function ShareModal({ isShareOpen, onShareOpenChange }) {
   // const { onShareOpen, onShareClose } = useDisclosure()
@@ -24,9 +25,10 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
     checkIcon: 'text-tertiary-black',
   }
 
-  const location = useLocation()
-  const currentUrl = window.location.origin + location.pathname
-
+  // const location = useLocation()
+  // const currentUrl = window.location.origin + location.pathname
+  const router = useRouter()
+  const currentUrl = `http://127.0.0.1:3000${router.asPath}`
   return (
     <>
       {/* <Button onPress={onOpen}>Open Modal</Button> */}
@@ -57,7 +59,9 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
             {/* icon 們 */}
             <div className="flex flex-row justify-center items-center gap-8">
               <a
-                href={`https://www.facebook.com/sharer.php?u=${currentUrl}`}
+                href={`https://www.facebook.com/sharer.php?u=${encodeURIComponent(
+                  currentUrl
+                )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2 text-teriary-black cursor-pointer"
@@ -69,11 +73,11 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g clip-path="url(#clip0_3256_30674)">
+                  <g clipPath="url(#clip0_3256_30674)">
                     <path
                       d="M29 14.9961C29 7.26222 22.7339 0.996094 15 0.996094C7.26613 0.996094 1 7.26222 1 14.9961C1 21.9837 6.1196 27.7756 12.8125 28.8267V19.0431H9.25605V14.9961H12.8125V11.9116C12.8125 8.40311 14.9012 6.46513 18.1003 6.46513C19.6324 6.46513 21.2345 6.73835 21.2345 6.73835V10.1819H19.4687C17.73 10.1819 17.1875 11.2613 17.1875 12.3683V14.9961H21.0702L20.4493 19.0431H17.1875V28.8267C23.8804 27.7756 29 21.9837 29 14.9961Z"
                       stroke="black"
-                      stroke-width="1.92688"
+                      strokeWidth="1.92688"
                     />
                   </g>
                   <defs>
@@ -86,24 +90,28 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
                   Facebook
                 </span>
               </a>
-              <Link
-                className="flex flex-col items-center gap-2 text-teriary-black cursor-pointer"
-                href="#"
+              <a
+              // className="flex flex-col items-center gap-2 text-teriary-black cursor-pointer"
+              // href={`https://twitter.com/share?text=文字&url=${encodeURIComponent(
+              //   currentUrl
+              // )}`}
               >
                 <FaXTwitter className="w-7 h-7" />
                 <span className="flex flex-row justify-center text-center items-center select-none">
                   X
                 </span>
-              </Link>
-              <Link
+              </a>
+              <a
                 className="flex flex-col items-center gap-2 text-teriary-black cursor-pointer"
-                href="#"
+                // href={`http://instagram.com/sharer.php?u=${encodeURIComponent(
+                //   currentUrl
+                // )}`}
               >
                 <FaInstagram className="w-7 h-7" />
                 <span className="flex flex-row justify-center text-center items-center select-none">
                   Instagram
                 </span>
-              </Link>
+              </a>
             </div>
           </ModalBody>
           <ModalFooter className="p-0"></ModalFooter>

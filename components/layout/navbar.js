@@ -19,6 +19,7 @@ import {
 } from '@nextui-org/react'
 import { CiShoppingCart } from 'react-icons/ci'
 import { CiUser } from 'react-icons/ci'
+import { useCart } from '@/context/shop-cart-context'
 
 export default function HomeNav({ activePage }) {
   const menuItems = [
@@ -63,8 +64,12 @@ export default function HomeNav({ activePage }) {
     //   subMenu: [],
     // },
   ]
-
   const { auth } = useAuth()
+  
+  // 商城的購物車筆數計算
+  const { cartItems } = useCart()
+  const cartItemsArr = Object.values(cartItems)
+  const itemsAmount = cartItemsArr.length
 
   return (
     <Navbar isBordered className="bg-primary-300">
@@ -130,7 +135,25 @@ export default function HomeNav({ activePage }) {
         justify="end"
         // style={{ backgroundColor: 'blue', padding: '10px' }}
       >
-        <NavbarItem>
+        <NavbarItem className="relative">
+          <div
+            style={{
+              position: 'absolute',
+              left: '1.5rem',
+              bottom: '1.5rem',
+              backgroundColor: 'pink',
+              padding: '2px',
+              borderRadius: '50%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: '20px',
+              width: '20px',
+              color: 'white',
+            }}
+          >
+            {itemsAmount}
+          </div>
           <Link href={auth.isAuth ? '/cart' : '/member/login'}>
             <CiShoppingCart className="w-8 h-8 text-primary" />
           </Link>
