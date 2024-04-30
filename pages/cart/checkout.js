@@ -12,13 +12,16 @@ import { Checkbox } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
 import { Link } from '@nextui-org/react'
 import { useRouter } from 'next/router'
+import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/CustomCheckOut'
-// 小組元件
+import CourseCheckOut from '@/components/course/page-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 
 export default function Confirm() {
+  const { auth } = useAuth()
+  const { isAuth, user } = auth
   const [activePage, setActivePage] = useState('cart')
   const route = useRouter()
   const source = route.query.source
@@ -120,7 +123,8 @@ export default function Confirm() {
               </div>
               {/* 提示訊息 */}
               <p className="sm:flex sm:flex-row sm:w-full sm:justify-center lg:w-8/12 py-10">
-                用戶 <span className="text-primary px-2">訂購人姓名</span>
+                用戶
+                <span className="text-primary px-2">{auth.userData.name}</span>
                 您好，請確認您的購物資訊無誤
               </p>
               {/* 主要內容 */}
@@ -327,6 +331,8 @@ export default function Confirm() {
               )}
 
               {source === 'flower' && <CustomCheckOut />}
+              {source === 'shop'}
+              {source === 'course' && <CourseCheckOut />}
             </div>
           </main>
         </>

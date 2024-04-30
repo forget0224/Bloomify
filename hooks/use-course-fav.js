@@ -25,6 +25,14 @@ export const CourseFavoritesProvider = ({ children }) => {
     }))
   }
 
+  // 給某堂課程詳細頁面的愛心賦予值
+  const addFavoriteStatusToCourseDetails = (course) => ({
+    ...course,
+    isFavorited: courseFavorites.some(
+      (favorite) => favorite.course_id === course.id
+    ),
+  })
+
   // 用戶已驗證時，獲取收藏課程列表
   useEffect(() => {
     if (auth?.isAuth) {

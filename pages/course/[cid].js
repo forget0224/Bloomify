@@ -12,7 +12,7 @@ import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { FaShareAlt } from 'react-icons/fa'
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
-// 小組元件
+import { useAuth } from '@/hooks/use-auth'
 import { useCourseFavorites } from '@/hooks/use-course-fav'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -31,13 +31,18 @@ import HeartButton from '@/components/course/btn-heart'
 import { useCart } from '@/context/course-cart-context'
 
 export default function CourseDetails() {
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
   const { close, open, isLoading } = useLoader()
   const router = useRouter()
+
   const { cid } = router.query
   const [courseDetails, setCourseDetails] = useState([cid])
   const [randomCourses, setRandomCourses] = useState([])
   const [averageStars, setAverageStars] = useState([])
-  const { addFavoritesStatusToCourses } = useCourseFavorites()
+
+  const { addFavoritesStatusToCourses, addFavoriteStatusToCourseDetails } =
+    useCourseFavorites()
 
   // 點擊加入購物車/直接購買，滑動到選擇日期區塊
   const dateRef = useRef(null)
@@ -84,6 +89,9 @@ export default function CourseDetails() {
           )
           const data = await response.json()
           if (data.status === 'success') {
+            // TODO:
+            // 處理愛心icon
+
             // 處理全部課程數據
             setCourseDetails(data.data.course)
 
@@ -113,6 +121,7 @@ export default function CourseDetails() {
         const response = await fetch('http://localhost:3005/api/courses/random')
         const data = await response.json()
         if (data.status === 'success' && Array.isArray(data.data.courses)) {
+          // TODO:
           // 使用 addFavoritesStatusToCourses 來整合收藏狀態
           const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理隨機課程數據

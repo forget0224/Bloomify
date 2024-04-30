@@ -72,17 +72,13 @@ export default function CourseCart() {
       </div>
 
       {/* 按鈕群組 */}
-      <div className="flex flex-col md:flex-row gap-3 w-full justify-center md:py-10">
-        <Link href="/course">
-          <MyButton color="primary" size="xl" isOutline className="w-full">
-            繼續購物
-          </MyButton>
-        </Link>
-        <Link href="/course/cart/fill-out">
-          <MyButton color="primary" size="xl" className="w-full">
-            下一步
-          </MyButton>
-        </Link>
+      <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
+        <MyButton color="primary" size="xl" isOutline>
+          <Link href="/">上一步</Link>
+        </MyButton>
+        <MyButton color="primary" size="xl">
+          <Link href="/cart/fill-out?source=course">下一步</Link>
+        </MyButton>
       </div>
     </div>
   )

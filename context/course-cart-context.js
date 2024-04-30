@@ -13,27 +13,7 @@ const CourseCartContext = createContext({
 export const CourseCartProvider = ({ children }) => {
   // const [cart, setCart] = useLocalStorage('courseCart', []) // 預設是空的
   // 塞假資料試試看
-  const [cart, setCart] = useLocalStorage('courseCart', [
-    {
-      id: '1',
-      name: '花材選擇與搭配',
-      image: '/assets/course/category-1/img-course-01-01.jpg',
-      date: '2024-04-14 17:00',
-      price: 1200,
-      intro:
-        '這門精心設計的課程旨在教授學員如何精準選擇和搭配花材，以創作出風格獨特且美觀的花藝作品。',
-    },
-    {
-      id: '2',
-      name: '花藝專業術語與知識',
-      image: '/assets/course/category-1/img-course-02-01.jpg',
-      date: '2024-04-14 17:00',
-      price: 800,
-      intro:
-        '在花藝領域中，有許多專業術語和知識是每位花藝師都應該熟悉的。這堂課程將介紹花藝的專業術語、花卉命名、搭配原則等知識，幫助您更好地理解和應用在花藝創作中。',
-    },
-    // 其他假資料可以繼續添加
-  ])
+  const [cart, setCart] = useLocalStorage('courseCart', [])
 
   useEffect(() => {
     setCart(cart)
