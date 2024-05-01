@@ -108,12 +108,11 @@ export default function ShopCart() {
         </div>
       </div>
       {/* 按鈕群组 */}
-      <div className="flex flex-col md:flex-row gap-3 w-full justify-center md:py-10">
-        <MyButton color="primary" size="xl" isOutline className="w-full">
-          <Link href="/shop">繼續購物</Link>
+      <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
+        <MyButton color="primary" size="xl" isOutline>
+          <Link href="/">繼續購物</Link>
         </MyButton>
-
-        <MyButton color="primary" size="xl" className="w-full">
+        <MyButton color="primary" size="xl">
           <Link href="/cart/fill-out?source=shop">下一步</Link>
         </MyButton>
       </div>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Image } from '@nextui-org/react'
 import {
   Table,
   TableHeader,
@@ -8,15 +7,18 @@ import {
   TableRow,
   TableCell,
 } from '@nextui-org/react'
+import { Image } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
 import { Link } from '@nextui-org/react'
 // 小組元件
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import { useAuth } from '@/hooks/use-auth'
+import { useCart } from '@/context/shop-cart-context'
 
 const ShopCheckout = () => {
   const { auth } = useAuth()
+  const { totalSubtotal } = useCart()
 
   const [detailData, setDetailData] = useState({
     products: [],
@@ -46,9 +48,26 @@ const ShopCheckout = () => {
     setDetailData(data) // store data in useState
   }, []) // dependencies array 可以用來控制 要執行幾次getDetailData
 
-  const confirmOrder = () => {
-    // post api
-  }
+  // 計算商品總數量
+  // total是累加器，item是當前元素
+  const totalQuantity = detailData.products.reduce((total, item) => {
+    return total + item.quantity
+  }, 0) // 0是reduce第2個參數，代表初始值
+
+  // 小計
+  const totalPrice = detailData.products.reduce((total, item) => {
+    return total + item.price * item.quantity
+  }, 0)
+
+  // 全部的金額
+  const deliveryShipping = Number(detailData.detail.deliveryShipping) || 0
+  const discount = Number(detailData.detail.discount) || 0
+  const totalAmount = totalPrice + deliveryShipping - discount
+
+  // const confirmOrder = () => {
+  //   // post api
+  // }
+
   // 購物車 start
   // useEffect(() => {
   //   if (auth?.isAuth) {
@@ -167,10 +186,18 @@ const ShopCheckout = () => {
               </TableColumn>
             </TableHeader>
             <TableBody>
-              {/* {Object.values(shopCartItems).map((item) => {
+              {detailData.products.map((item) => {
                 let imageUrl =
-                  `/assets/shop/products/${item.directory}/${item.mainImage}` ||
+                  item.imageUrl ||
                   `/assets/shop/products/default_fallback_image.jpg`
+                if (Array.isArray(item.images)) {
+                  const nonThumbnailImage = item.images.find(
+                    (image) => !image.is_thumbnail
+                  )
+                  if (nonThumbnailImage) {
+                    imageUrl = `/assets/shop/products/${item.directory}/${nonThumbnailImage.url}`
+                  }
+                }
                 return (
                   <TableRow key={item.cart_item_id}>
                     <TableCell>
@@ -178,22 +205,22 @@ const ShopCheckout = () => {
                         <Image
                           src={imageUrl}
                           alt=""
-                          className="hidden sm:block md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
+                          className="md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
                         />
                         <div>
                           <p>{item.name}</p>
                           <p className="text-tertiary-gray-100">
-                            {item.store_name}
+                            {item.stores.store_name}
                           </p>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>NT${item.price}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
-                    <TableCell>NT${item.item_total}</TableCell>
+                    <TableCell>NT${totalSubtotal}</TableCell>
                   </TableRow>
                 )
-              })} */}
+              })}
             </TableBody>
           </Table>
         </div>
@@ -212,25 +239,31 @@ const ShopCheckout = () => {
               <TableRow key="1">
                 <TableCell></TableCell>
                 <TableCell className="text-nowrap">
-                  共 {} 項商品，數量 {} 個
+                  共 {detailData.products.length} 項商品，數量 {totalQuantity}{' '}
+                  個
                 </TableCell>
               </TableRow>
               <TableRow key="2">
                 <TableCell className="w-full pr-8">小計</TableCell>
-                <TableCell className="text-right">NT${}</TableCell>
+                <TableCell className="text-right">
+                  NT$ {''}
+                  {totalPrice} {''}
+                </TableCell>
               </TableRow>
               <TableRow key="3">
                 <TableCell className="w-full pr-8">運費</TableCell>
-                <TableCell className="text-right">NT$??</TableCell>
+                <TableCell className="text-right">
+                  NT$ {detailData.detail.deliveryShipping}
+                </TableCell>
               </TableRow>
               <TableRow key="4">
                 <TableCell className="w-full pr-8">折扣</TableCell>
-                <TableCell className="text-right">NT$??</TableCell>
+                <TableCell className="text-right">NT${}</TableCell>
               </TableRow>
               <TableRow key="5">
                 <TableCell className="w-full pr-8">總計</TableCell>
-                <TableCell className="text-right text-lg font-medium">
-                  NT$???
+                <TableCell className="text-right text-lg font-medium text-primary">
+                  NT${totalAmount}
                 </TableCell>
               </TableRow>
             </TableBody>
@@ -241,60 +274,55 @@ const ShopCheckout = () => {
       {/* shipping & payment detail start*/}
       <div className="flex flex-col justify-center w-full gap-6">
         <Subtitle text="配送/付款明細" />
-        {/* {shopOrderDetails.map((detail) => {
-          return (
-            <Table
-              key={detail.id}
-              hideHeader
-              aria-label="Example static collection table"
-              classNames={{ ...tableStylesContent }}
-            >
-              {detail.recipient_address}
-              <TableHeader>
-                <TableColumn>配送方式</TableColumn>
-                <TableColumn>內容</TableColumn>
-              </TableHeader>
-              <TableBody>
-                <TableRow key="1">
-                  <TableCell className="pr-8 text-nowrap">配送方式</TableCell>
-                  <TableCell className="w-full text-right">
-                    {detail.shipping_name}
-                  </TableCell>
-                </TableRow>
-                <TableRow key="2">
-                  <TableCell className="pr-8 text-nowrap">配送地址</TableCell>
-                  <TableCell className="w-full text-right line-clamp-1">
-                    {detail.recipient_address}
-                  </TableCell>
-                </TableRow>
-                <TableRow key="3">
-                  <TableCell className="pr-8 text-nowrap">收件人</TableCell>
-                  <TableCell className="w-full text-right">
-                    {detail.recipient_name}
-                  </TableCell>
-                </TableRow>
-                <TableRow key="4">
-                  <TableCell className="pr-8 text-nowrap">連絡電話</TableCell>
-                  <TableCell className="w-full text-right">
-                    {detail.recipient_phone}
-                  </TableCell>
-                </TableRow>
-                <TableRow key="5">
-                  <TableCell className="pr-8 text-nowrap">付款方式</TableCell>
-                  <TableCell className="w-full text-right">
-                    {detail.payment_name}
-                  </TableCell>
-                </TableRow>
-                <TableRow key="6">
-                  <TableCell className="pr-8 text-nowrap">發票</TableCell>
-                  <TableCell className="w-full text-right">
-                    {detail.invoice_name}
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          )
-        })} */}
+
+        <Table
+          hideHeader
+          aria-label="Example static collection table"
+          classNames={{ ...tableStylesContent }}
+        >
+          <TableHeader>
+            <TableColumn>header</TableColumn>
+            <TableColumn>header內容</TableColumn>
+          </TableHeader>
+          <TableBody>
+            <TableRow key="1">
+              <TableCell className="pr-8 text-nowrap">配送方式</TableCell>
+              <TableCell className="w-full text-right">
+                {detailData.detail.deliveryOption}
+              </TableCell>
+            </TableRow>
+            <TableRow key="2">
+              <TableCell className="pr-8 text-nowrap">配送地址</TableCell>
+              <TableCell className="w-full text-right line-clamp-1">
+                7-ELEVEN 門市
+              </TableCell>
+            </TableRow>
+            <TableRow key="3">
+              <TableCell className="pr-8 text-nowrap">收件人</TableCell>
+              <TableCell className="w-full text-right">
+                {detailData.detail.recipientName}
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
+              <TableCell className="pr-8 text-nowrap">連絡電話</TableCell>
+              <TableCell className="w-full text-right">
+                {detailData.detail.recipientNumber}
+              </TableCell>
+            </TableRow>
+            <TableRow key="5">
+              <TableCell className="pr-8 text-nowrap">付款方式</TableCell>
+              <TableCell className="w-full text-right">
+                {detailData.detail.paymentMethod}
+              </TableCell>
+            </TableRow>
+            <TableRow key="6">
+              <TableCell className="pr-8 text-nowrap">發票</TableCell>
+              <TableCell className="w-full text-right">
+                {detailData.detail.invoiceOption}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
       {/* shipping & payment detail end*/}
       <div className="w-full flex justify-center">
