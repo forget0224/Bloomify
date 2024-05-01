@@ -410,9 +410,12 @@ export default function Detail() {
                       className="w-full"
                       onClick={() => addToCart(product)}
                     >
-                      <Link href="/cart?tab=shop" className="sm:flex-1">
+                      <Link href="/cart" className="sm:flex-1">
                         立即購買
                       </Link>
+                      {/* <Link href="/cart?tab=shop" className="sm:flex-1">
+                        立即購買
+                      </Link> */}
                     </MyButton>
                   </div>
                 </div>
