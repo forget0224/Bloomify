@@ -64,51 +64,31 @@ const ShopCheckout = () => {
   const discount = Number(detailData.detail.discount) || 0
   const totalAmount = totalPrice + deliveryShipping - discount
 
-  // const confirmOrder = () => {
-  //   // post api
-  // }
-
-  // 購物車 start
-  // useEffect(() => {
-  //   if (auth?.isAuth) {
-  //     fetch('http://localhost:3005/api/products/get-cart-items', {
-  //       credentials: 'include',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       method: 'GET',
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         if (data.status === 'success') {
-  //           // 重新映射數據屬性，同时保留其他屬性
-  //           const formattedProducts = data.data.map((product) => ({
-  //             ...product,
-  //             mainImage: product.image_url,
-  //           }))
-  //           setShopCartItems(formattedProducts)
-  //         } else {
-  //           throw new Error(data.message)
-  //         }
-  //       })
-  //       .catch((error) =>
-  //         console.error('Error fetching shop cart items:', error)
-  //       )
-  //   }
-  // }, [auth])
-
-  // //購買商品總數量
-  // let totalQuantity = shopCartItems.reduce(
-  //   (sum, item) => sum + Number(item.quantity),
-  //   0
-  // )
-  // // 購買商品小計
-  // let totalAmount = shopCartItems.reduce(
-  //   (sum, item) => sum + Number(item.item_total),
-  //   0
-  // )
-  // 購物車 end
+  const confirmOrder = async () => {
+    console.log('Sending order details:', detailData) // 查看傳送的數據
+    try {
+      const response = await fetch('/api/save-order-details', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          products: detailData.products,
+          detail: detailData.detail,
+        }),
+      })
+      console.log('Response received:', response) // 查看響應狀態
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Order confirmed:', data)
+      } else {
+        throw new Error('Something went wrong with the order confirmation.')
+      }
+    } catch (error) {
+      console.error('Failed to confirm order:', error)
+    }
+  }
 
   // 填寫明細
   // useEffect(() => {
@@ -199,7 +179,7 @@ const ShopCheckout = () => {
                   }
                 }
                 return (
-                  <TableRow key={item.cart_item_id}>
+                  <TableRow key={item.id}>
                     <TableCell>
                       <div className="sm:flex sm:flex-row sm:items-center sm:space-x-6">
                         <Image
@@ -337,8 +317,11 @@ const ShopCheckout = () => {
             上一步
           </MyButton>
         </Link>
-        <Link href="/cart/payment-successful" className="text-white">
-          <MyButton color="primary" size="xl">
+        <Link
+          href="/cart/payment-successful?source=shop"
+          className="text-white"
+        >
+          <MyButton color="primary" size="xl" onClick={confirmOrder}>
             確認，進行付款
           </MyButton>
         </Link>

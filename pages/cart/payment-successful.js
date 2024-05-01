@@ -11,10 +11,13 @@ import {
 import Subtitle from '@/components/common/subtitle'
 import { MyButton } from '@/components/btn/mybutton'
 import { Link } from '@nextui-org/react'
+import { useRouter } from 'next/router'
+import ShopPaymentSuccess from '@/components/shop/shop-payment-success'
 
 export default function PaymentFailed() {
   const [activePage, setActivePage] = useState('cart')
-
+  const route = useRouter()
+  const source = route.query.source
   //table樣式
   const tableStyles = {
     th: 'text-base', // 表頭
@@ -45,9 +48,9 @@ export default function PaymentFailed() {
                 <path
                   d="M39.6016 57.7857L53.2016 73.0008L80.4016 47.8008"
                   stroke="white"
-                  stroke-width="6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
               </svg>
               <p className="text-2xl font-medium mt-6">
@@ -55,8 +58,13 @@ export default function PaymentFailed() {
               </p>
             </div>
             {/* 訂單明細 */}
-            <div className="w-full flex flex-col md:w-6/12 lg:w-4/12 items-center justify-center gap-4">
-              <Subtitle text="訂單明細" className="w-full" />
+
+            {source === 'flower'}
+            {source === 'shop' && <ShopPaymentSuccess />}
+            {source === 'course'}
+
+            {/* <div className="w-full flex flex-col md:w-6/12 lg:w-4/12 items-center justify-center gap-4">
+            <Subtitle text="訂單明細" className="w-full" />
               <Table hideHeader classNames={tableStyles}>
                 <TableHeader>
                   <TableColumn></TableColumn>
@@ -87,14 +95,14 @@ export default function PaymentFailed() {
                     <TableCell>付款狀態</TableCell>
                     <TableCell>已付款</TableCell>
                   </TableRow>
-                  <TableRow key="6">
+                  <TableRow key="7">
                     <TableCell>發票</TableCell>
                     <TableCell>載具</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </div>
-            {/* 按鈕群組 */}
+            
             <div className="container flex flex-wrap justify-center my-10 mx-4 sm:mx-6">
               <div className="flex gap-2 sm:gap-4 w-full sm:w-auto">
                 <Link href="/center">
@@ -118,7 +126,7 @@ export default function PaymentFailed() {
                   </MyButton>
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
         </main>
       </>
