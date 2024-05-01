@@ -75,7 +75,7 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
                     <path
                       d="M29 14.9961C29 7.26222 22.7339 0.996094 15 0.996094C7.26613 0.996094 1 7.26222 1 14.9961C1 21.9837 6.1196 27.7756 12.8125 28.8267V19.0431H9.25605V14.9961H12.8125V11.9116C12.8125 8.40311 14.9012 6.46513 18.1003 6.46513C19.6324 6.46513 21.2345 6.73835 21.2345 6.73835V10.1819H19.4687C17.73 10.1819 17.1875 11.2613 17.1875 12.3683V14.9961H21.0702L20.4493 19.0431H17.1875V28.8267C23.8804 27.7756 29 21.9837 29 14.9961Z"
                       stroke="black"
-                      stroke-width="1.92688"
+                      strokeWidth="1.92688"
                     />
                   </g>
                   <defs>
@@ -84,7 +84,6 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
                     </clipPath>
                   </defs>
                 </svg>
-                <FaFacebook className="w-7 h-7" />
                 <span className="flex flex-row justify-center text-center items-center select-none">
                   Facebook
                 </span>
