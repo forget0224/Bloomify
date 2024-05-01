@@ -40,15 +40,15 @@ export default function Detail() {
   // 購物車商品數量用
   const [quantity, setQuantity] = useState(1)
 
-  // // 頁碼，目前共三頁
-  // const [page, setPage] = useState(1) // number
-  // // console.log(page)
   // 星星tab
   const [stars, setStars] = useState([])
   // console.log(stars)
 
+  console.log('RENDER!!!!!')
+
   // 獲取商品的所有資料
   useEffect(() => {
+    console.log('open')
     open()
     async function fetchData() {
       if (!router.isReady) return
@@ -77,13 +77,15 @@ export default function Detail() {
 
           // console.log('Reviews loaded:', product.reviews)
         }
+        console.log('test')
         close(3)
       } catch (error) {
+        console.log('catch erro ', error)
         // console.error('Error fetching product:', error)
       }
     }
     fetchData()
-  }, [])
+  }, [router.isReady])
 
   // images start
   function processProduct(product) {
@@ -166,7 +168,6 @@ export default function Detail() {
     }
     setCartItems(updatedCartItems)
   }
-
 
   const filterReviewsByStar = (reviews, starId) => {
     // console.log(reviews)
@@ -260,7 +261,7 @@ export default function Detail() {
                     <Image
                       width={500}
                       height={500}
-                      src={product.mainImage} // Already includes the basePath
+                      src={product.mainImage}
                       alt="Main Image"
                       style={{ maxWidth: '100%', height: 'auto' }}
                     />
@@ -310,8 +311,8 @@ export default function Detail() {
                         </p>
                       </div>
                     </div>
-                    <div className="flex space-x-2">
-                      <div>
+                    <div className="flex justify-center items-center space-x-2">
+                      <div className="flex justify-center items-center">
                         <HeartButton
                           productId={product.id}
                           opacity="text-opacity-40"
@@ -363,7 +364,7 @@ export default function Detail() {
                             <Button
                               isIconOnly
                               variant="faded"
-                              className="border-transparent"
+                              className="bg-primary-300 border-transparent"
                               onClick={handleDecrement}
                             >
                               -
@@ -379,7 +380,7 @@ export default function Detail() {
                             <Button
                               isIconOnly
                               variant="faded"
-                              className="border-transparent"
+                              className="bg-primary-300 border-transparent"
                               onClick={handleIncrement}
                             >
                               +
@@ -404,16 +405,17 @@ export default function Detail() {
                     </MyButton>
                   </div>
                   <Toaster />
-                  <Link href="/cart" className="sm:flex-1">
-                    <MyButton
-                      color="primary"
-                      size="xl"
-                      className="w-full"
-                      onClick={() => addToCart(product)}
-                    >
+
+                  <MyButton
+                    color="primary"
+                    size="xl"
+                    className="w-full"
+                    onClick={() => addToCart(product)}
+                  >
+                    <Link href="/cart?tab=shop" className="sm:flex-1">
                       立即購買
-                    </MyButton>
-                  </Link>
+                    </Link>
+                  </MyButton>
                 </div>
               </div>
             </div>

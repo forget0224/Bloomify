@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
+import React, { createContext, useContext } from 'react'
 import useLocalStorage from '../hooks/use-localStorage'
 const FillOutContext = createContext()
 
@@ -9,21 +9,21 @@ export const FillOutProvider = ({ children }) => {
       senderName: '',
       senderNumber: '',
       senderEmail: '',
-      recipientName: '', // 收件人姓名
-      recipientNumber: '', // 聯絡電話
-      deliveryOption: '', // 運送選項
+      recipientName: '',
+      recipientNumber: '',
+      deliveryOption: '',
       deliveryShipping: 0,
       deliveryAddress: '',
       deliveryDate: '',
       deliveryTime: '',
-      couponCode: '', // 優惠券代碼
-      paymentMethod: '', // 付款方式
-      invoiceOption: '', // 發票
+      couponCode: '',
+      paymentMethod: '',
+      invoiceOption: '',
       mobileBarcode: '',
       total: 0,
     }
   )
-  console.log(fillOutDetails)
+  // console.log(fillOutDetails)
 
   return (
     <FillOutContext.Provider value={{ fillOutDetails, setFillOutDetails }}>

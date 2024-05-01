@@ -1,25 +1,26 @@
-import { useState, useEffect } from 'react'
-import { Image } from '@nextui-org/react'
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@nextui-org/react'
-import { Checkbox } from '@nextui-org/react'
+'use client'
+
+import { useState } from 'react'
+// import { Image } from '@nextui-org/react'
+// import {
+//   Table,
+//   TableHeader,
+//   TableColumn,
+//   TableBody,
+//   TableRow,
+//   TableCell,
+// } from '@nextui-org/react'
+// import { Checkbox } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
-import { Link } from '@nextui-org/react'
+// import { Link } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
+import ShopCheckOut from '@/components/shop/shop-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
 // import { MyButton } from '@/components/btn/mybutton'
 // import Subtitle from '@/components/common/subtitle'
-
-import ShopCheckout from '@/components/shop/shop-checkout'
 
 export default function Confirm() {
   const { auth } = useAuth()
@@ -27,6 +28,7 @@ export default function Confirm() {
   const [activePage, setActivePage] = useState('cart')
   const route = useRouter()
   const source = route.query.source
+
   // stepper
   const steps = [
     {
@@ -62,26 +64,25 @@ export default function Confirm() {
   // }
 
   //商品列表 table 樣式
-  // const tableStyles = {
-  //   base: ['text-tertiary-black'],
-  //   th: ['text-base', 'text-tertiary-gray-100'], // 表頭
-  //   td: ['text-base', 'px-3', 'py-3'], // 表格
-  //   wrapper: [
-  //     'text-base',
-  //     'shadow-none',
-  //     'border-1',
-  //     'border-tertiary-100',
-  //     'rounded-xl',
-  //   ], // 整個表格
-  // }
+  const tableStyles = {
+    base: ['text-tertiary-black'],
+    th: ['text-base', 'text-tertiary-gray-100'], // 表頭
+    td: ['text-base', 'px-3', 'py-3'], // 表格
+    wrapper: [
+      'text-base',
+      'shadow-none',
+      'border-1',
+      'border-tertiary-100',
+      'rounded-xl',
+    ], // 整個表格
+  }
 
   //明細 table 樣式
-  // const tableStylesContent = {
-  //   th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
-  //   td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
-  //   wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
-  // }
-  
+  const tableStylesContent = {
+    th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
+    td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
+    wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
+  }
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -115,12 +116,14 @@ export default function Confirm() {
               </p>
               {/* 主要內容 */}
 
-              {!source && (
+              {source === 'flower' && <CustomCheckOut />}
+              {source === 'shop' && <ShopCheckOut />}
+              {source === 'course' && <CourseCheckOut />}
+
+              {/* {!source && (
                 <div className="flex flex-col w-full lg:w-8/12 gap-14">
-                  {/* order-detail start */}
                   <div className="flex flex-col w-full">
                     <Subtitle text="購物明細" />
-                    {/* 明細 */}
                     <div className="flex flex-col gap-3 mt-6 mb-4">
                       <Table
                         selectionMode="single"
@@ -143,7 +146,7 @@ export default function Confirm() {
                           </TableColumn>
                         </TableHeader>
                         <TableBody>
-                          {cartContent.map((item, index) => (
+                          {/* {cartContent.map((item, index) => (
                             <TableRow key="index">
                               <TableCell key={index}>
                                 <div className="sm:flex sm:flex-row sm:items-center sm:space-x-6">
@@ -164,9 +167,9 @@ export default function Confirm() {
                               <TableCell>3</TableCell>
                               <TableCell>NT$30</TableCell>
                             </TableRow>
-                          ))}
+                          ))} 
 
-                          {/* <TableRow key="2">
+                          <TableRow key="2">
                           <TableCell>
                             <div className="flex flex-row items-center space-x-6">
                               <Image
@@ -182,11 +185,10 @@ export default function Confirm() {
                           <TableCell>NT$30</TableCell>
                           <TableCell>3</TableCell>
                           <TableCell>NT$30</TableCell>
-                        </TableRow> */}
+                        </TableRow> 
                         </TableBody>
                       </Table>
                     </div>
-                    {/* 小計 */}
                     <div>
                       <Table
                         hideHeader
@@ -226,8 +228,6 @@ export default function Confirm() {
                       </Table>
                     </div>
                   </div>
-                  {/* order-detail end */}
-                  {/* shipping & payment detail start*/}
                   <div className="flex flex-col justify-center w-full gap-6">
                     <Subtitle text="配送/付款明細" />
                     <Table
@@ -291,7 +291,6 @@ export default function Confirm() {
                       </TableBody>
                     </Table>
                   </div>
-                  {/* shipping & payment detail end*/}
                   <div className="w-full flex justify-center">
                     <Checkbox defaultSelected>
                       我同意辦理退貨時，由floral_shop代為處理發票及銷貨退回證明單，以加速退貨退款作業。
@@ -314,11 +313,7 @@ export default function Confirm() {
                     </Link>
                   </div>
                 </div>
-              )}
-
-              {source === 'flower' && <CustomCheckOut />}
-              {source === 'shop'}
-              {source === 'course' && <CourseCheckOut />}
+              )} */}
             </div>
           </main>
         </>

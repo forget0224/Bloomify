@@ -21,6 +21,10 @@ const ShopCheckout = () => {
   // console.log(shopCartItems)
   const [shopOrderDetails, setShopOrderDetails] = useState([])
   console.log(shopOrderDetails)
+  const [detailData, setDetailData] = useState({
+    products: [],
+    detail: {},
+  })
 
   // 購物車 start
   useEffect(() => {
@@ -94,6 +98,32 @@ const ShopCheckout = () => {
         )
     }
   }, [auth])
+
+  const getParsedData = (stringifiedJson) => {
+    return stringifiedJson ? JSON.parse(stringifiedJson) : ''
+  }
+
+  const getDetailData = () => {
+    const productList = getParsedData(localStorage.getItem('cartItems'))
+    const filledOutDetail = getParsedData(
+      localStorage.getItem('fillOutDetails')
+    )
+    const normalizedProductList = Object.values(productList)
+
+    return {
+      products: normalizedProductList,
+      detail: filledOutDetail,
+    }
+  }
+
+  useEffect(() => {
+    const data = getDetailData() // fetch data
+    setDetailData(data) // store data in useState
+  }, []) // dependencies array 可以用來控制 要執行幾次getDetailData
+
+  const confirmOrder = () => {
+    // post api
+  }
 
   const tableStylesContent = {
     th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭

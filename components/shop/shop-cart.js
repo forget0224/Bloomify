@@ -3,7 +3,7 @@ import { Card, Image } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import Link from 'next/link.js'
 import { FaRegTrashAlt } from 'react-icons/fa'
-import { Input } from '@nextui-org/react'
+import { Input, Button } from '@nextui-org/react'
 import { FaMinus, FaPlus } from 'react-icons/fa6'
 import { useCart } from '@/context/shop-cart-context'
 
@@ -39,43 +39,55 @@ export default function ShopCart() {
               key={item.id}
               className="shadow-none border-1 border-tertiary-gray-200 p-2 shadow-md"
             >
-              <div className="flex flex-col md:flex-row items-center justify-between space-x-2">
-                <Image
-                  width={80}
-                  height={40}
-                  src={imageUrl}
-                  alt={item.name}
-                  className="rounded-md"
+              <div className="flex flex-col md:flex-row items-center justify-between space-x-2 space-y-1.5">
+                <div
+                  style={{
+                    width: '80px',
+                    height: '80px',
+                    backgroundImage: `url(${imageUrl})`,
+                    backgroundPosition: 'center',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    borderRadius: '4px',
+                  }}
+                  aria-label={item.name}
                 />
-                <div className="flex-grow">
+                <div className="flex-grow flex justify-center sm:w-25">
                   <span className="truncate">{item.name}</span>
                 </div>
-                <div className="flex-grow">
+                <div className="flex-grow flex justify-center sm:w-25">
                   <span className="truncate">{item.stores.store_name}</span>
                 </div>
-                <div className="flex-grow">
+                <div className="flex-grow flex justify-center sm:w-25">
                   <span className="truncate">NT${item.price}</span>
                 </div>
-                <div className="flex items-center">
-                  <button
-                    className="bg-primary-300 p-1.5 rounded-sm mr-1 hover:bg-primary-200"
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    style={{ minWidth: '20px' }}
+                    className="bg-primary-300"
                     onClick={() => handleDecrement(item.id)}
                   >
                     <FaMinus />
-                  </button>
-                  <Input
-                    style={{ textAlign: 'center' }}
-                    value={item.quantity}
-                    onChange={(e) => handleChange(item.id, e)}
-                  />
-                  <button
-                    className="bg-primary-300 p-1.5 rounded-sm ml-1 hover:bg-primary-200"
+                  </Button>
+                  <div style={{ width: '100px' }}>
+                    <Input
+                      style={{ textAlign: 'center' }}
+                      value={item.quantity}
+                      onChange={(e) => handleChange(item.id, e)}
+                    />
+                  </div>
+                  <Button
+                    style={{ minWidth: '20px' }}
+                    className="bg-primary-300"
                     onClick={() => handleIncrement(item.id)}
                   >
                     <FaPlus />
-                  </button>
+                  </Button>
                 </div>
-                <div className="flex items-center">
+                <div
+                  style={{ width: '100px' }}
+                  className="flex items-center justify-center"
+                >
                   <span>NT${item.quantity * item.price}</span>
                 </div>
                 <button onClick={() => deleteCartItem(item.id)}>
@@ -102,7 +114,7 @@ export default function ShopCart() {
         </MyButton>
 
         <MyButton color="primary" size="xl" className="w-full">
-          <Link href="/cart/fill-out">下一步</Link>
+          <Link href="/cart/fill-out?source=shop">下一步</Link>
         </MyButton>
       </div>
     </div>
