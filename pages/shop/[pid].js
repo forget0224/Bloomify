@@ -44,8 +44,6 @@ export default function Detail() {
   const [stars, setStars] = useState([])
   // console.log(stars)
 
-  console.log('RENDER!!!!!')
-
   // 獲取商品的所有資料
   useEffect(() => {
     console.log('open')
@@ -405,17 +403,18 @@ export default function Detail() {
                     </MyButton>
                   </div>
                   <Toaster />
-
-                  <MyButton
-                    color="primary"
-                    size="xl"
-                    className="w-full"
-                    onClick={() => addToCart(product)}
-                  >
-                    <Link href="/cart?tab=shop" className="sm:flex-1">
-                      立即購買
-                    </Link>
-                  </MyButton>
+                  <div className="sm:flex-1">
+                    <MyButton
+                      color="primary"
+                      size="xl"
+                      className="w-full"
+                      onClick={() => addToCart(product)}
+                    >
+                      <Link href="/cart?tab=shop" className="sm:flex-1">
+                        立即購買
+                      </Link>
+                    </MyButton>
+                  </div>
                 </div>
               </div>
             </div>

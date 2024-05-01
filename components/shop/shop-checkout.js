@@ -17,87 +17,12 @@ import { useAuth } from '@/hooks/use-auth'
 
 const ShopCheckout = () => {
   const { auth } = useAuth()
-  const [shopCartItems, setShopCartItems] = useState([])
-  // console.log(shopCartItems)
-  const [shopOrderDetails, setShopOrderDetails] = useState([])
-  console.log(shopOrderDetails)
+
   const [detailData, setDetailData] = useState({
     products: [],
     detail: {},
   })
-
-  // 購物車 start
-  useEffect(() => {
-    if (auth?.isAuth) {
-      fetch('http://localhost:3005/api/products/get-cart-items', {
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === 'success') {
-            // 重新映射數據屬性，同时保留其他屬性
-            const formattedProducts = data.data.map((product) => ({
-              ...product,
-              mainImage: product.image_url,
-            }))
-            setShopCartItems(formattedProducts)
-          } else {
-            throw new Error(data.message)
-          }
-        })
-        .catch((error) =>
-          console.error('Error fetching shop cart items:', error)
-        )
-    }
-  }, [auth])
-
-  //購買商品總數量
-  let totalQuantity = shopCartItems.reduce(
-    (sum, item) => sum + Number(item.quantity),
-    0
-  )
-  // 購買商品小計
-  let totalAmount = shopCartItems.reduce(
-    (sum, item) => sum + Number(item.item_total),
-    0
-  )
-  // 購物車 end
-
-  // 填寫明細
-  useEffect(() => {
-    if (auth?.isAuth) {
-      fetch('http://localhost:3005/api/products/get-order-list', {
-        credentials: 'include',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === 'success') {
-            // 重新映射數據屬性，同时保留其他屬性
-            const formattedOrderList = data.data.map((orderList) => ({
-              ...orderList,
-              // mainImage: product.image_url,
-            }))
-            // console.log(formattedOrderList)
-            setShopOrderDetails(formattedOrderList)
-          } else {
-            throw new Error(data.message)
-          }
-        })
-        .catch((error) =>
-          console.error('Error fetching shop cart items:', error)
-        )
-    }
-  }, [auth])
+  console.log(detailData, 'detailData')
 
   const getParsedData = (stringifiedJson) => {
     return stringifiedJson ? JSON.parse(stringifiedJson) : ''
@@ -109,7 +34,7 @@ const ShopCheckout = () => {
       localStorage.getItem('fillOutDetails')
     )
     const normalizedProductList = Object.values(productList)
-
+    console.log('productList', productList)
     return {
       products: normalizedProductList,
       detail: filledOutDetail,
@@ -124,6 +49,78 @@ const ShopCheckout = () => {
   const confirmOrder = () => {
     // post api
   }
+  // 購物車 start
+  // useEffect(() => {
+  //   if (auth?.isAuth) {
+  //     fetch('http://localhost:3005/api/products/get-cart-items', {
+  //       credentials: 'include',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       method: 'GET',
+  //     })
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         if (data.status === 'success') {
+  //           // 重新映射數據屬性，同时保留其他屬性
+  //           const formattedProducts = data.data.map((product) => ({
+  //             ...product,
+  //             mainImage: product.image_url,
+  //           }))
+  //           setShopCartItems(formattedProducts)
+  //         } else {
+  //           throw new Error(data.message)
+  //         }
+  //       })
+  //       .catch((error) =>
+  //         console.error('Error fetching shop cart items:', error)
+  //       )
+  //   }
+  // }, [auth])
+
+  // //購買商品總數量
+  // let totalQuantity = shopCartItems.reduce(
+  //   (sum, item) => sum + Number(item.quantity),
+  //   0
+  // )
+  // // 購買商品小計
+  // let totalAmount = shopCartItems.reduce(
+  //   (sum, item) => sum + Number(item.item_total),
+  //   0
+  // )
+  // 購物車 end
+
+  // 填寫明細
+  // useEffect(() => {
+  //   if (auth?.isAuth) {
+  //     fetch('http://localhost:3005/api/products/get-product-order-detail', {
+  //       credentials: 'include',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       method: 'GET',
+  //     })
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         if (data.status === 'success') {
+  //           // 重新映射數據屬性，同时保留其他屬性
+  //           const formattedOrderList = data.data.map((orderList) => ({
+  //             ...orderList,
+  //             // mainImage: product.image_url,
+  //           }))
+  //           // console.log(formattedOrderList)
+  //           setShopOrderDetails(formattedOrderList)
+  //         } else {
+  //           throw new Error(data.message)
+  //         }
+  //       })
+  //       .catch((error) =>
+  //         console.error('Error fetching shop cart items:', error)
+  //       )
+  //   }
+  // }, [auth])
 
   const tableStylesContent = {
     th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
@@ -170,7 +167,7 @@ const ShopCheckout = () => {
               </TableColumn>
             </TableHeader>
             <TableBody>
-              {Object.values(shopCartItems).map((item) => {
+              {/* {Object.values(shopCartItems).map((item) => {
                 let imageUrl =
                   `/assets/shop/products/${item.directory}/${item.mainImage}` ||
                   `/assets/shop/products/default_fallback_image.jpg`
@@ -196,7 +193,7 @@ const ShopCheckout = () => {
                     <TableCell>NT${item.item_total}</TableCell>
                   </TableRow>
                 )
-              })}
+              })} */}
             </TableBody>
           </Table>
         </div>
@@ -215,12 +212,12 @@ const ShopCheckout = () => {
               <TableRow key="1">
                 <TableCell></TableCell>
                 <TableCell className="text-nowrap">
-                  共 {shopCartItems.length} 項商品，數量 {totalQuantity} 個
+                  共 {} 項商品，數量 {} 個
                 </TableCell>
               </TableRow>
               <TableRow key="2">
                 <TableCell className="w-full pr-8">小計</TableCell>
-                <TableCell className="text-right">NT${totalAmount}</TableCell>
+                <TableCell className="text-right">NT${}</TableCell>
               </TableRow>
               <TableRow key="3">
                 <TableCell className="w-full pr-8">運費</TableCell>
@@ -244,7 +241,7 @@ const ShopCheckout = () => {
       {/* shipping & payment detail start*/}
       <div className="flex flex-col justify-center w-full gap-6">
         <Subtitle text="配送/付款明細" />
-        {shopOrderDetails.map((detail) => {
+        {/* {shopOrderDetails.map((detail) => {
           return (
             <Table
               key={detail.id}
@@ -297,7 +294,7 @@ const ShopCheckout = () => {
               </TableBody>
             </Table>
           )
-        })}
+        })} */}
       </div>
       {/* shipping & payment detail end*/}
       <div className="w-full flex justify-center">
