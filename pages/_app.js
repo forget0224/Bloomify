@@ -19,15 +19,17 @@ export default function MyApp({ Component, pageProps }) {
       <AuthProvider>
         <LoaderProvider>
           <CourseFavoritesProvider>
-            <CartProvider>
-              <CourseCartProvider>
-                <FillOutProvider>
-                  <FlowerCartProvider>
-                    <Component {...pageProps} />
-                  </FlowerCartProvider>
-                </FillOutProvider>
-              </CourseCartProvider>
-            </CartProvider>
+            <ProductFavoritesProvider>
+              <CartProvider>
+                <CourseCartProvider>
+                  <FillOutProvider>
+                    <FlowerCartProvider>
+                      <Component {...pageProps} />
+                    </FlowerCartProvider>
+                  </FillOutProvider>
+                </CourseCartProvider>
+              </CartProvider>
+            </ProductFavoritesProvider>
           </CourseFavoritesProvider>
         </LoaderProvider>
       </AuthProvider>

@@ -31,7 +31,7 @@ export default function CustomCart() {
     0
   )
   console.log(state)
-  console.log(localStorage.getItem('flowerCartState'))
+  // console.log(localStorage.getItem('flowerCartState'))
 
   if (!state) return <h2>目前尚未加入購物車</h2>
 

@@ -10,6 +10,7 @@ export function LoaderProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true)
 
   const close = (sec = 1) => {
+    console.log('calling close')
     setTimeout(() => {
       setIsLoading(false)
     }, sec * 1000)
@@ -18,6 +19,7 @@ export function LoaderProvider({ children }) {
   const open = () => {
     setIsLoading(true)
   }
+
 
   return (
     <LoaderContext.Provider

@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from 'react'
 import { Image } from '@nextui-org/react'
 import {
@@ -16,8 +18,8 @@ import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
-// import { MyButton } from '@/components/btn/mybutton'
-// import Subtitle from '@/components/common/subtitle'
+import { MyButton } from '@/components/btn/mybutton'
+import Subtitle from '@/components/common/subtitle'
 
 import ShopCheckout from '@/components/shop/shop-checkout'
 
@@ -27,6 +29,10 @@ export default function Confirm() {
   const [activePage, setActivePage] = useState('cart')
   const route = useRouter()
   const source = route.query.source
+  const [detailData, setDetailData] = useState({
+    products: [],
+    detail: {},
+  })
   // stepper
   const steps = [
     {
@@ -62,27 +68,53 @@ export default function Confirm() {
   // }
 
   //商品列表 table 樣式
-  // const tableStyles = {
-  //   base: ['text-tertiary-black'],
-  //   th: ['text-base', 'text-tertiary-gray-100'], // 表頭
-  //   td: ['text-base', 'px-3', 'py-3'], // 表格
-  //   wrapper: [
-  //     'text-base',
-  //     'shadow-none',
-  //     'border-1',
-  //     'border-tertiary-100',
-  //     'rounded-xl',
-  //   ], // 整個表格
-  // }
+  const tableStyles = {
+    base: ['text-tertiary-black'],
+    th: ['text-base', 'text-tertiary-gray-100'], // 表頭
+    td: ['text-base', 'px-3', 'py-3'], // 表格
+    wrapper: [
+      'text-base',
+      'shadow-none',
+      'border-1',
+      'border-tertiary-100',
+      'rounded-xl',
+    ], // 整個表格
+  }
 
   //明細 table 樣式
-  // const tableStylesContent = {
-  //   th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
-  //   td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
-  //   wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
-  // }
-  
+  const tableStylesContent = {
+    th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
+    td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
+    wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
+  }
 
+  const getParsedData = (stringifiedJson) => {
+    return stringifiedJson ? JSON.parse(stringifiedJson) : ''
+  }
+
+  const getDetailData = () => {
+    const productList = getParsedData(localStorage.getItem('cartItems'))
+    const filledOutDetail = getParsedData(
+      localStorage.getItem('fillOutDetails')
+    )
+    const normalizedProductList = Object.values(productList)
+
+    return {
+      products: normalizedProductList,
+      detail: filledOutDetail,
+    }
+  }
+
+  useEffect(() => {
+    const data = getDetailData() // fetch data
+    setDetailData(data); // store data in useState
+  }, []) // dependencies array 可以用來控制 要執行幾次getDetailData
+
+
+  const confirmOrder = () => {
+   // post api
+  }
+  
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -143,7 +175,7 @@ export default function Confirm() {
                           </TableColumn>
                         </TableHeader>
                         <TableBody>
-                          {cartContent.map((item, index) => (
+                          {/* {cartContent.map((item, index) => (
                             <TableRow key="index">
                               <TableCell key={index}>
                                 <div className="sm:flex sm:flex-row sm:items-center sm:space-x-6">
@@ -164,7 +196,7 @@ export default function Confirm() {
                               <TableCell>3</TableCell>
                               <TableCell>NT$30</TableCell>
                             </TableRow>
-                          ))}
+                          ))} */}
 
                           {/* <TableRow key="2">
                           <TableCell>

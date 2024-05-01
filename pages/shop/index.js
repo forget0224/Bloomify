@@ -25,7 +25,7 @@ import { PiShoppingCartSimpleFill } from 'react-icons/pi'
 import { BiSolidLeaf } from 'react-icons/bi'
 import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
 import { FaToolbox } from 'react-icons/fa'
-// import ShopRearchRwd from '@/components/shop/'
+import ShopRearchRwd from '@/components/shop/shop-research-rwd'
 
 // import { useWindowSize } from 'react-use'
 import { useAuth } from '@/hooks/use-auth'
@@ -211,6 +211,7 @@ export default function Shop() {
     setActiveCategory(1) // If it's a single value, it should not be an array
     setSelectedSubcategoryIds([])
     setSelectedColors([])
+    setOrder('')
   }
 
   // 分頁
@@ -375,7 +376,7 @@ export default function Shop() {
                   })}
               </div>
               {/* 第一層選項 end */}
-              {/* RWD START */}
+              {/* 第二層選項 start */}
               <div className="sm:hidden">
                 {categories
                   .filter((category) => {
@@ -398,21 +399,13 @@ export default function Shop() {
                     </Checkbox>
                   ))}
               </div>
-              {/* RWD END */}
-              {/* search & select start */}
-              <div className="w-full py-4 flex justify-between">
-                {/* searchbar */}
+              {/* 第二層選項 end */}
+
+              {/* 搜尋&排序 start */}
+              <div className="w-full flex justify-between mb-6">
                 <div className="hidden sm:block sm:w-3/12">
                   <SearchBtn onSearch={handleSearch} />
                 </div>
-                {/* filter */}
-                {/* RWD start*/}
-                <p className="text-tertiary-black sm:hidden">
-                  共 {''}
-                  {filterProduct.length}
-                  {''} 項結果
-                </p>
-                {/* RWD end*/}
                 <div className="flex items-center space-x-4">
                   <p className="hidden sm:block sm:text-xl sm:text-tertiary-black sm:whitespace-nowrap">
                     排序
@@ -421,148 +414,47 @@ export default function Shop() {
                     aria-label="排序"
                     placeholder="排序"
                     className="hidden sm:block sm:max-w-xs sm:w-48"
+                    value={order}
                     onChange={(e) => {
                       setOrder(e.target.value)
                       console.log('Selected value: ', e.target.value)
                     }}
                   >
                     <SelectItem key="priceAsc" value="priceAsc">
-                      價格由小到大
+                      價格由低到高
                     </SelectItem>
                     <SelectItem key="priceDesc" value="priceDesc">
-                      價格由大到小
+                      價格由低到高
                     </SelectItem>
                   </Select>
-
-                  {/* RWD start */}
-                  {/* <div className="flex flex-row space-x-3 sm:hidden">
-                    <div className="flex gap-2 items-center text-xl hover:text-primary">
-                      <SlMagnifier
-                        onClick={onMagnifierOpen}
-                        style={{ cursor: 'pointer' }}
-                        className="text-xl"
-                      />
-                      <Modal
-                        isOpen={isMagnifierOpen}
-                        placement={modalPlacement}
-                        onOpenChange={onMagnifierOpenChange}
-                        className="mx-0 my-0 "
-                        style={{
-                          borderRadius: '6% 6% 0% 0%',
-                        }}
-                      >
-                        <ModalContent>
-                          <>
-                            <ModalHeader className="flex flex-col gap-1">
-                              關鍵字搜尋
-                            </ModalHeader>
-                            <ModalBody>
-                              <div className="sm:hidden block mb-20">
-                                <SearchBtn onSearch={handleSearch} />
-                              </div>
-                            </ModalBody>
-                          </>
-                        </ModalContent>
-                      </Modal>
-                    </div>
-
-                    <div className="flex gap-2 items-center text-xl hover:text-primary">
-                      <IoFilterCircleOutline
-                        onClick={onFilterOpen}
-                        style={{ cursor: 'pointer' }}
-                        className="text-2xl"
-                      />
-                      <Modal
-                        isOpen={isFilterOpen}
-                        placement={modalPlacement}
-                        onOpenChange={onFilterOpenChange}
-                        className="mx-0 my-0"
-                        style={{ borderRadius: '4% 4% 0% 0%' }}
-                      >
-                        <ModalContent>
-                          <ModalHeader className="flex flex-col gap-1">
-                            排序與篩選
-                          </ModalHeader>
-                          <ModalBody
-                            style={{
-                              maxHeight: 'calc(100vh - 200px)',
-                              overflowY: 'auto',
-                            }}
-                          >
-                            <div>
-                              <p className="text-primary text-center py-0.5 bg-primary-300">
-                                排序
-                              </p>
-                              <div className="my-5">
-                                <RadioGroup>
-                                  <Radio>價格由高到低</Radio>
-                                  <Radio>價格由低到高</Radio>
-                                </RadioGroup>
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-primary text-center py-0.5 bg-primary-300">
-                                篩選
-                              </p>
-                              <hr />
-                              <div className="my-5">
-                                <p className="text-tertiary-black my-2">顏色</p>
-                                <div className="space-y-0.5 grid grid-cols-2">
-                                  {colors.map((color) => (
-                                    <Checkbox
-                                      key={color.id}
-                                      defaultSelected
-                                      radius="sm"
-                                      className="mr-2"
-                                      isSelected={selectedColors.includes(
-                                        color.id
-                                      )}
-                                    >
-                                      <div className="flex items-center">
-                                        <p className="mr-2">{color.name}</p>
-                                        <div
-                                          className="h-4 w-4 rounded-full"
-                                          style={{ background: color.code }}
-                                        ></div>
-                                      </div>
-                                    </Checkbox>
-                                  ))}
-                                </div>
-                              </div>
-                            </div>
-                          </ModalBody>
-                          <ModalFooter className="flex gap-2">
-                            <MyButton
-                              color="primary"
-                              size="xl"
-                              isOutline
-                              className="flex-1"
-                              onClick={resetSelection}
-                            >
-                              清除條件
-                            </MyButton>
-                            <MyButton
-                              color="primary"
-                              size="xl"
-                              isOutline
-                              className="flex-1"
-                            >
-                              確認
-                            </MyButton>
-                          </ModalFooter>
-                        </ModalContent>
-                      </Modal>
-                    </div>
-                  </div> */}
-                  {/* RWD end */}
                 </div>
               </div>
-              {/* search & select end */}
+              {/* 搜尋&排序 end */}
 
+              {/* RWD start */}
+              <div className="sm:hidden w-full my-4 flex justify-between">
+                <p className="text-tertiary-black">
+                  共 {''}
+                  {filterProduct.length}
+                  {''} 項結果
+                </p>
+                {/* 搜尋&排序 */}
+                <div>
+                  <ShopRearchRwd
+                    colors={colors}
+                    selectedColors={selectedColors}
+                    handleColorClick={handleColorClick}
+                    order={order}
+                    setOrder={setOrder}
+                    resetSelection={resetSelection}
+                  />
+                </div>
+              </div>
+              {/* RWD end */}
               {/* main section start */}
               <div className="flex flex-col md:flex-row gap-4 w-full">
                 {/* sidebar start */}
-                <div className="hidden sm:block" style={{ height: '150vh' }}>
+                <div className="hidden sm:block" style={{ height: 'auto' }}>
                   <div
                     className="bg-white p-4 rounded-lg shadow-md space-y-8 max-w-[335px]"
                     style={{ position: 'sticky', top: '0px' }}
@@ -642,107 +534,114 @@ export default function Shop() {
                 {/* sidebar end */}
                 {/* main starts */}
                 <div className="sm:w-10/12 sm:flex-1">
-                  <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
-                    {filterProduct.slice(0, limit * loadPage).map((product) => {
-                      let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
-                      if (Array.isArray(product.images)) {
-                        const nonThumbnailImage = product.images.find(
-                          (image) => !image.is_thumbnail
-                        )
-                        if (nonThumbnailImage)
-                          imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
-                      }
+                  {filterProduct.length > 0 ? (
+                    <div className="bg-white rounded-lg gap-4 sm:gap-8 grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 w-full">
+                      {filterProduct
+                        .slice(0, limit * loadPage)
+                        .map((product) => {
+                          let imageUrl = `/assets/shop/products/default_fallback_image.jpg`
+                          if (Array.isArray(product.images)) {
+                            const nonThumbnailImage = product.images.find(
+                              (image) => !image.is_thumbnail
+                            )
+                            if (nonThumbnailImage)
+                              imageUrl = `/assets/shop/products/${product.directory}/${nonThumbnailImage.url}`
+                          }
 
-                      return (
-                        <>
-                          <div className="relative">
-                            <div
-                              style={{
-                                position: 'absolute',
-                                right: '1rem',
-                                top: '1rem',
-                              }}
-                            >
-                              <HeartButton
-                                productId={product.id}
-                                opacity="text-opacity-40"
-                              />
-                            </div>
-                            <Card
-                              shadow="sm"
-                              key={product.id}
-                              isPressable
-                              onPress={() => console.log('item pressed')}
-                              className="w-full"
-                            >
-                              <CardBody className="overflow-visible p-0">
-                                <Link
-                                  href={{
-                                    pathname: '/shop/[pid]', // dynamic route
-                                    query: { pid: product.id }, // setting pid to product ID
-                                  }}
-                                  className="block relative"
-                                >
-                                  <Image
-                                    isZoomed
-                                    shadow="none"
-                                    radius="none"
-                                    width="100%"
-                                    alt={product.name}
-                                    className="w-full object-cover h-[250px] z-0"
-                                    src={imageUrl}
-                                  />
-                                </Link>
-                              </CardBody>
-                              <CardHeader className="block text-left">
-                                <div className="flex justify-between">
-                                  <p className="text-xl truncate">
-                                    {product.name}
-                                  </p>
-                                  <p className="text-base flex items-center space-x-1">
-                                    <BsFillStarFill className="text-secondary-100" />
-                                    {product.star}
-                                    <span>{product.overall_review}</span>
-                                  </p>
-                                </div>
-                                <p className="text-base text-tertiary-gray-100">
-                                  {product.stores.store_name}
-                                </p>
-                                <div className="flex flex-wrap">
-                                  {product.tags.map((tag) => (
-                                    <p
-                                      key={tag.id}
-                                      className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
-                                    >
-                                      {tag.name}
-                                    </p>
-                                  ))}
-                                </div>
-                              </CardHeader>
-                              <CardFooter className="text-small justify-between">
-                                <p className="text-xl truncate">
-                                  NT${product.price}
-                                </p>
+                          return (
+                            <>
+                              <div className="relative">
                                 <div
-                                  className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
-                                  onClick={() => handleCartClick(product)}
+                                  style={{
+                                    position: 'absolute',
+                                    right: '1rem',
+                                    top: '1rem',
+                                  }}
                                 >
-                                  <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                                  <HeartButton
+                                    productId={product.id}
+                                    opacity="text-opacity-40"
+                                  />
                                 </div>
-                                <Toaster />
-                              </CardFooter>
-                            </Card>
-                          </div>
-                        </>
-                      )
-                    })}
-                  </div>
+                                <Card
+                                  shadow="sm"
+                                  key={product.id}
+                                  isPressable
+                                  onPress={() => console.log('item pressed')}
+                                  className="w-full"
+                                >
+                                  <CardBody className="overflow-visible p-0">
+                                    <Link
+                                      href={{
+                                        pathname: '/shop/[pid]', // dynamic route
+                                        query: { pid: product.id }, // setting pid to product ID
+                                      }}
+                                      className="block relative"
+                                    >
+                                      <Image
+                                        isZoomed
+                                        shadow="none"
+                                        radius="none"
+                                        width="100%"
+                                        alt={product.name}
+                                        className="w-full object-cover h-[250px] z-0"
+                                        src={imageUrl}
+                                      />
+                                    </Link>
+                                  </CardBody>
+                                  <CardHeader className="block text-left">
+                                    <div className="flex justify-between">
+                                      <p className="text-xl truncate">
+                                        {product.name}
+                                      </p>
+                                      <p className="text-base flex items-center space-x-1">
+                                        <BsFillStarFill className="text-secondary-100" />
+                                        {product.star}
+                                        <span>{product.overall_review}</span>
+                                      </p>
+                                    </div>
+                                    <p className="text-base text-tertiary-gray-100">
+                                      {product.stores.store_name}
+                                    </p>
+                                    <div className="flex flex-wrap">
+                                      {product.tags.map((tag) => (
+                                        <p
+                                          key={tag.id}
+                                          className="text-base px-2.5 py-0.5 inline-block bg-primary-300 mr-2"
+                                        >
+                                          {tag.name}
+                                        </p>
+                                      ))}
+                                    </div>
+                                  </CardHeader>
+                                  <CardFooter className="text-small justify-between">
+                                    <p className="text-xl truncate">
+                                      NT${product.price}
+                                    </p>
+                                    <div
+                                      className="text-base items-center bg-transparent focus:outline-none hover:rounded-full p-1.5 hover:bg-primary-200"
+                                      onClick={() => handleCartClick(product)}
+                                    >
+                                      <PiShoppingCartSimpleFill className="text-primary-100 h-6 w-6" />
+                                    </div>
+                                    <Toaster />
+                                  </CardFooter>
+                                </Card>
+                              </div>
+                            </>
+                          )
+                        })}
+                    </div>
+                  ) : (
+                    <p className="text-xl h-full flex justify-center items-center">
+                      沒有商品
+                    </p>
+                  )}
                 </div>
                 {/* main end */}
               </div>
               <div className="flex justify-center my-8 w-full">
                 <div className="flex flex-col items-center">
-                  {/* 當isButtonDisabled為false時，後面的元素才會渲染 */}
                   {!(filterProduct.length <= limit * loadPage) && (
                     <>
                       <h1 className="text-xl font-bold mb-4 sm:">繼續探索</h1>
