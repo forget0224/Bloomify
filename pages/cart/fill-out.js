@@ -47,13 +47,17 @@ export default function FillOut() {
   const [township, setTownship] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [addressDetail, setAddressDetail] = useState('')
-
   const [date, setDate] = useState(now('Asia/Taipei'))
-  const [time, setTime] = useState('')
   const times = ['不指定時間']
   for (let hour = 9; hour <= 21; hour++) {
     const formattedHour = hour < 10 ? `0${hour}:00` : `${hour}:00`
     times.push(formattedHour)
+  }
+
+  function updateDeliveryAddress() {
+    if (city && township && postalCode && addressDetail) {
+      setDeliveryAddress(`${city} ${township} ${postalCode} ${addressDetail}`)
+    }
   }
   const handleCityChange = (value) => {
     setCity(value)
@@ -72,12 +76,15 @@ export default function FillOut() {
 
   const handleAddressDetailChange = (value) => {
     setAddressDetail(value)
+
     updateDeliveryAddress()
+
+    // updateDeliveryAddress()
   }
 
-  const handleTimeChange = (e) => {
-    setDeliveryTime(e.target.value)
-    console.log(deliveryTime)
+  const handleTimeChange = (value) => {
+    setDeliveryTime(value)
+    console.log(value)
   }
 
   const handleDateChange = (value) => {
@@ -133,6 +140,7 @@ export default function FillOut() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
     const newFormDetails = {
       senderName,
       senderNumber,
@@ -219,15 +227,13 @@ export default function FillOut() {
 
   // 點選相對應的發票方式會顯示的東西
   const [selectedInvoiceOption, setSelectedInvoiceOption] = useState('')
-  const handleSelectInvoiceChange = (event) => {
+
+  const handleSelectInvoiceChange = (value) => {
     const selectedInvoice = invoices.find(
-      (invoice) => invoice.id === Number(event.target.value)
+      (invoice) => invoice.id === Number(value)
     )
     setSelectedInvoiceOption(selectedInvoice)
-  }
-
-  const handleBarcodeChange = (event) => {
-    setMobileBarcode(event.target.value) // Update state when user types in the barcode
+    setInvoiceOption(value)
   }
 
   const cities = [
@@ -260,11 +266,6 @@ export default function FillOut() {
       label: '110',
     },
   ]
-  function updateDeliveryAddress() {
-    if (city && township && postalCode && addressDetail) {
-      setDeliveryAddress(`${city} ${township} ${postalCode} ${addressDetail}`)
-    }
-  }
 
   const handleRadioChange = (value) => {
     setPaymentMethod(value)
@@ -555,7 +556,10 @@ export default function FillOut() {
                             isRequired
                             classNames={{ ...inputStyles }}
                             // onChange={handleAddressDetailChange}
-                            onValueChange={handleAddressDetailChange}
+
+                            onChange={(e) => setAddressDetail(e.target.value)} // 仍然需要onChange来绑定值
+                            onBlur={handleAddressDetailChange}
+                            // onValueChange={handleAddressDetailChange}
                           />
                         </div>
                       )}
@@ -582,13 +586,13 @@ export default function FillOut() {
                         label="配送時間"
                         placeholder="選擇時間"
                         value={deliveryTime}
-                        onChange={handleTimeChange}
+                        onChange={(e) => handleTimeChange(e.target.value)}
                         startContent={
                           <CiClock2 className="text-xl text-default-400 pointer-events-none flex-shrink-0" />
                         }
                       >
-                        {times.map((time, index) => (
-                          <SelectItem key={index} value={time}>
+                        {times.map((time) => (
+                          <SelectItem key={time} value={time}>
                             {time}
                           </SelectItem>
                         ))}
@@ -743,8 +747,8 @@ export default function FillOut() {
                             placeholder="請填寫地址"
                             isRequired
                             classNames={{ ...inputStyles }}
-                            // onChange={handleAddressDetailChange}
                             onValueChange={handleAddressDetailChange}
+                            // onBlur={handleAddressDetailChange}
                           />
                         </div>
                       )}
@@ -834,7 +838,7 @@ export default function FillOut() {
                     isRequired
                     classNames={{ ...selectStyles }}
                     name="invoiceOption"
-                    onChange={handleSelectInvoiceChange}
+                    onChange={(e) => handleSelectInvoiceChange(e.target.value)}
                   >
                     {invoices.map((invoice) => (
                       <SelectItem
@@ -847,19 +851,20 @@ export default function FillOut() {
                       </SelectItem>
                     ))}
                   </Select>
-                  {selectedInvoiceOption === 2 && (
-                    <Input
-                      type="text"
-                      label="手機條碼"
-                      aria-label="請輸入手機條碼"
-                      placeholder="/ABC+123"
-                      labelPlacement="outside"
-                      isRequired
-                      value={mobileBarcode}
-                      onChange={handleBarcodeChange}
-                      classNames={{ ...inputStyles }}
-                    />
-                  )}
+                  {selectedInvoiceOption &&
+                    selectedInvoiceOption.name === '手機條碼載具' && (
+                      <Input
+                        type="text"
+                        label="手機條碼"
+                        aria-label="請輸入手機條碼"
+                        placeholder="/ABC+123"
+                        labelPlacement="outside"
+                        isRequired
+                        value={mobileBarcode}
+                        onChange={(e) => setMobileBarcode(e.target.value)}
+                        classNames={{ ...inputStyles }}
+                      />
+                    )}
                 </div>
               </div>
               {/* invoice end */}
