@@ -87,7 +87,7 @@ export default function PaymentFailed() {
                     <TableCell>付款狀態</TableCell>
                     <TableCell>已付款</TableCell>
                   </TableRow>
-                  <TableRow key="6">
+                  <TableRow key="7">
                     <TableCell>發票</TableCell>
                     <TableCell>載具</TableCell>
                   </TableRow>
