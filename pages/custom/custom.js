@@ -37,6 +37,8 @@ export default function Custom() {
   const [storeData, setStoreData] = useState(null)
   const [currentComponentIndex, setCurrentComponentIndex] = useState(0)
   const [items, setItems] = useState([])
+  const [cardAttributes, setCardAttributes] = useState({})
+  const isCardComponent = currentPage === 'card'
   const components = [
     { component: MainFlowerComponent, name: 'main' },
     { component: AccentFlowerComponent, name: 'accent' },
@@ -100,7 +102,12 @@ export default function Custom() {
           icon: <PiPencilLineLight />,
           label: '賀卡',
           name: 'card',
-          content: <GiftCardContent items={storeData.items['card'] || []} />,
+          content: (
+            <GiftCardContent
+              items={storeData.items['card'] || []}
+              onCardSelected={setCardAttributes}
+            />
+          ),
           headerContent: '賀卡',
         },
         {
@@ -200,7 +207,7 @@ export default function Custom() {
                         {/* 圖層的區塊 */}
 
                         {currentPage === 'card' ? (
-                          <GreetingCard />
+                          <GreetingCard attributes={cardAttributes} />
                         ) : (
                           <>
                             <div className="hidden sm:block">
@@ -256,13 +263,23 @@ export default function Custom() {
                         </Breadcrumbs>
                       </div>
                       <div className="h-full">
-                        {storeData && (
-                          <CurrentComponent
-                            items={currentData}
-                            onPrev={handlePrevComponent}
-                            onNext={handleNextComponent}
-                          />
-                        )}
+                        {storeData &&
+                          // 檢查是否為 CardComponent 並且 storeData 存在
+                          (isCardComponent ? (
+                            <CardComponent
+                              items={currentData}
+                              onPrev={handlePrevComponent}
+                              onNext={handleNextComponent}
+                              onCardSelected={setCardAttributes} // 只有當是卡片組件時傳遞
+                            />
+                          ) : (
+                            // 不是卡片組件時不傳遞 onCardSelected
+                            <CurrentComponent
+                              items={currentData}
+                              onPrev={handlePrevComponent}
+                              onNext={handleNextComponent}
+                            />
+                          ))}
                       </div>
                     </div>
                     {/* 底部  */}
