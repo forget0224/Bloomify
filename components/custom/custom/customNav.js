@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
-import logo from '@/assets/singleLogo.svg'
+import Logo from '@/assets/singleLogo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CiUndo } from 'react-icons/ci'
@@ -15,7 +15,7 @@ export default function CustomNav() {
     clearCanvas()
   }
   const { dispatch, state } = useFlowerCart()
-
+  console.log(state)
   const handleComplete = useCallback(() => {
     const urlWorkingArea = snapshotCanvas()
 
@@ -28,6 +28,8 @@ export default function CustomNav() {
           image_url: urlWorkingArea,
         },
       })
+
+      // if(state.)
 
       dispatch({
         type: 'SET_CARD',
@@ -64,7 +66,7 @@ export default function CustomNav() {
       <nav className="w-full h-14 flex flex-row items-center px-5 gap-4 sm:h-16">
         <div className="text-center w-10 sm:h-16 cursor-pointer">
           <Link href="/">
-            <Image className="w-full h-full" src={logo} alt="" />
+            <Logo className="w-full h-full" />
           </Link>
         </div>
         <div className="w-full h-full flex flex-row justify-between items-center">

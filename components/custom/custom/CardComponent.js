@@ -2,11 +2,22 @@ import React, { useState } from 'react'
 import ColorSelector from '../common/ColorSelector'
 import DraggableBar from './DraggableBar'
 import ChangeComponent from './ChangeComponent'
-const CardComponent = ({ onNext, onPrev, items }) => {
+const CardComponent = ({ onNext, onPrev, items, onCardSelected }) => {
   const [selectedItem, setSelectedItem] = useState(null)
-  const handleSelectItem = (attributes, categoryName) => {
-    setSelectedItem({ attributes, categoryName })
+  const handleSelectItem = (attributes) => {
+    if (attributes) {
+      onCardSelected(attributes)
+    } else {
+      onCardSelected(null)
+    }
   }
+
+  const defaultCard = {
+    category_name: '不加購卡片',
+    category_url: '/custom/custom/noAdd.png',
+  }
+
+  items = [defaultCard, ...items]
 
   return (
     <>
@@ -21,7 +32,7 @@ const CardComponent = ({ onNext, onPrev, items }) => {
           <div className="text-center min-h-[95px]">
             <h1 className="text-3xl py-2">卡片</h1>
             <p className="text-tertiary-gray-100 text-sm px-4 inline-block h-auto">
-              請選擇您喜歡的主花，然後選擇顏色。
+              請選擇您喜歡的卡片。
             </p>
           </div>
           <div className="w-full h-full relative">

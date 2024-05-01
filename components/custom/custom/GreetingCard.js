@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { MdEdit } from 'react-icons/md'
 import { CiCircleCheck } from 'react-icons/ci'
 import { useMediaQuery } from 'react-responsive'
 import { useFlower } from '@/hooks/use-flower'
-const GreetingCard = () => {
+
+const GreetingCard = ({ attributes }) => {
+  console.log(attributes[0])
+
   const { setCardInfo } = useFlower()
+
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 1024px)',
   })
@@ -20,8 +24,8 @@ const GreetingCard = () => {
     '生日快樂!!\n身體健康、萬事如意!\n\n\nHAPPY BIRTHDAY!'
   )
   const maxLength = 50
-  const cleanedMessage = message.replace(/\n/g, '')
-  const cardContent = `標題:${title}\n訊息:${cleanedMessage}\n署名:${greeting}`
+  // const cleanedMessage = message.replace(/\n/g, '')
+  // const cardContent = `標題:${title}\n訊息:${cleanedMessage}\n署名:${greeting}`
 
   const countCharacters = (text) => {
     return text.replace(/\s/g, '').length
@@ -45,7 +49,6 @@ const GreetingCard = () => {
         /\s/g,
         ''
       )}署名: ${greeting}`
-      setCardInfo({ content: cardContent })
     }
   }
 
@@ -56,7 +59,21 @@ const GreetingCard = () => {
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value)
   }
-  console.log(cardContent)
+  useEffect(() => {
+    if (attributes && attributes[0] && attributes[0].url) {
+      setCardInfo({
+        card_url: attributes[0].url,
+        product_id: attributes[0].product_id,
+        product_price: attributes[0].product_price,
+        product_category: attributes[0].product_category,
+        content: `標題:${title} 訊息:${message.replace(
+          /\s/g,
+          ''
+        )} 署名:${greeting}`,
+      })
+    }
+  }, [title, greeting, message, attributes, setCardInfo])
+
   return (
     <div
       className="flex items-center justify-center"
@@ -120,12 +137,29 @@ const GreetingCard = () => {
         </div>
 
         <motion.div
-          className="absolute top-0 left-0 w-full h-full bg-white shadow-xl z-20"
-          style={{ transformStyle: 'preserve-3d', transformOrigin: 'left' }}
+          className={`absolute top-0 left-0 w-full h-full shadow-xl z-20 ${
+            attributes && attributes[0] && attributes[0].url ? '' : 'bg-white'
+          }`}
+          style={{
+            transformStyle: 'preserve-3d',
+            transformOrigin: 'left',
+            backgroundImage:
+              attributes && attributes[0] && attributes[0].url
+                ? `url(${attributes[0].url})`
+                : 'none',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+          }}
           animate={{ rotateY: flipped ? -180 : 0 }}
           transition={{ duration: 1, ease: 'easeInOut' }}
         >
-          <h3 className="text-center mt-8 text-xl font-bold bg-gradient-to-r from-yellow-300 to-pink-500">
+          <h3
+            className={`${
+              attributes && attributes[0] && attributes[0].url
+                ? 'hidden'
+                : 'block'
+            }   text-center mt-8 text-xl font-bold bg-gradient-to-r from-yellow-300 to-pink-500`}
+          >
             HAPPY BIRTHDAY Love!
           </h3>
         </motion.div>
