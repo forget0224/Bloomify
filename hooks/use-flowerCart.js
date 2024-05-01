@@ -49,6 +49,28 @@ function cartReducer(state, action) {
         ...state,
         package: { ...action.payload },
       }
+    case 'CLEAR_CARD':
+      return {
+        ...state,
+        card: initialState.card,
+      }
+
+    case 'CLEAR_PACKAGE':
+      return {
+        ...state,
+        package: initialState.package,
+      }
+
+    case 'CLEAR_PRODUCTS_AND_BOUQUET':
+      return {
+        ...state,
+        products: [],
+        bouquet_name: '',
+        image_url: '',
+        store_id: '',
+        store_name: '',
+        store_address: '',
+      }
     default:
       throw new Error(`Unhandled action type: ${action.type}`)
   }

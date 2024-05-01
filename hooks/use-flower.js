@@ -218,7 +218,9 @@ export const FlowerProvider = ({ children }) => {
 
         img.set({
           ...metadata,
-          id: metadata.id || fabric.util.getRandomInt(1000, 9999), // 生成或使用现有 ID
+          id:
+            metadata.id ||
+            `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
           product_id: metadata.product_id,
           product_category: metadata.product_category,
           product_price: metadata.product_price,
