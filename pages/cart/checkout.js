@@ -1,28 +1,26 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Image } from '@nextui-org/react'
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@nextui-org/react'
-import { Checkbox } from '@nextui-org/react'
+import { useState } from 'react'
+// import { Image } from '@nextui-org/react'
+// import {
+//   Table,
+//   TableHeader,
+//   TableColumn,
+//   TableBody,
+//   TableRow,
+//   TableCell,
+// } from '@nextui-org/react'
+// import { Checkbox } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
-import { Link } from '@nextui-org/react'
+// import { Link } from '@nextui-org/react'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
 import ShopCheckOut from '@/components/shop/shop-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
-import { MyButton } from '@/components/btn/mybutton'
-import Subtitle from '@/components/common/subtitle'
-
-import ShopCheckout from '@/components/shop/shop-checkout'
+// import { MyButton } from '@/components/btn/mybutton'
+// import Subtitle from '@/components/common/subtitle'
 
 export default function Confirm() {
   const { auth } = useAuth()
@@ -30,10 +28,7 @@ export default function Confirm() {
   const [activePage, setActivePage] = useState('cart')
   const route = useRouter()
   const source = route.query.source
-  const [detailData, setDetailData] = useState({
-    products: [],
-    detail: {},
-  })
+
   // stepper
   const steps = [
     {
@@ -89,32 +84,6 @@ export default function Confirm() {
     wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
   }
 
-  const getParsedData = (stringifiedJson) => {
-    return stringifiedJson ? JSON.parse(stringifiedJson) : ''
-  }
-
-  const getDetailData = () => {
-    const productList = getParsedData(localStorage.getItem('cartItems'))
-    const filledOutDetail = getParsedData(
-      localStorage.getItem('fillOutDetails')
-    )
-    const normalizedProductList = Object.values(productList)
-
-    return {
-      products: normalizedProductList,
-      detail: filledOutDetail,
-    }
-  }
-
-  useEffect(() => {
-    const data = getDetailData() // fetch data
-    setDetailData(data) // store data in useState
-  }, []) // dependencies array 可以用來控制 要執行幾次getDetailData
-
-  const confirmOrder = () => {
-    // post api
-  }
-
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -146,6 +115,10 @@ export default function Confirm() {
                 您好，請確認您的購物資訊無誤
               </p>
               {/* 主要內容 */}
+
+              {source === 'flower' && <CustomCheckOut />}
+              {source === 'shop' && <ShopCheckOut />}
+              {source === 'course' && <CourseCheckOut />}
 
               {/* {!source && (
                 <div className="flex flex-col w-full lg:w-8/12 gap-14">
@@ -341,10 +314,6 @@ export default function Confirm() {
                   </div>
                 </div>
               )} */}
-
-              {source === 'flower' && <CustomCheckOut />}
-              {source === 'shop' && <ShopCheckOut />}
-              {source === 'course' && <CourseCheckOut />}
             </div>
           </main>
         </>
