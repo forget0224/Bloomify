@@ -338,13 +338,18 @@ export const FlowerProvider = ({ children }) => {
     tempObjectRef.current = null
   }, [])
 
-  const clearCanvas = useCallback(() => {
-    if (!canvasRef.current || !canvasRef.current.fabric) return
+  const clearObjectsOnCanvas = useCallback(() => {
+    const canvas = canvasRef.current?.fabric
+    if (canvas) {
+      const objects = canvas.getObjects()
 
-    const canvas = canvasRef.current.fabric
-    canvas.clear()
-    setImagesInfo([])
-  }, [canvasRef])
+      objects.forEach((obj) => {
+        canvas.remove(obj)
+      })
+
+      setImagesInfo([])
+    }
+  }, [canvasRef, setImagesInfo])
 
   const snapshotCanvas = useCallback(() => {
     let canvas = canvasRef.current?.fabric
@@ -368,7 +373,7 @@ export const FlowerProvider = ({ children }) => {
         addImageToCanvas,
         commitImageToCanvas,
         removeCurrentImage,
-        clearCanvas,
+        clearObjectsOnCanvas,
         snapshotCanvas,
         setupCustomControls,
         setImagesInfo,
