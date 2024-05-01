@@ -12,7 +12,6 @@ import { useLocation } from 'react-use'
 import { useRouter } from 'next/router'
 import { FaLine } from 'react-icons/fa'
 // import { useLocation } from 'react-use'
-import { useRouter } from 'next/router'
 
 export default function ShareModal({ isShareOpen, onShareOpenChange }) {
   const shareStyles = {
@@ -25,7 +24,6 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
 
   // const location = useLocation()
   // const currentUrl = window.location.origin + location.pathname
-
 
   const location = useLocation()
   const router = useRouter()
@@ -92,12 +90,6 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
                 </span>
               </a>
               <a
-                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                  currentUrl
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center gap-2 text-teriary-black cursor-pointer"
                 href={`https://twitter.com/share?url=${encodeURIComponent(
                   currentUrl
                 )}`}
@@ -117,9 +109,6 @@ export default function ShareModal({ isShareOpen, onShareOpenChange }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2 text-teriary-black cursor-pointer"
-                className="flex flex-col items-center gap-2 text-tertiary-black cursor-pointer"
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 <FaLine className="w-7 h-7" />
                 <span className="flex flex-row justify-center text-center items-center select-none">
