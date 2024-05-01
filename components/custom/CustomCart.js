@@ -1,10 +1,22 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { MyButton } from '../btn/mybutton'
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from '@nextui-org/react'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
 import Link from 'next/link'
+import { CiTrash } from 'react-icons/ci'
+
 export default function CustomCart() {
-  const { state } = useFlowerCart()
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { state, dispatch } = useFlowerCart()
 
   function groupProductsByProductId(products) {
     const grouped = products.reduce((acc, item) => {
@@ -31,18 +43,83 @@ export default function CustomCart() {
     0
   )
   console.log(state)
-  // console.log(localStorage.getItem('flowerCartState'))
 
-  if (!state) return <h2>目前尚未加入購物車</h2>
+  const clearCardInfo = () => {
+    dispatch({ type: 'CLEAR_CARD' })
+  }
 
+  const clearPackageInfo = () => {
+    dispatch({ type: 'CLEAR_PACKAGE' })
+  }
+
+  const clearProductsAndBouquetInfo = () => {
+    dispatch({ type: 'CLEAR_PRODUCTS_AND_BOUQUET' })
+  }
+  const handleClearCart = () => {
+    clearCardInfo()
+    clearPackageInfo()
+    clearProductsAndBouquetInfo()
+    onOpenChange(false)
+  }
+  const isEmpty = state.products.length === 0 && !state.bouquet_name
+
+  if (isEmpty) {
+    return (
+      <>
+        <div className="min-h-[500px]">
+          <h2 className="text-center mt-4">目前尚未加入任何花束</h2>
+        </div>
+      </>
+    )
+  }
   return (
     <>
       <div className="w-screen sm:max-w-[600px] sm:h-full flex flex-col px-5 gap-2 relative  mt-4">
-        <h1 className="sm:text-2xl text-xl sm:text-left text-center">
-          {state.store_name}
-          {' - '}
-          {state.bouquet_name}
-        </h1>
+        <div className="flex flex-row justify-between">
+          <h1 className="sm:text-2xl text-xl sm:text-left text-center">
+            {state.store_name}
+            {' - '}
+            {state.bouquet_name}
+          </h1>
+
+          <Button
+            variant="light"
+            isIconOnly
+            color="primary"
+            className="rounded-full  "
+            onPress={onOpen}
+          >
+            <CiTrash className="text-xl" />
+          </Button>
+        </div>
+
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          isDismissable={false}
+          isKeyboardDismissDisabled={true}
+        >
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  確認清除
+                </ModalHeader>
+                <ModalBody>
+                  <p>確定要清除客製花束購物車嗎?</p>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    取消
+                  </Button>
+                  <Button color="primary" onPress={handleClearCart}>
+                    確定
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
 
         <div
           className=" w-[300px] h-[180px] mx-auto bg-no-repeat bg-center bg-contain"

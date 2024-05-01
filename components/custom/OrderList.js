@@ -50,6 +50,7 @@ function OrderList() {
 
   useEffect(() => {
     getOrderList()
+    console.log(orderList)
   }, [])
 
   const handleSortChange = (e) => {
@@ -151,7 +152,7 @@ function OrderList() {
                                 />
                               </div>
                               <div className="text-tertiary-black text-xl">
-                                ${order.total_amount}
+                                ${order.total}
                               </div>
                             </div>
                           </div>
@@ -227,7 +228,7 @@ function OrderList() {
                                 <div>{order.shipping_status}</div>
                               </div>
                               <div className="flex flex-row gap-2 justify-between sm:justify-start">
-                                <div>付款狀態</div>
+                                <div>付款方式</div>
                                 <div>{order.payment_name}</div>
                               </div>
                             </div>
@@ -249,7 +250,9 @@ function OrderList() {
                               <div className="flex flex-row gap-5 text-right justify-between w-full">
                                 <div>卡片內容</div>
                                 <div className="text-pretty">
-                                  {order.card_content}
+                                  {order.card_content === ''
+                                    ? '-'
+                                    : order.card_content}
                                 </div>
                               </div>
                             </div>

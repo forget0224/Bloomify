@@ -363,7 +363,9 @@ export default function CustomCheckOut() {
               </TableRow>
               <TableRow key="3">
                 <TableCell className="pr-8 text-nowrap">載具編號</TableCell>
-                <TableCell className="w-full text-right">ABC222</TableCell>
+                <TableCell className="w-full text-right">
+                  {contactStorage.mobileBarcode}
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -376,7 +378,7 @@ export default function CustomCheckOut() {
         </div>
 
         <div className="w-full gap-2 flex justify-center sm:gap-4 ">
-          <Link href="/cart/fill-out">
+          <Link href="/cart/fill-out?source=flower">
             <MyButton color="primary" size="xl" isOutline>
               上一步
             </MyButton>
