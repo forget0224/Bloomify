@@ -17,6 +17,7 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
+import ShopCheckOut from '@/components/shop/shop-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
@@ -107,14 +108,13 @@ export default function Confirm() {
 
   useEffect(() => {
     const data = getDetailData() // fetch data
-    setDetailData(data); // store data in useState
+    setDetailData(data) // store data in useState
   }, []) // dependencies array 可以用來控制 要執行幾次getDetailData
 
-
   const confirmOrder = () => {
-   // post api
+    // post api
   }
-  
+
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -147,12 +147,10 @@ export default function Confirm() {
               </p>
               {/* 主要內容 */}
 
-              {!source && (
+              {/* {!source && (
                 <div className="flex flex-col w-full lg:w-8/12 gap-14">
-                  {/* order-detail start */}
                   <div className="flex flex-col w-full">
                     <Subtitle text="購物明細" />
-                    {/* 明細 */}
                     <div className="flex flex-col gap-3 mt-6 mb-4">
                       <Table
                         selectionMode="single"
@@ -196,9 +194,9 @@ export default function Confirm() {
                               <TableCell>3</TableCell>
                               <TableCell>NT$30</TableCell>
                             </TableRow>
-                          ))} */}
+                          ))} 
 
-                          {/* <TableRow key="2">
+                          <TableRow key="2">
                           <TableCell>
                             <div className="flex flex-row items-center space-x-6">
                               <Image
@@ -214,11 +212,10 @@ export default function Confirm() {
                           <TableCell>NT$30</TableCell>
                           <TableCell>3</TableCell>
                           <TableCell>NT$30</TableCell>
-                        </TableRow> */}
+                        </TableRow> 
                         </TableBody>
                       </Table>
                     </div>
-                    {/* 小計 */}
                     <div>
                       <Table
                         hideHeader
@@ -258,8 +255,6 @@ export default function Confirm() {
                       </Table>
                     </div>
                   </div>
-                  {/* order-detail end */}
-                  {/* shipping & payment detail start*/}
                   <div className="flex flex-col justify-center w-full gap-6">
                     <Subtitle text="配送/付款明細" />
                     <Table
@@ -323,7 +318,6 @@ export default function Confirm() {
                       </TableBody>
                     </Table>
                   </div>
-                  {/* shipping & payment detail end*/}
                   <div className="w-full flex justify-center">
                     <Checkbox defaultSelected>
                       我同意辦理退貨時，由floral_shop代為處理發票及銷貨退回證明單，以加速退貨退款作業。
@@ -346,10 +340,10 @@ export default function Confirm() {
                     </Link>
                   </div>
                 </div>
-              )}
+              )} */}
 
               {source === 'flower' && <CustomCheckOut />}
-              {source === 'shop'}
+              {source === 'shop' && <ShopCheckOut />}
               {source === 'course' && <CourseCheckOut />}
             </div>
           </main>
