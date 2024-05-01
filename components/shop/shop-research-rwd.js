@@ -20,8 +20,10 @@ const ResearchRWD = ({
   colors,
   selectedColors,
   resetSelection,
+  handleColorClick,
+  order,
+  setOrder,
 }) => {
-  // RWD Sorting and Filtering Modal State
   const {
     isOpen: isMagnifierOpen,
     onOpen: onMagnifierOpen,
@@ -77,72 +79,96 @@ const ResearchRWD = ({
           placement={modalPlacement}
           onOpenChange={onFilterOpenChange}
           className="mx-0 my-0"
-          style={{ borderRadius: '4% 4% 0% 0%' }}
+          style={{ borderRadius: '5% 5% 0% 0%' }}
         >
           <ModalContent>
-            <ModalHeader className="flex flex-col gap-1">
-              排序與篩選
-            </ModalHeader>
-            <ModalBody
-              style={{
-                maxHeight: 'calc(100vh - 200px)',
-                overflowY: 'auto',
-              }}
-            >
-              <div>
-                <p className="text-primary text-center py-0.5 bg-primary-300">
-                  排序
-                </p>
-                <div className="my-5">
-                  <RadioGroup>
-                    <Radio>價格由高到低</Radio>
-                    <Radio>價格由低到高</Radio>
-                  </RadioGroup>
-                </div>
-              </div>
-              <div>
-                <p className="text-primary text-center py-0.5 bg-primary-300">
-                  篩選
-                </p>
-                <hr />
-                <div className="my-5">
-                  <p className="text-tertiary-black my-2">顏色</p>
-                  <div className="space-y-0.5 grid grid-cols-2">
-                    {colors.map((color) => (
-                      <Checkbox
-                        key={color.id}
-                        defaultSelected
-                        radius="sm"
-                        className="mr-2"
-                        isSelected={selectedColors.includes(color.id)}
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  排序與篩選
+                </ModalHeader>
+                <ModalBody
+                  style={{
+                    maxHeight: 'calc(100vh - 200px)',
+                    overflowY: 'auto',
+                  }}
+                >
+                  <div>
+                    <p className="text-primary text-center py-0.5 bg-primary-300">
+                      排序
+                    </p>
+                    <div className="my-5">
+                      <RadioGroup
+                        aria-label="排序"
+                        placeholder="排序"
+                        value={order}
+                        onChange={(e) => {
+                          setOrder(e.target.value)
+                          console.log('Selected value: ', e.target.value)
+                        }}
                       >
-                        <div className="flex items-center">
-                          <p className="mr-2">{color.name}</p>
-                          <div
-                            className="h-4 w-4 rounded-full"
-                            style={{ background: color.code }}
-                          ></div>
-                        </div>
-                      </Checkbox>
-                    ))}
+                        <Radio key="priceAsc" value="priceAsc">
+                          價格由低到高
+                        </Radio>
+                        <Radio key="priceDesc" value="priceDesc">
+                          價格由高到低
+                        </Radio>
+                      </RadioGroup>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </ModalBody>
-            <ModalFooter className="flex gap-2">
-              <MyButton
-                color="primary"
-                size="xl"
-                isOutline
-                className="flex-1"
-                onClick={resetSelection}
-              >
-                清除條件
-              </MyButton>
-              <MyButton color="primary" size="xl" isOutline className="flex-1">
-                確認
-              </MyButton>
-            </ModalFooter>
+                  <div>
+                    <p className="text-primary text-center py-0.5 bg-primary-300">
+                      篩選
+                    </p>
+                    <hr />
+                    <div className="my-5">
+                      <p className="text-tertiary-black my-2">顏色</p>
+                      <div className="space-y-0.5 grid grid-cols-2">
+                        {colors.map((color) => (
+                          <Checkbox
+                            key={color.color_id}
+                            radius="sm"
+                            className="mr-2"
+                            isSelected={selectedColors.includes(color.color_id)}
+                            onValueChange={(isChecked) =>
+                              handleColorClick(color.color_id, isChecked)
+                            }
+                          >
+                            <div className="flex items-center">
+                              <p className="mr-2">{color.name}</p>
+                              <div
+                                className="h-4 w-4 rounded-full"
+                                style={{ background: color.code }}
+                              ></div>
+                            </div>
+                          </Checkbox>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </ModalBody>
+                <ModalFooter className="flex gap-2">
+                  <MyButton
+                    color="primary"
+                    size="xl"
+                    isOutline
+                    className="flex-1"
+                    onClick={resetSelection}
+                  >
+                    清除條件
+                  </MyButton>
+                  <MyButton
+                    color="primary"
+                    size="xl"
+                    isOutline
+                    className="flex-1"
+                    onPress={onClose}
+                  >
+                    確認
+                  </MyButton>
+                </ModalFooter>
+              </>
+            )}
           </ModalContent>
         </Modal>
       </div>
