@@ -66,8 +66,9 @@ const ShopCheckout = () => {
 
   const confirmOrder = async () => {
     console.log('Sending order details:', detailData) // 查看傳送的數據
-    console.log('Sending products:', detailData.products) 
+    console.log('Sending products:', detailData.products)
     console.log('Sending detail:', detailData.detail)
+    console.log('totalAmount:', totalAmount)
     try {
       const response = await fetch(
         'http://localhost:3005/api/products/save-order-details',
@@ -81,6 +82,7 @@ const ShopCheckout = () => {
           body: JSON.stringify({
             products: detailData.products,
             detail: detailData.detail,
+            totalAmount: totalAmount,
           }),
         }
       )
