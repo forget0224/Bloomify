@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useAuth } from '@/hooks/use-auth'
 import { Image } from '@nextui-org/react'
 import {
   Table,
@@ -16,9 +17,13 @@ import Subtitle from '@/components/common/subtitle'
 import { useCart } from '@/context/course-cart-context'
 import { useFillOut } from '@/context/fill-out-context'
 import moment from 'moment'
+import { toast } from 'react-hot-toast'
 
 export default function CourseCheckOut() {
   const [activePage, setActivePage] = useState('cart')
+
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
 
   // 取資料和方法
   const { cart, removeFromCart, clearCart, totalSubtotal, totalCartProducts } =
@@ -28,10 +33,54 @@ export default function CourseCheckOut() {
 
   console.log(cart)
   console.log(cart[0])
+  console.log(fillOutDetails)
+  console.log(auth.userData.id)
 
-  const handleCheckout = () => {
-    // 處理結帳邏輯...
-    // 可能需要發送 cart 和 totalSubtotal 到後端
+  const handleCheckout = async () => {
+    if (cart.length === 0) {
+      toast.error('購物車是空的')
+      return
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3005/api/course-orders/add`,
+        {
+          credentials: 'include',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            member_id: auth.userData.id,
+            total_cost: totalSubtotal,
+            discount: 0, // 根據需要修改
+            payment_amount: totalSubtotal, // 根據折扣邏輯修改
+            share_payment_id: 2,
+            share_payment_status_id: 2,
+            share_order_status_id: 0,
+            invoice_id: 1,
+            courses: cart.map((item) => ({
+              course_id: item.id,
+              period: item.period,
+            })),
+          }),
+        }
+      )
+
+      if (response.ok) {
+        // 檢查響應狀態
+        const data = await response.json() // 解析JSON數據
+        console.log(data)
+        toast.success('訂單提交成功！')
+      } else {
+        throw new Error('Network response was not ok.')
+      }
+    } catch (error) {
+      console.error('Error posting order', error)
+      toast.error('訂單提交失敗')
+    }
   }
 
   // stepper
@@ -193,20 +242,12 @@ export default function CourseCheckOut() {
             </TableHeader>
             <TableBody>
               <TableRow key="1">
-                <TableCell className="pr-8 text-nowrap">訂購人</TableCell>
-                <TableCell className="w-full text-right">芙莉蓮</TableCell>
-              </TableRow>
-              <TableRow key="2">
-                <TableCell className="pr-8 text-nowrap">連絡電話</TableCell>
-                <TableCell className="w-full text-right">0912345678</TableCell>
-              </TableRow>
-              <TableRow key="3">
                 <TableCell className="pr-8 text-nowrap">付款方式</TableCell>
                 <TableCell className="w-full text-right">
                   {fillOutDetails.paymentMethod}
                 </TableCell>
               </TableRow>
-              <TableRow key="4">
+              <TableRow key="2">
                 <TableCell className="pr-8 text-nowrap">發票</TableCell>
                 <TableCell className="w-full text-right">
                   {fillOutDetails.invoiceOption}
@@ -230,9 +271,9 @@ export default function CourseCheckOut() {
               上一步
             </MyButton>
           </Link>
-          <Link href="/cart/payment-successful" className="text-white">
+          <Link className="text-white">
             {/* TODO: */}
-            <MyButton color="primary" size="xl" onClick={handleCheckout()}>
+            <MyButton color="primary" size="xl" onClick={handleCheckout}>
               確認，進行付款
             </MyButton>
           </Link>

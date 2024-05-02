@@ -151,17 +151,6 @@ export default function CourseSearch() {
     })
   }
 
-  // datepicker 變數
-  // const [value, setValue] = useState({
-  //   startDate: new Date(),
-  //   endDate: new Date().setMonth(11),
-  // })
-
-  // const handleValueChange = (newValue) => {
-  //   console.log('newValue:', newValue)
-  //   setValue(newValue)
-  // }
-
   // fetch 資料
   useEffect(() => {
     async function fetchCourses() {
