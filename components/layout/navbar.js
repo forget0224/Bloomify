@@ -27,7 +27,7 @@ export default function HomeNav({ activePage }) {
       name: 'custom',
       chineseName: '代客送花',
       subMenu: [
-        { href: 'list2', chineseName: '快速選購' },
+        { href: 'list', chineseName: '快速選購' },
         { href: 'custom', chineseName: '客製化' },
       ],
     },
@@ -65,7 +65,7 @@ export default function HomeNav({ activePage }) {
     // },
   ]
   const { auth } = useAuth()
-  
+
   // 商城的購物車筆數計算
   const { cartItems } = useCart()
   const cartItemsArr = Object.values(cartItems)
