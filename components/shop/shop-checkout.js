@@ -66,18 +66,24 @@ const ShopCheckout = () => {
 
   const confirmOrder = async () => {
     console.log('Sending order details:', detailData) // 查看傳送的數據
+    console.log('Sending products:', detailData.products) 
+    console.log('Sending detail:', detailData.detail)
     try {
-      const response = await fetch('/api/save-order-details', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          products: detailData.products,
-          detail: detailData.detail,
-        }),
-      })
+      const response = await fetch(
+        'http://localhost:3005/api/products/save-order-details',
+        {
+          credentials: 'include',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({
+            products: detailData.products,
+            detail: detailData.detail,
+          }),
+        }
+      )
       console.log('Response received:', response) // 查看響應狀態
       if (response.ok) {
         const data = await response.json()
@@ -89,37 +95,6 @@ const ShopCheckout = () => {
       console.error('Failed to confirm order:', error)
     }
   }
-
-  // 填寫明細
-  // useEffect(() => {
-  //   if (auth?.isAuth) {
-  //     fetch('http://localhost:3005/api/products/get-product-order-detail', {
-  //       credentials: 'include',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       method: 'GET',
-  //     })
-  //       .then((response) => response.json())
-  //       .then((data) => {
-  //         if (data.status === 'success') {
-  //           // 重新映射數據屬性，同时保留其他屬性
-  //           const formattedOrderList = data.data.map((orderList) => ({
-  //             ...orderList,
-  //             // mainImage: product.image_url,
-  //           }))
-  //           // console.log(formattedOrderList)
-  //           setShopOrderDetails(formattedOrderList)
-  //         } else {
-  //           throw new Error(data.message)
-  //         }
-  //       })
-  //       .catch((error) =>
-  //         console.error('Error fetching shop cart items:', error)
-  //       )
-  //   }
-  // }, [auth])
 
   const tableStylesContent = {
     th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭

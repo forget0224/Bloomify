@@ -156,7 +156,7 @@ export default function FillOut() {
       deliveryAddress,
       couponCode,
       paymentMethod,
-      invoiceOption,
+      invoiceOption: selectedInvoiceOption.name,
       mobileBarcode,
     }
     console.log(newFormDetails)
