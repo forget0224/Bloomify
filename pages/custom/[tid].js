@@ -8,7 +8,7 @@ import { useLoader } from '@/hooks/use-loader'
 import Link from 'next/link'
 import Loader from '@/components/common/loader'
 import { ColorProvider } from '@/hooks/use-color'
-
+import { useFlowerCart } from '@/hooks/use-flowerCart'
 export default function Detail() {
   const [activePage, setActivePage] = useState('custom')
   const [isHeart, setIsHeart] = useState(true)
@@ -26,6 +26,8 @@ export default function Detail() {
     src: '',
     template_name: '',
     store_name: '',
+    store_id: 0,
+    store_address: '',
     template_occ: '',
     total_price: 0,
     discount: 0,
@@ -57,6 +59,8 @@ export default function Detail() {
           image_url: data.image_url,
           template_name: data.template_name,
           store_name: data.store_name,
+          store_id: data.store_id,
+          store_address: data.store_address,
           occ: data.template_occ,
           total_price: data.total_price, // 計算總價
           products: data.products, // 直接設定產品列表
@@ -80,6 +84,40 @@ export default function Detail() {
   }, [router.isReady])
 
   console.log(product)
+  const { dispatch } = useFlowerCart()
+  const handleCustom = () => {
+    router.push('/custom/custom')
+  }
+  const handleAddToCart = () => {
+    dispatch({
+      type: 'SET_BOUQUET_INFO',
+      payload: {
+        template_name: product.template_name,
+        image_url: product.image_url,
+        store_id: product.store_id,
+        store_name: product.store_name,
+        store_address: product.store_address,
+      },
+    })
+
+    if (product.products && product.products.length > 0) {
+      const productPayload = product.products.map((product) => ({
+        product_id: product.product_id,
+        product_name: product.category_name,
+        product_price: product.price,
+        image_url: product.product_url,
+        color: product.color,
+      }))
+
+      dispatch({
+        type: 'ADD_PRODUCTS',
+        payload: productPayload,
+      })
+    }
+
+    console.log('Added to cart:', product.template_name)
+    router.push('/cart?source=flower')
+  }
 
   const display = (
     <ColorProvider>
@@ -164,19 +202,22 @@ export default function Detail() {
                   )}
                 </div>
                 <div className=" flex-1">
-                  <Link href="/custom/custom">
-                    {' '}
-                    <MyButton color="secondary200" size="xl">
-                      客製化
-                    </MyButton>
-                  </Link>
+                  <MyButton
+                    color="secondary200"
+                    size="xl"
+                    onClick={handleCustom}
+                  >
+                    客製化
+                  </MyButton>
                 </div>
                 <div className=" flex-1">
-                  <Link href="/cart">
-                    <MyButton color="secondary" size="xl">
-                      結帳
-                    </MyButton>
-                  </Link>
+                  <MyButton
+                    color="secondary"
+                    size="xl"
+                    onClick={handleAddToCart}
+                  >
+                    結帳
+                  </MyButton>
                 </div>
               </div>
             </div>

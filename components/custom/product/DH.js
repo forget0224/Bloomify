@@ -7,7 +7,7 @@ import { GoArrowLeft, GoArrowRight } from 'react-icons/go'
 import { useRouter } from 'next/router'
 import { useColors } from '@/hooks/use-color'
 import CustomCheckbox from '../common/CustomCheckbox'
-
+import { useFlowerCart } from '@/hooks/use-flowerCart'
 const DraggableProductList = ({ productList }) => {
   const router = useRouter()
   const dragBuffer = 50
@@ -71,6 +71,7 @@ const DraggableProductList = ({ productList }) => {
       router.push(`/custom/${id}`)
     }
   }
+
   return (
     <div className="   max-w-[1200px] pl-[10px] sm:py-3  py-2 ">
       <motion.div
@@ -88,7 +89,7 @@ const DraggableProductList = ({ productList }) => {
         {productList.map((item) => {
           const colorCode = color.find(
             (color) => color.name === item.color_name
-          )?.code // 根據名稱找到顏色碼
+          )?.code
           return (
             <Card
               shadow="sm"
@@ -129,7 +130,7 @@ const DraggableProductList = ({ productList }) => {
                 )}
                 {/* bgColor={code} */}
               </CardHeader>
-              <CardFooter className=" justify-between">
+              <CardFooter className=" justify-end">
                 <p className="sm:text-lg text-md">
                   {item.discount !== 0 ? (
                     <>
@@ -142,9 +143,12 @@ const DraggableProductList = ({ productList }) => {
                     <>${item.total_price}</>
                   )}
                 </p>
-                <p className="text-base items-center">
-                  <CiShoppingCart className="text-primary-100 h-6 w-6 cursor-pointer" />
-                </p>
+                {/* <p className="text-base items-center">
+                  <CiShoppingCart
+                    className="text-primary-100 h-6 w-6 cursor-pointer"
+                    onClick={() => handleAddToCart(item)}
+                  />
+                </p> */}
               </CardFooter>
             </Card>
           )

@@ -85,7 +85,7 @@ const DraggableProductList = ({ productList }) => {
                 {item.store}
               </p>
             </CardHeader>
-            <CardFooter className="text-small justify-between">
+            <CardFooter className="text-small justify-end">
               <p className="text-lg truncate">
                 {item.discount !== '' ? (
                   <>
@@ -98,9 +98,9 @@ const DraggableProductList = ({ productList }) => {
                   <>${item.price}</>
                 )}
               </p>
-              <p className="text-base items-center">
+              {/* <p className="text-base items-center">
                 <CiShoppingCart className="text-primary-100 h-6 w-6 cursor-pointer" />
-              </p>
+              </p> */}
             </CardFooter>
           </Card>
         ))}

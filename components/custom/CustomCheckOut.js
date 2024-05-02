@@ -252,7 +252,7 @@ export default function CustomCheckOut() {
               <div className="flex flex-row justify-between">
                 <div className="w-full pr-8">運費</div>
                 <div className="text-right">
-                  NT${contactStorage.deliveryShipping}
+                  NT${contactStorage.deliveryShipping.toFixed(0)}
                 </div>
               </div>
               <div className="flex flex-row justify-between">
@@ -263,7 +263,7 @@ export default function CustomCheckOut() {
                 <div className="w-full pr-8">總計</div>
                 <div className="text-right text-lg font-medium">
                   NT$
-                  {total}
+                  {total.toFixed(0)}
                 </div>
               </div>
             </div>
