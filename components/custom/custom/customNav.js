@@ -18,46 +18,34 @@ export default function CustomNav() {
   const { dispatch, state } = useFlowerCart()
   console.log(state)
   const handleComplete = useCallback(() => {
-    const urlWorkingArea = snapshotCanvas()
+    dispatch({
+      type: 'SET_CARD',
+      payload: cardInfo,
+    })
 
-    console.log('Canvas URL:', urlWorkingArea)
+    const productPayload = imagesInfo.map((img) => ({
+      left: img.left,
+      top: img.top,
+      scaleX: img.scaleX,
+      scaleY: img.scaleY,
+      angle: img.angle,
+      product_id: img.product_id,
+      product_category: img.product_category,
+      product_price: img.product_price,
+      url: img.url,
+      color: img.color,
+      name: img.name,
+      zIndex: img.zIndex,
+    }))
 
-    if (urlWorkingArea) {
-      dispatch({
-        type: 'SET_BOUQUET_INFO',
-        payload: {
-          image_url: urlWorkingArea,
-        },
-      })
-
-      dispatch({
-        type: 'SET_CARD',
-        payload: cardInfo,
-      })
-
-      const productPayload = imagesInfo.map((img) => ({
-        left: img.left,
-        top: img.top,
-        scaleX: img.scaleX,
-        scaleY: img.scaleY,
-        angle: img.angle,
-        product_id: img.product_id,
-        product_category: img.product_category,
-        product_price: img.product_price,
-        url: img.url,
-        color: img.color,
-        name: img.name,
-        zIndex: img.zIndex,
-      }))
-
-      dispatch({
-        type: 'ADD_PRODUCTS',
-        payload: productPayload,
-      })
-      router.push('/cart')
-    } else {
-      console.error('No canvas snapshot URL available')
-    }
+    dispatch({
+      type: 'ADD_PRODUCTS',
+      payload: productPayload,
+    })
+    router.push('/cart')
+    // } else {
+    //   console.error('No canvas snapshot URL available')
+    // }
   }, [snapshotCanvas, imagesInfo, dispatch])
 
   return (
@@ -73,7 +61,7 @@ export default function CustomNav() {
             <CiUndo onClick={handleUndo} />
             <p className="text-xs">reset</p>
           </div>
-          <div className="sm:hidden ">
+          <div className="sm:hidden block">
             <MyButton size="xs" color="secondary200" onClick={handleComplete}>
               完成
             </MyButton>

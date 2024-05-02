@@ -8,7 +8,7 @@ import { useFlower } from '@/hooks/use-flower'
 const GreetingCard = ({ attributes }) => {
   console.log(attributes[0])
 
-  const { setCardInfo } = useFlower()
+  const { setCardInfo, snapshotCanvas } = useFlower()
 
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 1024px)',

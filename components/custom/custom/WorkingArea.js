@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react'
 import { fabric } from 'fabric'
 import { useFlower } from '@/hooks/use-flower'
-
+import { useFlowerCart } from '@/hooks/use-flowerCart'
 const WorkingArea = () => {
   const {
     canvasRef,
@@ -9,10 +9,11 @@ const WorkingArea = () => {
     imagesInfo,
     setImagesInfo,
     addImageToCanvas,
+    snapshotCanvas,
   } = useFlower()
 
   const [canvasReady, setCanvasReady] = useState(false)
-
+  const { dispatch, state } = useFlowerCart()
   const updateImagesInfoOnCanvas = useCallback(
     (obj) => {
       const canvas = canvasRef.current.fabric
@@ -138,6 +139,17 @@ const WorkingArea = () => {
       canvas.off('object:modified')
       canvas.off('object:moving')
       canvas.off('after:render')
+
+      const urlWorkingArea = snapshotCanvas()
+      console.log('Canvas URL:', urlWorkingArea)
+      if (urlWorkingArea) {
+        dispatch({
+          type: 'SET_BOUQUET_INFO',
+          payload: {
+            image_url: urlWorkingArea,
+          },
+        })
+      }
     }
   }, [
     canvasRef,
@@ -198,6 +210,28 @@ const WorkingArea = () => {
       }
     })
   }
+  // useEffect(() => {
+  //   return () => {
+  //     const canvas = canvasRef.current?.fabric
+  //     if (canvas) {
+  //       // 確保在快照前取消所有物件的選取
+  //       if (canvas.visualPath) {
+  //         canvas.remove(canvas.visualPath)
+  //       }
+  //       canvas.renderAll()
+  //       const urlWorkingArea = snapshotCanvas()
+  //       console.log('Canvas URL:', urlWorkingArea)
+  //       if (urlWorkingArea) {
+  //         dispatch({
+  //           type: 'SET_BOUQUET_INFO',
+  //           payload: {
+  //             image_url: urlWorkingArea,
+  //           },
+  //         })
+  //       }
+  //     }
+  //   }
+  // }, [snapshotCanvas, canvasRef]) // 依賴列表確保只有相關依賴變更時才重新訂閱
 
   useEffect(() => {
     const handleResize = () => {
