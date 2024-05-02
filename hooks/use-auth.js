@@ -7,23 +7,19 @@ const AuthContext = createContext(null)
 // 2. 建立一個Context Provider元件
 // 提供給最上層元件(_app.js)使用，把所需狀態都在這元件集中管理
 
-export function AuthProvider({ children }) {
-  // 會員初始狀態物件
-  const initAuth = {
-    // 代表有沒有登入中
-    isAuth: false,
-    // 代表會員的資料
-    userData: {
-      id: 0,
-      username: '',
-      name: '',
-      google_uid: '',
-      google_email: '',
-      google_name: '',
-      google_pic: '',
-    },
-  }
+// 會員初始狀態物件
+export const initAuth = {
+  // 代表有沒有登入中
+  isAuth: false,
+  // 代表會員的資料
+  userData: {
+    id: 0,
+    username: '',
+    google_uid: '',
+  },
+}
 
+export function AuthProvider({ children }) {
   // 共享狀態
   const [auth, setAuth] = useState(initAuth)
   const [userInfo, setUserInfo] = useState({ name: '', avatar: '' })
@@ -64,6 +60,8 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Error fetching user data:', error)
       setAuth(initAuth)
+      // 登出後立即跳轉到登入頁面
+      router.push('/member/login')
     }
   }
 
@@ -77,7 +75,7 @@ export function AuthProvider({ children }) {
     }
     // 下面加入auth.isAuth，是為了要在向伺服器檢查後，
     // 如果有比對到使用者未登入，就執行跳轉回登入頁面工作
-  }, [router.isReady, auth.isAuth])
+  }, [router.isReady, auth])
 
   const login = (user) => {
     setAuth({
@@ -98,7 +96,7 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       // 使用value屬性提供資料給提供者階層以下的所有後代元件
-      value={{ auth, login, logout, userInfo, setUserInfo }}
+      value={{ auth, login, logout, userInfo, setUserInfo, handleCheckAuth }}
     >
       {children}
     </AuthContext.Provider>

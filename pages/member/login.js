@@ -76,6 +76,8 @@ export default function Login() {
     console.log(data)
 
     if (data.status === 'success') {
+      // 設定全域的context會員登入
+      login()
       // 出現登入成功對話訊息盒
       notify('成功登入')
       // 導向到會員個人資料頁
@@ -140,7 +142,8 @@ export default function Login() {
       notify('成功登入')
       // 導向到會員個人資料頁
       setTimeout(() => {
-        router.push('/center')
+        // router.push('/center')
+        window.location.href = '/center'
       }, 1500)
     } else {
       // 登入失敗，顯示錯誤訊息

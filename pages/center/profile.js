@@ -211,9 +211,6 @@ export default function Profile() {
   // 編輯大頭貼預設值
   const DEFAULT_IMAGE = 'default.png'
 
-  // 未登入時，不會出現頁面內容
-  if (!auth.isAuth) return <></>
-
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -241,11 +238,16 @@ export default function Profile() {
                 <div className="image-upload flex flex-col items-center">
                   <label htmlFor="file-input">
                     <img
-                      src={`http://localhost:3005/member/avatar/${
+                      src={
                         userInfo.avatar === null
                           ? DEFAULT_IMAGE
                           : userInfo.avatar
-                      }`}
+                      }
+                      // src={`http://localhost:3005/member/avatar/${
+                      // userInfo.avatar === null
+                      //   ? DEFAULT_IMAGE
+                      //   : userInfo.avatar
+                      // }`}
                       alt="使用者大頭貼"
                       width="200"
                       height="200"
