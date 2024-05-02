@@ -64,9 +64,7 @@ export default function HeartButton({ opacity, productId }) {
         // 顯示成功提示
         Swal.fire({
           title: 'Success',
-          text: `成功${
-            method === 'POST' ? '新增' : '移除'
-          } product_id=${productId}的商品`,
+          text: `成功${method === 'POST' ? '新增' : '移除'}商品`,
           icon: 'success',
           iconColor: '#68A392',
           confirmButtonColor: '#68A392',

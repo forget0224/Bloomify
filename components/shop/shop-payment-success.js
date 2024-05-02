@@ -51,7 +51,7 @@ const ShopPaymentSuccess = () => {
   // const latestDetail = orderDetails[orderDetails.length - 1] 這樣寫結果會是undefined
   const latestDetail =
     orderDetails.length > 0 ? orderDetails[orderDetails.length - 1] : null
-  // console.log(latestDetail?.total_cost)
+  // console.log(latestDetail)
 
   return (
     <>
@@ -66,9 +66,8 @@ const ShopPaymentSuccess = () => {
           <TableBody>
             <TableRow key="1">
               <TableCell>訂單編號</TableCell>
-              <TableCell>S2024022700</TableCell>
+              <TableCell>{latestDetail?.order_number}</TableCell>
             </TableRow>
-
             <TableRow key="2">
               <TableCell>訂單金額</TableCell>
               <TableCell>
@@ -84,7 +83,9 @@ const ShopPaymentSuccess = () => {
             </TableRow>
             <TableRow key="4">
               <TableCell>訂單狀態</TableCell>
-              <TableCell className="text-danger">處理中</TableCell>
+              <TableCell className="text-danger">
+                {latestDetail?.order_status}
+              </TableCell>
             </TableRow>
             <TableRow key="5">
               <TableCell>付款方式</TableCell>

@@ -65,10 +65,7 @@ const ShopCheckout = () => {
   const totalAmount = totalPrice + deliveryShipping - discount
 
   const confirmOrder = async () => {
-    console.log('Sending order details:', detailData) // 查看傳送的數據
-    console.log('Sending products:', detailData.products)
-    console.log('Sending detail:', detailData.detail)
-    console.log('totalAmount:', totalAmount)
+    // console.log('Sending order details:', detailData) // 查看傳送的數據
     try {
       const response = await fetch(
         'http://localhost:3005/api/products/save-order-details',
@@ -83,6 +80,7 @@ const ShopCheckout = () => {
             products: detailData.products,
             detail: detailData.detail,
             totalAmount: totalAmount,
+            orderStatus: '處理中',
           }),
         }
       )
@@ -113,7 +111,7 @@ const ShopCheckout = () => {
       'border-1',
       'border-tertiary-100',
       'rounded-xl',
-    ], // 整個表格
+    ],
   }
   return (
     <div className="flex flex-col w-full lg:w-8/12 gap-14">
@@ -174,7 +172,7 @@ const ShopCheckout = () => {
                     </TableCell>
                     <TableCell>NT${item.price}</TableCell>
                     <TableCell>{item.quantity}</TableCell>
-                    <TableCell>NT${totalSubtotal}</TableCell>
+                    <TableCell>NT${item.quantity * item.price}</TableCell>
                   </TableRow>
                 )
               })}
