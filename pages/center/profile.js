@@ -208,9 +208,6 @@ export default function Profile() {
     input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
   }
 
-  // 編輯大頭貼預設值
-  const DEFAULT_IMAGE = 'default.png'
-
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -229,24 +226,17 @@ export default function Profile() {
             <Sidebar />
             {/* 會員資料 */}
             <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10 ">
-              <div>
-                <Title text="基本資料" />
-              </div>
               <div className="w-full max-w-2xl flex flex-col items-center mx-auto lg:px-10">
                 <div className="text-xl lg:text-3xl mb-6 mt-4">個人資訊</div>
                 {/* 大頭貼位置 */}
                 <div className="image-upload flex flex-col items-center">
                   <label htmlFor="file-input">
                     <img
-                      src={
-                        userInfo.avatar === null
-                          ? DEFAULT_IMAGE
-                          : userInfo.avatar
-                      }
+                      src={userInfo.avatar}
                       // src={`http://localhost:3005/member/avatar/${
-                      // userInfo.avatar === null
-                      //   ? DEFAULT_IMAGE
-                      //   : userInfo.avatar
+                      //   userInfo.avatar === null
+                      //     ? DEFAULT_IMAGE
+                      //     : userInfo.avatar
                       // }`}
                       alt="使用者大頭貼"
                       width="200"

@@ -117,8 +117,6 @@ export default function Index() {
     handleCheckAuth()
   }, [])
 
-  const DEFAULT_AVATAR = 'pink_Gladiola_0.jpg'
-
   return (
     <DefaultLayout activePage={activePage}>
       {
@@ -145,9 +143,7 @@ export default function Index() {
               {/* 會員資訊 start */}
               <div className="flex flex-col gap-2 items-center justify-center">
                 <img
-                  src={
-                    userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar
-                  }
+                  src={userInfo.avatar}
                   // src={`http://localhost:3005/member/avatar/${
                   //   userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar
                   // }`}

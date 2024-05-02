@@ -105,8 +105,6 @@ export default function Sidebar() {
     // eslint-disable-next-line
   }, [auth,userInfo.avatar])
 
-  const DEFAULT_AVATAR = 'pink_Gladiola_0.jpg'
-
   // google登入會抓到的userInfo.avatar
   // "https://lh3.googleusercontent.com/a/ACg8ocIUe3auMKj5QRu6V8xqve-PKQWDUSIZFQdLpQP7cYnOkB8HPj8=s96-c"
 
@@ -116,7 +114,7 @@ export default function Sidebar() {
         {/* 會員資訊 start */}
         <div className="flex flex-col gap-4 items-center">
           <img
-            src={userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar}
+            src={userInfo.avatar}
             // src={`http://localhost:3005/member/avatar/${
             //   userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar
             // }`}
