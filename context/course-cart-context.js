@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-import useLocalStorage from '../hooks/use-localStorage' // 確保路徑正確
+import useLocalStorage from '../hooks/use-localStorage'
 import { toast } from 'react-hot-toast'
 
 const CourseCartContext = createContext({
@@ -44,6 +44,7 @@ export const CourseCartProvider = ({ children }) => {
       name: courseDetails.name,
       price: courseDetails.price,
       image: mainImage,
+      store: courseDetails.store.store_name,
       period: selectedDatetime.period, // 選擇的期數
       date: selectedDatetime.date, // 期數對應的日期
       startTime: selectedDatetime.start_time, // 期數對應的開始時間

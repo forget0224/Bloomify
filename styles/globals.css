@@ -183,3 +183,19 @@ a {
   flex: 0 0 auto;
   width: calc(33.333% - 16px); /* 設定卡片寬度，扣除間距 */
 }
+
+/* 課程日歷樣式 */
+.rbc-today {
+  background-color: #DBEDDF !important;
+}
+
+.rbc-off-range-bg{
+  background-color: #E4E4E4 !important;
+}
+
+.rbc-event{
+  background-color: #68A392 !important;
+  margin: 0px 4px !important;
+  padding: 4px 8px !important;
+  width: calc(100% - 8px) !important;
+}

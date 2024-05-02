@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -10,7 +10,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
-import { useEffect } from 'react'
+import useFirebase from '@/hooks/use-firebase'
 
 // sweetalert2
 import Swal from 'sweetalert2'
@@ -21,8 +21,11 @@ export default function Index() {
   const router = useRouter()
   const isActive = (pathname) => router.pathname === pathname
 
-  // 登出
-  const { auth, logout, userInfo, setUserInfo } = useAuth()
+  // google登出
+  const { logoutFirebase } = useFirebase()
+
+  // 會員資訊、登出
+  const { auth, logout, userInfo, setUserInfo, handleCheckAuth } = useAuth()
 
   //  SweetAlert2 彈窗
   const MySwal = withReactContent(Swal)
@@ -38,8 +41,42 @@ export default function Index() {
     })
   }
 
+  // 取得登入資料
+  const getUserData = async () => {
+    const res = await fetch(
+      `http://localhost:3005/api/share-members/${auth.userData.id}`,
+      {
+        credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        method: 'GET',
+      }
+    )
+    const data = await res.json() // 將回傳的 Response 物件轉換成 JSON 格式
+    console.log(data)
+    // user: {id: 1, name: '哈利', username: 'herry@test.com', phone: '0906102808', city: '台北市', …}
+
+    if (data.status === 'success') {
+      // 以下為同步化目前後端資料庫資料，與這裡定義的初始化會員資料物件的資料
+      const dbUser = data.data.user
+      const newUserInfo = { name: dbUser.name, avatar: dbUser.avatar }
+      // key => name, username, ......
+      if (
+        newUserInfo.name !== userInfo.name ||
+        newUserInfo.avatar !== userInfo.avatar
+      ) {
+        setUserInfo(newUserInfo)
+      }
+    }
+  }
+
   // 處理登出
   const handleLogout = async () => {
+    // firebase logout(注意，這並不會登出google帳號，是登出firebase的帳號)
+    logoutFirebase()
+
     // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
     const res = await fetch('http://localhost:3005/api/share-members/logout', {
       credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
@@ -67,8 +104,18 @@ export default function Index() {
     }
   }
 
-  // 預設圖片
-  const DEFAULT_AVATAR = 'pink_Gladiola_0.jpg'
+  // 會員認證成功 => 取得會員資料顯示
+  // auth載入完成後向資料庫要會員資料
+  useEffect(() => {
+    if (auth.isAuth && auth.userData?.id) {
+      getUserData(auth.userData.id)
+    }
+    // eslint-disable-next-line
+  }, [auth, userInfo.avatar])
+
+  useEffect(() => {
+    handleCheckAuth()
+  }, [])
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -78,12 +125,8 @@ export default function Index() {
             {/* 麵包屑 */}
             <div className="hidden sm:block sm:w-full sm:py-6">
               <Breadcrumbs>
-                <BreadcrumbItem>
-                  <Link href={'/'}>首頁</Link>
-                </BreadcrumbItem>
-                <BreadcrumbItem color="primary">
-                  <Link href={'/center'}>會員中心</Link>
-                </BreadcrumbItem>
+                <BreadcrumbItem>首頁</BreadcrumbItem>
+                <BreadcrumbItem color="primary">會員中心</BreadcrumbItem>
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
@@ -98,22 +141,20 @@ export default function Index() {
             {/* RWD start */}
             <div className="w-full h-fit px-5 mt-12 space-y-6 sm:hidden">
               {/* 會員資訊 start */}
-              <div className="flex flex-col gap-4 items-center justify-center">
-                <Image
-                  key={''}
-                  src={`http://localhost:3005/member/avatar/${
-                    userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar
-                  }`}
+              <div className="flex flex-col gap-2 items-center justify-center">
+                <img
+                  src={userInfo.avatar}
+                  // src={`http://localhost:3005/member/avatar/${
+                  //   userInfo.avatar === null ? DEFAULT_AVATAR : userInfo.avatar
+                  // }`}
                   // src="/assets/shop/products/flowers/pink_Gladiola_0.jpg"
-                  alt=""
-                  className="w-20 h-20 rounded-full"
+                  alt="使用者大頭貼"
+                  className="w-20 h-20 md:w-16 md:h-16 rounded-full"
                   width={40}
                   height={40}
                 />
-                <p className="text-xl text-tertiary-black font-medium overflow-hidden">
-                  {auth.userData.name
-                    ? auth.userData.name
-                    : auth.userData.username}
+                <p className="text-xl text-tertiary-black font-medium">
+                  {auth.isAuth ? auth.userData?.name : auth.username}
                 </p>
               </div>
               {/* 會員資訊 end */}

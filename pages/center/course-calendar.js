@@ -1,40 +1,123 @@
 import { useState, useEffect } from 'react'
-import { useCourseFavorites } from '@/hooks/use-course-fav'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
-import { Select, SelectItem } from '@nextui-org/react'
-import { Pagination } from '@nextui-org/react'
 import { useAuth } from '@/hooks/use-auth'
 // 日歷元件
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
+import 'moment-timezone'
+moment.tz.setDefault('Asia/Taiwan')
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
-import CourseSearch from '@/components/course/search'
 import Title from '@/components/common/title'
 import Sidebar from '@/components/layout/sidebar'
-import CardGroup from '@/components/course/card-group'
-import CourseDropdown from '@/components/course/dropdown'
+import { useDisclosure } from '@nextui-org/react'
+import CalendarModal from '@/components/course/modal-calendar'
 
-export default function FavoriteCourses() {
+export default function CoursesCalendar() {
   const [activePage, setActivePage] = useState('course')
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
 
   const localizer = momentLocalizer(moment)
 
-  // 假資料
-  const myEventsList = [
-    {
-      title: '數學課',
-      start: new Date(2024, 3, 29, 10, 0), // 注意 JavaScript 中月份是從 0 開始的
-      end: new Date(2024, 3, 29, 11, 0),
-      desc: '第五章節複習',
-      // 其他需要的信息
-    },
-    // ...其他事件
-  ]
+  const [orders, setOrders] = useState([])
+  const [events, setEvents] = useState([])
+  const [selectedEvent, setSelectedEvent] = useState({
+    title: '',
+    store: '',
+    address: '',
+    image: '',
+    period: '',
+    start: '',
+    end: '',
+    course_id: '',
+  })
+
+  // 選中的課程詳細資訊彈窗
+  const { isOpen, onOpenChange, onClose, onOpen } = useDisclosure()
+
+  // 點擊單堂課程
+  const handleEventSelect = (event) => {
+    console.log(event)
+    setSelectedEvent(event) // set選中的事件
+    onOpen() // 打開彈窗
+  }
+
+  // 處理日期的函數，直接返回 Date 對象
+  function combineDateTime(dateStr, timeStr) {
+    const date = new Date(dateStr) // 使用 Date 構造函數解析 ISO 日期
+    const timeParts = timeStr.split(':')
+    date.setHours(parseInt(timeParts[0], 10))
+    date.setMinutes(parseInt(timeParts[1], 10))
+    date.setSeconds(0) // 設置秒數為0
+    return date
+  }
+
+  // 處理訂單數據轉成日歷所需要的格式
+  const creatEventsList = (orders) => {
+    return orders.flatMap((order) =>
+      order.items.map((item) => ({
+        title: item.course.name,
+        store: item.course.store.store_name,
+        address: item.course.store.store_address,
+        period: item.course.datetimes[0].period,
+        start: combineDateTime(
+          item.course.datetimes[0].date,
+          item.course.datetimes[0].start_time
+        ),
+        end: combineDateTime(
+          item.course.datetimes[0].date,
+          item.course.datetimes[0].end_time
+        ),
+        image: item.course.images[0].path,
+        course_id: item.course_id,
+      }))
+    )
+  }
+
+  // 訂單資料fetch
+  useEffect(() => {
+    open() // 在 API 請求開始前，開啟 loader
+
+    async function fetchOrders() {
+      try {
+        const response = await fetch(
+          `http://localhost:3005/api/course-orders`,
+          {
+            credentials: 'include',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            method: 'GET',
+          }
+        )
+        const data = await response.json()
+        console.log('API data:', data) // 確認數據已接收
+        if (response.ok && data.status === 'success') {
+          setOrders(data.data)
+          console.log(orders)
+        } else {
+          throw new Error('Failed to fetch orders or wrong data structure')
+        }
+        close(1.5) // 設置一個延時來關閉 loader
+      } catch (error) {
+        console.error('Error fetching all orders:', error)
+      }
+    }
+
+    fetchOrders()
+  }, [])
+
+  // 事件資料狀態
+  useEffect(() => {
+    if (orders.length > 0) {
+      const newEventsList = creatEventsList(orders)
+      setEvents(newEventsList)
+    }
+  }, [orders]) // 依賴於訂單狀態的變化
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -64,11 +147,11 @@ export default function FavoriteCourses() {
                 <div className="min-h-[600px]">
                   <Calendar
                     localizer={localizer}
-                    events={myEventsList}
+                    events={events}
+                    onSelectEvent={handleEventSelect}
                     startAccessor="start"
                     endAccessor="end"
-                    // views={['month']}
-                    onSelectEvent={(event) => alert(event.title)} // 簡單的示例：點擊事件時顯示 alert
+                    views={['month', 'week', 'day']}
                   />
                 </div>
               </div>
@@ -76,6 +159,11 @@ export default function FavoriteCourses() {
           </div>
         </CenterLayout>
       </>
+      <CalendarModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        event={selectedEvent}
+      />
     </DefaultLayout>
   )
 }

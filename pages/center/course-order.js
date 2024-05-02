@@ -155,7 +155,7 @@ export default function CenterCourse() {
                                           className="flex flex-col md:flex-row text-base border-b-1 py-1"
                                         >
                                           <span className="md:w-[350px] truncate">
-                                            {item.course.name}
+                                            {item.course.name}/{item.period}期
                                           </span>
                                           <span className="md:w-[150px]">
                                             {item.course.price}

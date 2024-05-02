@@ -38,6 +38,7 @@ export default function CourseCart() {
                   <span className="w-full md:w-3/4 md:ml-1 truncate">
                     {course.name}/{course.period}期
                   </span>
+                  <br />
                 </Link>
               </div>
               <div className="w-full md:w-1/4 flex items-center px-2 py-1 md:py-2">
