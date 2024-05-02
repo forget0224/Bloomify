@@ -10,9 +10,10 @@ import { useFlowerCart } from '@/hooks/use-flowerCart'
 
 export default function CustomNav() {
   const router = useRouter()
-  const { clearCanvas, snapshotCanvas, imagesInfo, cardInfo } = useFlower()
+  const { snapshotCanvas, imagesInfo, cardInfo, clearObjectsOnCanvas } =
+    useFlower()
   const handleUndo = () => {
-    clearCanvas()
+    clearObjectsOnCanvas()
   }
   const { dispatch, state } = useFlowerCart()
   console.log(state)
@@ -28,8 +29,6 @@ export default function CustomNav() {
           image_url: urlWorkingArea,
         },
       })
-
-      // if(state.)
 
       dispatch({
         type: 'SET_CARD',
