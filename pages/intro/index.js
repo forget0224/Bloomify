@@ -4,7 +4,7 @@ import { MyButton } from '@/components/btn/mybutton'
 // import CardGroupClean from '@/components/intro/card-group-clean'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import Subtitle from '@/components/intro/subtitle'
-import { Select, SelectItem } from '@nextui-org/react'
+import { Link, Select, SelectItem } from '@nextui-org/react'
 // import SearchBtn from '@/components/intro/search-btn'
 import { CiSearch } from 'react-icons/ci'
 // import introData from '../../data/introData.json'
@@ -38,7 +38,7 @@ export default function FlowersIndex() {
       })
       .catch((error) => {
         console.error('Error fetching data: ', error)
-        setIsLoading(false);
+        setIsLoading(false)
       })
   }, [])
 
@@ -680,7 +680,7 @@ export default function FlowersIndex() {
                   <ModalContent>
                     {(onClose) => (
                       <>
-                        <ModalHeader className="flex flex-col gap-1 text-center text-3xl text-tertiary-black font-semibold">
+                        <ModalHeader className="flex flex-col gap-1 text-center text-3xl text-tertiary-black font-bold ">
                           詳細介紹
                         </ModalHeader>
                         <ModalBody className="flex flex-row bg-blue">
@@ -709,7 +709,7 @@ export default function FlowersIndex() {
                                 {modalData ? modalData.lang : ''}
                               </li>
                               <br></br> */}
-                              <li className="break-all text-lg text-tertiary-black font-semibold">
+                              <li className="text-lg text-tertiary-black font-semibold text-center">
                                 {modalData ? modalData.intro : ''}
                               </li>
 
@@ -733,8 +733,13 @@ export default function FlowersIndex() {
                               </div>
                             </ul>
                             <div className="justify-center flex pt-7">
-                              <MyButton color="secondary" size="md">
-                                販售店家
+                              <MyButton
+                                color="secondary"
+                                size="md"
+                                href={`http://localhost:3000/shop/${modalData ? modalData.flower_href : '#'}`}
+                                as={Link}
+                              >
+                                立即購買
                               </MyButton>
                             </div>
                           </div>
