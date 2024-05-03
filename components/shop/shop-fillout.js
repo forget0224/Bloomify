@@ -72,7 +72,10 @@ const ShopFillOut = ({
             labelPlacement="outside"
             disableSelectorIconRotation
             isRequired
-            classNames={{ ...selectStyles }}
+            classNames={{
+              ...selectStyles,
+              error: errors.selectedDeliveryOption,
+            }}
             onChange={handleSelectDeliveryChange}
           >
             {shippings.map((shipping) => (
