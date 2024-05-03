@@ -143,6 +143,19 @@ export default function FillOut() {
         // 這裡可以處理默認情況或當未匹配到任何鍵時的情況
         console.log(`Unknown field: ${name}`)
     }
+
+    if (
+      value.trim() !== '' ||
+      name === 'deliveryOption' ||
+      name === 'paymentMethod' ||
+      name === 'invoiceOption'
+    ) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors[name] // 移除這個字段的錯誤消息
+        return newErrors
+      })
+    }
   }
 
   const handleSubmit = async (event) => {
@@ -255,9 +268,11 @@ export default function FillOut() {
     if (shipping) {
       setDeliveryShipping(shipping.cost)
       setSelectedDeliveryOption(shipping) // 直接儲存整個shipping對象
-      setErrors((prevErrors) => ({ ...prevErrors, shipping: '' }))
-    } else {
-      setErrors((prevErrors) => ({ ...prevErrors, shipping: '請選擇配送方式' })) // Set error if no shipping is selected
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors.shipping
+        return newErrors
+      })
     }
   }
 
@@ -270,6 +285,11 @@ export default function FillOut() {
     )
     setSelectedInvoiceOption(selectedInvoice)
     setInvoiceOption(value)
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      delete newErrors.invoiceOption
+      return newErrors
+    })
   }
 
   const cities = [
@@ -305,6 +325,11 @@ export default function FillOut() {
 
   const handleRadioChange = (value) => {
     setPaymentMethod(value)
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      delete newErrors.paymentMethod
+      return newErrors
+    })
   }
 
   // stepper
@@ -354,6 +379,13 @@ export default function FillOut() {
 
   const handleCheckboxChange = () => {
     setUseMemberInfo(!useMemberInfo)
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      delete newErrors.senderName
+      delete newErrors.senderNumber
+      delete newErrors.senderEmail
+      return newErrors
+    })
   }
   const handleRecipientChange = (event) => {
     const isChecked = event.target.checked
@@ -361,6 +393,13 @@ export default function FillOut() {
     if (isChecked) {
       setRecipientName(senderName)
       setRecipientNumber(senderNumber)
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors.recipientName
+        delete newErrors.recipientNumber
+        delete newErrors.recipientEmail
+        return newErrors
+      })
     }
   }
 
