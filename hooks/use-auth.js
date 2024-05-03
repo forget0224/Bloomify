@@ -22,7 +22,11 @@ export const initAuth = {
 export function AuthProvider({ children }) {
   // 共享狀態
   const [auth, setAuth] = useState(initAuth)
-  const [userInfo, setUserInfo] = useState({ name: '', avatar: '' })
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    avatar: '',
+    username: '',
+  })
   const router = useRouter()
 
   // 檢查會員認証用
