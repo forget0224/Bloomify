@@ -7,7 +7,7 @@ import Subtitle from '@/components/intro/subtitle'
 import { Select, SelectItem } from '@nextui-org/react'
 // import SearchBtn from '@/components/intro/search-btn'
 import { CiSearch } from 'react-icons/ci'
-// import introData from '../../data/introData.json'
+import introData from '../../data/introData.json'
 import {
   Modal,
   ModalContent,
@@ -24,25 +24,16 @@ import {
 } from '@nextui-org/react'
 
 export default function FlowersIndex() {
-  // ----------後端資料start----------
-  const [introData, setIntroData] = useState([])
-  const [isLoading, setIsLoading] = useState(true) // 新增一個狀態來追蹤加載狀態
+  // ----------後端資料部分start----------
+  const [flowerData, setFlowerData] = useState(introData);
   useEffect(() => {
     fetch('http://localhost:3005/api/intro-datas')
       .then((response) => response.json())
-      .then((data) => {
-        const fetchedData = data.data.datas
-        setIntroData(fetchedData) // 更新 introData 狀態
-        setFlowerData(fetchedData) // 初始設置花卡片數據
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        console.error('Error fetching data: ', error)
-        setIsLoading(false);
-      })
-  }, [])
+      .then((data) => setFlowerData(data.data.datas)) // 注意這裡的路徑與你的 API 響應結構匹配
+      .catch((error) => console.error('Error fetching data: ', error))
+  }, []) // 確保這個 useEffect 只在組件掛載時執行一次
 
-  // ----------後端資料end----------
+  // ----------後端資料部分end----------
   // ----------季節篩選器部分start----------
   // 花卡片的季節狀態及更新函數
   const [selectedSeason, setSelectedSeason] = useState('所有季節')
@@ -236,7 +227,7 @@ export default function FlowersIndex() {
   // ----------搜尋宣告部分end------------
 
   // ----------排序宣告部分start----------
-  const [flowerData, setFlowerData] = useState(introData) // 初始花卡片資料
+  // const [flowerData, setFlowerData] = useState(introData) // 初始花卡片資料
   const [sortOption, setSortOption] = useState('A→Z') // 初始排序選項
 
   // 選擇器改變時的處理函數
@@ -515,7 +506,7 @@ export default function FlowersIndex() {
           {/* ------------花圖鑑首頁banner end------------*/}
 
           {/* ------------清水模背景區塊 start------------*/}
-          <div className="bg-[url('/assets/intro/vintage_speckles.png')] px-8 w-full">
+          <div className="bg-[url('/assets/intro/vintage_speckles.png')] px-8">
             <div className="m-8">
               {/* --------search & select & sort end--------*/}
 

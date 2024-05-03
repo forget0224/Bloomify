@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 // import CardGroupClean from '@/components/intro/card-group-clean'
@@ -7,7 +7,7 @@ import Subtitle from '@/components/intro/subtitle'
 import { Select, SelectItem } from '@nextui-org/react'
 // import SearchBtn from '@/components/intro/search-btn'
 import { CiSearch } from 'react-icons/ci'
-// import introData from '../../data/introData.json'
+import introData from '../../data/introData.json'
 import {
   Modal,
   ModalContent,
@@ -24,25 +24,6 @@ import {
 } from '@nextui-org/react'
 
 export default function FlowersIndex() {
-  // ----------後端資料start----------
-  const [introData, setIntroData] = useState([])
-  const [isLoading, setIsLoading] = useState(true) // 新增一個狀態來追蹤加載狀態
-  useEffect(() => {
-    fetch('http://localhost:3005/api/intro-datas')
-      .then((response) => response.json())
-      .then((data) => {
-        const fetchedData = data.data.datas
-        setIntroData(fetchedData) // 更新 introData 狀態
-        setFlowerData(fetchedData) // 初始設置花卡片數據
-        setIsLoading(false)
-      })
-      .catch((error) => {
-        console.error('Error fetching data: ', error)
-        setIsLoading(false);
-      })
-  }, [])
-
-  // ----------後端資料end----------
   // ----------季節篩選器部分start----------
   // 花卡片的季節狀態及更新函數
   const [selectedSeason, setSelectedSeason] = useState('所有季節')
@@ -515,7 +496,7 @@ export default function FlowersIndex() {
           {/* ------------花圖鑑首頁banner end------------*/}
 
           {/* ------------清水模背景區塊 start------------*/}
-          <div className="bg-[url('/assets/intro/vintage_speckles.png')] px-8 w-full">
+          <div className="bg-[url('/assets/intro/vintage_speckles.png')] px-8">
             <div className="m-8">
               {/* --------search & select & sort end--------*/}
 
@@ -715,7 +696,7 @@ export default function FlowersIndex() {
 
                               <hr className="h-px my-8 border-1 border-secondary-100" />
                               <div className="list-disc ml-6">
-                                {/* <li>
+                              {/* <li>
                                   花語:{modalData ? modalData.lang : ''}
                                 </li> */}
                                 <li>
