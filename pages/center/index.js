@@ -154,7 +154,7 @@ export default function Index() {
                   height={40}
                 />
                 <p className="text-xl text-tertiary-black font-medium">
-                  {auth.isAuth ? auth.userData?.name : auth.username}
+                  {userInfo.name ? userInfo.name : auth.userData.username}
                 </p>
               </div>
               {/* 會員資訊 end */}
