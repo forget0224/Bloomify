@@ -177,7 +177,7 @@ export default function FillOut() {
         recipientNumber: '請填寫手機號碼',
       }),
       ...(!selectedDeliveryOption && { shipping: '請選擇配送方式' }),
-      ...(!selectedValue && { paymentMethod: '請選擇付款方式' }),
+      ...(!paymentMethod && { paymentMethod: '請選擇付款方式' }),
       ...(!selectedInvoiceOption && { invoiceOption: '請選擇發票種類' }),
     }
 
