@@ -19,6 +19,7 @@ import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
 import { DateFormatter } from '@internationalized/date'
 import CustomFillOut from '@/components/custom/CustomFillOut'
+import ShopFillOut from '@/components/shop/shop-fillout'
 
 export default function FillOut() {
   const [activePage, setActivePage] = useState('cart')
@@ -49,6 +50,9 @@ export default function FillOut() {
   const [postalCode, setPostalCode] = useState('')
   const [addressDetail, setAddressDetail] = useState('')
   const [date, setDate] = useState(now('Asia/Taipei'))
+  //驗證
+  const [errors, setErrors] = useState({})
+  console.log(errors)
 
   const times = ['不指定時間']
   for (let hour = 9; hour <= 21; hour++) {
@@ -100,6 +104,7 @@ export default function FillOut() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target
+
     switch (name) {
       case 'recipientName':
         setRecipientName(value)
@@ -135,20 +140,59 @@ export default function FillOut() {
         break
 
       default:
-        // 可以在这里处理默认情况或者当未匹配到任何键时的情况
+        // 這裡可以處理默認情況或當未匹配到任何鍵時的情況
         console.log(`Unknown field: ${name}`)
+    }
+
+    if (
+      value.trim() !== '' ||
+      name === 'deliveryOption' ||
+      name === 'paymentMethod' ||
+      name === 'invoiceOption'
+    ) {
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors[name] // 移除這個字段的錯誤消息
+        return newErrors
+      })
     }
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
+    // 驗證用
+    const newErrors = {
+      ...(senderName.trim() === '' && { senderName: '請填寫姓名' }),
+      ...(senderNumber.trim() === '' && {
+        senderNumber: '請填寫手機號碼',
+      }),
+      ...(senderEmail.trim() === '' && {
+        senderEmail: '請填寫信箱',
+      }),
+      ...(recipientName.trim() === '' && {
+        recipientName: '請填寫姓名',
+      }),
+      ...(recipientNumber.trim() === '' && {
+        recipientNumber: '請填寫手機號碼',
+      }),
+      ...(!selectedDeliveryOption && { shipping: '請選擇配送方式' }),
+      ...(!selectedValue && { paymentMethod: '請選擇付款方式' }),
+      ...(!selectedInvoiceOption && { invoiceOption: '請選擇發票種類' }),
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors)
+      return // Stop submission if there are errors
+    }
+    // 驗證用
+
     const newFormDetails = {
       senderName,
       senderNumber,
       senderEmail,
-      recipientName, // 收件人姓名
-      recipientNumber, // 聯絡電話
+      recipientName,
+      recipientNumber,
       deliveryDate,
       deliveryTime,
       deliveryOption: selectedDeliveryOption.name,
@@ -224,6 +268,11 @@ export default function FillOut() {
     if (shipping) {
       setDeliveryShipping(shipping.cost)
       setSelectedDeliveryOption(shipping) // 直接儲存整個shipping對象
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors.shipping
+        return newErrors
+      })
     }
   }
 
@@ -236,6 +285,11 @@ export default function FillOut() {
     )
     setSelectedInvoiceOption(selectedInvoice)
     setInvoiceOption(value)
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      delete newErrors.invoiceOption
+      return newErrors
+    })
   }
 
   const cities = [
@@ -271,6 +325,11 @@ export default function FillOut() {
 
   const handleRadioChange = (value) => {
     setPaymentMethod(value)
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      delete newErrors.paymentMethod
+      return newErrors
+    })
   }
 
   // stepper
@@ -320,6 +379,13 @@ export default function FillOut() {
 
   const handleCheckboxChange = () => {
     setUseMemberInfo(!useMemberInfo)
+    setErrors((prevErrors) => {
+      const newErrors = { ...prevErrors }
+      delete newErrors.senderName
+      delete newErrors.senderNumber
+      delete newErrors.senderEmail
+      return newErrors
+    })
   }
   const handleRecipientChange = (event) => {
     const isChecked = event.target.checked
@@ -327,6 +393,13 @@ export default function FillOut() {
     if (isChecked) {
       setRecipientName(senderName)
       setRecipientNumber(senderNumber)
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors }
+        delete newErrors.recipientName
+        delete newErrors.recipientNumber
+        delete newErrors.recipientEmail
+        return newErrors
+      })
     }
   }
 
@@ -369,39 +442,63 @@ export default function FillOut() {
                 <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                   <FormTag text="訂購人資訊" />
                   <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
-                    <Input
-                      type="text"
-                      label="姓名"
-                      placeholder="請輸入姓名"
-                      labelPlacement="outside"
-                      isRequired
-                      classNames={{ ...inputStyles }}
-                      name="senderName"
-                      value={senderName}
-                      onChange={handleInputChange}
-                    />
-                    <Input
-                      type="text"
-                      label="手機號碼"
-                      placeholder="09xxxxxxxx"
-                      labelPlacement="outside"
-                      isRequired
-                      classNames={{ ...inputStyles }}
-                      name="senderNumber"
-                      value={senderNumber}
-                      onChange={handleInputChange}
-                    />
-                    <Input
-                      type="text"
-                      label="電子信箱"
-                      placeholder="123@example.com"
-                      labelPlacement="outside"
-                      isRequired
-                      classNames={{ ...inputStyles }}
-                      name="senderEmail"
-                      value={senderEmail}
-                      onChange={handleInputChange}
-                    />
+                    <div>
+                      <Input
+                        type="text"
+                        label="姓名"
+                        placeholder="請輸入姓名"
+                        labelPlacement="outside"
+                        isRequired
+                        classNames={{
+                          ...inputStyles,
+                          error: errors.senderName,
+                        }}
+                        name="senderName"
+                        value={senderName}
+                        onChange={handleInputChange}
+                      />
+                      {errors.senderName && (
+                        <p className="text-danger">{errors.senderName}</p>
+                      )}
+                    </div>
+                    <div>
+                      <Input
+                        type="text"
+                        label="手機號碼"
+                        placeholder="09xxxxxxxx"
+                        labelPlacement="outside"
+                        isRequired
+                        classNames={{
+                          ...inputStyles,
+                          error: errors.senderNumber,
+                        }}
+                        name="senderNumber"
+                        value={senderNumber}
+                        onChange={handleInputChange}
+                      />
+                      {errors.senderNumber && (
+                        <p className="text-danger">{errors.senderNumber}</p>
+                      )}
+                    </div>
+                    <div>
+                      <Input
+                        type="text"
+                        label="電子信箱"
+                        placeholder="123@example.com"
+                        labelPlacement="outside"
+                        isRequired
+                        classNames={{
+                          ...inputStyles,
+                          error: errors.senderEmail,
+                        }}
+                        name="senderEmail"
+                        value={senderEmail}
+                        onChange={handleInputChange}
+                      />
+                      {errors.senderEmail && (
+                        <p className="text-danger">{errors.senderEmail}</p>
+                      )}
+                    </div>
                     <Checkbox
                       checked={useMemberInfo}
                       onChange={handleCheckboxChange}
@@ -448,155 +545,26 @@ export default function FillOut() {
 
               {/* shipping 商城 start */}
               {source === 'shop' ? (
-                <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
-                  <div className="flex text-black border-b-2 border-primary-300">
-                    <FormTag text="運送資訊" />
-                  </div>
-                  <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
-                    <Input
-                      type="text"
-                      label="收件人姓名"
-                      placeholder="請輸入姓名"
-                      labelPlacement="outside"
-                      isRequired
-                      classNames={{ ...inputStyles }}
-                      name="recipientName"
-                      value={recipientName}
-                      onChange={handleInputChange}
-                    />
-                    <Input
-                      type="text"
-                      label="收件人手機號碼"
-                      placeholder="09xxxxxxxx"
-                      labelPlacement="outside"
-                      isRequired
-                      classNames={{ ...inputStyles }}
-                      name="recipientNumber"
-                      value={recipientNumber}
-                      onChange={handleInputChange}
-                    />
-                    <Checkbox
-                      checked={syncData}
-                      onChange={handleRecipientChange}
-                    >
-                      <span className="text-base">同訂購人資料</span>
-                    </Checkbox>
-                    <Select
-                      label="配送方式"
-                      placeholder="請選擇配送方式"
-                      labelPlacement="outside"
-                      disableSelectorIconRotation
-                      isRequired
-                      classNames={{ ...selectStyles }}
-                      onChange={handleSelectDeliveryChange}
-                    >
-                      {shippings.map((shipping) => (
-                        <SelectItem key={shipping.id} value={shipping.id}>
-                          {shipping.name}
-                        </SelectItem>
-                      ))}
-                    </Select>
-                    {selectedDeliveryOption &&
-                      selectedDeliveryOption.id === 3 && (
-                        <div className="w-full flex flex-col gap-1">
-                          <label
-                            htmlFor="pickup"
-                            className="block mb-1 text-base"
-                          >
-                            取貨門市
-                          </label>
-                          <MyButton
-                            color="primary"
-                            size="xl"
-                            id="pickup"
-                            type="button"
-                            className="w-full"
-                            isOutline
-                          >
-                            7-ELEVEN
-                          </MyButton>
-                        </div>
-                      )}
-                    {/* address */}{' '}
-                    {selectedDeliveryOption &&
-                      selectedDeliveryOption.id === 1 && (
-                        <div className="flex flex-col gap-3">
-                          <div className="space-y-3 sm:flex sm:gap-3 ">
-                            <Select
-                              label="配送地址"
-                              placeholder="請選擇城市"
-                              labelPlacement="outside"
-                              disableSelectorIconRotation
-                              isRequired
-                              classNames={{ ...selectStyles }}
-                              onChange={(e) => handleCityChange(e.target.value)}
-                            >
-                              {cities.map((shippingMethod) => (
-                                <SelectItem
-                                  key={shippingMethod.value}
-                                  value={shippingMethod.value}
-                                  classNames={{
-                                    base: 'text-base',
-                                  }}
-                                >
-                                  {shippingMethod.label}
-                                </SelectItem>
-                              ))}
-                            </Select>
-                            <Select
-                              label=""
-                              placeholder="請選擇鄉鎮"
-                              labelPlacement="outside"
-                              disableSelectorIconRotation
-                              isRequired
-                              classNames={{ ...selectStyles }}
-                              onChange={(e) =>
-                                handleTownshipChange(e.target.value)
-                              }
-                            >
-                              {townships.map((shippingMethod) => (
-                                <SelectItem
-                                  key={shippingMethod.value}
-                                  value={shippingMethod.value}
-                                >
-                                  {shippingMethod.label}
-                                </SelectItem>
-                              ))}
-                            </Select>
-                            <Select
-                              label=""
-                              placeholder="郵遞區號"
-                              labelPlacement="outside"
-                              disableSelectorIconRotation
-                              isRequired
-                              classNames={{ ...selectStyles }}
-                              onChange={(e) =>
-                                handlePostalCodeChange(e.target.value)
-                              }
-                            >
-                              {postalCodes.map((shippingMethod) => (
-                                <SelectItem
-                                  key={shippingMethod.value}
-                                  value={shippingMethod.value}
-                                >
-                                  {shippingMethod.label}
-                                </SelectItem>
-                              ))}
-                            </Select>
-                          </div>
-                          <Input
-                            type="text"
-                            labelPlacement="inside"
-                            placeholder="請填寫地址"
-                            isRequired
-                            classNames={{ ...inputStyles }}
-                            onValueChange={handleAddressDetailChange}
-                            // onBlur={handleAddressDetailChange}
-                          />
-                        </div>
-                      )}
-                  </div>
-                </div>
+                <ShopFillOut
+                  inputStyles={inputStyles}
+                  recipientName={recipientName}
+                  handleInputChange={handleInputChange}
+                  recipientNumber={recipientNumber}
+                  syncData={syncData}
+                  handleRecipientChange={handleRecipientChange}
+                  selectStyles={selectStyles}
+                  handleSelectDeliveryChange={handleSelectDeliveryChange}
+                  shippings={shippings}
+                  selectedDeliveryOption={selectedDeliveryOption}
+                  handleCityChange={handleCityChange}
+                  cities={cities}
+                  handleTownshipChange={handleTownshipChange}
+                  townships={townships}
+                  handlePostalCodeChange={handlePostalCodeChange}
+                  postalCodes={postalCodes}
+                  handleAddressDetailChange={handleAddressDetailChange}
+                  errors={errors}
+                />
               ) : null}
               {/* shipping 商城 end */}
 
@@ -662,6 +630,11 @@ export default function FillOut() {
                       </label>
                     ))}
                   </RadioGroup>
+                  {errors.paymentMethod && (
+                    <p className="error-message text-danger">
+                      {errors.paymentMethod}
+                    </p>
+                  )}
                 </div>
               </div>
               {/* payment end*/}
@@ -672,28 +645,37 @@ export default function FillOut() {
                   <FormTag text="發票種類" />
                 </div>
                 <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
-                  <Select
-                    label="發票種類"
-                    aria-label="請選擇發票種類"
-                    placeholder="請選擇發票種類"
-                    labelPlacement="outside"
-                    disableSelectorIconRotation
-                    isRequired
-                    classNames={{ ...selectStyles }}
-                    name="invoiceOption"
-                    onChange={(e) => handleSelectInvoiceChange(e.target.value)}
-                  >
-                    {invoices.map((invoice) => (
-                      <SelectItem
-                        aria-label="請選擇發票"
-                        key={invoice.id}
-                        value={invoice.name}
-                        classNames={{ ...selectStyles }}
-                      >
-                        {invoice.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                  <div>
+                    <Select
+                      label="發票種類"
+                      aria-label="請選擇發票種類"
+                      placeholder="請選擇發票種類"
+                      labelPlacement="outside"
+                      disableSelectorIconRotation
+                      isRequired
+                      classNames={{ ...selectStyles }}
+                      name="invoiceOption"
+                      onChange={(e) =>
+                        handleSelectInvoiceChange(e.target.value)
+                      }
+                    >
+                      {invoices.map((invoice) => (
+                        <SelectItem
+                          aria-label="請選擇發票"
+                          key={invoice.id}
+                          value={invoice.name}
+                          classNames={{ ...selectStyles }}
+                        >
+                          {invoice.name}
+                        </SelectItem>
+                      ))}
+                    </Select>{' '}
+                    {errors.invoiceOption && (
+                      <p className="error-message text-danger">
+                        {errors.invoiceOption}
+                      </p>
+                    )}
+                  </div>
                   {selectedInvoiceOption &&
                     selectedInvoiceOption.name === '手機條碼載具' && (
                       <Input
@@ -718,7 +700,7 @@ export default function FillOut() {
                   <Link href="/">上一步</Link>
                 </MyButton>
                 <MyButton color="primary" size="xl" onClick={handleSubmit}>
-                  <Link href={`/cart/checkout?source=${source}`}>下一步</Link>
+                  下一步
                 </MyButton>
               </div>
             </div>

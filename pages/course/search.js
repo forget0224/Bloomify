@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Slider } from '@nextui-org/react'
-// import Datepicker from 'react-tailwindcss-datepicker'
 // 小組元件
 import { useCourseFavorites } from '@/hooks/use-course-fav'
 import DefaultLayout from '@/components/layout/default-layout'
@@ -20,7 +19,7 @@ export default function CourseSearch() {
   const [categories, setCategories] = useState([]) // set 分類資料
   const { addFavoritesStatusToCourses } = useCourseFavorites()
 
-  // 分頁
+  // 分頁 --------------------------------------------------------------------------
   const [currentPage, setCurrentPage] = useState(1) // 當前頁碼
   const [totalPages, setTotalPages] = useState() // 總頁數
   const cardsPerPage = 12 // 每頁顯示的卡片數量
@@ -150,6 +149,24 @@ export default function CourseSearch() {
       query: { ...router.query, sort: value },
     })
   }
+
+  // 螢光筆
+  // function highlightKeyword(text, keyword) {
+  //   if (!keyword.trim()) return text
+
+  //   const regex = new RegExp(`(${keyword})`, 'gi')
+  //   const parts = text.split(regex)
+
+  //   return parts.map((part, index) =>
+  //     regex.test(part) ? (
+  //       <span key={index} className="highlight">
+  //         {part}
+  //       </span>
+  //     ) : (
+  //       part
+  //     )
+  //   )
+  // }
 
   // fetch 資料
   useEffect(() => {
@@ -295,17 +312,6 @@ export default function CourseSearch() {
               />
 
               {/* 日期範圍 */}
-              {/* <Datepicker
-                value={value}
-                onChange={handleValueChange}
-                primaryColor="primary-100"
-                inputClassName="z-20 text-sm rounded-xl px-4 py-2 border-0 hover:border-0 focus:ring-0 focus:outline-none focus:border-teal"
-                containerClassName="z-20 bg-white pr-3 rounded-xl border-2 hover:border-primary-100 focus:ring-0 focus:outline-none focus:border-teal focus:border-primary-100"
-                toggleClassName="z-20 relative top-1"
-                placeholder={'選擇日期區間'}
-                minDate={new Date('2024-01-01')}
-                maxDate={new Date('2025-12-31')}
-              /> */}
 
               <div className="flex flex-row gap-4 mt-2">
                 <span className="text-tertiary-gray-100">

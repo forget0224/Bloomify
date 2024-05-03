@@ -58,8 +58,12 @@ export const CourseCartProvider = ({ children }) => {
 
   // 移除課程
   // TODO:
-  const removeFromCart = (courseId) => {
-    setCart(cart.filter((item) => item.id !== courseId))
+  const removeFromCart = (courseId, coursePeriod) => {
+    setCart(
+      cart.filter(
+        (item) => !(item.id === courseId && item.period === coursePeriod)
+      )
+    )
     toast.success(`成功移除課程`)
   }
 

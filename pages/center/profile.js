@@ -97,13 +97,9 @@ export default function Profile() {
         }
       }
 
-      //     const DEFAULT_AVATAR = 'default.png'
-
-      // userInfo.avatar === 'null' ? DEFAULT_AVATAR : userInfo.avatar
-
       // 設定到狀態中
       setUserProfile(dbUserProfile)
-      setUserInfo({ ...userInfo, avatar: dbUser.avatar })
+      setUserInfo({ ...userInfo, avatar: dbUser.avatar, name: dbUser.name })
     }
   }
 
@@ -179,6 +175,7 @@ export default function Profile() {
     console.log(data)
     if (data.status == 'success') {
       notify1('編輯成功')
+      setUserInfo({ ...userInfo, name: data.data.user.name })
     } else {
       notify2('沒有更改')
     }

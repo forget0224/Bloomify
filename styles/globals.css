@@ -164,7 +164,7 @@ a {
 /* 搜尋螢光筆效果 */
 .highlight {
   background-color: #DBEDDF;
-  color: #262626;
+  color: #68A392;
 }
 
 /* 課程卡片容器樣式 */
@@ -198,4 +198,12 @@ a {
   margin: 0px 4px !important;
   padding: 4px 8px !important;
   width: calc(100% - 8px) !important;
+}
+
+.rbc-toolbar button:active, .rbc-toolbar button.rbc-active{
+ box-shadow: none !important;
+}
+
+.rbc-toolbar-label{
+  font-size: 20px;
 }
