@@ -20,23 +20,21 @@ export default function Card({ card, index, selected }) {
         <div
           className={`${card.bgCardColor} h-full rounded-xl flex justify-center items-center z-10 relative`}
         >
-          <span className="text-white text-[1.4rem] absolute top-5 left-5">
+          <span className="text-white text-[1.5rem] absolute top-5 left-5">
             {card.icon}
           </span>
           <h1
             className={`${
               selected === index
                 ? 'rotate-0 text-[2rem]'
-                : 'text-[1rem] rotate-90'
-            } ${
-              card.textColor
-            }  text-[2rem] font-bold   transition-all  ease-in-out duration-[3000ms]`}
+                : 'text-[1.1rem] rotate-90'
+            }    font-bold   transition-all  ease-in-out duration-[3000ms]`}
           >
             {card.title}
           </h1>
           {index === selected && (
             <div
-              className={`content text-white text-sm p-4 absolute  bottom-5 opacity-0
+              className={`content ${card.textColor}  text-sm p-4 absolute  bottom-5 opacity-0 
             }`}
             >
               {card.content}

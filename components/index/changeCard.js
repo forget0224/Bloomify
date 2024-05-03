@@ -1,22 +1,27 @@
 import React, { useState, useRef, useLayoutEffect } from 'react'
-import { FaAppleWhole } from 'react-icons/fa6'
+import { LuFlower } from 'react-icons/lu'
+import { CiShop } from 'react-icons/ci'
 import { GiCutLemon } from 'react-icons/gi'
 import { GiStrawberry } from 'react-icons/gi'
+import { PiPottedPlantThin } from 'react-icons/pi'
 import { PiOrangeSliceLight } from 'react-icons/pi'
-import apple from '@/assets/apple.png'
-import lemon from '@/assets/lemon.png'
-import strawberry from '@/assets/strawberry.png'
-import orange from '@/assets/orange.png'
+import { FaStarOfDavid } from 'react-icons/fa'
+import { PiStarOfDavidLight } from 'react-icons/pi'
+
+import apple from '@/public/custom/custom/accent/red_tropaeolum.png'
+import lemon from '@/public/custom/custom/accent/yellow_coreopsis.png'
+import strawberry from '@/public/custom/custom/accent/blue_forgetmenotsit.png'
+import orange from '@/public/custom/custom/flowers/red_carnation.png'
 import Card from './Card'
 import gsap from 'gsap'
 export default function ChangeCard() {
   const cards = [
     {
       title: '代客送花',
-      bgCardColor: 'bg-[#9e7777]', // 莫蘭迪紅色
-      bgColor: '#b28b84',
-      textColor: 'text-[#f4ede8]',
-      icon: <FaAppleWhole />,
+      bgCardColor: 'bg-[#E5DDC5]', // 莫蘭迪紅色
+      bgColor: '#F1EEDC',
+      textColor: 'text-[#c5441c]',
+      icon: <LuFlower />,
       img: apple,
       bgImg: apple,
       content:
@@ -24,10 +29,10 @@ export default function ChangeCard() {
     },
     {
       title: '線上商城',
-      bgCardColor: 'bg-[#86756f]', // 莫蘭迪粉紅
-      bgColor: '#a39088',
-      textColor: 'text-[#f4ede8]',
-      icon: <GiStrawberry />,
+      bgCardColor: 'bg-[#B4B4B3]', // 莫蘭迪粉紅
+      bgColor: '#EBE4D1',
+      textColor: 'text-[#2263a6]',
+      icon: <CiShop />,
       img: strawberry,
       bgImg: strawberry,
       content: '探索我們豐富的線上商品，從鮮花到園藝用品，一應俱全。',
@@ -37,7 +42,7 @@ export default function ChangeCard() {
       bgCardColor: 'bg-[#e5d5b8]', // 莫蘭迪黃色
       bgColor: '#ded1ba',
       textColor: 'text-[#332d29]',
-      icon: <GiCutLemon />,
+      icon: <PiPottedPlantThin />,
       img: lemon,
       bgImg: lemon,
       content:
@@ -48,7 +53,7 @@ export default function ChangeCard() {
       bgCardColor: 'bg-[#cba476]', // 莫蘭迪橙色
       bgColor: '#c7a876',
       textColor: 'text-[#f4ede8]',
-      icon: <PiOrangeSliceLight />,
+      icon: <PiStarOfDavidLight />,
       img: orange,
       bgImg: orange,
       content:
