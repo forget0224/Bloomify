@@ -55,14 +55,14 @@ const ShopCheckout = () => {
   }, 0) // 0是reduce第2個參數，代表初始值
 
   // 小計
-  const totalPrice = detailData.products.reduce((total, item) => {
+  const subtotal = detailData.products.reduce((total, item) => {
     return total + item.price * item.quantity
   }, 0)
 
   // 全部的金額
   const deliveryShipping = Number(detailData.detail.deliveryShipping) || 0
   const discount = Number(detailData.detail.discount) || 0
-  const totalAmount = totalPrice + deliveryShipping - discount
+  const totalAmount = subtotal + deliveryShipping - discount
 
   const confirmOrder = async () => {
     // console.log('Sending order details:', detailData) // 查看傳送的數據
@@ -79,6 +79,7 @@ const ShopCheckout = () => {
           body: JSON.stringify({
             products: detailData.products,
             detail: detailData.detail,
+            subtotal: subtotal,
             totalAmount: totalAmount,
             orderStatus: '處理中',
           }),
@@ -202,7 +203,7 @@ const ShopCheckout = () => {
                 <TableCell className="w-full pr-8">小計</TableCell>
                 <TableCell className="text-right">
                   NT$ {''}
-                  {totalPrice} {''}
+                  {subtotal} {''}
                 </TableCell>
               </TableRow>
               <TableRow key="3">

@@ -1,10 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
-import { Tabs, Tab, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
-import { useDisclosure } from '@nextui-org/react'
+import { Tabs, Tab, Card } from '@nextui-org/react'
 
-import { MyButton } from '@/components/btn/mybutton'
-import { Select, SelectItem } from '@nextui-org/react'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -48,21 +45,17 @@ export default function CenterShop() {
                   >
                     <Tab key="all" title="全部訂單">
                       <div className="flex flex-col gap-4">
-                        <OrderCard />
+                        <OrderCard filterStatus={['處理中', '已完成']} />
                       </div>
                     </Tab>
                     <Tab key="unfinished" title="未完成">
                       <div className="flex flex-col gap-4">
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                          <OrderCard />
-                        </Card>
+                        <OrderCard filterStatus="處理中" />
                       </div>
                     </Tab>
                     <Tab key="finished" title="已完成">
                       <div className="flex flex-col gap-4">
-                        <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                          <OrderCard />
-                        </Card>
+                        <OrderCard filterStatus="已完成" />
                       </div>
                     </Tab>
                   </Tabs>
