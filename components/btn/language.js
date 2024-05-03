@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Button,
   ButtonGroup,
@@ -7,17 +7,39 @@ import {
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react'
-
+import { useTranslation } from 'react-i18next'
 import { TfiWorld } from 'react-icons/tfi'
+
 export default function Language() {
-  const [selectedOption, setSelectedOption] = useState(new Set(['chinese']))
+  const { i18n } = useTranslation()
+  const [selectedOption, setSelectedOption] = useState(new Set(['zh']))
 
   const labelsMap = {
-    chinese: '繁體中文',
-    english: 'English',
+    zh: '繁體中文',
+    en: 'English',
   }
 
+  const changeLanguage = (language) => {
+    i18n.changeLanguage(language)
+  }
+
+  const handleSelectionChange = (languageSet) => {
+    setSelectedOption(languageSet)
+  }
+
+  useEffect(() => {
+    const language = Array.from(selectedOption)[0]
+    changeLanguage(language)
+  }, [selectedOption])
+
+  // const handleSelectionChange = (languageSet) => {
+  //   setSelectedOption(languageSet)
+  //   const language = Array.from(languageSet)[0]
+  //   changeLanguage(language)
+  // }
+
   const selectedOptionValue = Array.from(selectedOption)[0]
+
   return (
     <ButtonGroup variant="bordered" className="rounded-lg z-0">
       <Dropdown>
@@ -32,11 +54,11 @@ export default function Language() {
           aria-label="language options"
           selectedKeys={selectedOption}
           selectionMode="single"
-          onSelectionChange={setSelectedOption}
-          className=" text-tertiary-black"
+          onSelectionChange={handleSelectionChange}
+          className="text-tertiary-black"
         >
-          <DropdownItem key="chinese">{labelsMap['chinese']}</DropdownItem>
-          <DropdownItem key="english">{labelsMap['english']}</DropdownItem>
+          <DropdownItem key="zh">{labelsMap['zh']}</DropdownItem>
+          <DropdownItem key="en">{labelsMap['en']}</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     </ButtonGroup>

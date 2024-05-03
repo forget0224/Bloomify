@@ -1,6 +1,6 @@
 import React, { Fragment, forwardRef } from 'react'
+import { useTranslation } from 'react-i18next'
 // import { useState } from 'react'
-
 import { useAuth } from '@/hooks/use-auth'
 import {
   Navbar,
@@ -22,37 +22,38 @@ import { CiUser } from 'react-icons/ci'
 import FlowerIcon from '../index/FlowerIcon'
 const IndexNav = forwardRef(
   ({ activePage, bgColor = 'primary-300', showNav = true }, ref) => {
+    const { t } = useTranslation()
+
     const menuItems = [
       {
         name: 'custom',
-        chineseName: '代客送花',
+        chineseName: t('custom'),
         subMenu: [
-          { href: 'list', chineseName: '快速選購' },
-          { href: 'custom', chineseName: '客製化' },
+          { href: 'list', chineseName: t('greeting') },
+          { href: 'custom', chineseName: t('customize') },
         ],
       },
       {
         name: 'shop',
-        chineseName: '線上商城',
+        chineseName: t('shop'),
         href: '',
         subMenu: [],
       },
       {
         name: 'course',
-        chineseName: '合作課程',
+        chineseName: t('course'),
         href: '',
         subMenu: [],
       },
       {
         name: 'intro',
-        chineseName: '花與遊戲',
+        chineseName: t('intro'),
         subMenu: [
-          { href: '', chineseName: '花圖鑑' },
-          { href: 'game', chineseName: '花占卜' },
+          { href: '', chineseName: t('flowerAtlas') },
+          { href: 'game', chineseName: t('flowerDivination') },
         ],
       },
     ]
-
     const { auth } = useAuth()
 
     return (
@@ -81,11 +82,12 @@ const IndexNav = forwardRef(
                   <Dropdown>
                     <DropdownTrigger>
                       <Button
-                        className={`bg-red-100 ${
-                          activePage === item.name
-                            ? ' border-b-3  border-red-700'
-                            : ''
-                        }`}
+                        // className={`bg-red-100 ${
+                        //   activePage === item.name
+                        //     ? ' border-b-3  border-red-700'
+                        //     : ''
+                        // }`}
+                        className="bg-transparent"
                       >
                         {item.chineseName}
                       </Button>

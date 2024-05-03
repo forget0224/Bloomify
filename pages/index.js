@@ -12,6 +12,8 @@ import SmoothScroll from '@/components/index/SmoothScroll'
 import ImageList from '@/components/index/ImageList'
 import Footer from '@/components/layout/footer'
 import IndexNav from '@/components/layout/indexnav'
+
+import { useTranslation } from 'react-i18next'
 import {
   Card,
   CardHeader,
@@ -25,6 +27,7 @@ import ChangeCard from '@/components/index/changeCard'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
+  const { t } = useTranslation()
   const [activePage, setActivePage] = useState('home')
   const [showNav, setShowNav] = useState(false)
   const svgRef = useRef(null)
@@ -49,8 +52,8 @@ export default function Home() {
           scrub: 3,
           snap: 1 / (boxItems.length - 1),
           end: () => '+=' + section.offsetWidth,
-          onLeave: () => setShowNav(true), // 當第一個區塊離開視口時顯示導航
-          onEnterBack: () => setShowNav(false), // 當第一個區塊回到視口時隱藏導航
+          onLeave: () => setShowNav(true),
+          onEnterBack: () => setShowNav(false),
         },
       })
     }
@@ -300,7 +303,7 @@ export default function Home() {
               <CardBody className="flex h-[500px] justify-end items-end gap-5 py-16 px-8">
                 <div className="text-tertiary-black text-2xl text-right gap-2 flex flex-col">
                   {' '}
-                  <div className="">您的故事</div>
+                  <div className="">{t('right-green')}</div>
                   <div className="">我們的平台</div>
                   <div className="">成為我們的一部分</div>
                 </div>
