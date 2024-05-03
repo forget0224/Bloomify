@@ -73,7 +73,7 @@ const logoutFirebase = () => {
 const loginGoogle = async (callback) => {
   const provider = new GoogleAuthProvider()
   const auth = getAuth()
-
+  console.log(auth)
   signInWithPopup(auth, provider)
     .then(async (result) => {
       const user = result.user

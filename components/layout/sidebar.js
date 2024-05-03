@@ -125,7 +125,7 @@ export default function Sidebar() {
             height={40}
           />
           <p className="text-xl text-tertiary-black font-medium hidden lg:block overflow-hidden">
-            {userInfo.name ? userInfo.name : auth.userData.username}
+            {userInfo.name ? userInfo.name : auth.userData?.username}
           </p>
         </div>
         {/* 會員資訊 end */}
