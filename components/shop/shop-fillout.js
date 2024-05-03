@@ -22,6 +22,7 @@ const ShopFillOut = ({
   handlePostalCodeChange,
   postalCodes,
   handleAddressDetailChange,
+  errors,
 }) => {
   return (
     <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
@@ -29,46 +30,61 @@ const ShopFillOut = ({
         <FormTag text="運送資訊" />
       </div>
       <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
-        <Input
-          type="text"
-          label="收件人姓名"
-          placeholder="請輸入姓名"
-          labelPlacement="outside"
-          isRequired
-          classNames={{ ...inputStyles }}
-          name="recipientName"
-          value={recipientName}
-          onChange={handleInputChange}
-        />
-        <Input
-          type="text"
-          label="收件人手機號碼"
-          placeholder="09xxxxxxxx"
-          labelPlacement="outside"
-          isRequired
-          classNames={{ ...inputStyles }}
-          name="recipientNumber"
-          value={recipientNumber}
-          onChange={handleInputChange}
-        />
+        <div>
+          <Input
+            type="text"
+            label="收件人姓名"
+            placeholder="請輸入姓名"
+            labelPlacement="outside"
+            isRequired
+            classNames={{ ...inputStyles, error: errors.recipientName }}
+            name="recipientName"
+            value={recipientName}
+            onChange={handleInputChange}
+          />
+          {errors.recipientName && (
+            <p className="text-danger">{errors.recipientName}</p>
+          )}
+        </div>
+        <div>
+          <Input
+            type="text"
+            label="收件人手機號碼"
+            placeholder="09xxxxxxxx"
+            labelPlacement="outside"
+            isRequired
+            classNames={{ ...inputStyles, error: errors.recipientNumber }}
+            name="recipientNumber"
+            value={recipientNumber}
+            onChange={handleInputChange}
+          />
+          {errors.recipientNumber && (
+            <p className="text-danger">{errors.recipientNumber}</p>
+          )}
+        </div>
         <Checkbox checked={syncData} onChange={handleRecipientChange}>
           <span className="text-base">同訂購人資料</span>
         </Checkbox>
-        <Select
-          label="配送方式"
-          placeholder="請選擇配送方式"
-          labelPlacement="outside"
-          disableSelectorIconRotation
-          isRequired
-          classNames={{ ...selectStyles }}
-          onChange={handleSelectDeliveryChange}
-        >
-          {shippings.map((shipping) => (
-            <SelectItem key={shipping.id} value={shipping.id}>
-              {shipping.name}
-            </SelectItem>
-          ))}
-        </Select>
+        <div>
+          <Select
+            label="配送方式"
+            placeholder="請選擇配送方式"
+            labelPlacement="outside"
+            disableSelectorIconRotation
+            isRequired
+            classNames={{ ...selectStyles }}
+            onChange={handleSelectDeliveryChange}
+          >
+            {shippings.map((shipping) => (
+              <SelectItem key={shipping.id} value={shipping.id}>
+                {shipping.name}
+              </SelectItem>
+            ))}
+          </Select>
+          {errors.shipping && (
+            <p className="error-message text-danger">{errors.shipping}</p>
+          )}
+        </div>
         {selectedDeliveryOption && selectedDeliveryOption.id === 3 && (
           <div className="w-full flex flex-col gap-1">
             <label htmlFor="pickup" className="block mb-1 text-base">
@@ -155,7 +171,6 @@ const ShopFillOut = ({
               isRequired
               classNames={{ ...inputStyles }}
               onValueChange={handleAddressDetailChange}
-              // onBlur={handleAddressDetailChange}
             />
           </div>
         )}
