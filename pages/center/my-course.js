@@ -19,7 +19,7 @@ import CourseSearch from '@/components/course/search'
 import CourseDropdown from '@/components/course/dropdown'
 
 export default function MyCourse() {
-  const { close, open, isLoading } = useLoader()
+  // const { close, open, isLoading } = useLoader()
   const [orders, setOrders] = useState([])
 
   // 排序query string更新
@@ -44,7 +44,7 @@ export default function MyCourse() {
   }
 
   useEffect(() => {
-    open() // 在 API 請求開始前，開啟 loader
+    // open() // 在 API 請求開始前，開啟 loader
 
     async function fetchOrders() {
       try {
@@ -66,7 +66,7 @@ export default function MyCourse() {
         } else {
           throw new Error('Failed to fetch orders or wrong data structure')
         }
-        close(1.5) // 設置一個延時來關閉 loader
+        // close(1.5) // 設置一個延時來關閉 loader
       } catch (error) {
         console.error('Error fetching all orders:', error)
       }
@@ -92,7 +92,7 @@ export default function MyCourse() {
     <DefaultLayout activePage={activePage}>
       <CenterLayout>
         {/* 麵包屑 */}
-        <div className="w-full py-6 invisible md:visible">
+        <div className="w-full py-6 hidden sm:block">
           <Breadcrumbs>
             <BreadcrumbItem>首頁</BreadcrumbItem>
             <BreadcrumbItem>會員中心</BreadcrumbItem>
@@ -226,8 +226,8 @@ export default function MyCourse() {
                     )}
                   </div>
                 </Tab>
-                {/* Tab2 - 未完成訂單 */}
-                <Tab key="unfinished" title="未完成">
+                {/* Tab2 - 未完課訂單 */}
+                <Tab key="unfinished" title="未完課">
                   {/* 搜尋與排序 */}
                   <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
                     {/* searchbar */}
@@ -264,8 +264,8 @@ export default function MyCourse() {
                     </Card>
                   </div>
                 </Tab>
-                {/* Tab3 - 已完成訂單 */}
-                <Tab key="finished" title="已完成">
+                {/* Tab3 - 已完課訂單 */}
+                <Tab key="finished" title="已完課">
                   {/* 搜尋與排序 */}
                   <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
                     {/* searchbar */}
@@ -360,5 +360,5 @@ export default function MyCourse() {
   )
 
   // 使用 isLoading 狀態決定是顯示 loader 還是顯示頁面內容
-  return isLoading ? <Loader /> : display
+  return /*isLoading ? <Loader /> :*/ display
 }

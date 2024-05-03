@@ -79,7 +79,7 @@ export default function CoursesCalendar() {
 
   // 訂單資料fetch
   useEffect(() => {
-    open() // 在 API 請求開始前，開啟 loader
+    // open() // 在 API 請求開始前，開啟 loader
 
     async function fetchOrders() {
       try {
@@ -124,20 +124,19 @@ export default function CoursesCalendar() {
       <>
         <CenterLayout>
           {/* 麵包屑 */}
-          <div className="w-full py-6 invisible md:visible">
+          <div className="w-full py-6 hidden sm:block">
             <Breadcrumbs>
               <BreadcrumbItem>首頁</BreadcrumbItem>
               <BreadcrumbItem>會員中心</BreadcrumbItem>
               <BreadcrumbItem>合作課程</BreadcrumbItem>
-              <BreadcrumbItem>收藏課程</BreadcrumbItem>
+              <BreadcrumbItem>我的課表</BreadcrumbItem>
             </Breadcrumbs>
           </div>
           {/* 主要內容 */}
           <div className="flex flex-row w-full justify-center">
             {/* 側邊欄 */}
             <Sidebar />
-
-            {/* order content start */}
+            {/* 標題 */}
             <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
               <Title text="我的課表" />
 
@@ -159,6 +158,7 @@ export default function CoursesCalendar() {
           </div>
         </CenterLayout>
       </>
+      {/* 課程詳細內容彈窗 */}
       <CalendarModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}
