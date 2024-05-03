@@ -5,11 +5,8 @@ import { Select, SelectItem } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 
 const ShopFillOut = ({
-  senderName,
-  senderNumber,
   inputStyles,
   recipientName,
-  handleCheckboxChange,
   handleInputChange,
   recipientNumber,
   syncData,
@@ -25,50 +22,9 @@ const ShopFillOut = ({
   handlePostalCodeChange,
   postalCodes,
   handleAddressDetailChange,
-  senderEmail,
-  useMemberInfo,
 }) => {
   return (
     <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
-      <FormTag text="訂購人資訊" />
-      <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
-        <Input
-          type="text"
-          label="姓名"
-          placeholder="請輸入姓名"
-          labelPlacement="outside"
-          isRequired
-          classNames={{ ...inputStyles }}
-          name="senderName"
-          value={senderName}
-          onChange={handleInputChange}
-        />
-        <Input
-          type="text"
-          label="手機號碼"
-          placeholder="09xxxxxxxx"
-          labelPlacement="outside"
-          isRequired
-          classNames={{ ...inputStyles }}
-          name="senderNumber"
-          value={senderNumber}
-          onChange={handleInputChange}
-        />
-        <Input
-          type="text"
-          label="電子信箱"
-          placeholder="123@example.com"
-          labelPlacement="outside"
-          isRequired
-          classNames={{ ...inputStyles }}
-          name="senderEmail"
-          value={senderEmail}
-          onChange={handleInputChange}
-        />
-        <Checkbox checked={useMemberInfo} onChange={handleCheckboxChange}>
-          <span className="text-base">同會員資料</span>
-        </Checkbox>
-      </div>
       <div className="flex text-black border-b-2 border-primary-300">
         <FormTag text="運送資訊" />
       </div>

@@ -365,8 +365,8 @@ export default function FillOut() {
             </div>
             {/* 主要內容 */}
             <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-12">
-              {/* shipping 代客送花 start */}
-              {source === 'flower' ? (
+              {/*  buyer start */}
+              {source === 'flower' || source === 'shop' ? (
                 <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                   <FormTag text="訂購人資訊" />
                   <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-10 bg-white border-1 rounded-lg">
@@ -412,6 +412,9 @@ export default function FillOut() {
                   </div>
                 </div>
               ) : null}
+              {/*  buyer end */}
+
+              {/* shipping 代客送花 start */}
               {source === 'flower' ? (
                 <CustomFillOut
                   recipientName={recipientName}
@@ -447,11 +450,6 @@ export default function FillOut() {
               {/* shipping 商城 start */}
               {source === 'shop' ? (
                 <ShopFillOut
-                  senderName={senderName}
-                  senderNumber={senderNumber}
-                  senderEmail={senderEmail}
-                  useMemberInfo={useMemberInfo}
-                  handleCheckboxChange={handleCheckboxChange}
                   inputStyles={inputStyles}
                   recipientName={recipientName}
                   handleInputChange={handleInputChange}
