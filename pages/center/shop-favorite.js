@@ -41,12 +41,9 @@ export default function Favorite() {
     fetchFavProducts()
   }, [])
 
-  // const toggleFavClick = (productId) => {
-  //   console.log('toggleFavClick called for productId: ', productId)
-
-  //   const deleteFavProduct = favProducts.filter((item) => item.id !== productId)
-  //   setFavProducts(deleteFavProduct)
-  //   localStorage.setItem('favProducts', JSON.stringify(deleteFavProduct))
+  // 當收藏取消時，就會先在畫面上被刪除
+  // const removeProductFromFavorites = (productId) => {
+  //   setFavProducts(favProducts.filter((product) => product.id !== productId))
   // }
 
   const [searchTerm, setSearchTerm] = useState('')
@@ -101,8 +98,8 @@ export default function Favorite() {
                     <SearchBtn onSearch={handleSearch} />
                   </div>
                   {/* filter */}
-                  <div className="flex flex-cols items-center space-x-4">
-                    <p className=" text-tertiary-black whitespace-nowrap">
+                  <div className="hidden sm:block sm:flex sm:flex-cols sm:items-center sm:space-x-4">
+                    <p className="text-tertiary-black whitespace-nowrap">
                       排序
                     </p>
                     <Select
@@ -150,6 +147,7 @@ export default function Favorite() {
                             <HeartButton
                               productId={product.id}
                               opacity="text-opacity-40"
+                              // onRemove={removeProductFromFavorites}
                             />
                           </div>
                           <Card
@@ -214,13 +212,6 @@ export default function Favorite() {
                   })}
                 </div>
                 {/* products end */}
-
-                {/* 按鈕群組 */}
-                {/* <div className="flex justify-center space-x-10 py-10">
-                  <MyButton color="primary" size="xl">
-                    繼續查看
-                  </MyButton>
-                </div> */}
               </div>
               {/* order content end */}
             </div>

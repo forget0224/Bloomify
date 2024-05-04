@@ -8,6 +8,7 @@ const CartContext = createContext({
   handleDecrement: () => {},
   handleChange: () => {},
   deleteCartItem: () => {},
+  clearCart: () => {},
   totalSubtotal: 0,
   totalCartProducts: 0,
 })
@@ -24,6 +25,11 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     setCartItems(cartItems)
   }, [cartItems])
+
+  // 清空購物車
+  const clearCart = () => {
+    setCartItems({}) // 清空购物车
+  }
 
   // 商品數量增加
   const handleIncrement = (itemId) => {
@@ -76,6 +82,7 @@ export const CartProvider = ({ children }) => {
         handleDecrement,
         handleChange,
         deleteCartItem,
+        clearCart,
         totalSubtotal,
         totalCartProducts,
       }}

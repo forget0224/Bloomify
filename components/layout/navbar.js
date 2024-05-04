@@ -136,24 +136,26 @@ export default function HomeNav({ activePage }) {
         // style={{ backgroundColor: 'blue', padding: '10px' }}
       >
         <NavbarItem className="relative">
-          <div
-            style={{
-              position: 'absolute',
-              left: '1.5rem',
-              bottom: '1.5rem',
-              backgroundColor: 'pink',
-              padding: '2px',
-              borderRadius: '50%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '20px',
-              width: '20px',
-              color: 'white',
-            }}
-          >
-            {itemsAmount}
-          </div>
+          {auth.isAuth && (
+            <div
+              style={{
+                position: 'absolute',
+                left: '1.5rem',
+                bottom: '1.5rem',
+                backgroundColor: 'pink',
+                padding: '2px',
+                borderRadius: '50%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '20px',
+                width: '20px',
+                color: 'white',
+              }}
+            >
+              {itemsAmount}
+            </div>
+          )}
           <Link href={auth.isAuth ? '/cart' : '/member/login'}>
             <CiShoppingCart className="w-8 h-8 text-primary" />
           </Link>

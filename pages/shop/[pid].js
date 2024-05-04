@@ -21,6 +21,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { useLoader } from '@/hooks/use-loader'
 import Loader from '@/components/common/loader'
 import { useAuth } from '@/hooks/use-auth'
+import Swal from 'sweetalert2'
 import { useCart } from '@/context/shop-cart-context'
 import HeartButton from '@/components/shop/btn-heart'
 import ReviewTabPage from '@/components/shop/review-tab-page'
@@ -129,15 +130,28 @@ export default function Detail() {
     wrapper: 'text-base', // 整個表格
   }
 
-  // toaster start
   const notify = () => toast.success('已成功加入購物車')
   const handleCartClick = (product) => {
-    // 呼叫 toast 通知
-    notify()
-    // 將產品加入到購物車
-    addToCart(product)
+    if (!isAuth) {
+      // 用戶未登入，顯示提示信息
+      Swal.fire({
+        title: '未登入',
+        text: '請先登入才能添加商品到購物車。',
+        icon: 'info',
+        iconColor: '#68A392',
+        confirmButtonColor: '#68A392',
+        customClass: {
+          popup: 'rounded-xl',
+          confirmButton: 'w-[100px]',
+        },
+      })
+    } else {
+      // 呼叫 toast 通知
+      notify()
+      // 將產品加入到購物車
+      addToCart(product)
+    }
   }
-  // toaster end
 
   // 將星等化為星星
   const renderStars = (rating) => {
@@ -158,14 +172,38 @@ export default function Detail() {
 
   // 加入購物車
   const addToCart = () => {
-    // 透過展開運算符，創建新的購物車物件
-    // 由於狀態不可改變，要增加物件需創建新的購物車物件
-    const updatedCartItems = {
-      ...cartItems,
-      [product.id]: { ...product, quantity: quantity },
+    if (!isAuth) {
+      // User is not logged in, display the prompt
+      Swal.fire({
+        title: '未登入',
+        text: '請先登入才能添加商品到購物車。',
+        icon: 'info',
+        iconColor: '#68A392',
+        confirmButtonColor: '#68A392',
+        customClass: {
+          popup: 'rounded-xl',
+          confirmButton: 'w-[100px]',
+        },
+      })
+    } else {
+      // Assuming cartItems and setCartItems are available via context or state
+      const updatedCartItems = {
+        ...cartItems,
+        [product.id]: { ...product, quantity: quantity },
+      }
+      setCartItems(updatedCartItems)
+      router.push('/cart')
     }
-    setCartItems(updatedCartItems)
   }
+  // const addToCart = () => {
+  //   // 透過展開運算符，創建新的購物車物件
+  //   // 由於狀態不可改變，要增加物件需創建新的購物車物件
+  //   const updatedCartItems = {
+  //     ...cartItems,
+  //     [product.id]: { ...product, quantity: quantity },
+  //   }
+  //   setCartItems(updatedCartItems)
+  // }
 
   const filterReviewsByStar = (reviews, starId) => {
     // console.log(reviews)
@@ -310,12 +348,14 @@ export default function Detail() {
                       </div>
                     </div>
                     <div className="flex justify-center items-center space-x-2">
-                      <div className="flex justify-center items-center">
-                        <HeartButton
-                          productId={product.id}
-                          opacity="text-opacity-40"
-                        />
-                      </div>
+                      {auth.isAuth && (
+                        <div className="flex justify-center items-center">
+                          <HeartButton
+                            productId={product.id}
+                            opacity="text-opacity-40"
+                          />
+                        </div>
+                      )}
                       <div
                         onClick={onShareOpen}
                         className="flex flex-row items-center h-6 w-6 justify-center text-secondary-100 hover:text-[#FFAC9A]"
@@ -410,12 +450,7 @@ export default function Detail() {
                       className="w-full"
                       onClick={() => addToCart(product)}
                     >
-                      <Link href="/cart" className="sm:flex-1">
-                        立即購買
-                      </Link>
-                      {/* <Link href="/cart?tab=shop" className="sm:flex-1">
-                        立即購買
-                      </Link> */}
+                      立即購買
                     </MyButton>
                   </div>
                 </div>
@@ -558,8 +593,5 @@ export default function Detail() {
       </DefaultLayout>
     </>
   )
-  // if (!isAuth) {
-  //   return <p>請先登入</p>
-  // }
   return <>{isLoading ? <Loader /> : display}</>
 }
