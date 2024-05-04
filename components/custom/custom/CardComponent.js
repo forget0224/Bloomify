@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import ColorSelector from '../common/ColorSelector'
+import CardStyleSelector from './CardStyleSelector'
 import DraggableBar from './DraggableBar'
 import ChangeComponent from './ChangeComponent'
-const CardComponent = ({ onNext, onPrev, items, onCardSelected }) => {
+import { useCard } from '@/hooks/use-card'
+const CardComponent = ({ onNext, onPrev, items }) => {
   const [selectedItem, setSelectedItem] = useState(null)
-  const handleSelectItem = (attributes) => {
-    if (attributes) {
-      onCardSelected(attributes)
-    } else {
-      onCardSelected(null)
+
+  const handleSelectItem = (attributes, categoryName) => {
+    if (attributes && attributes.length > 0) {
+      setSelectedItem({ attributes, categoryName })
     }
   }
 
@@ -22,29 +22,29 @@ const CardComponent = ({ onNext, onPrev, items, onCardSelected }) => {
   return (
     <>
       {selectedItem ? (
-        <ColorSelector
+        <CardStyleSelector
           itemAttribute={selectedItem.attributes}
           categoryName={selectedItem.categoryName}
-          onConfirm={() => setSelectedItem(null)}
+          onConfirm={() => {
+            setSelectedItem(null)
+          }}
         />
       ) : (
         <div className="h-full w-full text-tertiary-black flex flex-col justify-start items-center">
           <div className="text-center min-h-[95px]">
             <h1 className="text-3xl py-2">卡片</h1>
             <p className="text-tertiary-gray-100 text-sm px-4 inline-block h-auto">
-              請選擇您喜歡的卡片。
+              請選擇您喜歡的卡片樣式
             </p>
           </div>
-          <div className="w-full h-full relative">
-            <DraggableBar
-              items={items}
-              onItemSelect={handleSelectItem}
-              itemHeight={35}
-              dragBuffer={50}
-              className="w-[150px] h-[580px] mx-auto pt-2"
-            />{' '}
-            <ChangeComponent onNext={onNext} onPrev={onPrev} />
-          </div>
+          <DraggableBar
+            items={items}
+            onItemSelect={handleSelectItem}
+            itemHeight={35}
+            dragBuffer={50}
+            className="w-[150px] h-[580px] mx-auto pt-2"
+          />
+          <ChangeComponent onNext={onNext} onPrev={onPrev} />
         </div>
       )}
     </>

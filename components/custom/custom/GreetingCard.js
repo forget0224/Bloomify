@@ -4,9 +4,11 @@ import { MdEdit } from 'react-icons/md'
 import { CiCircleCheck } from 'react-icons/ci'
 import { useMediaQuery } from 'react-responsive'
 import { useFlower } from '@/hooks/use-flower'
+import { useCard } from '@/hooks/use-card'
+const GreetingCard = () => {
+  const { previewStyle, confirmedStyle } = useCard()
 
-const GreetingCard = ({ attributes }) => {
-  console.log(attributes[0])
+  const currentStyle = previewStyle || confirmedStyle
 
   const { setCardInfo, snapshotCanvas } = useFlower()
 
@@ -60,19 +62,19 @@ const GreetingCard = ({ attributes }) => {
     setter(event.target.value)
   }
   useEffect(() => {
-    if (attributes && attributes[0] && attributes[0].url) {
+    if (currentStyle) {
       setCardInfo({
-        card_url: attributes[0].url,
-        product_id: attributes[0].product_id,
-        product_price: attributes[0].product_price,
-        product_category: attributes[0].product_category,
+        card_url: currentStyle.url.url,
+        product_id: currentStyle.url.product_id,
+        product_price: currentStyle.url.product_price,
+        product_category: currentStyle.url.product_category,
         content: `標題:${title} 訊息:${message.replace(
           /\s/g,
           ''
         )} 署名:${greeting}`,
       })
     }
-  }, [title, greeting, message, attributes, setCardInfo])
+  }, [title, greeting, message, currentStyle, setCardInfo])
 
   return (
     <div
@@ -138,14 +140,14 @@ const GreetingCard = ({ attributes }) => {
 
         <motion.div
           className={`absolute top-0 left-0 w-full h-full shadow-xl z-20 ${
-            attributes && attributes[0] && attributes[0].url ? '' : 'bg-white'
+            currentStyle && currentStyle.url ? '' : 'bg-white'
           }`}
           style={{
             transformStyle: 'preserve-3d',
             transformOrigin: 'left',
             backgroundImage:
-              attributes && attributes[0] && attributes[0].url
-                ? `url(${attributes[0].url})`
+              currentStyle && currentStyle.url
+                ? `url(${currentStyle.url})`
                 : 'none',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
@@ -155,9 +157,7 @@ const GreetingCard = ({ attributes }) => {
         >
           <h3
             className={`${
-              attributes && attributes[0] && attributes[0].url
-                ? 'hidden'
-                : 'block'
+              currentStyle && currentStyle.url ? 'hidden' : 'block'
             }   text-center mt-8 text-xl font-bold bg-gradient-to-r from-yellow-300 to-pink-500`}
           >
             HAPPY BIRTHDAY Love!
