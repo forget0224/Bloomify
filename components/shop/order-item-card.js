@@ -102,6 +102,14 @@ const OrderItemCard = ({
             <div className="py-1">{filteredOrderDetails.delivery_option}</div>
           </div>
           <div className="flex w-full text-nowrap justify-between">
+            <div className="py-1 mr-2 text-tertiary-gray-100">寄送門市</div>
+            <div className="py-1">{filteredOrderDetails.store_name}</div>
+          </div>
+          <div className="flex w-full text-nowrap justify-between">
+            <div className="py-1 mr-2 text-tertiary-gray-100">寄送地址</div>
+            <div className="py-1">{filteredOrderDetails.store_address}</div>
+          </div>
+          <div className="flex w-full text-nowrap justify-between">
             <div className="py-1 mr-2 text-tertiary-gray-100">運送資訊</div>
             <div className="py-1">已取貨</div>
           </div>
