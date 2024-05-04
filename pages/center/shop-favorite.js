@@ -41,6 +41,10 @@ export default function Favorite() {
     fetchFavProducts()
   }, [])
 
+  const removeProductFromFavorites = (productId) => {
+    setFavProducts(favProducts.filter((product) => product.id !== productId))
+  }
+
   // const toggleFavClick = (productId) => {
   //   console.log('toggleFavClick called for productId: ', productId)
 
@@ -150,6 +154,7 @@ export default function Favorite() {
                             <HeartButton
                               productId={product.id}
                               opacity="text-opacity-40"
+                              onRemove={removeProductFromFavorites}
                             />
                           </div>
                           <Card
@@ -214,13 +219,6 @@ export default function Favorite() {
                   })}
                 </div>
                 {/* products end */}
-
-                {/* 按鈕群組 */}
-                {/* <div className="flex justify-center space-x-10 py-10">
-                  <MyButton color="primary" size="xl">
-                    繼續查看
-                  </MyButton>
-                </div> */}
               </div>
               {/* order content end */}
             </div>

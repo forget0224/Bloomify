@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/use-auth'
 
 const ProductFavoritesContext = createContext({
   productFavorites: [], // 收藏列表
-  setProductFavorites: () => {}, // 更新收藏列表的函数
+  setProductFavorites: () => {}, // 更新收藏列表
   isProductFavorited: () => false,
 })
 

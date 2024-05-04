@@ -4,7 +4,7 @@ import { FaRegHeart, FaHeart } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import { useProductFavorites } from '@/context/shop-fav-context'
 
-export default function HeartButton({ opacity, productId }) {
+export default function HeartButton({ opacity, productId, onRemove }) {
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
   const { isProductFavorited, setProductFavorites, fetchFavorites } =
@@ -19,13 +19,6 @@ export default function HeartButton({ opacity, productId }) {
   const toggleFavorite = async () => {
     try {
       const method = active ? 'DELETE' : 'POST'
-
-      // restful api
-      // http://localhost:3005/api/prodcust/fav
-      // POST / DELETE /fav
-      // POST add-fav
-      // DELETE remove-fav
-
       const response = await fetch(
         `http://localhost:3005/api/products/${
           method === 'POST' ? 'add-fav' : 'remove-fav'
@@ -47,17 +40,27 @@ export default function HeartButton({ opacity, productId }) {
 
         if (method === 'DELETE') {
           // 移除收藏
-          setProductFavorites((currentFavorites) =>
-            currentFavorites.filter((product) => product.id !== productId)
-          )
-        } else {
-          if (data.product) {
-            setProductFavorites((currentFavorites) => [
-              ...currentFavorites,
-              data.product,
-            ])
-          }
+          onRemove(productId) // 使用傳遞的 onRemove 更新外部狀態
+        } else if (data.product) {
+          setProductFavorites((currentFavorites) => [
+            ...currentFavorites,
+            data.product,
+          ])
         }
+
+        // if (method === 'DELETE') {
+        //   // 移除收藏
+        //   setProductFavorites((currentFavorites) =>
+        //     currentFavorites.filter((product) => product.id !== productId)
+        //   )
+        // } else {
+        //   if (data.product) {
+        //     setProductFavorites((currentFavorites) => [
+        //       ...currentFavorites,
+        //       data.product,
+        //     ])
+        //   }
+        // }
 
         await fetchFavorites()
 
@@ -95,6 +98,25 @@ export default function HeartButton({ opacity, productId }) {
 
   // 根據傳入的 opacity 動態設定透明度類別
   const heartOpacityClass = `text-tertiary-black ${opacity} absolute z-10 w-5 h-5 top-0 right-0 cursor-pointer`
+
+  const handleRemoveFavorite = async (productId) => {
+    try {
+      const response = await fetch(`API_ENDPOINT`, {
+        method: 'DELETE', // 或者是你用來取消收藏的 HTTP 方法
+        headers: {
+          // headers
+        },
+      })
+      const data = await response.json()
+      if (data.status === 'success') {
+        onRemove(productId)
+      } else {
+        console.error('Failed to remove favorite:', data.message)
+      }
+    } catch (error) {
+      console.error('Error removing favorite:', error)
+    }
+  }
 
   return (
     <button onClick={toggleFavorite}>
