@@ -99,7 +99,7 @@ export default function Register() {
       {
         <>
           {/* main的東西 */}
-          <div className="py-8 flex justify-center items-center w-full h-full">
+          <div className="py-8 flex justify-center items-center w-full h-full bg-secondary-300">
             <Card className="w-full h-full flex flex-col  mx-4 lg:flex  lg:flex-row-reverse lg:max-w-[950px] lg:max-h-[600px] shadow-lg">
               {/* <Card className="flex flex-row-reverse  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               {/* Form */}
@@ -191,26 +191,24 @@ export default function Register() {
                   </div>
                   <Input placeholder="請填寫街道地址" type="text" /> */}
                   {/* button */}
-                  <div className="w-full flex justify-around gap-2">
-                    <Link href="/member/login">
-                      <MyButton
-                        color="primary"
-                        size="xl"
-                        isOutline
-                        className="lg:w-full  "
-                      >
-                        登入頁面
-                      </MyButton>
-                    </Link>
-
+                  <div className="w-full gap-2">
                     <MyButton
                       color="primary"
                       size="xl"
-                      className=" bg-primary-100 text-white lg:w-full "
+                      className=" bg-primary-100 text-white w-full "
                       type="submit"
                     >
                       會員註冊
                     </MyButton>
+                    <p className="mt-6 text-tertiary-gray-100 text-center">
+                      已是Bloomify會員嗎？
+                      <Link
+                        href="/member/login"
+                        className="text-primary hover:underline underline-offset-4"
+                      >
+                        會員登入
+                      </Link>
+                    </p>
                   </div>
                 </form>
               </div>
