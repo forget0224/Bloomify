@@ -22,10 +22,10 @@ const ShopPaymentSuccess = () => {
   // console.log(orderDetails)
 
   // 獲得訂單明細
-  const getOrderDetail = async () => {
+  const getOrderDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3005/api/products/get-order-details`,
+        `http://localhost:3005/api/products/get-all-order-details`,
         {
           credentials: 'include',
           headers: {
@@ -37,14 +37,21 @@ const ShopPaymentSuccess = () => {
       )
       if (response.ok) {
         const data = await response.json()
-        setOrderDetails(data.data)
+        if (data && data.orderDetails) {
+          // 確保data.orderDetails存在
+          setOrderDetails(data.orderDetails) // 使用正確的屬性設置狀態
+        } else {
+          console.log('No order details available or data is malformed:', data)
+          setOrderDetails([]) // 若無數據，設置為空陣列
+        }
       }
     } catch (error) {
-      // console.log('Error order detail', error)
+      console.error('Error fetching order details:', error)
+      setOrderDetails([]) 
     }
   }
   useEffect(() => {
-    getOrderDetail()
+    getOrderDetails()
   }, [])
 
   // 取數據陣列的最後一項，確保數據已加載
@@ -78,7 +85,7 @@ const ShopPaymentSuccess = () => {
             <TableRow key="3">
               <TableCell>訂單成立日期</TableCell>
               <TableCell>
-                {moment(latestDetail?.updated_at).format('YYYY-MM-DD HH:MM')}
+                {moment(latestDetail?.created_at).format('YYYY-MM-DD HH:MM')}
               </TableCell>
             </TableRow>
             <TableRow key="4">

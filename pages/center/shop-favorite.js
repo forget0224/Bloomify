@@ -101,8 +101,8 @@ export default function Favorite() {
                     <SearchBtn onSearch={handleSearch} />
                   </div>
                   {/* filter */}
-                  <div className="flex flex-cols items-center space-x-4">
-                    <p className=" text-tertiary-black whitespace-nowrap">
+                  <div className="hidden sm:block sm:flex sm:flex-cols sm:items-center sm:space-x-4">
+                    <p className="text-tertiary-black whitespace-nowrap">
                       排序
                     </p>
                     <Select
