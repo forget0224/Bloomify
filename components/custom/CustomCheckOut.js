@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Image } from '@nextui-org/react'
 import {
   Table,
@@ -20,6 +20,7 @@ import { useFlowerCart } from '@/hooks/use-flowerCart'
 import { useAuth } from '@/hooks/use-auth'
 export default function CustomCheckOut() {
   const [activePage, setActivePage] = useState('cart')
+  const [orderId, setOrderId] = useState('')
   const { state } = useFlowerCart()
   const [responseMessage, setResponseMessage] = useState('')
   const route = useRouter()
@@ -69,7 +70,7 @@ export default function CustomCheckOut() {
 
   const deliveryShipping = Number(contactStorage.deliveryShipping) || 0
   const discount = Number(contactStorage.discount) || 0
-
+  const [paymentHTML, setPaymentHTML] = useState('')
   const total = subTotal + deliveryShipping - discount
 
   const handleSubmit = async () => {
@@ -117,84 +118,42 @@ export default function CustomCheckOut() {
       )
 
       const data = await response.json()
-      if (response.ok) {
-        setResponseMessage('Order submitted successfully!')
-        route.push('/cart/payment-successful')
+
+      if (response.ok && data.status == 'success') {
+        const paymentResponse = await fetch(
+          `http://localhost:3005/api/custom/initiate-payment/${data.data.order_id}`
+        )
+        const paymentData = await paymentResponse.json()
+        if (paymentData.status == 'success') {
+          insertAndSubmitForm(paymentData.data)
+        } else {
+          throw new Error(paymentData.message || 'Failed to initiate payment')
+        }
       } else {
-        throw new Error(data.message || 'Failed to submit order')
+        throw new Error(data.message || 'Failed to create order')
       }
     } catch (error) {
-      route.push('/cart/payment-failed')
+      // route.push('/cart/payment-failed')
       setResponseMessage(error.message)
       console.error('Submit error:', error)
     }
   }
-  // const handleSubmit = async () => {
-  //   const formData = new FormData()
-  //   formData.append('bouquet_name', flowerStorage.bouquet_name)
-  //   formData.append('card_content', flowerStorage.card.content)
-  //   formData.append('card_url', flowerStorage.card.card_url || '')
-  //   formData.append('image_url', flowerStorage.image_url)
-  //   formData.append(
-  //     'delivery_date',
-  //     contactStorage.deliveryDate.replace(/\//g, '-')
-  //   )
-  //   formData.append('delivery_time', `${contactStorage.deliveryTime}:00:00`)
-  //   formData.append('member_id', userData.id)
-  //   formData.append('store_id', flowerStorage.store_id)
-  //   formData.append('shipping_id', contactStorage.shipping_id || 1)
-  //   formData.append('sender_name', contactStorage.senderName)
-  //   formData.append('sender_tel', contactStorage.senderNumber)
-  //   formData.append('recipient_name', contactStorage.recipientName)
-  //   formData.append('recipient_tel', contactStorage.recipientNumber)
-  //   formData.append('recipient_address', contactStorage.deliveryAddress)
-  //   formData.append('total', total)
-  //   formData.append('payment_method', contactStorage.paymentMethod)
-  //   formData.append('shipping_method', contactStorage.shippingMethod || 1)
-  //   formData.append('shipping_status', contactStorage.shippingStatus || 1)
-  //   formData.append('order_status', contactStorage.orderStatus || 1)
-  //   formData.append('discount', contactStorage.discount || 0)
 
-  //   // 添加產品資訊
-  //   flowerStorage.products.forEach((product, index) => {
-  //     formData.append(`products[${index}][product_id]`, product.product_id)
-  //     formData.append(`products[${index}][top]`, product.top)
-  //     formData.append(`products[${index}][left]`, product.left)
-  //     formData.append(`products[${index}][z_index]`, product.z_index)
-  //     formData.append(`products[${index}][rotate]`, product.rotate)
-  //   })
+  const insertAndSubmitForm = (formHtml) => {
+    const formContainer = document.createElement('div')
+    formContainer.innerHTML = formHtml
+    document.body.appendChild(formContainer)
 
-  //   try {
-  //     const response = await fetch(
-  //       'http://localhost:3005/api/custom/submit-order',
-  //       {
-  //         method: 'POST',
-  //         body: formData, // 不設置 'Content-Type'，由瀏覽器自動設定
-  //       }
-  //     )
-
-  //     const data = await response.json()
-  //     if (response.ok) {
-  //       setResponseMessage('Order submitted successfully!')
-  //       route.push('/cart/payment-successful')
-  //     } else {
-  //       throw new Error(data.message || 'Failed to submit order')
-  //     }
-  //   } catch (error) {
-  //     route.push('/cart/payment-failed')
-  //     setResponseMessage(error.message)
-  //     console.error('Submit error:', error)
-  //   }
-  // }
+    const form = document.querySelector('form[name="payment"]')
+    form.submit()
+  }
 
   return (
     <>
-      {/* 主要內容 */}
       <div className="flex flex-col w-full lg:w-8/12 gap-14">
-        {/* order-detail start */}
         <div className="flex flex-col w-full">
           <Subtitle text="購物明細" />
-          {/* 明細 */}
+
           <div className="p-4 z-0 flex flex-col relative justify-between gap-4 bg-content1 overflow-auto w-full text-base shadow-none border-1 rounded-xl">
             <h1 className="sm:text-2xl text-xl sm:text-left text-center">
               {flowerStorage.store_name} {' - '}
@@ -268,11 +227,8 @@ export default function CustomCheckOut() {
               </div>
             </div>
           </div>
-
-          {/* 小計 */}
         </div>
-        {/* order-detail end */}
-        {/* shipping & payment detail start*/}
+
         <div className="flex flex-col justify-center w-full gap-6">
           <Subtitle text="配送明細" />
           <Table
@@ -370,7 +326,7 @@ export default function CustomCheckOut() {
             </TableBody>
           </Table>
         </div>
-        {/* shipping & payment detail end*/}
+
         <div className="w-full flex justify-center">
           <Checkbox defaultSelected>
             我同意辦理退貨時，由floral_shop代為處理發票及銷貨退回證明單，以加速退貨退款作業。
