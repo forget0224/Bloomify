@@ -12,10 +12,33 @@ import Title from '@/components/common/title'
 import CourseSearch from '@/components/course/search'
 
 export default function CenterCourse() {
-  const [orders, setOrders] = useState([])
+  // const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState([
+    {
+      id: '',
+      order_number: '',
+      payment_amount: '0',
+      discount: '0',
+      total_cost: '0',
+      order_status: { name: '加載中' },
+      payment_status: { name: '加載中' },
+      payment: { name: '加載中' },
+      created_at: '',
+      items: [
+        {
+          id: '',
+          course: {
+            name: '加載中',
+            price: '0',
+          },
+          period: '加載中',
+        },
+      ],
+    },
+  ])
 
   useEffect(() => {
-    async function fetchAllCourses() {
+    async function fetchAllOrders() {
       try {
         const response = await fetch(
           `http://localhost:3005/api/course-orders`,
@@ -40,7 +63,7 @@ export default function CenterCourse() {
       }
     }
 
-    fetchAllCourses()
+    fetchAllOrders()
   }, [])
 
   // 縮短 UUID
@@ -163,6 +186,7 @@ export default function CenterCourse() {
                                     <div className="flex justify-between md:justify-start">
                                       訂單狀態：
                                       <span className="ml-1">
+                                        {/* {order.order_status.name} */}
                                         {order.order_status.name}
                                       </span>
                                     </div>

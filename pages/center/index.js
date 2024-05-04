@@ -262,7 +262,7 @@ export default function Index() {
                 </AccordionItem>
                 {/* course end */}
                 {/* intro start */}
-                <AccordionItem
+                {/* <AccordionItem
                   key="4"
                   aria-label="Accordion 4"
                   title={<span className="text-tertiary-gray-100">花占卜</span>}
@@ -279,7 +279,7 @@ export default function Index() {
                       占卜紀錄
                     </Link>
                   </div>
-                </AccordionItem>
+                </AccordionItem> */}
                 {/* intro end */}
                 {/* member start */}
                 <AccordionItem

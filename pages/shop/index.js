@@ -252,11 +252,32 @@ export default function Shop() {
   }, [page])
 
   const notify = () => toast.success('已成功加入購物車')
+  // const handleCartClick = (product) => {
+  //   // 呼叫 toast 通知
+  //   notify()
+  //   // 將產品加入到購物車
+  //   addToCart(product)
+  // }
   const handleCartClick = (product) => {
-    // 呼叫 toast 通知
-    notify()
-    // 將產品加入到購物車
-    addToCart(product)
+    if (!isAuth) {
+      // 用戶未登入，顯示提示信息
+      Swal.fire({
+        title: '未登入',
+        text: '請先登入才能添加商品到購物車。',
+        icon: 'info',
+        iconColor: '#68A392',
+        confirmButtonColor: '#68A392',
+        customClass: {
+          popup: 'rounded-xl',
+          confirmButton: 'w-[100px]',
+        },
+      })
+    } else {
+      // 呼叫 toast 通知
+      notify()
+      // 將產品加入到購物車
+      addToCart(product)
+    }
   }
 
   const [order, setOrder] = useState('priceAsc')
@@ -424,7 +445,7 @@ export default function Shop() {
                       價格由低到高
                     </SelectItem>
                     <SelectItem key="priceDesc" value="priceDesc">
-                      價格由低到高
+                      價格由高到低
                     </SelectItem>
                   </Select>
                 </div>
@@ -473,7 +494,6 @@ export default function Shop() {
                             if (activeCategory === 1) {
                               return category.parent_id !== 0
                             }
-                            // Otherwise, filter sub-categories based on the active top-level category
                             return category.parent_id === activeCategory
                           })
                           .map((category) => (
@@ -551,18 +571,21 @@ export default function Shop() {
                           return (
                             <>
                               <div className="relative">
-                                <div
-                                  style={{
-                                    position: 'absolute',
-                                    right: '1rem',
-                                    top: '1rem',
-                                  }}
-                                >
-                                  <HeartButton
-                                    productId={product.id}
-                                    opacity="text-opacity-40"
-                                  />
-                                </div>
+                                {auth.isAuth && (
+                                  <div
+                                    style={{
+                                      position: 'absolute',
+                                      right: '1rem',
+                                      top: '1rem',
+                                    }}
+                                  >
+                                    <HeartButton
+                                      productId={product.id}
+                                      opacity="text-opacity-40"
+                                    />
+                                  </div>
+                                )}
+
                                 <Card
                                   shadow="sm"
                                   key={product.id}

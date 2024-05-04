@@ -81,33 +81,44 @@ export default function CourseComment({ reviews }) {
       </div>
 
       {/* 印出評價與星星們 */}
-      {currentReviews.map((review) => (
-        <div
-          key={review.id}
-          className="flex flex-col gap-2 py-4 border-b-1 border-b-tertiary-gray-200"
-        >
-          <p>
-            {review.member.name}
-            <span className="ml-2 text-tertiary-gray-100">
-              {formatDate(review.created_at)}
-            </span>
-          </p>
-          <div className="flex flex-row items-center text-secondary-100">
-            {/* 印出星星的邏輯 */}
-            {Array.from({ length: 5 }, (_, index) => (
-              <FaStar
-                key={index}
-                className={
-                  index < review.stars
-                    ? 'text-secondary-100'
-                    : 'text-secondary-200'
-                }
-              />
-            ))}
+      {/* 檢查有沒有資料，若沒有，印出目前沒有 x 星資料 */}
+      {currentReviews.length > 0 ? (
+        <>
+          {currentReviews.map((review) => (
+            <div
+              key={review.id}
+              className="flex flex-col gap-2 py-4 border-b-1 border-b-tertiary-gray-200"
+            >
+              <p>
+                {review.member.name}
+                <span className="ml-2 text-tertiary-gray-100">
+                  {formatDate(review.created_at)}
+                </span>
+              </p>
+              <div className="flex flex-row items-center text-secondary-100">
+                {/* 印出星星的邏輯 */}
+                {Array.from({ length: 5 }, (_, index) => (
+                  <FaStar
+                    key={index}
+                    className={
+                      index < review.stars
+                        ? 'text-secondary-100'
+                        : 'text-secondary-200'
+                    }
+                  />
+                ))}
+              </div>
+              <p>{review.comment}</p>
+            </div>
+          ))}
+        </>
+      ) : (
+        <>
+          <div className="text-left py-4">
+            <p>目前没有{selectedStar || '任何'}星资料</p>
           </div>
-          <p>{review.comment}</p>
-        </div>
-      ))}
+        </>
+      )}
 
       {/* 分頁 */}
       {filteredReviews.length > 0 && (

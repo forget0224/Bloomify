@@ -10,7 +10,6 @@ import {
   TableCell,
 } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
-import { Stepper } from 'react-dynamic-stepper'
 import { Link } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
@@ -18,17 +17,22 @@ import { useCart } from '@/context/course-cart-context'
 import { useFillOut } from '@/context/fill-out-context'
 import moment from 'moment'
 import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/router'
 
 export default function CourseCheckOut() {
   const [activePage, setActivePage] = useState('cart')
-
+  const router = useRouter()
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
 
-  // 取資料和方法
+  const [isChecked, setIsChecked] = useState(false) // 處理 checkbox 狀態
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked)
+  }
+
+  // 取 context 中的資料們和方法
   const { cart, removeFromCart, clearCart, totalSubtotal, totalCartProducts } =
     useCart()
-
   const { fillOutDetails } = useFillOut()
 
   console.log(cart)
@@ -36,9 +40,15 @@ export default function CourseCheckOut() {
   console.log(fillOutDetails)
   console.log(auth.userData.id)
 
+  // 提交訂單動作
   const handleCheckout = async () => {
     if (cart.length === 0) {
       toast.error('購物車是空的')
+      return
+    }
+
+    if (!isChecked) {
+      toast.error('請勾選同意事項以繼續')
       return
     }
 
@@ -59,7 +69,7 @@ export default function CourseCheckOut() {
             payment_amount: totalSubtotal, // 根據折扣邏輯修改
             share_payment_id: 2,
             share_payment_status_id: 2,
-            share_order_status_id: 0,
+            share_order_status_id: 1,
             invoice_id: 1,
             courses: cart.map((item) => ({
               course_id: item.id,
@@ -74,6 +84,8 @@ export default function CourseCheckOut() {
         const data = await response.json() // 解析JSON數據
         console.log(data)
         toast.success('訂單提交成功！')
+        router.push('/cart/payment-successful?source=course')
+        clearCart()
       } else {
         throw new Error('Network response was not ok.')
       }
@@ -82,37 +94,6 @@ export default function CourseCheckOut() {
       toast.error('訂單提交失敗')
     }
   }
-
-  // stepper
-  const steps = [
-    {
-      header: {
-        label: '購物車',
-      },
-      // content: <div>First step content</div>,
-      isError: false,
-      isWarning: false,
-      isComplete: true,
-    },
-    {
-      header: {
-        label: '填寫資料',
-      },
-      // content: <div>Second step content</div>,
-      onClickHandler: () => console.log('clicked on second step next button'),
-      isLoading: false,
-      isError: false,
-      isComplete: true,
-    },
-    {
-      header: {
-        label: '訂單確認',
-      },
-      // content: <div>Third step content</div>,
-      isError: false,
-      isComplete: false,
-    },
-  ]
 
   //商品列表 table 樣式
   const tableStyles = {
@@ -219,7 +200,7 @@ export default function CourseCheckOut() {
                 </TableRow>
                 <TableRow key="4">
                   <TableCell className="w-full pr-8">總計</TableCell>
-                  <TableCell className="text-right text-lg font-medium">
+                  <TableCell className="text-right text-lg font-medium text-primary-100">
                     NT${totalSubtotal - 0}
                   </TableCell>
                 </TableRow>
@@ -259,7 +240,7 @@ export default function CourseCheckOut() {
 
         {/* 同意事項 */}
         <div className="w-full flex justify-center">
-          <Checkbox defaultSelected>
+          <Checkbox onChange={handleCheckboxChange} selected={isChecked}>
             我同意辦理退貨時，由floral_shop代為處理發票及銷貨退回證明單，以加速退貨退款作業。
           </Checkbox>
         </div>
@@ -267,13 +248,22 @@ export default function CourseCheckOut() {
         {/* 按鈕群組 */}
         <div className="w-full gap-2 flex justify-center sm:gap-4 ">
           <Link href="/cart/fill-out">
-            <MyButton color="primary" size="xl" isOutline>
+            <MyButton
+              color="primary"
+              size="xl"
+              isOutline
+              className="max-w-[180px]"
+            >
               上一步
             </MyButton>
           </Link>
           <Link className="text-white">
-            {/* TODO: */}
-            <MyButton color="primary" size="xl" onClick={handleCheckout}>
+            <MyButton
+              color="primary"
+              size="xl"
+              className="max-w-[180px]"
+              onClick={handleCheckout}
+            >
               確認，進行付款
             </MyButton>
           </Link>

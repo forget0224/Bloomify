@@ -1,29 +1,30 @@
 import { useState } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@nextui-org/react'
-import Subtitle from '@/components/common/subtitle'
-import { MyButton } from '@/components/btn/mybutton'
-import { Link } from '@nextui-org/react'
 import { useRouter } from 'next/router'
+import DefaultLayout from '@/components/layout/default-layout'
 import ShopPaymentSuccess from '@/components/shop/shop-payment-success'
+import CoursePaymentSuccess from '@/components/course/page-payment-success'
+// import {
+//   Table,
+//   TableHeader,
+//   TableColumn,
+//   TableBody,
+//   TableRow,
+//   TableCell,
+// } from '@nextui-org/react'
+// import Subtitle from '@/components/common/subtitle'
+// import { MyButton } from '@/components/btn/mybutton'
+// import { Link } from '@nextui-org/react'
 
-export default function PaymentFailed() {
+export default function PaymentSuccessed() {
   const [activePage, setActivePage] = useState('cart')
   const route = useRouter()
   const source = route.query.source
   //table樣式
-  const tableStyles = {
-    th: 'text-base', // 表頭
-    td: 'text-base', // 表格
-    wrapper: 'text-base', // 整個表格
-  }
+  // const tableStyles = {
+  //   th: 'text-base',
+  //   td: 'text-base',
+  //   wrapper: 'text-base',
+  // }
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -58,10 +59,9 @@ export default function PaymentFailed() {
               </p>
             </div>
             {/* 訂單明細 */}
-
             {source === 'flower'}
             {source === 'shop' && <ShopPaymentSuccess />}
-            {source === 'course'}
+            {source === 'course' && <CoursePaymentSuccess />}
 
             {/* <div className="w-full flex flex-col md:w-6/12 lg:w-4/12 items-center justify-center gap-4">
             <Subtitle text="訂單明細" className="w-full" />

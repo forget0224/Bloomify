@@ -15,10 +15,10 @@ import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/context/shop-cart-context'
-
+import { useRouter } from 'next/router'
 const ShopCheckout = () => {
   const { auth } = useAuth()
-  const { totalSubtotal } = useCart()
+  const { clearCart } = useCart()
 
   const [detailData, setDetailData] = useState({
     products: [],
@@ -42,6 +42,7 @@ const ShopCheckout = () => {
       detail: filledOutDetail,
     }
   }
+  const router = useRouter()
 
   useEffect(() => {
     const data = getDetailData() // fetch data
@@ -64,8 +65,9 @@ const ShopCheckout = () => {
   const discount = Number(detailData.detail.discount) || 0
   const totalAmount = subtotal + deliveryShipping - discount
 
+  // 將資料送到後端
   const confirmOrder = async () => {
-    // console.log('Sending order details:', detailData) // 查看傳送的數據
+    console.log('Sending order details:', detailData) // 查看傳送的數據
     try {
       const response = await fetch(
         'http://localhost:3005/api/products/save-order-details',
@@ -89,12 +91,22 @@ const ShopCheckout = () => {
       if (response.ok) {
         const data = await response.json()
         console.log('Order confirmed:', data)
+
+        // 訂單成功後清空 localStorage 和本地狀態
+        localStorage.removeItem('cartItems')
+        localStorage.removeItem('fillOutDetails')
+        setDetailData({
+          products: [],
+          detail: {},
+        })
+        clearCart()
       } else {
         throw new Error('Something went wrong with the order confirmation.')
       }
     } catch (error) {
       console.error('Failed to confirm order:', error)
     }
+    router.push('/cart/payment-successful?source=shop')
   }
 
   const tableStylesContent = {
@@ -283,24 +295,18 @@ const ShopCheckout = () => {
       {/* shipping & payment detail end*/}
       <div className="w-full flex justify-center">
         <Checkbox defaultSelected>
-          我同意辦理退貨時，由floral_shop代為處理發票及銷貨退回證明單，以加速退貨退款作業。
+          我同意辦理退貨時，由Bloomify代為處理發票及銷貨退回證明單，以加速退貨退款作業。
         </Checkbox>
       </div>
 
-      <div className="w-full gap-2 flex justify-center sm:gap-4 ">
-        <Link href="/cart/fill-out">
-          <MyButton color="primary" size="xl" isOutline>
-            上一步
-          </MyButton>
-        </Link>
-        <Link
-          href="/cart/payment-successful?source=shop"
-          className="text-white"
-        >
-          <MyButton color="primary" size="xl" onClick={confirmOrder}>
-            確認，進行付款
-          </MyButton>
-        </Link>
+      <div className="gap-2 flex sm:justify-center sm:gap-4 ">
+        <MyButton color="primary" size="xl" isOutline>
+          <Link href="/cart/fill-out?source=shop">上一步 </Link>
+        </MyButton>
+
+        <MyButton color="primary" size="xl" onClick={confirmOrder}>
+          確認，進行付款
+        </MyButton>
       </div>
     </div>
   )
