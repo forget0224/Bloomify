@@ -161,32 +161,66 @@ export default function FillOut() {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    // 驗證用
-    const newErrors = {
-      ...(senderName.trim() === '' && { senderName: '請填寫姓名' }),
-      ...(senderNumber.trim() === '' && {
-        senderNumber: '請填寫手機號碼',
-      }),
-      ...(senderEmail.trim() === '' && {
-        senderEmail: '請填寫信箱',
-      }),
-      ...(recipientName.trim() === '' && {
-        recipientName: '請填寫姓名',
-      }),
-      ...(recipientNumber.trim() === '' && {
-        recipientNumber: '請填寫手機號碼',
-      }),
-      ...(!selectedDeliveryOption && { shipping: '請選擇配送方式' }),
-      ...(!paymentMethod && { paymentMethod: '請選擇付款方式' }),
-      ...(!selectedInvoiceOption && { invoiceOption: '請選擇發票種類' }),
+    let newErrors = {}
+
+    // 驗證用，分source不然會無法送出
+    switch (source) {
+      case 'shop':
+        newErrors = {
+          ...(senderName.trim() === '' && { senderName: '請填寫姓名' }),
+          ...(senderNumber.trim() === '' && {
+            senderNumber: '請填寫手機號碼',
+          }),
+          ...(senderEmail.trim() === '' && {
+            senderEmail: '請填寫信箱',
+          }),
+          ...(recipientName.trim() === '' && {
+            recipientName: '請填寫姓名',
+          }),
+          ...(recipientNumber.trim() === '' && {
+            recipientNumber: '請填寫手機號碼',
+          }),
+          ...(!selectedDeliveryOption && { shipping: '請選擇配送方式' }),
+          ...(!paymentMethod && { paymentMethod: '請選擇付款方式' }),
+          ...(!selectedInvoiceOption && { invoiceOption: '請選擇發票種類' }),
+        }
+        break
+      case 'flower':
+        newErrors = {
+          ...(senderName.trim() === '' && { senderName: '請填寫姓名' }),
+          ...(senderNumber.trim() === '' && {
+            senderNumber: '請填寫手機號碼',
+          }),
+          ...(senderEmail.trim() === '' && {
+            senderEmail: '請填寫信箱',
+          }),
+          ...(recipientName.trim() === '' && {
+            recipientName: '請填寫姓名',
+          }),
+          ...(recipientNumber.trim() === '' && {
+            recipientNumber: '請填寫手機號碼',
+          }),
+          ...(!selectedDeliveryOption && { shipping: '請選擇配送方式' }),
+          ...(!paymentMethod && { paymentMethod: '請選擇付款方式' }),
+          ...(!selectedInvoiceOption && { invoiceOption: '請選擇發票種類' }),
+        }
+        break
+      case 'course':
+        newErrors = {
+          ...(!paymentMethod && { paymentMethod: '請選擇付款方式' }),
+          ...(!selectedInvoiceOption && { invoiceOption: '請選擇發票種類' }),
+        }
+        break
+      default:
+        break
     }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
       return // Stop submission if there are errors
     }
-    // 驗證用
 
+    // 驗證用
     const newFormDetails = {
       senderName,
       senderNumber,
@@ -458,7 +492,7 @@ export default function FillOut() {
                         onChange={handleInputChange}
                       />
                       {errors.senderName && (
-                        <p className="text-danger">{errors.senderName}</p>
+                        <p className="text-danger text">{errors.senderName}</p>
                       )}
                     </div>
                     <div>
