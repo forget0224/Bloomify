@@ -119,7 +119,7 @@ export default function Home() {
               <div
                 className="flex flex-row items-center w-screen"
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_01.png)`,
+                  backgroundImage: `url(/index/img_index_bg_01.jpg)`,
                 }}
                 ref={addToRefs}
               >
@@ -137,7 +137,7 @@ export default function Home() {
               <div
                 className="flex flex-row items-center w-screen "
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_02.png)`,
+                  backgroundImage: `url(/index/img_index_bg_02.jpg)`,
                 }}
                 ref={addToRefs}
               >
@@ -173,7 +173,7 @@ export default function Home() {
               <div
                 className="flex flex-row items-center w-screen "
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_03.png)`,
+                  backgroundImage: `url(/index/img_index_bg_03.jpg)`,
                 }}
                 ref={addToRefs}
               >
@@ -206,7 +206,7 @@ export default function Home() {
               <div
                 className="flex flex-row items-center w-screen "
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_04.png)`,
+                  backgroundImage: `url(/index/img_index_bg_04.jpg)`,
                 }}
                 ref={addToRefs}
               >

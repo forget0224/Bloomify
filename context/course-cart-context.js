@@ -57,7 +57,6 @@ export const CourseCartProvider = ({ children }) => {
   }
 
   // 移除課程
-  // TODO:
   const removeFromCart = (courseId, coursePeriod) => {
     setCart(
       cart.filter(
