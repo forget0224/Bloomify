@@ -16,6 +16,7 @@ import { FlowerTypeProvider } from '@/hooks/use-flowerType'
 import { OccProvider } from '@/hooks/use-occ'
 import { FlowerProvider } from '@/hooks/use-flower'
 import { StoreProvider } from '@/hooks/use-store'
+import { CardProvider } from '@/hooks/use-card'
 import CustomNav from '@/components/custom/custom/customNav'
 import GreetingCard from '@/components/custom/custom/GreetingCard'
 import LayerFloat from '@/components/custom/custom/LayerFloat'
@@ -37,8 +38,10 @@ export default function Custom() {
   const [storeData, setStoreData] = useState(null)
   const [currentComponentIndex, setCurrentComponentIndex] = useState(0)
   const [items, setItems] = useState([])
-  const [cardAttributes, setCardAttributes] = useState({})
+
+  const [packageAttributes, setPackageAttributes] = useState({})
   const isCardComponent = currentPage === 'card'
+  const isPackageComponent = currentPage === 'package'
   const components = [
     { component: MainFlowerComponent, name: 'main' },
     { component: AccentFlowerComponent, name: 'accent' },
@@ -95,19 +98,19 @@ export default function Custom() {
           icon: <PiGiftLight />,
           label: '包裝',
           name: 'package',
-          content: <PackageContent items={storeData.items['package'] || []} />,
+          content: (
+            <PackageContent
+              items={storeData.items['package'] || []}
+              onPackageSelected={setPackageAttributes}
+            />
+          ),
           headerContent: '包裝',
         },
         {
           icon: <PiPencilLineLight />,
           label: '賀卡',
           name: 'card',
-          content: (
-            <GiftCardContent
-              items={storeData.items['card'] || []}
-              onCardSelected={setCardAttributes}
-            />
-          ),
+          content: <GiftCardContent items={storeData.items['card'] || []} />,
           headerContent: '賀卡',
         },
         {
@@ -197,118 +200,127 @@ export default function Custom() {
       <FlowerProvider>
         <ColorProvider>
           <OccProvider>
-            <FlowerTypeProvider>
-              <>
-                {selectedStore ? (
-                  <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
-                    <div className="flex flex-col sm:w-8/12 h-full ">
-                      <CustomNav />
-                      <main className="flex-1 w-full h-auto relative z-0">
-                        {/* 圖層的區塊 */}
+            <CardProvider>
+              <FlowerTypeProvider>
+                <>
+                  {selectedStore ? (
+                    <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
+                      <div className="flex flex-col sm:w-8/12 h-full ">
+                        <CustomNav />
+                        <main className="flex-1 w-full h-auto relative z-0">
+                          {/* 圖層的區塊 */}
 
-                        {currentPage === 'card' ? (
-                          <GreetingCard attributes={cardAttributes} />
-                        ) : (
-                          <>
-                            <div className="hidden sm:block">
-                              <LayerFloat />
-                            </div>
-                            <div className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full">
-                              <WorkingArea />
-                            </div>
-                          </>
-                        )}
-                      </main>
-                    </div>
-                    <div className="sm:w-4/12  bg-white sm:flex hidden sm:flex-col h-screen">
-                      <div className="py-2 mx-4">
-                        <Breadcrumbs
-                          separator="/"
-                          itemClasses={{
-                            separator: 'px-2',
-                          }}
-                          underline="active"
-                          onAction={handleAction}
-                        >
-                          <BreadcrumbItem
-                            key="main"
-                            isCurrent={currentPage === 'main'}
-                          >
-                            主花
-                          </BreadcrumbItem>
-                          <BreadcrumbItem
-                            key="accent"
-                            isCurrent={currentPage === 'accent'}
-                          >
-                            配花
-                          </BreadcrumbItem>
-                          <BreadcrumbItem
-                            key="leaf"
-                            isCurrent={currentPage === 'leaf'}
-                          >
-                            葉材
-                          </BreadcrumbItem>
-                          <BreadcrumbItem
-                            key="package"
-                            isCurrent={currentPage === 'package'}
-                          >
-                            包裝
-                          </BreadcrumbItem>
-                          <BreadcrumbItem
-                            key="card"
-                            isCurrent={currentPage === 'card'}
-                          >
-                            賀卡
-                          </BreadcrumbItem>
-                        </Breadcrumbs>
-                      </div>
-                      <div className="h-full">
-                        {storeData &&
-                          // 檢查是否為 CardComponent 並且 storeData 存在
-                          (isCardComponent ? (
-                            <CardComponent
-                              items={currentData}
-                              onPrev={handlePrevComponent}
-                              onNext={handleNextComponent}
-                              onCardSelected={setCardAttributes} // 只有當是卡片組件時傳遞
-                            />
+                          {currentPage === 'card' ? (
+                            <GreetingCard />
                           ) : (
-                            // 不是卡片組件時不傳遞 onCardSelected
-                            <CurrentComponent
-                              items={currentData}
-                              onPrev={handlePrevComponent}
-                              onNext={handleNextComponent}
-                            />
-                          ))}
+                            <>
+                              <div className="hidden sm:block">
+                                <LayerFloat />
+                              </div>
+                              <div className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full">
+                                <WorkingArea />
+                              </div>
+                            </>
+                          )}
+                        </main>
+                      </div>
+                      <div className="sm:w-4/12  bg-white sm:flex hidden sm:flex-col h-screen">
+                        <div className="py-2 mx-4">
+                          <Breadcrumbs
+                            separator="/"
+                            itemClasses={{
+                              separator: 'px-2',
+                            }}
+                            underline="active"
+                            onAction={handleAction}
+                          >
+                            <BreadcrumbItem
+                              key="main"
+                              isCurrent={currentPage === 'main'}
+                            >
+                              主花
+                            </BreadcrumbItem>
+                            <BreadcrumbItem
+                              key="accent"
+                              isCurrent={currentPage === 'accent'}
+                            >
+                              配花
+                            </BreadcrumbItem>
+                            <BreadcrumbItem
+                              key="leaf"
+                              isCurrent={currentPage === 'leaf'}
+                            >
+                              葉材
+                            </BreadcrumbItem>
+                            <BreadcrumbItem
+                              key="package"
+                              isCurrent={currentPage === 'package'}
+                            >
+                              包裝
+                            </BreadcrumbItem>
+                            <BreadcrumbItem
+                              key="card"
+                              isCurrent={currentPage === 'card'}
+                            >
+                              賀卡
+                            </BreadcrumbItem>
+                          </Breadcrumbs>
+                        </div>
+                        <div className="h-full">
+                          {storeData && (
+                            <>
+                              {isCardComponent ? (
+                                <CardComponent
+                                  items={currentData}
+                                  onPrev={handlePrevComponent}
+                                  onNext={handleNextComponent}
+                                />
+                              ) : isPackageComponent ? (
+                                <PackageComponent
+                                  items={currentData}
+                                  onPrev={handlePrevComponent}
+                                  onNext={handleNextComponent}
+                                  onPackageSelected={setPackageAttributes}
+                                />
+                              ) : (
+                                <CurrentComponent
+                                  items={currentData}
+                                  onPrev={handlePrevComponent}
+                                  onNext={handleNextComponent}
+                                />
+                              )}
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      {/* 底部  */}
+                      <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden ">
+                        <div className="flex flex-row gap-2 justify-evenly items-center h-full">
+                          {items &&
+                            items.map((item, index) => (
+                              <BottomSheetButton
+                                key={index}
+                                {...item}
+                                isOpen={openedIndex === index}
+                                onOpen={() => handleOpen(index)}
+                                onClose={handleClose}
+                                onPrev={handlePrev}
+                                onNext={handleNext}
+                              />
+                            ))}
+                        </div>
                       </div>
                     </div>
-                    {/* 底部  */}
-                    <div className="bg-secondary-200 h-20 w-full fixed bottom-0 sm:hidden ">
-                      <div className="flex flex-row gap-2 justify-evenly items-center h-full">
-                        {items &&
-                          items.map((item, index) => (
-                            <BottomSheetButton
-                              key={index}
-                              {...item}
-                              isOpen={openedIndex === index}
-                              onOpen={() => handleOpen(index)}
-                              onClose={handleClose}
-                              onPrev={handlePrev}
-                              onNext={handleNext}
-                            />
-                          ))}
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <ShareModal
-                    isModalOpen={isModalOpen}
-                    onConfirm={handleConfirm} // 確保這裡傳入的是函數
-                    onClose={() => setModalOpen(false)}
-                  />
-                )}
-              </>
-            </FlowerTypeProvider>
+                  ) : (
+                    <ShareModal
+                      isModalOpen={isModalOpen}
+                      onConfirm={handleConfirm} // 確保這裡傳入的是函數
+                      onClose={() => setModalOpen(false)}
+                    />
+                  )}
+                </>
+              </FlowerTypeProvider>
+            </CardProvider>
           </OccProvider>
         </ColorProvider>
       </FlowerProvider>
