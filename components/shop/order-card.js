@@ -8,9 +8,8 @@ import {
   TableCell,
   Pagination,
 } from '@nextui-org/react'
-import { Tabs, Tab, Card, CardBody, CardFooter, Image } from '@nextui-org/react'
+import { Card, CardBody } from '@nextui-org/react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
-import { MyButton } from '@/components/btn/mybutton'
 import OrderItemCard from '@/components/shop/order-item-card'
 import OrderCardImage from '@/components/shop/order-card-image'
 
@@ -264,7 +263,7 @@ const OrderCard = ({ filterStatus }) => {
           <Pagination
             total={pageCount}
             initialPage={1}
-            currentPage={currentPage}
+            // currentPage={currentPage}
             onChange={handlePageChange}
           />
         </div>

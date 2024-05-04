@@ -15,10 +15,10 @@ import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/context/shop-cart-context'
-
+import { useRouter } from 'next/router'
 const ShopCheckout = () => {
   const { auth } = useAuth()
-  const { totalSubtotal } = useCart()
+  const { clearCart } = useCart()
 
   const [detailData, setDetailData] = useState({
     products: [],
@@ -42,6 +42,7 @@ const ShopCheckout = () => {
       detail: filledOutDetail,
     }
   }
+  const router = useRouter()
 
   useEffect(() => {
     const data = getDetailData() // fetch data
@@ -98,12 +99,14 @@ const ShopCheckout = () => {
           products: [],
           detail: {},
         })
+        clearCart()
       } else {
         throw new Error('Something went wrong with the order confirmation.')
       }
     } catch (error) {
       console.error('Failed to confirm order:', error)
     }
+    router.push('/cart/payment-successful?source=shop')
   }
 
   const tableStylesContent = {
@@ -302,12 +305,7 @@ const ShopCheckout = () => {
         </MyButton>
 
         <MyButton color="primary" size="xl" onClick={confirmOrder}>
-          <Link
-            href="/cart/payment-successful?source=shop"
-            className="text-white"
-          >
-            確認，進行付款
-          </Link>
+          確認，進行付款
         </MyButton>
       </div>
     </div>
