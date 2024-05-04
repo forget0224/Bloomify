@@ -182,7 +182,7 @@ export default function Login() {
       {
         <>
           {/* main的東西 */}
-          <div className="py-8 flex justify-center items-center w-full h-full">
+          <div className="py-8 flex justify-center items-center w-full h-full bg-secondary-300">
             <Card className="w-full h-full flex flex-col-reverse mx-4 lg:flex lg:flex-row lg:max-w-[950px] lg:max-h-[600px] shadow-lg">
               {/* <Card className="flex flex-row  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               {/* Form */}
