@@ -41,16 +41,9 @@ export default function Favorite() {
     fetchFavProducts()
   }, [])
 
-  const removeProductFromFavorites = (productId) => {
-    setFavProducts(favProducts.filter((product) => product.id !== productId))
-  }
-
-  // const toggleFavClick = (productId) => {
-  //   console.log('toggleFavClick called for productId: ', productId)
-
-  //   const deleteFavProduct = favProducts.filter((item) => item.id !== productId)
-  //   setFavProducts(deleteFavProduct)
-  //   localStorage.setItem('favProducts', JSON.stringify(deleteFavProduct))
+  // 當收藏取消時，就會先在畫面上被刪除
+  // const removeProductFromFavorites = (productId) => {
+  //   setFavProducts(favProducts.filter((product) => product.id !== productId))
   // }
 
   const [searchTerm, setSearchTerm] = useState('')
@@ -154,7 +147,7 @@ export default function Favorite() {
                             <HeartButton
                               productId={product.id}
                               opacity="text-opacity-40"
-                              onRemove={removeProductFromFavorites}
+                              // onRemove={removeProductFromFavorites}
                             />
                           </div>
                           <Card

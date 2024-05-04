@@ -19,6 +19,7 @@ export default function HeartButton({ opacity, productId, onRemove }) {
   const toggleFavorite = async () => {
     try {
       const method = active ? 'DELETE' : 'POST'
+
       const response = await fetch(
         `http://localhost:3005/api/products/${
           method === 'POST' ? 'add-fav' : 'remove-fav'
@@ -38,29 +39,29 @@ export default function HeartButton({ opacity, productId, onRemove }) {
         const data = await response.json()
         console.log(data) // 後端響應
 
-        if (method === 'DELETE') {
-          // 移除收藏
-          onRemove(productId) // 使用傳遞的 onRemove 更新外部狀態
-        } else if (data.product) {
-          setProductFavorites((currentFavorites) => [
-            ...currentFavorites,
-            data.product,
-          ])
-        }
-
         // if (method === 'DELETE') {
         //   // 移除收藏
-        //   setProductFavorites((currentFavorites) =>
-        //     currentFavorites.filter((product) => product.id !== productId)
-        //   )
-        // } else {
-        //   if (data.product) {
-        //     setProductFavorites((currentFavorites) => [
-        //       ...currentFavorites,
-        //       data.product,
-        //     ])
-        //   }
+        //   onRemove(productId) // 使用傳遞的 onRemove 更新外部狀態
+        // } else if (data.product) {
+        //   setProductFavorites((currentFavorites) => [
+        //     ...currentFavorites,
+        //     data.product,
+        //   ])
         // }
+
+        if (method === 'DELETE') {
+          // 移除收藏
+          setProductFavorites((currentFavorites) =>
+            currentFavorites.filter((product) => product.id !== productId)
+          )
+        } else {
+          if (data.product) {
+            setProductFavorites((currentFavorites) => [
+              ...currentFavorites,
+              data.product,
+            ])
+          }
+        }
 
         await fetchFavorites()
 

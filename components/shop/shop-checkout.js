@@ -90,6 +90,14 @@ const ShopCheckout = () => {
       if (response.ok) {
         const data = await response.json()
         console.log('Order confirmed:', data)
+
+        // 訂單成功後清空 localStorage 和本地狀態
+        localStorage.removeItem('cartItems')
+        localStorage.removeItem('fillOutDetails')
+        setDetailData({
+          products: [],
+          detail: {},
+        })
       } else {
         throw new Error('Something went wrong with the order confirmation.')
       }
