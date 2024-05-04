@@ -223,7 +223,7 @@ export default function Sidebar() {
         {/* course end */}
 
         {/* intro start */}
-        <div className="flex flex-col gap-4 items-center">
+        {/* <div className="flex flex-col gap-4 items-center">
           <p className="w-full text-tertiary-gray-100 border-b-1 pb-2">
             花占卜
           </p>
@@ -235,7 +235,7 @@ export default function Sidebar() {
           >
             占卜紀錄
           </Link>
-        </div>
+        </div> */}
         {/* intro end */}
 
         {/* member start */}
