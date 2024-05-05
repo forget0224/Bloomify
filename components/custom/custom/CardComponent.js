@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import CardStyleSelector from './CardStyleSelector'
 import DraggableBar from './DraggableBar'
 import ChangeComponent from './ChangeComponent'
-import { useCard } from '@/hooks/use-card'
+
 const CardComponent = ({ onNext, onPrev, items }) => {
   const [selectedItem, setSelectedItem] = useState(null)
 

@@ -7,22 +7,31 @@ import { CiUndo } from 'react-icons/ci'
 import { MyButton } from '@/components/btn/mybutton'
 import { useFlower } from '@/hooks/use-flower'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
-
 export default function CustomNav() {
   const router = useRouter()
-  const { snapshotCanvas, imagesInfo, cardInfo, clearObjectsOnCanvas } =
-    useFlower()
+  const {
+    snapshotCanvas,
+    imagesInfo,
+    cardInfo,
+    clearObjectsOnCanvas,
+    packageInfo,
+  } = useFlower()
   const handleUndo = () => {
     clearObjectsOnCanvas()
   }
   const { dispatch, state } = useFlowerCart()
   console.log(state)
+
   const handleComplete = useCallback(() => {
     dispatch({
       type: 'SET_CARD',
       payload: cardInfo,
     })
 
+    dispatch({
+      type: 'SET_PACKAGE',
+      payload: packageInfo,
+    })
     const productPayload = imagesInfo.map((img) => ({
       left: img.left,
       top: img.top,
@@ -46,7 +55,7 @@ export default function CustomNav() {
     // } else {
     //   console.error('No canvas snapshot URL available')
     // }
-  }, [snapshotCanvas, imagesInfo, dispatch])
+  }, [snapshotCanvas, imagesInfo, dispatch, cardInfo, packageInfo])
 
   return (
     <>

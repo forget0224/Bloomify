@@ -1,16 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import DraggableBar from './DraggableBar'
 import ChangeComponent from './ChangeComponent'
-const PackageComponent = ({ onNext, onPrev, items, onPackageSelected }) => {
+import { useFlower } from '@/hooks/use-flower'
+const PackageComponent = ({ onNext, onPrev, items }) => {
   const [selectedItem, setSelectedItem] = useState({})
-  const handleSelectItem = (attributes) => {
-    if (attributes) {
-      onPackageSelected(attributes)
-      setSelectedItem(attributes)
+  const { setPackageInfo } = useFlower()
+  useEffect(() => {
+    if (selectedItem && selectedItem.length > 0) {
+      setPackageInfo({
+        package_url: selectedItem[0].url,
+        product_id: selectedItem[0].product_id,
+        product_price: selectedItem[0].product_price,
+        product_category: selectedItem[0].product_category,
+        package_name: selectedItem[0].variant_name,
+      })
     } else {
-      onPackageSelected(null)
-      setSelectedItem(null)
+      setPackageInfo(null)
     }
+  }, [selectedItem])
+
+  const handleSelectItem = (attributes) => {
+    setSelectedItem(attributes)
   }
   const defaultPackage = {
     category_name: '不加購包裝',

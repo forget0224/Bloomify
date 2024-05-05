@@ -2,28 +2,27 @@ import React, { useState, useEffect } from 'react'
 import { CiCircleCheck, CiCircleChevLeft } from 'react-icons/ci'
 import { useColors } from '@/hooks/use-color'
 import CustomCheckbox from '../common/CustomCheckbox'
-import { useCard } from '@/hooks/use-card'
-
+import { useFlower } from '@/hooks/use-flower'
 const CardStyleSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   const [selectedStyle, setSelectedStyle] = useState(null)
   const colors = useColors()
-  const { previewStyle, setPreviewStyle, setConfirmedStyle } = useCard()
+  const { previewStyle, setPreviewStyle, setConfirmedStyle } = useFlower()
 
   const handlePreview = (attribute) => {
     setSelectedStyle(attribute)
-    setPreviewStyle(attribute) // 设置预览样式
+    setPreviewStyle(attribute)
   }
 
   const handleConfirm = () => {
-    setConfirmedStyle(previewStyle) // 设置确认样式为当前预览
-    setPreviewStyle(null) // 清空预览样式
-    onConfirm(selectedStyle) // 外部确认回调
+    setConfirmedStyle(previewStyle)
+    setPreviewStyle(null)
+    onConfirm(selectedStyle)
   }
 
   const handleCancel = () => {
     setPreviewStyle(null)
     setSelectedStyle(null)
-    onConfirm(null) // 外部取消回调
+    onConfirm(null)
   }
   return (
     <div className="text-tertiary-black h-full flex flex-col items-center relative">
@@ -41,9 +40,9 @@ const CardStyleSelector = ({ itemAttribute, categoryName, onConfirm }) => {
               >
                 <CustomCheckbox
                   value={attribute.variant_name}
-                  bgColor={colors.find((c) => c.name === attribute.color)?.code}
-                  width={'sm:w-12 w-8'}
-                  height={'sm:h-12 h-8'}
+                  backgroundImage={attribute.url}
+                  width={'sm:w-24 w-20'}
+                  height={'sm:h-24 h-20'}
                   checked={selectedStyle === attribute}
                   onChange={() => {}}
                   isMultiple={false}

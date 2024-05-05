@@ -5,8 +5,12 @@ const CustomCheckbox = forwardRef(
   (
     {
       bgColor = '#fff',
+      backgroundImage = '',
+      backgroundSize = 'cover',
+      backgroundPosition = 'center',
       borderColor = 'gray-900/20',
       checkColor = 'tertiary-black',
+      overlayColor = 'rgba(0, 0, 0, 0.5)',
       Icon = CheckIcon,
       width = 'w-6',
       height = 'h-6',
@@ -20,8 +24,11 @@ const CustomCheckbox = forwardRef(
     },
     ref
   ) => {
-    const textColor =
-      bgColor === '#000' || bgColor === '#000000' ? 'white' : 'black'
+    const textColor = backgroundImage
+      ? 'white'
+      : bgColor === '#000' || bgColor === '#000000'
+      ? 'white'
+      : 'black'
 
     const handleChange = (e) => {
       const isChecked = e.target.checked
@@ -50,10 +57,16 @@ const CustomCheckbox = forwardRef(
             checked={checked}
             onChange={handleChange}
             type="checkbox"
-            style={{ background: bgColor }}
+            style={{
+              background: bgColor,
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: `${backgroundSize}`,
+              backgroundPosition: `${backgroundPosition}`,
+            }}
             className={`before:content[''] peer relative ${height} ${width} cursor-pointer appearance-none rounded-full border border-${borderColor} transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-${checkColor} checked:before:bg-${checkColor} hover:scale-105 hover:before:opacity-0`}
             aria-label={ariaLabel}
           />
+
           <span
             className={`absolute text-${textColor} transition-opacity opacity-0 pointer-events-none top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 peer-checked:opacity-100`}
           >

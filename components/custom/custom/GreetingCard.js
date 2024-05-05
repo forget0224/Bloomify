@@ -4,13 +4,10 @@ import { MdEdit } from 'react-icons/md'
 import { CiCircleCheck } from 'react-icons/ci'
 import { useMediaQuery } from 'react-responsive'
 import { useFlower } from '@/hooks/use-flower'
-import { useCard } from '@/hooks/use-card'
 const GreetingCard = () => {
-  const { previewStyle, confirmedStyle } = useCard()
-
+  const { setCardInfo, snapshotCanvas, previewStyle, confirmedStyle } =
+    useFlower()
   const currentStyle = previewStyle || confirmedStyle
-
-  const { setCardInfo, snapshotCanvas } = useFlower()
 
   const isDesktopOrLaptop = useMediaQuery({
     query: '(min-width: 1024px)',
@@ -64,10 +61,10 @@ const GreetingCard = () => {
   useEffect(() => {
     if (currentStyle) {
       setCardInfo({
-        card_url: currentStyle.url.url,
-        product_id: currentStyle.url.product_id,
-        product_price: currentStyle.url.product_price,
-        product_category: currentStyle.url.product_category,
+        card_url: currentStyle.url,
+        product_id: currentStyle.product_id,
+        product_price: currentStyle.product_price,
+        product_category: currentStyle.product_category,
         content: `標題:${title} 訊息:${message.replace(
           /\s/g,
           ''
