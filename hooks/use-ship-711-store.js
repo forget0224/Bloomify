@@ -4,10 +4,10 @@ import {
   subscribe,
   unsubscribe,
   publish,
-} from '@/utils/popup-window.js'
+} from '@/utils/popup-window'
 import { useRouter } from 'next/router'
-import useInterval from './use-interval'
-import useLocalStorage from './use-localStorage'
+import useInterval from '@/hooks/use-interval'
+import useLocalStorage from '@/hooks/use-localStorage'
 
 export function useShip711StoreOpener(
   serverCallbackUrl = '', //必要。伺服器7-11運送商店用Callback路由網址
@@ -17,7 +17,7 @@ export function useShip711StoreOpener(
     w = 950, //跳出視窗寬度
     autoCloseMins = 5, //自動關閉
     enableLocalStorage = true, //是否didMount時要讀取localStorage中資料
-    keyLocalStorage = 'fyt-store711', // localStorage中的key
+    keyLocalStorage = 'store711', // localStorage中的key
   } = {}
 ) {
   // 除錯用
@@ -142,7 +142,7 @@ export function useShip711StoreOpener(
   }
 }
 
-export function useShip711StoreCallback(keyLocalStorage = 'fyt-store711') {
+export function useShip711StoreCallback(keyLocalStorage = 'store711') {
   const [storedValue, setValue] = useLocalStorage(keyLocalStorage, {
     storeid: '',
     storename: '',

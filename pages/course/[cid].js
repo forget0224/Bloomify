@@ -8,7 +8,7 @@ import {
   ModalBody,
   useDisclosure,
 } from '@nextui-org/react'
-import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
+import { Card, CardBody, CardFooter } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { FaShareAlt } from 'react-icons/fa'
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'

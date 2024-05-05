@@ -13,16 +13,15 @@ import { Link } from '@nextui-org/react'
 // 小組元件
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
-import { useAuth } from '@/hooks/use-auth'
 import { useCart } from '@/context/shop-cart-context'
 import { useRouter } from 'next/router'
 const ShopCheckout = () => {
-  const { auth } = useAuth()
   const { clearCart } = useCart()
 
   const [detailData, setDetailData] = useState({
     products: [],
     detail: {},
+    store711: {},
   })
   console.log(detailData, 'detailData')
 
@@ -35,11 +34,16 @@ const ShopCheckout = () => {
     const filledOutDetail = getParsedData(
       localStorage.getItem('fillOutDetails')
     )
+    //7-11
+    const store711Detail = getParsedData(localStorage.getItem('store711'))
+    console.log(store711Detail)
+
     const normalizedProductList = Object.values(productList)
     console.log('productList', productList)
     return {
       products: normalizedProductList,
       detail: filledOutDetail,
+      store711: store711Detail,
     }
   }
   const router = useRouter()
@@ -81,6 +85,7 @@ const ShopCheckout = () => {
           body: JSON.stringify({
             products: detailData.products,
             detail: detailData.detail,
+            store711: detailData.store711,
             subtotal: subtotal,
             totalAmount: totalAmount,
             orderStatus: '處理中',
@@ -95,9 +100,11 @@ const ShopCheckout = () => {
         // 訂單成功後清空 localStorage 和本地狀態
         localStorage.removeItem('cartItems')
         localStorage.removeItem('fillOutDetails')
+        localStorage.removeItem('store711')
         setDetailData({
           products: [],
           detail: {},
+          store711: {},
         })
         clearCart()
       } else {
@@ -260,30 +267,36 @@ const ShopCheckout = () => {
               </TableCell>
             </TableRow>
             <TableRow key="2">
-              <TableCell className="pr-8 text-nowrap">配送地址</TableCell>
-              <TableCell className="w-full text-right line-clamp-1">
-                7-ELEVEN 門市
+              <TableCell className="pr-8 text-nowrap">配送門市</TableCell>
+              <TableCell className="w-full text-right">
+                {detailData.store711.storename}
               </TableCell>
             </TableRow>
             <TableRow key="3">
+              <TableCell className="pr-8 text-nowrap">配送地址</TableCell>
+              <TableCell className="w-full text-right line-clamp-1">
+                {detailData.store711.storeaddress}
+              </TableCell>
+            </TableRow>
+            <TableRow key="4">
               <TableCell className="pr-8 text-nowrap">收件人</TableCell>
               <TableCell className="w-full text-right">
                 {detailData.detail.recipientName}
               </TableCell>
             </TableRow>
-            <TableRow key="4">
+            <TableRow key="5">
               <TableCell className="pr-8 text-nowrap">連絡電話</TableCell>
               <TableCell className="w-full text-right">
                 {detailData.detail.recipientNumber}
               </TableCell>
             </TableRow>
-            <TableRow key="5">
+            <TableRow key="6">
               <TableCell className="pr-8 text-nowrap">付款方式</TableCell>
               <TableCell className="w-full text-right">
                 {detailData.detail.paymentMethod}
               </TableCell>
             </TableRow>
-            <TableRow key="6">
+            <TableRow key="7">
               <TableCell className="pr-8 text-nowrap">發票</TableCell>
               <TableCell className="w-full text-right">
                 {detailData.detail.invoiceOption}
