@@ -76,8 +76,11 @@ export default function Login() {
     console.log(data)
 
     if (data.status === 'success') {
+      const user = parseJwt(data.data.accessToken)
+      console.log(user)
+      // {id: 21, username: null, google_uid: '118425329663792098351', iat: 1714920906, exp: 1715180106}
       // 設定全域的context會員登入
-      login()
+      login(user)
       // 出現登入成功對話訊息盒
       notify('成功登入')
       // 導向到會員個人資料頁
@@ -97,8 +100,15 @@ export default function Login() {
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible((prev) => !prev)
 
+  // 一般登入
   // 帳號密碼
   const [user, setUser] = useState({
+    username: '',
+    password: '',
+  })
+
+  // 錯誤訊息
+  const [errors, setErrors] = useState({
     username: '',
     password: '',
   })
@@ -106,7 +116,13 @@ export default function Login() {
   // 輸入帳號密碼
   const handleFieldChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value })
+
+    // 清除錯誤訊息
+    setErrors({ ...errors, [e.target.name]: '' })
   }
+
+  // 驗證信箱格式-表達式
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   // 表單送出
   const handleSubmit = async (e) => {
@@ -114,6 +130,18 @@ export default function Login() {
     e.preventDefault()
     // 確認是否有抓到 user
     console.log(user)
+
+    // 驗證帳號格式
+    if (!emailRegex.test(user.username)) {
+      setErrors({ ...errors, username: '請輸入有效的信箱格式' })
+      return // 中止表單送出
+    }
+
+    // 驗證密碼格式
+    if (user.password.length < 5) {
+      setErrors({ ...errors, password: '請輸入有效的密碼' })
+      return // 中止表單送出
+    }
 
     // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
     const res = await fetch('http://localhost:3005/api/share-members/login', {
@@ -192,42 +220,57 @@ export default function Login() {
                   className="flex flex-col space-y-12 w-full "
                   onSubmit={handleSubmit}
                 >
-                  <Input
-                    // input 要設定name
-                    name="username"
-                    label="帳號"
-                    labelPlacement="outside"
-                    placeholder="請輸入您的信箱"
-                    type="text"
-                    value={user.username}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                  />
-                  <Input
-                    name="password"
-                    type={isVisible ? 'text' : 'password'}
-                    label="密碼"
-                    labelPlacement="outside"
-                    placeholder="請輸入密碼"
-                    value={user.password}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                    endContent={
-                      <button
-                        className="focus:outline-none"
-                        type="button"
-                        onClick={toggleVisibility}
-                      >
-                        {isVisible ? (
-                          <PiEye className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <PiEyeClosed className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
-                    }
-                  />
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="username"
+                      label="帳號"
+                      labelPlacement="outside"
+                      placeholder="請輸入您的信箱"
+                      type="text"
+                      value={user.username}
+                      onChange={handleFieldChange}
+                      isRequired
+                      className={{ ...inputStyles }}
+                    />
+                    {errors.username && (
+                      <span className="text-xs text-red-500 pl-2">
+                        {errors.username}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <Input
+                      name="password"
+                      label="密碼"
+                      labelPlacement="outside"
+                      placeholder="請輸入密碼"
+                      type={isVisible ? 'text' : 'password'}
+                      value={user.password}
+                      onChange={handleFieldChange}
+                      isRequired
+                      className={{ ...inputStyles }}
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={toggleVisibility}
+                        >
+                          {isVisible ? (
+                            <PiEye className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <PiEyeClosed className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </button>
+                      }
+                    />
+                    {errors.password && (
+                      <span className="text-xs text-red-500 pl-2">
+                        {errors.password}
+                      </span>
+                    )}
+                  </div>
+
                   <MyButton className="bg-primary-100 text-white" type="submit">
                     登入
                   </MyButton>

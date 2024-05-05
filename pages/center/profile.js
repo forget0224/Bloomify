@@ -31,9 +31,14 @@ export default function Profile() {
   const [activePage, setActivePage] = useState('profile')
 
   const { auth, userInfo, setUserInfo } = useAuth()
+
   const [userProfile, setUserProfile] = useState(initUserProfile)
 
-  const [selectedFile, setSelectedFile] = useState(null)
+  // 錯誤訊息
+  const [errors, setErrors] = useState({
+    name: '',
+    phone: '',
+  })
 
   //  SweetAlert2 彈窗
   const MySwal = withReactContent(Swal)
@@ -115,6 +120,9 @@ export default function Profile() {
   // 輸入一般資料用
   const handleFieldChange = (e) => {
     setUserProfile({ ...userProfile, [e.target.name]: e.target.value })
+
+    // 清除錯誤訊息
+    setErrors({ ...errors, [e.target.name]: '' })
   }
 
   // 大頭貼更換
@@ -142,7 +150,10 @@ export default function Profile() {
     if (data.status === 'success') {
       // 更新 userProfile 中的 avatar 屬性為新上傳的圖片檔名
       // setAvatar(data.data.avatar)
+      notify1('編輯成功')
       setUserInfo({ ...userInfo, avatar: data.data.avatar })
+    } else {
+      notify2('沒有更改')
     }
   }
 
@@ -151,12 +162,17 @@ export default function Profile() {
     // 阻擋表單預設送出行為
     e.preventDefault()
 
-    // 這裡可以作表單驗証
+    // 驗證手機號碼
+    const phoneRegex = /^09\d{8}$/
+    if (!phoneRegex.test(userProfile.phone)) {
+      setErrors({
+        ...errors,
+        phone: '請輸入正確的手機號碼格式 09xxxxxxxx',
+      })
+      return // 中止表單送出
+    }
 
     // 送到伺服器進行更新
-    // 更新會員資料用，排除avatar
-    let isUpdated = false
-
     // 將 userProfile 物件中的 avatar 屬性解構賦值給 avatar 變數，並將其餘的屬性解構賦值給 user 物件。
     const { ...user } = userProfile
     const res = await fetch(
@@ -254,46 +270,58 @@ export default function Profile() {
                 </div>
                 {/* 表單 */}
                 <form
-                  className="flex flex-col space-y-16 
+                  className="flex flex-col space-y-12 
                    w-full"
                   onSubmit={handleSubmit}
                 >
-                  <Input
-                    // input 要設定name
-                    name="name"
-                    label="姓名"
-                    labelPlacement="outside"
-                    placeholder="姓名"
-                    type="text"
-                    value={userProfile.name}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                  />
-                  <Input
-                    // input 要設定name
-                    name="username"
-                    label="帳號"
-                    labelPlacement="outside"
-                    placeholder="帳號"
-                    type="text"
-                    value={userProfile.username}
-                    // onChange={handleFieldChange}
-                    disabled
-                    className={{ ...inputStyles }}
-                  />
-                  <Input
-                    // input 要設定name
-                    name="phone"
-                    label="手機"
-                    labelPlacement="outside"
-                    placeholder="手機號碼"
-                    type="text"
-                    value={userProfile.phone}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                  />
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="name"
+                      label="姓名"
+                      labelPlacement="outside"
+                      placeholder="姓名"
+                      type="text"
+                      value={userProfile.name}
+                      onChange={handleFieldChange}
+                      isRequired
+                      className={{ ...inputStyles }}
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="username"
+                      label="帳號"
+                      labelPlacement="outside"
+                      placeholder="帳號"
+                      type="text"
+                      value={userProfile.username}
+                      // onChange={handleFieldChange}
+                      disabled
+                      className={{ ...inputStyles }}
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="phone"
+                      label="手機"
+                      labelPlacement="outside"
+                      placeholder="手機號碼"
+                      type="text"
+                      value={userProfile.phone}
+                      onChange={handleFieldChange}
+                      isRequired
+                      className={{ ...inputStyles }}
+                    />
+                    {errors.phone && (
+                      <span className="text-xs text-red-500 pl-2">
+                        {errors.phone}
+                      </span>
+                    )}
+                  </div>
+
                   <div className="flex gap-16">
                     <Input
                       // input 要設定name
@@ -305,6 +333,7 @@ export default function Profile() {
                       value={userProfile.city}
                       onChange={handleFieldChange}
                       isRequired
+                      maxLength={3} // 設置最大字元數為三個字
                       className={{ ...inputStyles }}
                     />
                     <Input
@@ -316,35 +345,40 @@ export default function Profile() {
                       type="text"
                       value={userProfile.district}
                       onChange={handleFieldChange}
+                      maxLength={3} // 設置最大字元數為三個字
                       isRequired
                       className={{ ...inputStyles }}
                     />
                   </div>
-
-                  <Input
-                    // input 要設定name
-                    name="address"
-                    label="街道名稱"
-                    labelPlacement="outside"
-                    placeholder="街道名稱"
-                    type="text"
-                    value={userProfile.address}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                  />
-                  <Input
-                    // input 要設定name
-                    name="join_date"
-                    label="加入日期"
-                    labelPlacement="outside"
-                    placeholder="日期"
-                    type="text"
-                    value={formatDate(userProfile.join_date)}
-                    // onChange={handleFieldChange}
-                    disabled
-                    className={{ ...inputStyles }}
-                  />
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="address"
+                      label="街道名稱"
+                      labelPlacement="outside"
+                      placeholder="街道名稱"
+                      type="text"
+                      value={userProfile.address}
+                      onChange={handleFieldChange}
+                      isRequired
+                      maxLength={50} // 設置最大字元數
+                      className={{ ...inputStyles }}
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="join_date"
+                      label="加入日期"
+                      labelPlacement="outside"
+                      placeholder="日期"
+                      type="text"
+                      value={formatDate(userProfile.join_date)}
+                      // onChange={handleFieldChange}
+                      disabled
+                      className={{ ...inputStyles }}
+                    />
+                  </div>
                   <div className="flex justify-center">
                     <Button
                       className="bg-secondary-100 text-black "
