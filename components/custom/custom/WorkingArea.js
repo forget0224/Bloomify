@@ -10,17 +10,51 @@ const WorkingArea = () => {
     setImagesInfo,
     addImageToCanvas,
     snapshotCanvas,
+    commitImageToCanvas,
+    tempObjectRef,
   } = useFlower()
 
   const [canvasReady, setCanvasReady] = useState(false)
   const { dispatch, state } = useFlowerCart()
+  // const updateImagesInfoOnCanvas = useCallback(
+  //   (obj) => {
+  //     const canvas = canvasRef.current.fabric
+
+  //     const centerX = canvas.width / 2
+  //     const centerY = canvas.height / 4
+  //     const existingIndex = imagesInfo.findIndex((info) => info.id === obj.id)
+  //     if (existingIndex !== -1) {
+  //       const updatedInfo = {
+  //         ...imagesInfo[existingIndex],
+  //         left: obj.left - centerX,
+  //         top: obj.top - centerY,
+  //         scaleX: obj.scaleX,
+  //         scaleY: obj.scaleY,
+  //         angle: obj.angle,
+  //       }
+  //       const newImagesInfo = [...imagesInfo]
+  //       newImagesInfo[existingIndex] = updatedInfo
+  //       setImagesInfo(newImagesInfo)
+  //     } else {
+  //       console.error(
+  //         'No matching ID found in imagesInfo, this should not happen during move.'
+  //       )
+  //     }
+  //   },
+  //   [imagesInfo, setImagesInfo, canvasRef]
+  // )
   const updateImagesInfoOnCanvas = useCallback(
     (obj) => {
-      const canvas = canvasRef.current.fabric
+      const canvas = canvasRef.current?.fabric
+      if (!canvas) {
+        console.error('Canvas is not initialized.')
+        return
+      }
 
       const centerX = canvas.width / 2
       const centerY = canvas.height / 4
       const existingIndex = imagesInfo.findIndex((info) => info.id === obj.id)
+
       if (existingIndex !== -1) {
         const updatedInfo = {
           ...imagesInfo[existingIndex],
@@ -35,13 +69,39 @@ const WorkingArea = () => {
         setImagesInfo(newImagesInfo)
       } else {
         console.error(
-          'No matching ID found in imagesInfo, this should not happen during move.'
+          `No matching ID found in imagesInfo for ID ${obj.id}. This should not happen during move.`
         )
       }
     },
     [imagesInfo, setImagesInfo, canvasRef]
   )
 
+  useEffect(() => {
+    if (
+      state.products &&
+      state.products.length > 0 &&
+      imagesInfo.length === 0
+    ) {
+      const productPayload = state.products.map((product) => ({
+        id: `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+        product_id: product.product_id,
+        name: product.product_name,
+        product_price: product.product_price,
+        url: product.image_url,
+        color: product.color,
+        left: product.left || 0,
+        top: product.top || 0,
+        zIndex: product.zIndex || 0,
+        angle: product.angle || 0,
+      }))
+
+      setImagesInfo(productPayload)
+
+      dispatch({
+        type: 'CLEAR_PRODUCTS',
+      })
+    }
+  }, [])
   fabric.Object.prototype.shouldDrawControls = function () {
     return this.hasControls && !this.group
   }
@@ -50,19 +110,13 @@ const WorkingArea = () => {
       scaleY = this.scaleY,
       width = this.width * scaleX,
       height = this.height * scaleY
-
     ctx.save()
-
     ctx.strokeStyle = '#FF7C7C'
-
     ctx.lineWidth = 1 / this.borderScaleFactor
     ctx.setLineDash(this.borderDashArray || [5, 5])
-
     ctx.translate(this.left, this.top)
     ctx.rotate((this.angle * Math.PI) / 180)
-
     ctx.strokeRect(-width / 2, -height / 2, width, height)
-
     ctx.restore()
   }
 
@@ -119,6 +173,9 @@ const WorkingArea = () => {
           top: img.top + centerY,
         })
       })
+      if (tempObjectRef.current) {
+        commitImageToCanvas(tempObjectRef.current)
+      }
     }
 
     canvas.on('object:modified', (e) => updateImagesInfoOnCanvas(e.target))
@@ -140,16 +197,16 @@ const WorkingArea = () => {
       canvas.off('object:moving')
       canvas.off('after:render')
 
-      const urlWorkingArea = snapshotCanvas()
-      console.log('Canvas URL:', urlWorkingArea)
-      if (urlWorkingArea) {
-        dispatch({
-          type: 'SET_BOUQUET_INFO',
-          payload: {
-            image_url: urlWorkingArea,
-          },
-        })
-      }
+      // const urlWorkingArea = snapshotCanvas()
+
+      // if (urlWorkingArea) {
+      //   dispatch({
+      //     type: 'SET_BOUQUET_INFO',
+      //     payload: {
+      //       image_url: urlWorkingArea,
+      //     },
+      //   })
+      // }
     }
   }, [
     canvasRef,

@@ -39,6 +39,11 @@ function cartReducer(state, action) {
         ...state,
         products: [...state.products, ...action.payload],
       }
+    case 'CLEAR_PRODUCTS':
+      return {
+        ...state,
+        products: initialState.products,
+      }
     case 'SET_CARD':
       return {
         ...state,

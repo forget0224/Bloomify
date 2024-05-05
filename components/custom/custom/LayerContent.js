@@ -184,10 +184,13 @@ export default function LayerContent() {
     const centerX = canvas.width / 2
     const centerY = canvas.height / 4
     const newImageMetadata = {
+      product_category: img.product_category,
+      product_id: img.product_id,
+      product_price: img.product_price,
       url: img.url,
       name: img.name,
-      left: img.left + 10 - centerX,
-      top: img.top + 10 - centerY,
+      left: img.left + 10 + centerX,
+      top: img.top + 10 + centerY,
       scaleX: img.scaleX || 1,
       scaleY: img.scaleY || 1,
       angle: img.angle,
@@ -208,7 +211,7 @@ export default function LayerContent() {
     if (object) {
       canvas.setActiveObject(object)
       canvas.requestRenderAll()
-      setSelectedImageId(imageId) // 確保這裡設置了
+      setSelectedImageId(imageId)
     }
   }
 
@@ -242,7 +245,7 @@ export default function LayerContent() {
       }
     }
   }, [canvasRef, setSelectedImageId])
-  console.log(imagesInfo)
+
   return (
     <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center">
       <div className="text-tertiary-gray-100 w-60 text-center py-4">
@@ -264,9 +267,9 @@ export default function LayerContent() {
                   id={img.id}
                   src={img.url}
                   alt={img.name || 'Flower Image'}
-                  layout="fill"
-                  objectFit="contain"
+                  fill // 替代原本的 layout="fill"
                   style={{
+                    objectFit: 'contain', // 將 objectFit 移至 style 中
                     position: 'absolute',
                     left: `${img.left / 3.5}px`,
                     top: `${img.top / 3.5}px`,

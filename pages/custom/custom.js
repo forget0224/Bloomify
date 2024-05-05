@@ -14,7 +14,7 @@ import WorkingArea from '@/components/custom/custom/WorkingArea'
 import { ColorProvider } from '@/hooks/use-color'
 import { FlowerTypeProvider } from '@/hooks/use-flowerType'
 import { OccProvider } from '@/hooks/use-occ'
-import { FlowerProvider } from '@/hooks/use-flower'
+import { FlowerProvider, useFlower } from '@/hooks/use-flower'
 import { StoreProvider } from '@/hooks/use-store'
 import CustomNav from '@/components/custom/custom/customNav'
 import GreetingCard from '@/components/custom/custom/GreetingCard'
@@ -30,6 +30,7 @@ import FlowerContent from '@/components/custom/custom/FlowerContent'
 import LeafContent from '@/components/custom/custom/LeafContent'
 import PackageContent from '@/components/custom/custom/PackageContent'
 import GiftCardContent from '@/components/custom/custom/GiftCardContent'
+import { useFlowerCart } from '@/hooks/use-flowerCart'
 export default function Custom() {
   const [openedIndex, setOpenedIndex] = useState(null)
   const [currentPage, setCurrentPage] = useState('main')
@@ -47,8 +48,50 @@ export default function Custom() {
     { component: PackageComponent, name: 'package' },
     { component: CardComponent, name: 'card' },
   ]
-  const [isModalOpen, setModalOpen] = useState(true)
+  const [isModalOpen, setModalOpen] = useState(false)
   const [selectedStore, setSelectedStore] = useState(null)
+
+  const { state, dispatch } = useFlowerCart()
+  const { setImagesInfo } = useFlower()
+  // useEffect(() => {
+  //   if (state.products && state.products.length > 0) {
+  //     const productPayload = state.products.map((product) => ({
+  //       product_id: product.product_id,
+  //       product_name: product.product_name,
+  //       product_price: product.product_price,
+  //       url: product.image_url,
+  //       color: product.color,
+  //       left: product.left ? product.left : 0,
+  //       top: product.top ? product.top : 0,
+  //       zIndex: product.zIndex ? product.zIndex : 0,
+  //       angle: product.angle ? product.angle : 0,
+  //     }))
+
+  //     setImagesInfo(productPayload)
+  //     dispatch({
+  //       type: 'ADD_PRODUCTS',
+  //       payload: [],
+  //     })
+  //   }
+  // }, [])
+  useEffect(() => {
+    if (state.store_id && state.store_name && state.store_address) {
+      setSelectedStore({
+        store_id: state.store_id,
+        store_name: state.store_name,
+        store_address: state.store_address,
+      })
+    } else {
+      setModalOpen(true)
+    }
+  }, [state.store_id])
+
+  useEffect(() => {
+    if (selectedStore && selectedStore.store_id) {
+      fetchStoreData(selectedStore.store_id)
+    }
+  }, [selectedStore])
+
   const handleConfirm = (store) => {
     setSelectedStore(store)
     setModalOpen(false)
@@ -66,6 +109,7 @@ export default function Custom() {
       }
     }
   }, [storeData, currentPage])
+
   useEffect(() => {
     if (storeData && storeData.items) {
       const newItems = [

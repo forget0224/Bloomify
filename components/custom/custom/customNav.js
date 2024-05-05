@@ -20,9 +20,18 @@ export default function CustomNav() {
     clearObjectsOnCanvas()
   }
   const { dispatch, state } = useFlowerCart()
-  console.log(state)
 
   const handleComplete = useCallback(() => {
+    const urlWorkingArea = snapshotCanvas()
+
+    if (urlWorkingArea) {
+      dispatch({
+        type: 'SET_BOUQUET_INFO',
+        payload: {
+          image_url: urlWorkingArea,
+        },
+      })
+    }
     dispatch({
       type: 'SET_CARD',
       payload: cardInfo,
@@ -32,20 +41,24 @@ export default function CustomNav() {
       type: 'SET_PACKAGE',
       payload: packageInfo,
     })
-    const productPayload = imagesInfo.map((img) => ({
-      left: img.left,
-      top: img.top,
-      scaleX: img.scaleX,
-      scaleY: img.scaleY,
-      angle: img.angle,
-      product_id: img.product_id,
-      product_category: img.product_category,
-      product_price: img.product_price,
-      url: img.url,
-      color: img.color,
-      name: img.name,
-      zIndex: img.zIndex,
-    }))
+
+    const productPayload = imagesInfo
+      .filter((img) => img.id)
+      .map((img) => ({
+        id: img.id,
+        left: img.left,
+        top: img.top,
+        scaleX: img.scaleX,
+        scaleY: img.scaleY,
+        angle: img.angle,
+        product_id: img.product_id,
+        product_category: img.product_category,
+        product_price: img.product_price,
+        image_url: img.url,
+        color: img.color,
+        name: img.name,
+        zIndex: img.zIndex,
+      }))
 
     dispatch({
       type: 'ADD_PRODUCTS',

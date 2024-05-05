@@ -136,9 +136,9 @@ export default function CustomCart() {
               >
                 <div className="flex-grow">
                   <div
-                    className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
+                    className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain bg-no-repeat"
                     style={{
-                      backgroundImage: `url(${item.url})`,
+                      backgroundImage: `url(${item.image_url})`,
                     }}
                   ></div>
                 </div>

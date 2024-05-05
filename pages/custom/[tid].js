@@ -9,21 +9,21 @@ import Link from 'next/link'
 import Loader from '@/components/common/loader'
 import { ColorProvider } from '@/hooks/use-color'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
+import { useFlower } from '@/hooks/use-flower'
 export default function Detail() {
   const [activePage, setActivePage] = useState('custom')
   const [isHeart, setIsHeart] = useState(true)
   const { close, open, isLoading } = useLoader()
+  const { dispatch, state } = useFlowerCart()
+  const { setImagesInfo } = useFlower()
+
   const handleHeartClick = () => {
     setIsHeart(!isHeart)
   }
-  // 1. 由router中可以獲得動態路由的pid
-  // router.query(物件)中包含pid屬性
-  // router.isReady(布林值)，true代表本頁面已完成水化合作用
   const router = useRouter()
-
   const [product, setProduct] = useState({
     template_id: '',
-    src: '',
+    image_url: '',
     template_name: '',
     store_name: '',
     store_id: 0,
@@ -31,40 +31,25 @@ export default function Detail() {
     template_occ: '',
     total_price: 0,
     discount: 0,
-    products: [
-      {
-        product_id: 0,
-        category_name: '',
-        color: '',
-        price: 0,
-        positions: [{ top: 0, left: 0, zIndex: 0, rotate: 0 }],
-      },
-    ],
+    color: '',
+    products: [],
   })
 
-  const getProductById = async (pid) => {
-    const url = `http://localhost:3005/api/custom/${pid}` // 確保此 URL 正確並能夠返回預期的數據結構
+  const getProductById = async (tid) => {
+    const url = `http://localhost:3005/api/custom/${tid}`
 
     try {
       const res = await fetch(url)
       if (!res.ok) {
         throw new Error(`Failed to fetch: ${res.status}`)
       }
-      const { status, data } = await res.json() // 使用解構賦值確保數據結構的對應
+      const data = await res.json() // 直接接收 JSON 数据
 
-      if (status === 'success' && data) {
-        // 進一步檢查 data 是否具有預期的結構
-        setProduct({
-          id: data.template_id,
-          image_url: data.image_url,
-          template_name: data.template_name,
-          store_name: data.store_name,
-          store_id: data.store_id,
-          store_address: data.store_address,
-          occ: data.template_occ,
-          total_price: data.total_price, // 計算總價
-          products: data.products, // 直接設定產品列表
-        })
+      if (data.status === 'success' && data.data) {
+        console.log(data.data) // 确认数据
+        setProduct(data.data) // 确保 data.data 是你需要的数据结构
+      } else {
+        console.error('Fetch status not success:', data.message)
       }
       close(3)
     } catch (e) {
@@ -72,23 +57,34 @@ export default function Detail() {
     }
   }
 
-  // 2. 在useEffet中監聽isReady值為true時，才能得到網址上的pid和伺服器獲取資料  不這樣監聽會得不到router.query
   useEffect(() => {
     if (router.isReady) {
-      //確保能得到pid
       const { tid } = router.query
-      console.log(tid)
-      // 有pid後，向伺服器要求資料
       getProductById(tid)
     }
   }, [router.isReady])
 
-  console.log(product)
-  const { dispatch } = useFlowerCart()
   const handleCustom = () => {
-    router.push('/custom/custom')
-  }
-  const handleAddToCart = () => {
+    const currentProducts = state.products // 從 Redux 或 Context 獲取當前的產品狀態
+    const newProducts = product.products.map((prod) => ({
+      product_id: prod.product_id,
+      product_name: prod.category_name,
+      product_price: prod.price,
+      image_url: prod.product_url,
+      color: prod.color,
+      top: prod.top,
+      left: prod.left,
+      zIndex: prod.zIndex,
+      angle: prod.rotate,
+    }))
+
+    if (JSON.stringify(currentProducts) !== JSON.stringify(newProducts)) {
+      dispatch({
+        type: 'ADD_PRODUCTS',
+        payload: newProducts,
+      })
+    }
+
     dispatch({
       type: 'SET_BOUQUET_INFO',
       payload: {
@@ -100,22 +96,41 @@ export default function Detail() {
       },
     })
 
-    if (product.products && product.products.length > 0) {
-      const productPayload = product.products.map((product) => ({
-        product_id: product.product_id,
-        product_name: product.category_name,
-        product_price: product.price,
-        image_url: product.product_url,
-        color: product.color,
-      }))
+    router.push('/custom/custom')
+  }
 
-      dispatch({
-        type: 'ADD_PRODUCTS',
-        payload: productPayload,
-      })
-    }
+  const handleAddToCart = () => {
+    dispatch({
+      type: 'SET_BOUQUET_INFO',
+      payload: {
+        template_name: product?.template_name,
+        image_url: product?.image_url,
+        store_id: product?.store_id,
+        store_name: product?.store_name,
+        store_address: product?.store_address,
+      },
+    })
 
-    console.log('Added to cart:', product.template_name)
+    const newProducts = product.products.map((prod) => ({
+      product_id: prod.product_id,
+      name: prod.category_name,
+      product_price: prod.price,
+      image_url: prod.product_url,
+      color: prod.color,
+      top: prod.top,
+      left: prod.left,
+      zIndex: prod.zIndex,
+      angle: prod.rotate,
+    }))
+
+    dispatch({
+      type: 'CLEAR_PRODUCTS',
+    })
+    dispatch({
+      type: 'ADD_PRODUCTS',
+      payload: newProducts,
+    })
+
     router.push('/cart?source=flower')
   }
 
@@ -131,7 +146,7 @@ export default function Detail() {
             <div
               className=" w-[300px] h-[300px] sm:w-[500px]  relative my-5 sm:h-[500px]"
               style={{
-                backgroundImage: `url('${product.image_url}')`,
+                backgroundImage: `url('${product?.image_url}')`,
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center center',
                 backgroundSize: 'contain',
@@ -146,7 +161,7 @@ export default function Detail() {
               {/* 分類花束 */}
               <div className="flex flex-col px-5 py-6 gap-1">
                 <div className="flex flex-row justify-between">
-                  <p className="text-xs">{product.occ}</p>
+                  <p className="text-xs">{product?.occ}</p>
                   <div className="sm:hidden" onClick={handleHeartClick}>
                     {isHeart ? (
                       <IoIosHeartEmpty className="text-danger text-xl " />
@@ -156,11 +171,11 @@ export default function Detail() {
                   </div>
                 </div>
 
-                <h1 className="sm:text-3xl">{product.template_name}</h1>
+                <h1 className="sm:text-3xl">{product?.template_name}</h1>
                 <p className="text-tertiary-gray-100 text-xs">
-                  {product.store_name}
+                  {product?.store_name}
                 </p>
-                <p className="text-right sm:hidden">${product.total_price}</p>
+                <p className="text-right sm:hidden">${product?.total_price}</p>
               </div>
               {/* 詳細資訊 */}
               <div className="w-[300px] text-sm h-full sm:h-auto flex-col gap-3 py-6 hidden sm:flex sm:w-full">
@@ -169,7 +184,7 @@ export default function Detail() {
                   <p className="">如當日花材不足會以相似款替代</p>
                 </div>
                 <div className="flex flex-col justify-center px-5 gap-2">
-                  {product.products.map((item, index) => (
+                  {product?.products.map((item, index) => (
                     <div
                       key={index}
                       className="flex flex-row justify-between items-center flex-grow"
@@ -177,9 +192,7 @@ export default function Detail() {
                       <p className="flex-grow">{item.category_name}</p>
                       <p className="flex-grow">{item.color}</p>
                       <p className="w-6 text-center flex-grow">${item.price}</p>
-                      <p className="flex-grow">
-                        x{item.positions ? item.positions.length : 0}
-                      </p>
+                      <p className="flex-grow">x{item ? item.length : 0}</p>
                     </div>
                   ))}
                 </div>
@@ -187,7 +200,7 @@ export default function Detail() {
 
               <hr className="w-full hidden sm:block" />
               <div className="px-5 py-6 hidden sm:block">
-                <p className="text-right text-3xl">${product.total_price}</p>
+                <p className="text-right text-3xl">${product?.total_price}</p>
               </div>
               {/* 按鈕 */}
               <div className="flex flex-row sm:w-full  w-[300px]  gap-6  justify-around items-center sm:px-5 ">
@@ -230,7 +243,7 @@ export default function Detail() {
               <p className="">如當日花材不足會以相似款替代</p>
             </div>
             <div className="flex flex-col justify-center px-5 gap-2">
-              {product.products.map((item, index) => (
+              {product?.products.map((item, index) => (
                 <div
                   key={index}
                   className="flex flex-row justify-between items-center flex-grow"

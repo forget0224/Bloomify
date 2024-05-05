@@ -15,7 +15,25 @@ export const useFlower = () => useContext(FlowerContext)
 export const FlowerProvider = ({ children }) => {
   const canvasRef = useRef(null)
   const tempObjectRef = useRef(null)
+  // const [imagesInfo, setImagesInfo] = useState([
+  //   {
+  //     id: '',
+  //     product_id: '',
+  //     product_category: '',
+  //     product_price: 0,
+  //     url: '',
+  //     left: 0,
+  //     top: 0,
+  //     zIndex: 0,
+  //     angle: 0,
+  //     scaleX: 1,
+  //     scaleY: 1,
+  //     locked: false,
+  //     color: '',
+  //   },
+  // ])
   const [imagesInfo, setImagesInfo] = useState([])
+
   const [cardInfo, setCardInfo] = useState({
     product_id: '',
     content: '',
@@ -35,7 +53,7 @@ export const FlowerProvider = ({ children }) => {
   useEffect(() => {
     if (canvasRef.current && !canvasRef.current.fabric) {
       const fabricCanvas = new fabric.Canvas(canvasRef.current)
-      canvasRef.current.fabric = fabricCanvas // 存储fabric.Canvas实例
+      canvasRef.current.fabric = fabricCanvas
       setupCustomControls(fabricCanvas)
     }
   }, [])
@@ -200,13 +218,12 @@ export const FlowerProvider = ({ children }) => {
   // )
 
   const addImageToCanvas = useCallback(
-    (url, metadata) => {
+    (url, metadata, autoCommit = false) => {
       if (!canvasRef.current || !canvasRef.current.fabric) {
         console.error('Canvas is not initialized.')
         return
       }
 
-      // 如果当前已有预览对象，且将要加载的图像是新图像（无ID），则清除当前预览对象
       if (!metadata.id && tempObjectRef.current) {
         canvasRef.current.fabric.remove(tempObjectRef.current)
         tempObjectRef.current = null
@@ -221,12 +238,10 @@ export const FlowerProvider = ({ children }) => {
         const canvas = canvasRef.current.fabric
         const centerX = canvas.width / 2
         const centerY = canvas.height / 4
-
+        const newId = `img_${Date.now()}_${Math.random().toString(16).slice(2)}`
         img.set({
           ...metadata,
-          id:
-            metadata.id ||
-            `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+          id: metadata.id || newId,
           product_id: metadata.product_id,
           product_category: metadata.product_category,
           product_price: metadata.product_price,
@@ -249,9 +264,11 @@ export const FlowerProvider = ({ children }) => {
         canvas.setActiveObject(img)
         canvas.renderAll()
 
-        // 如果这是一个新图像（没有ID），则设置为当前预览对象
         if (!metadata.id) {
           tempObjectRef.current = img
+        }
+        if (autoCommit) {
+          commitImageToCanvas(img)
         }
       })
     },

@@ -243,12 +243,6 @@ export default function FillOut() {
     route.push(`/cart/checkout?source=${source}`)
   }
 
-  useEffect(() => {
-    fetchInvoices()
-    fetchShippings()
-    fetchPayments()
-  }, [])
-
   // 獲取後端配送選項
   const fetchShippings = async () => {
     try {
@@ -293,7 +287,11 @@ export default function FillOut() {
       console.error('Error fetching invoice data:', error)
     }
   }
-
+  useEffect(() => {
+    fetchInvoices()
+    fetchShippings()
+    fetchPayments()
+  }, [])
   // 點選相對應的運送方式會顯示的東西
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState('')
   const handleSelectDeliveryChange = (event) => {

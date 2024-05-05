@@ -21,7 +21,7 @@ import { useAuth } from '@/hooks/use-auth'
 export default function CustomCheckOut() {
   const [activePage, setActivePage] = useState('cart')
   const [orderId, setOrderId] = useState('')
-  const { state } = useFlowerCart()
+  const { state, dispatch } = useFlowerCart()
   const [responseMessage, setResponseMessage] = useState('')
   const route = useRouter()
   const { auth } = useAuth()
@@ -117,7 +117,9 @@ export default function CustomCheckOut() {
           body: JSON.stringify(orderData),
         }
       )
-
+      dispatch({ type: 'CLEAR_PACKAGE' })
+      dispatch({ type: 'CLEAR_CARD' })
+      dispatch({ type: 'CLEAR_PRODUCTS_AND_BOUQUET' })
       const data = await response.json()
 
       if (response.ok && data.status == 'success') {
