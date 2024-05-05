@@ -29,6 +29,15 @@ export default function Register() {
     password: '',
   })
 
+  // 錯誤訊息
+  const [errors, setErrors] = useState({
+    username: '',
+    password: '',
+  })
+
+  // 驗證信箱格式-表達式
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
   // 網址
   const router = useRouter()
 
@@ -53,6 +62,9 @@ export default function Register() {
   // 輸入帳號密碼
   const handleFieldChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value })
+
+    // 清除錯誤訊息
+    setErrors({ ...errors, [e.target.name]: '' })
   }
 
   // 表單送出
@@ -61,6 +73,18 @@ export default function Register() {
     e.preventDefault()
     // 確認是否有抓到 user
     console.log(user)
+
+    // 驗證帳號格式
+    if (!emailRegex.test(user.username)) {
+      setErrors({ ...errors, username: '請輸入有效的信箱格式' })
+      return // 中止表單送出
+    }
+
+    // 驗證密碼格式
+    if (user.password.length < 5) {
+      setErrors({ ...errors, password: '請輸入5位數以上的密碼' })
+      return // 中止表單送出
+    }
 
     // 最後檢查完全沒問題才送到伺服器(ajax/fetch)
     const res = await fetch(
@@ -109,42 +133,57 @@ export default function Register() {
                   className="flex flex-col space-y-14 w-full mt-2"
                   onSubmit={handleSubmit}
                 >
-                  <Input
-                    // input 要設定name
-                    name="username"
-                    label="帳號"
-                    labelPlacement="outside"
-                    placeholder="請輸入您的信箱"
-                    type="text"
-                    value={user.username}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                  />
-                  <Input
-                    name="password"
-                    type={isVisible ? 'text' : 'password'}
-                    label="密碼"
-                    labelPlacement="outside"
-                    placeholder="請輸入密碼"
-                    value={user.password}
-                    onChange={handleFieldChange}
-                    isRequired
-                    className={{ ...inputStyles }}
-                    endContent={
-                      <button
-                        className="focus:outline-none"
-                        type="button"
-                        onClick={toggleVisibility}
-                      >
-                        {isVisible ? (
-                          <PiEye className="text-2xl text-default-400 pointer-events-none" />
-                        ) : (
-                          <PiEyeClosed className="text-2xl text-default-400 pointer-events-none" />
-                        )}
-                      </button>
-                    }
-                  />
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="username"
+                      label="帳號"
+                      labelPlacement="outside"
+                      placeholder="請輸入您的信箱"
+                      type="text"
+                      value={user.username}
+                      onChange={handleFieldChange}
+                      // isRequired
+                      className={{ ...inputStyles }}
+                    />
+                    {errors.username && (
+                      <span className="text-xs text-red-500 pl-2">
+                        {errors.username}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <Input
+                      name="password"
+                      type={isVisible ? 'text' : 'password'}
+                      label="密碼"
+                      labelPlacement="outside"
+                      placeholder="請輸入密碼"
+                      value={user.password}
+                      onChange={handleFieldChange}
+                      isRequired
+                      className={{ ...inputStyles }}
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={toggleVisibility}
+                        >
+                          {isVisible ? (
+                            <PiEye className="text-2xl text-default-400 pointer-events-none" />
+                          ) : (
+                            <PiEyeClosed className="text-2xl text-default-400 pointer-events-none" />
+                          )}
+                        </button>
+                      }
+                    />
+                    {errors.password && (
+                      <span className="text-xs text-red-500 pl-2">
+                        {errors.password}
+                      </span>
+                    )}
+                  </div>
+
                   {/* <Input
                     // startContent={<CiMail className="text-default-400" />}
                     labelPlacement="outside"
