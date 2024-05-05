@@ -20,12 +20,18 @@ export const FlowerProvider = ({ children }) => {
     product_id: '',
     content: '',
     card_url: '',
+    product_price: 0,
   })
   const [packageInfo, setPackageInfo] = useState({
     product_id: '',
     package_name: '',
     package_url: '',
+    product_price: 0,
+    product_category: '',
   })
+
+  const [previewStyle, setPreviewStyle] = useState(null)
+  const [confirmedStyle, setConfirmedStyle] = useState(null)
   useEffect(() => {
     if (canvasRef.current && !canvasRef.current.fabric) {
       const fabricCanvas = new fabric.Canvas(canvasRef.current)
@@ -353,6 +359,10 @@ export const FlowerProvider = ({ children }) => {
 
   const snapshotCanvas = useCallback(() => {
     let canvas = canvasRef.current?.fabric
+    if (canvas) {
+      canvas.discardActiveObject()
+      canvas.renderAll()
+    }
     return canvas ? canvas.toDataURL({ format: 'png', quality: 0.8 }) : null
   }, [])
 
@@ -385,6 +395,10 @@ export const FlowerProvider = ({ children }) => {
         setCardInfo,
         packageInfo,
         setPackageInfo,
+        previewStyle,
+        setPreviewStyle,
+        confirmedStyle,
+        setConfirmedStyle,
       }}
     >
       {children}

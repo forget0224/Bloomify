@@ -18,7 +18,7 @@ import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
 import { DateFormatter } from '@internationalized/date'
-import CustomFillOut from '@/components/custom/CustomFillOut'
+import CustomFillOut from '@/components/custom/cart/CustomFillOut'
 import ShopFillOut from '@/components/shop/shop-fillout'
 
 export default function FillOut() {

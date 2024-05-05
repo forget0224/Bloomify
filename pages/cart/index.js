@@ -6,7 +6,7 @@ import { Tabs, Tab } from '@nextui-org/react'
 import { Stepper } from 'react-dynamic-stepper'
 import ShopCart from '@/components/shop/shop-cart'
 import CourseCart from '@/components/course/page-cart'
-import CustomCart from '@/components/custom/CustomCart'
+import CustomCart from '@/components/custom/cart/CustomCart'
 
 export default function Cart() {
   const [activePage, setActivePage] = useState('cart')

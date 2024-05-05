@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import ShopPaymentSuccess from '@/components/shop/shop-payment-success'
 import CoursePaymentSuccess from '@/components/course/page-payment-success'
+import CustomPaymentSuccess from '@/components/custom/cart/CustomPaymentSuccess'
 // import {
 //   Table,
 //   TableHeader,
@@ -59,7 +60,7 @@ export default function PaymentSuccessed() {
               </p>
             </div>
             {/* 訂單明細 */}
-            {source === 'flower'}
+            {source === 'flower' && <CustomPaymentSuccess />}
             {source === 'shop' && <ShopPaymentSuccess />}
             {source === 'course' && <CoursePaymentSuccess />}
 
