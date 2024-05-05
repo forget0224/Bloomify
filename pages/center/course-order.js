@@ -12,31 +12,45 @@ import CourseSearch from '@/components/course/search'
 import CourseOrder from '@/components/course/div-orders'
 
 export default function CenterCourse() {
-  const [orders, setOrders] = useState([
-    {
-      id: '',
-      order_number: '',
-      payment_amount: '0',
-      discount: '0',
-      total_cost: '0',
-      order_status: { name: '加載中' },
-      payment_status: { name: '加載中' },
-      payment: { name: '加載中' },
-      created_at: '',
-      items: [
-        {
-          id: '',
-          course: {
-            name: '加載中',
-            price: '0',
-          },
-          period: '加載中',
-        },
-      ],
-    },
-  ])
+  const [orders, setOrders] = useState([])
   const [unpaidOrders, setUnpaidOrders] = useState([])
   const [paidOrders, setPaidOrders] = useState([])
+
+  // 分頁 --------------------------------------------------------------
+  const [activeTab, setActiveTab] = useState('all') // 管理目前選擇的Tab
+  const [currentPage, setCurrentPage] = useState(1)
+  const ordersPerPage = 5 // 每頁顯示的訂單卡片數量
+  const [totalPages, setTotalPages] = useState(1) // 總頁數
+
+  // 切換Tab時重置目前頁面
+  const handleTabChange = (tabName) => {
+    setActiveTab(tabName)
+    setCurrentPage(1)
+  }
+
+  // 根據目前選擇的Tab計算目前數據源
+  const currentData =
+    activeTab === 'all'
+      ? orders
+      : activeTab === 'unpaid'
+      ? unpaidOrders
+      : paidOrders
+
+  // 根據當前數據源計算總頁數
+  useEffect(() => {
+    const totalPagesCount = Math.ceil(currentData.length / ordersPerPage)
+    setTotalPages(totalPagesCount)
+  }, [currentData, ordersPerPage])
+
+  // 計算當前頁面的數據
+  const indexOfLastOrder = currentPage * ordersPerPage
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage
+  const currentOrders = currentData.slice(indexOfFirstOrder, indexOfLastOrder)
+
+  // 處理頁面變更的函數
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+  }
 
   useEffect(() => {
     async function fetchAllOrders() {
@@ -77,17 +91,9 @@ export default function CenterCourse() {
     )
     setUnpaidOrders(unpaidOrders)
     setPaidOrders(paidOrders)
-    console.log('unpaidOrders:', unpaidOrders)
-    console.log('paidOrders:', paidOrders)
+    // console.log('unpaidOrders:', unpaidOrders)
+    // console.log('paidOrders:', paidOrders)
   }, [orders])
-
-  //外層手風琴樣式
-  const accordionStyle = {
-    base: ['p-0', 'text-tertiary-black', 'p-4'], // 訂單明細
-    content: ['p-0'], // 商品列表
-    title: ['text-tertiary-black'],
-    trigger: ['px-0', 'py-1'],
-  }
 
   const [activePage, setActivePage] = useState('course')
 
@@ -117,8 +123,10 @@ export default function CenterCourse() {
                 <Tabs
                   radius={'full'}
                   color={'primary'}
-                  aria-label="Tabs radius"
                   className="mt-4"
+                  aria-label="Order tabs"
+                  selectedKey={activeTab}
+                  onSelectionChange={handleTabChange}
                 >
                   {/* Tab1 - 全部訂單 */}
                   <Tab key="all" title="全部訂單">
@@ -130,7 +138,7 @@ export default function CenterCourse() {
                       </div>
                     </div>
                     {/* 訂單卡片 */}
-                    {orders.map((order) => (
+                    {currentOrders.map((order) => (
                       <CourseOrder key={order.id} order={order} />
                     ))}
                   </Tab>
@@ -145,7 +153,7 @@ export default function CenterCourse() {
                       </div>
                     </div>
                     {/* 訂單卡片 */}
-                    {unpaidOrders.map((order) => (
+                    {currentOrders.map((order) => (
                       <CourseOrder key={order.id} order={order} />
                     ))}
                   </Tab>
@@ -160,7 +168,7 @@ export default function CenterCourse() {
                       </div>
                     </div>
                     {/* 訂單卡片 */}
-                    {paidOrders.map((order) => (
+                    {currentOrders.map((order) => (
                       <CourseOrder key={order.id} order={order} />
                     ))}
                   </Tab>
@@ -170,9 +178,9 @@ export default function CenterCourse() {
               {/* pagination */}
               <div className="mt-4">
                 <CoursePagination
-                // current={currentPage}
-                // total={totalPages}
-                // onPageChange={handlePageChange}
+                  current={currentPage}
+                  total={totalPages}
+                  onPageChange={handlePageChange}
                 />
               </div>
             </div>
