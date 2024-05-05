@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import ShopPaymentSuccess from '@/components/shop/shop-payment-success'
 import CoursePaymentSuccess from '@/components/course/page-payment-success'
+import SuccessAnimation from '@/components/common/animation_success'
 // import {
 //   Table,
 //   TableHeader,
@@ -34,8 +35,9 @@ export default function PaymentSuccessed() {
           {/* 主要容器 */}
           <div className="bg-white container justify-center flex flex-col items-center columns-12 mb-10 px-5 md:px-0">
             {/* 成功圖示 */}
-            <div className="flex flex-col md:w-6/12 lg:w-4/12 items-center my-10">
-              <svg
+            <div className="flex flex-col md:w-6/12 lg:w-4/12 items-center my-10 ">
+              <SuccessAnimation />
+              {/* <svg
                 width="120"
                 height="120"
                 viewBox="0 0 120 120"
@@ -53,7 +55,7 @@ export default function PaymentSuccessed() {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-              </svg>
+              </svg> */}
               <p className="text-2xl font-medium mt-6">
                 付款成功，您的訂單已成立
               </p>
@@ -62,7 +64,6 @@ export default function PaymentSuccessed() {
             {source === 'flower'}
             {source === 'shop' && <ShopPaymentSuccess />}
             {source === 'course' && <CoursePaymentSuccess />}
-
             {/* <div className="w-full flex flex-col md:w-6/12 lg:w-4/12 items-center justify-center gap-4">
             <Subtitle text="訂單明細" className="w-full" />
               <Table hideHeader classNames={tableStyles}>

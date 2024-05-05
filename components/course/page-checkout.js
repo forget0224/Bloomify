@@ -80,12 +80,14 @@ export default function CourseCheckOut() {
       )
 
       if (response.ok) {
-        // 檢查響應狀態
         const data = await response.json() // 解析JSON數據
         console.log(data)
         toast.success('訂單提交成功！')
-        router.push('/cart/payment-successful?source=course')
-        clearCart()
+        const orderNumber = data.data.order_number
+        router.push(
+          `/cart/payment-successful?source=course&orderNumber=${orderNumber}`
+        ) // 跳轉到訂單成功頁
+        clearCart() // 清除購物車
       } else {
         throw new Error('Network response was not ok.')
       }

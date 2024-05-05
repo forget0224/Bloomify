@@ -130,13 +130,15 @@ export default function CenterCourse() {
                           key={order.id}
                           className="shadow-none border-1 border-tertiary-gray-200"
                         >
-                          <Accordion itemClasses={accordionStyle}>
+                          <Accordion
+                            itemClasses={accordionStyle}
+                            key={order.order_number}
+                          >
                             <AccordionItem
-                              key={''}
-                              aria-label={'Accordion 1'}
+                              aria-label={'AccordionItem'}
                               title={
                                 <>
-                                  <div className="flex flex-row gap-2 items-center text-nowrap">
+                                  <div className="flex flex-col md:flex-row gap-2 items-left text-nowrap">
                                     訂單號碼
                                     <span className="text-primary-100">
                                       #{shortenUUID(order.order_number)}
@@ -179,7 +181,7 @@ export default function CenterCourse() {
                                     </div>
                                     <div className="flex justify-between md:justify-start">
                                       訂單總價：
-                                      <span className="ml-1 text-primary-100">
+                                      <span className="ml-1 text-righttext-primary-100">
                                         NT${order.total_cost}
                                       </span>
                                     </div>
@@ -203,10 +205,10 @@ export default function CenterCourse() {
                                       </span>
                                     </div>
                                     <div className="flex justify-between md:justify-start">
-                                      購買日期：
-                                      <span className="ml-1">
+                                      訂單成立時間：
+                                      <span className="ml-1 text-right">
                                         {moment(order.created_at).format(
-                                          'YYYY/MM/DD'
+                                          'YYYY-MM-DD HH:mm:ss'
                                         )}
                                       </span>
                                     </div>

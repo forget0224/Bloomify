@@ -166,7 +166,9 @@ export default function MyCourse() {
                                       fill="#68A392"
                                     />
                                   </svg>
-                                  <span>{item.course.name}</span>
+                                  <span className="line-clamp-1">
+                                    {item.course.name}
+                                  </span>
                                 </div>
                               }
                             >
