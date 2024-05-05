@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab, Card, CardBody } from '@nextui-org/react'
-import { Accordion, AccordionItem } from '@nextui-org/react'
-import { Pagination } from '@nextui-org/react'
+import CoursePagination from '@/components/course/pagination'
 import moment from 'moment'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
@@ -10,9 +9,9 @@ import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
 import CourseSearch from '@/components/course/search'
+import CourseOrder from '@/components/course/div-orders'
 
 export default function CenterCourse() {
-  // const [orders, setOrders] = useState([])
   const [orders, setOrders] = useState([
     {
       id: '',
@@ -36,6 +35,8 @@ export default function CenterCourse() {
       ],
     },
   ])
+  const [unpaidOrders, setUnpaidOrders] = useState([])
+  const [paidOrders, setPaidOrders] = useState([])
 
   useEffect(() => {
     async function fetchAllOrders() {
@@ -66,12 +67,19 @@ export default function CenterCourse() {
     fetchAllOrders()
   }, [])
 
-  // 縮短 UUID
-  function shortenUUID(uuid) {
-    const parts = uuid.split('-')
-    const shortUUID = parts.slice(0, 2).join('-')
-    return shortUUID
-  }
+  // 訂單狀態篩選
+  useEffect(() => {
+    const unpaidOrders = orders.filter(
+      (order) => order.payment_status.name === '未付款'
+    )
+    const paidOrders = orders.filter(
+      (order) => order.payment_status.name === '已付款'
+    )
+    setUnpaidOrders(unpaidOrders)
+    setPaidOrders(paidOrders)
+    console.log('unpaidOrders:', unpaidOrders)
+    console.log('paidOrders:', paidOrders)
+  }, [orders])
 
   //外層手風琴樣式
   const accordionStyle = {
@@ -107,7 +115,6 @@ export default function CenterCourse() {
               {/* 訂單Tab */}
               <div className="flex w-full flex-col">
                 <Tabs
-                  key={''}
                   radius={'full'}
                   color={'primary'}
                   aria-label="Tabs radius"
@@ -122,151 +129,52 @@ export default function CenterCourse() {
                         <CourseSearch />
                       </div>
                     </div>
-                    {/* 歷史訂單卡片 */}
-                    <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
-                      {/* 卡片包手風琴 */}
-                      {orders.map((order) => (
-                        <Card
-                          key={order.id}
-                          className="shadow-none border-1 border-tertiary-gray-200"
-                        >
-                          <Accordion
-                            itemClasses={accordionStyle}
-                            key={order.order_number}
-                          >
-                            <AccordionItem
-                              aria-label={'AccordionItem'}
-                              title={
-                                <>
-                                  <div className="flex flex-col md:flex-row gap-2 items-left text-nowrap">
-                                    訂單號碼
-                                    <span className="text-primary-100">
-                                      #{shortenUUID(order.order_number)}
-                                    </span>
-                                  </div>
-                                  <div className="pt-2">
-                                    {order.items.map((item) => (
-                                      <div
-                                        key={item.id}
-                                        className="flex flex-col md:flex-row text-base border-b-1 last:border-0 py-1"
-                                      >
-                                        <span className="md:w-[350px] truncate">
-                                          {item.course.name}/{item.period}期
-                                        </span>
-                                        <span className="md:w-[150px]">
-                                          {item.course.price}
-                                        </span>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </>
-                              }
-                            >
-                              {/* 手風琴內容 */}
-                              <div className="flex flex-col md:flex-row gap-4 items-center md:items-start">
-                                {/* 新表格 */}
-                                <div className="flex flex-col w-full gap-2">
-                                  <div className="flex flex-col border-1 border-tertiary-gray-200 rounded-lg p-4 mt-2">
-                                    <div className="flex justify-between md:justify-start">
-                                      訂單原價：
-                                      <span className="ml-1">
-                                        NT${order.payment_amount}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      折扣優惠：
-                                      <span className="ml-1">
-                                        NT${order.discount}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      訂單總價：
-                                      <span className="ml-1 text-righttext-primary-100">
-                                        NT${order.total_cost}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      訂單狀態：
-                                      <span className="ml-1">
-                                        {/* {order.order_status.name} */}
-                                        {order.order_status.name}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      付款狀態：
-                                      <span className="ml-1">
-                                        {order.payment_status.name}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      付款方式：
-                                      <span className="ml-1">
-                                        {order.payment.name}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between md:justify-start">
-                                      訂單成立時間：
-                                      <span className="ml-1 text-right">
-                                        {moment(order.created_at).format(
-                                          'YYYY-MM-DD HH:mm:ss'
-                                        )}
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </AccordionItem>
-                          </Accordion>
-                        </Card>
-                      ))}
-                    </div>
+                    {/* 訂單卡片 */}
+                    {orders.map((order) => (
+                      <CourseOrder key={order.id} order={order} />
+                    ))}
                   </Tab>
-                  {/* Tab2 - 未完成訂單 */}
-                  <Tab key="unfinished" title="未完成">
+
+                  {/* Tab2 - 待付款訂單 */}
+                  <Tab key="unpaid" title="待付款" className="flex flex-col">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />
                       </div>
                     </div>
-                    {/* 卡片 */}
-                    <div className="flex flex-col gap-4 mt-4 md:mt-0">
-                      <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                        <CardBody className="p-0">
-                          範例範例範例範例範例範例
-                        </CardBody>
-                      </Card>
-                    </div>
+                    {/* 訂單卡片 */}
+                    {unpaidOrders.map((order) => (
+                      <CourseOrder key={order.id} order={order} />
+                    ))}
                   </Tab>
-                  {/* Tab3 - 已完成訂單 */}
-                  <Tab key="finished" title="已完成">
+
+                  {/* Tab3 - 已付款訂單 */}
+                  <Tab key="paid" title="已付款">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />
                       </div>
                     </div>
-                    {/* 卡片 */}
-                    <div className="flex flex-col gap-4 mt-4 md:mt-0">
-                      <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
-                        <CardBody className="p-0">
-                          範例範例範例範例範例範例
-                        </CardBody>
-                      </Card>
-                    </div>
+                    {/* 訂單卡片 */}
+                    {paidOrders.map((order) => (
+                      <CourseOrder key={order.id} order={order} />
+                    ))}
                   </Tab>
                 </Tabs>
               </div>
 
               {/* pagination */}
-              <Pagination
-                color="secondary-100"
-                initialPage={3}
-                total={10}
-                className="flex justify-center mt-6"
-              />
+              <div className="mt-4">
+                <CoursePagination
+                // current={currentPage}
+                // total={totalPages}
+                // onPageChange={handlePageChange}
+                />
+              </div>
             </div>
           </div>
         </CenterLayout>
