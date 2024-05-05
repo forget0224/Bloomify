@@ -98,9 +98,10 @@ export default function CustomCheckOut() {
       recipient_address: contactStorage.deliveryAddress,
       total,
       payment_method: contactStorage.paymentMethod,
+      payment_status: 2,
       shipping_method: contactStorage.shippingMethod || 1, // 預設值為1
       shipping_status: contactStorage.shippingStatus || 1, // 預設值為1
-      order_status: contactStorage.orderStatus || 1, // 預設值為1
+      order_status: 1, // 預設值為1
       discount: contactStorage.discount || 0, // 預設值為0
     }
     console.log(orderData)

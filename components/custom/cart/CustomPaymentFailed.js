@@ -14,7 +14,7 @@ import Subtitle from '@/components/common/subtitle'
 import moment from 'moment'
 import { useRouter } from 'next/router'
 
-export default function CustomPaymentSuccess() {
+export default function CustomPaymentFailed() {
   const [activePage, setActivePage] = useState('cart')
   const [orderResult, setOrderResult] = useState(null)
   const route = useRouter()
@@ -26,7 +26,7 @@ export default function CustomPaymentSuccess() {
   const tableStyles = {
     base: ['text-tertiary-black'],
     th: ['text-base', 'text-tertiary-gray-100'],
-    td: ['text-base', 'px-5', 'py-3'],
+    td: ['text-base', 'px-3', 'py-3'],
     wrapper: [
       'text-base',
       'shadow-none',
@@ -104,7 +104,7 @@ export default function CustomPaymentSuccess() {
 
       <div className="container flex flex-wrap justify-center my-10 mx-4 sm:mx-6">
         <div className="flex gap-2 sm:gap-4 w-full sm:w-auto">
-          <Link href="/center/custom-order">
+          <Link href="/center/course-order">
             <MyButton
               color="primary"
               size="xl"
@@ -115,9 +115,9 @@ export default function CustomPaymentSuccess() {
             </MyButton>
           </Link>
 
-          <Link href="/custom/list">
+          <Link href="/course">
             <MyButton color="primary" size="xl" className="w-full sm:w-auto">
-              回客製首頁
+              回課程首頁
             </MyButton>
           </Link>
         </div>
