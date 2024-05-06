@@ -19,7 +19,6 @@ import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
 import { DateFormatter } from '@internationalized/date'
 import CustomFillOut from '@/components/custom/CustomFillOut'
-// import ShopFillOut from '@/components/shop/shop-fillout'
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store'
 
 export default function FillOut() {

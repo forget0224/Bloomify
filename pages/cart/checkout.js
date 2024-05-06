@@ -4,7 +4,8 @@ import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
-import ShopCheckOut from '@/components/shop/shop-checkout'
+import ShopCheckOut from '@/pages/shop/line-pay/order-confirm'
+// import ShopCheckOut from '@/components/shop/shop-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
 
 export default function Confirm() {

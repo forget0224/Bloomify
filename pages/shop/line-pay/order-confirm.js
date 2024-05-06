@@ -18,6 +18,7 @@ import { useRouter } from 'next/router'
 const ShopCheckout = () => {
   const { clearCart } = useCart()
 
+  // 這是資料來源
   const [detailData, setDetailData] = useState({
     products: [],
     detail: {},
@@ -36,7 +37,7 @@ const ShopCheckout = () => {
     )
     //7-11
     const store711Detail = getParsedData(localStorage.getItem('store711'))
-    console.log(store711Detail)
+    // console.log(store711Detail)
 
     const normalizedProductList = Object.values(productList)
     console.log('productList', productList)
@@ -102,16 +103,9 @@ const ShopCheckout = () => {
     } catch (error) {
       console.error('Failed to confirm order:', error)
     }
-    router.push('/cart/payment-successful?source=shop')
-    // 訂單成功後清空 購物車
-    // localStorage.removeItem('cartItems')
-    // localStorage.removeItem('fillOutDetails')
-    // localStorage.removeItem('store711')
-    // setDetailData({
-    //   products: [],
-    //   detail: {},
-    //   store711: {},
-    // })
+    router.push('/shop/line-pay/linepay-checkout')
+
+    // 訂單成功後清空 cart
     clearCart()
   }
 
@@ -307,7 +301,8 @@ const ShopCheckout = () => {
       {/* shipping & payment detail end*/}
       <div className="w-full flex justify-center">
         <Checkbox defaultSelected>
-          我同意辦理退貨時，由Bloomify代為處理發票及銷貨退回證明單，以加速退貨退款作業。
+          我同意辦理退貨時，由 Bloomify
+          代為處理發票及銷貨退回證明單，以加速退貨退款作業。
         </Checkbox>
       </div>
 
@@ -317,7 +312,7 @@ const ShopCheckout = () => {
         </MyButton>
 
         <MyButton color="primary" size="xl" onClick={confirmOrder}>
-          確認，進行付款
+          下一步
         </MyButton>
       </div>
     </div>
