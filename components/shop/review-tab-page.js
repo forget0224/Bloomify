@@ -46,7 +46,7 @@ const reviewTabPage = ({ reviews, renderStars }) => {
         <Pagination
           total={pageCount}
           initialPage={1}
-          currentPage={currentPage}
+          page={currentPage}
           onChange={handlePageChange}
         />
       </div>

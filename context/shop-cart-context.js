@@ -28,7 +28,7 @@ export const CartProvider = ({ children }) => {
 
   // 清空購物車
   const clearCart = () => {
-    setCartItems({}) // 清空购物车
+    setCartItems({})
   }
 
   // 商品數量增加
