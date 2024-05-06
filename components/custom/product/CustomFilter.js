@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Checkbox, CheckboxGroup } from '@nextui-org/react'
+import { Checkbox, CheckboxGroup, Skeleton } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import CustomCheckbox from '../common/CustomCheckbox'
 import { useColors } from '@/hooks/use-color'
@@ -32,8 +32,17 @@ export default function CustomFilter({ onFilterChange }) {
     setSelectedOccs([])
     setSelectedflowerType([])
     setSelectedColors([])
-    handleConfirm()
   }
+
+  useEffect(() => {
+    if (
+      selectedOccs.length === 0 &&
+      selectedflowerType.length === 0 &&
+      selectedColors.length === 0
+    ) {
+      setTimeout(handleConfirm, 10)
+    }
+  }, [selectedOccs, selectedflowerType, selectedColors])
 
   return (
     <>

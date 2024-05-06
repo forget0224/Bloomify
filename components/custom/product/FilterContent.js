@@ -40,8 +40,17 @@ export default function FilterContent({
     setSelectedOccs([])
     setSelectedflowerType([])
     setSelectedColors([])
-    handleConfirm()
   }
+
+  useEffect(() => {
+    if (
+      selectedOccs.length === 0 &&
+      selectedflowerType.length === 0 &&
+      selectedColors.length === 0
+    ) {
+      handleConfirm()
+    }
+  }, [selectedOccs, selectedflowerType, selectedColors])
   const handleColorChange = (updateFunction) => {
     setSelectedColors(updateFunction)
   }
