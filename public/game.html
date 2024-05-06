@@ -47,7 +47,7 @@
         height: 100%;
         padding: 0;
         margin: 0;
-        background-image: url('/assets/intro/vintage_speckles.png');
+        background-image: url('/assets/intro/bg_pattern.svg');
       }
 
       .game {
@@ -799,15 +799,16 @@
         background-color: #ff7c7c;
       }
 
+      
       .button3 {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
         background: transparent;
         border: #68a392;
-        border-style: none;
+        border-style: solid;
         border-width: 1px;
-        border-radius: 1em;
+        border-radius: 2em;
         color: #68a392;
         cursor: pointer;
         display: inline-block;
@@ -1504,14 +1505,9 @@
       <!-- 標題 -->
 
       <!-- 詳細內容 -->
-      <!-- Details 元素 -->
-      <details>
-        <!-- Summary 元素 -->
-        <summary>
-          <!-- 優惠碼modal的按鈕 start-->
-          <div
-            id="discountButton"
-            class="button2"
+      <div
+            id="replay"
+            class="button3"
             style="
               position: absolute;
               right: 44.5%;
@@ -1520,8 +1516,41 @@
               display: none;
             "
           >
-            領取優惠
+            重新占卜
           </div>
+      <!-- Details 元素 -->
+      <details>
+        <!-- Summary 元素 -->
+        <summary>
+          <!-- 優惠碼modal的按鈕 start-->
+          <div
+            id="replay"
+            class="button3"
+            style="
+              position: absolute;
+              right: 44.5%;
+              top: 60%;
+              transform: translate(-50%, -50%);
+              display: none;
+            "
+          >
+            重新占卜
+          </div>
+
+           <!-- 優惠碼modal的按鈕 start-->
+           <div
+           id="discountButton2"
+           class="button2"
+           style="
+             position: absolute;
+             right: 44.5%;
+             top: 53%;
+             transform: translate(-50%, -50%);
+             display: none;
+           "
+         >
+           領取優惠
+         </div>
           <!-- 優惠碼modal的遮罩層 -->
           <div class="details-modal-overlay"></div>
         </summary>
@@ -1558,7 +1587,7 @@
             <!-- 優惠碼modal的標題 -->
             <div class="details-modal-title">
               <h1 style="font-size: 2rem; font-weight: bold">
-                母親節優惠準備開跑囉!
+                畢業季優惠準備開跑囉!
               </h1>
             </div>
           </div>
@@ -1586,14 +1615,14 @@
                   justify-content: space-around;
                   padding: 0.25rem;
                   border-width: 1.5px;
-                  width: 70%;
+                  width: 100%;
                   border-radius: 0.75rem;
                   border-style: dashed;
                 "
               >
                 <div
                   style="
-                    width: 70%;
+                    width: 100%;
                     height: 100%;
                     display: flex;
                     justify-content: center;
@@ -1602,7 +1631,7 @@
                 >
                   <input
                     type="text"
-                    value="FLOWER50"
+                    value="CONGRATULATIONONYOURGRADUATION"
                     id="couponCode"
                     style="
                       text-align: center;
@@ -1639,13 +1668,13 @@
                 前往商城
               </button>
               <img
-                src="./assets/intro/FlowerMom.jpg"
+                src="./assets/intro/FG.jpg"
                 alt="FlowerMom"
                 width="300"
                 style="display: block; margin: 0 auto"
               />
             </div>
-            <p><strong>母親節限定優惠碼</strong></p>
+            <p><strong>畢業限定優惠碼</strong></p>
           </div>
         </div>
       </details>
@@ -1755,6 +1784,18 @@
           }
         })
       }
+//重新占卜(重新載入頁面)
+document.addEventListener('DOMContentLoaded', function() {
+    let reloadButton = document.getElementById('replay');
+    if (reloadButton) {
+        reloadButton.addEventListener('click', function(event) {
+          event.stopPropagation(); // 阻止事件冒泡
+          window.location.reload(); // 重新加載頁面
+        });
+    }
+});
+
+
 
       // 重置遊戲
       async function reset() {
@@ -1834,9 +1875,9 @@
         } else {
           if (pickAry.length >= 3) {
             // 抽完三張牌後顯示領取優惠按鈕
-            document.getElementById('discountButton').style.display = 'block'
-
-            //-------產生重新開始遊戲按鈕start
+            document.getElementById('discountButton2').style.display = 'block'
+            document.getElementById('replay').style.display = 'block'
+            // -------產生重新開始遊戲按鈕start
             // let restartButton = document.createElement('button')
             // restartButton.innerText = '重新開始遊戲'
             // restartButton.id = 'restartButton'
@@ -1850,7 +1891,7 @@
             // tipDiv.innerHTML = '點擊 [重新開始遊戲] 按鈕重新開始遊戲'
             // canClick = false // 關閉頁面其他區域的點擊監聽
             // finished = true
-            //-------產生重新開始遊戲按鈕end
+            // -------產生重新開始遊戲按鈕end
           }
         }
       }
