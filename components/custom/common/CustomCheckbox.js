@@ -4,8 +4,8 @@ import { CheckIcon } from './CheckIcon'
 const CustomCheckbox = forwardRef(
   (
     {
-      bgColor = '#fff',
-      backgroundImage = '',
+      bgColor = 'transparent',
+      backgroundImage = 'none',
       backgroundSize = 'cover',
       backgroundPosition = 'center',
       borderColor = 'gray-900/20',
@@ -21,10 +21,11 @@ const CustomCheckbox = forwardRef(
       labelText = '',
       style = {},
       ariaLabel = 'checkbox',
+      isBgImage = false,
     },
     ref
   ) => {
-    const textColor = backgroundImage
+    const textColor = isBgImage
       ? 'white'
       : bgColor === '#000' || bgColor === '#000000'
       ? 'white'
@@ -48,7 +49,13 @@ const CustomCheckbox = forwardRef(
         }
       }
     }
-
+    const backgroundStyles = isBgImage
+      ? {
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize,
+          backgroundPosition,
+        }
+      : {}
     return (
       <div className="inline-flex items-center" style={{ ...style }}>
         <label className="relative flex items-center p-3 rounded-full cursor-pointer">
@@ -59,9 +66,7 @@ const CustomCheckbox = forwardRef(
             type="checkbox"
             style={{
               background: bgColor,
-              backgroundImage: `url(${backgroundImage})`,
-              backgroundSize: `${backgroundSize}`,
-              backgroundPosition: `${backgroundPosition}`,
+              ...backgroundStyles,
             }}
             className={`before:content[''] peer relative ${height} ${width} cursor-pointer appearance-none rounded-full border border-${borderColor} transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-900 checked:bg-${checkColor} checked:before:bg-${checkColor} hover:scale-105 hover:before:opacity-0`}
             aria-label={ariaLabel}

@@ -30,10 +30,12 @@ export default function PackageContent({ items }) {
   return (
     <>
       <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center py-2">
-        <div className="text-tertiary-gray-100 w-60 text-center py-4">
+        <div className="text-tertiary-gray-100 w-60 text-center py-4 h-[52px]">
           <p className="text-xs">如不加購則以店家基本包裝為主。</p>
           {selectedItem && selectedItem.length > 0 && (
-            <p>已選擇 {selectedItem[0].variant_name}</p>
+            <p className="text-sm text-tertiary-black">
+              已選擇 {selectedItem[0].variant_name}
+            </p>
           )}
         </div>
         <SwiperCarousel items={items} onItemSelect={handleSelectItem} />

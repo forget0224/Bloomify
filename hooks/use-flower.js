@@ -39,6 +39,7 @@ export const FlowerProvider = ({ children }) => {
     content: '',
     card_url: '',
     product_price: 0,
+    product_name: '',
   })
   const [packageInfo, setPackageInfo] = useState({
     product_id: '',
@@ -288,7 +289,7 @@ export const FlowerProvider = ({ children }) => {
         url: img.url,
         left: img.left - canvas.width / 2,
         top: img.top - canvas.height / 4,
-        name: img.name,
+        name: img.name || img.product_name,
         color: img.color,
         zIndex: img.zIndex,
         angle: img.angle,
@@ -297,7 +298,6 @@ export const FlowerProvider = ({ children }) => {
         locked: false,
       }
 
-      // 更新 imagesInfo，添加新图像信息前先检查是否存在重复的 ID
       setImagesInfo((prev) => {
         const index = prev.findIndex((info) => info.id === img.id)
         if (index > -1) {
@@ -308,7 +308,6 @@ export const FlowerProvider = ({ children }) => {
         return [...prev, imgInfo]
       })
 
-      // 清空当前预览对象的引用
       tempObjectRef.current = null
     }
   }, [])

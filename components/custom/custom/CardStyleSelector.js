@@ -8,9 +8,12 @@ const CardStyleSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   const colors = useColors()
   const { previewStyle, setPreviewStyle, setConfirmedStyle } = useFlower()
 
-  const handlePreview = (attribute) => {
-    setSelectedStyle(attribute)
-    setPreviewStyle(attribute)
+  const handlePreview = (attribute, categoryName) => {
+    console.log(categoryName)
+    const newAttribute = { ...attribute, name: categoryName }
+    console.log(newAttribute)
+    setSelectedStyle(newAttribute)
+    setPreviewStyle(newAttribute)
   }
 
   const handleConfirm = () => {
@@ -24,6 +27,7 @@ const CardStyleSelector = ({ itemAttribute, categoryName, onConfirm }) => {
     setSelectedStyle(null)
     onConfirm(null)
   }
+
   return (
     <div className="text-tertiary-black h-full flex flex-col items-center relative">
       <div className="border-b-1 w-full">
@@ -36,11 +40,12 @@ const CardStyleSelector = ({ itemAttribute, categoryName, onConfirm }) => {
               <div
                 key={attribute.product_id}
                 className="flex flex-col items-center cursor-pointer"
-                onClick={() => handlePreview(attribute)}
+                onClick={() => handlePreview(attribute, categoryName)}
               >
                 <CustomCheckbox
                   value={attribute.variant_name}
                   backgroundImage={attribute.url}
+                  isBgImage={true}
                   width={'sm:w-24 w-20'}
                   height={'sm:h-24 h-20'}
                   checked={selectedStyle === attribute}
@@ -55,7 +60,7 @@ const CardStyleSelector = ({ itemAttribute, categoryName, onConfirm }) => {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-2 w-[300px] justify-items-center gap-2 text-tertiary-black text-4xl fixed bottom-0 border-t-1 bg-white sm:border-none">
+      <div className="grid grid-cols-2 w-[300px] justify-items-center gap-2 text-tertiary-black sm:text-[3rem]  text-4xl fixed bottom-0 border-t-1 bg-white sm:border-none">
         <CiCircleChevLeft className="cursor-pointer" onClick={handleCancel} />
         <CiCircleCheck className="cursor-pointer" onClick={handleConfirm} />
       </div>

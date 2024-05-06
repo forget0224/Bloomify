@@ -6,9 +6,9 @@ import ChangeComponent from './ChangeComponent'
 const CardComponent = ({ onNext, onPrev, items }) => {
   const [selectedItem, setSelectedItem] = useState(null)
 
-  const handleSelectItem = (attributes, categoryName) => {
+  const handleSelectItem = (attributes, category_name) => {
     if (attributes && attributes.length > 0) {
-      setSelectedItem({ attributes, categoryName })
+      setSelectedItem({ attributes, category_name })
     }
   }
 
@@ -18,13 +18,14 @@ const CardComponent = ({ onNext, onPrev, items }) => {
   }
 
   items = [defaultCard, ...items]
+  console.log(items)
 
   return (
     <>
       {selectedItem ? (
         <CardStyleSelector
           itemAttribute={selectedItem.attributes}
-          categoryName={selectedItem.categoryName}
+          categoryName={selectedItem.category_name}
           onConfirm={() => {
             setSelectedItem(null)
           }}
@@ -37,14 +38,16 @@ const CardComponent = ({ onNext, onPrev, items }) => {
               請選擇您喜歡的卡片樣式
             </p>
           </div>
-          <DraggableBar
-            items={items}
-            onItemSelect={handleSelectItem}
-            itemHeight={35}
-            dragBuffer={50}
-            className="w-[150px] h-[580px] mx-auto pt-2"
-          />
-          <ChangeComponent onNext={onNext} onPrev={onPrev} />
+          <div className="w-full h-full relative">
+            <DraggableBar
+              items={items}
+              onItemSelect={handleSelectItem}
+              itemHeight={25}
+              dragBuffer={50}
+              className="w-[150px] min-h-[580px] h-[770px] mx-auto pt-2"
+            />
+            <ChangeComponent onNext={onNext} onPrev={onPrev} />
+          </div>
         </div>
       )}
     </>

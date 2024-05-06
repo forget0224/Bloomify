@@ -42,7 +42,7 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
 
   return (
     <div className="text-tertiary-black h-full flex flex-col items-center relative">
-      <div className="border-b-1 w-full">
+      <div className="border-b-1 sm:w-full w-30">
         <h1 className="sm:text-2xl text-lg py-2 text-center">{categoryName}</h1>
       </div>
       <div className="h-full w-[300px]">
@@ -67,7 +67,7 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
           ))}
         </div>
       </div>
-      <div className="grid grid-cols-2 w-[300px] justify-items-center gap-2 text-tertiary-black text-4xl fixed bottom-0 border-t-1 bg-white sm:border-none">
+      <div className="grid grid-cols-2 w-[300px] justify-items-center gap-2 text-tertiary-black sm:text-[3rem] text-4xl fixed bottom-0 border-t-1 bg-white sm:border-none">
         <CiCircleChevLeft className="cursor-pointer" onClick={handleCancel} />
         <CiCircleCheck className="cursor-pointer" onClick={handleConfirm} />
       </div>

@@ -1,8 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react'
-
 const FlowerCartContext = createContext()
-
-// 初始購物車狀態
 const initialState = {
   bouquet_name: '',
   image_url: '',
@@ -14,11 +11,17 @@ const initialState = {
     product_id: '',
     content: '',
     card_url: '',
+    product_category: '',
+    product_price: 0,
+    name: '',
   },
   package: {
     product_id: '',
     package_name: '',
     package_url: '',
+    product_category: '',
+    product_price: 0,
+    name: '',
   },
 }
 

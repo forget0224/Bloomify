@@ -27,9 +27,9 @@ const MainFlowerComponent = ({ onNext, onPrev, items }) => {
             <DraggableBar
               items={items}
               onItemSelect={handleSelectItem}
-              itemHeight={35}
+              itemHeight={25}
               dragBuffer={50}
-              className="w-[150px] h-[580px] mx-auto pt-2"
+              className="w-[150px] min-h-[580px] h-[770px] mx-auto pt-2"
             />
             <ChangeComponent onNext={onNext} onPrev={onPrev} />
           </div>

@@ -8,11 +8,11 @@ const PackageComponent = ({ onNext, onPrev, items }) => {
   useEffect(() => {
     if (selectedItem && selectedItem.length > 0) {
       setPackageInfo({
-        package_url: selectedItem[0].url,
+        image_url: selectedItem[0].url,
         product_id: selectedItem[0].product_id,
         product_price: selectedItem[0].product_price,
         product_category: selectedItem[0].product_category,
-        package_name: selectedItem[0].variant_name,
+        name: selectedItem[0].variant_name,
       })
     } else {
       setPackageInfo(null)
@@ -28,6 +28,7 @@ const PackageComponent = ({ onNext, onPrev, items }) => {
   }
 
   items = [defaultPackage, ...items]
+  console.log(items)
 
   return (
     <>
@@ -46,9 +47,9 @@ const PackageComponent = ({ onNext, onPrev, items }) => {
           <DraggableBar
             items={items}
             onItemSelect={handleSelectItem}
-            itemHeight={35}
+            itemHeight={25}
             dragBuffer={50}
-            className="w-[150px] h-[580px] mx-auto pt-2"
+            className="w-[150px] min-h-[580px] h-[770px] mx-auto pt-2"
           />{' '}
           <ChangeComponent onNext={onNext} onPrev={onPrev} />
         </div>

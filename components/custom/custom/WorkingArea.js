@@ -85,7 +85,7 @@ const WorkingArea = () => {
       const productPayload = state.products.map((product) => ({
         id: `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
         product_id: product.product_id,
-        name: product.product_name,
+        name: product.product_name || product.name,
         product_price: product.product_price,
         url: product.image_url,
         color: product.color,

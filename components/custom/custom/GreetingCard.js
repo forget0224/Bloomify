@@ -58,17 +58,17 @@ const GreetingCard = () => {
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value)
   }
+
   useEffect(() => {
     if (currentStyle) {
+      console.log(currentStyle)
       setCardInfo({
-        card_url: currentStyle.url,
+        image_url: currentStyle.url,
+        name: currentStyle.name,
         product_id: currentStyle.product_id,
         product_price: currentStyle.product_price,
         product_category: currentStyle.product_category,
-        content: `標題:${title} 訊息:${message.replace(
-          /\s/g,
-          ''
-        )} 署名:${greeting}`,
+        content: `${title}/${message.replace(/\s/g, '')}/${greeting}`,
       })
     }
   }, [title, greeting, message, currentStyle, setCardInfo])

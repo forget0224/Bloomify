@@ -38,17 +38,21 @@ const DraggableBar = ({
               key={index}
               className="flex flex-col gap-1 cursor-grab active:cursor-grabbing w-auto mt-1"
               onClick={() => {
-                // console.log(
-                //   'Item clicked:',
-                //   item.attributes,
-                //   item.category_name
-                // ) // 添加這個來確認點擊事件
                 onItemSelect(item.attributes, item.category_name)
               }}
             >
               <div
-                style={{ backgroundImage: `url(${item.category_url})` }}
-                className="bg-cover bg-center aspect-square w-[150px] rounded-xl object-cover cursor-pointer"
+                style={{
+                  backgroundImage: `url(${item.category_url})`,
+                  backgroundSize:
+                    item.attributes &&
+                    item.attributes.length > 0 &&
+                    (item.attributes[0].product_category === 'package' ||
+                      item.attributes[0].product_category === 'card')
+                      ? 'cover'
+                      : 'contain',
+                }}
+                className=" bg-center bg-no-repeat aspect-square w-[150px] rounded-xl object-fit   cursor-pointer"
               ></div>
               <p className="text-center">{item.category_name}</p>
             </div>

@@ -56,7 +56,7 @@ export default function CustomNav() {
         product_price: img.product_price,
         image_url: img.url,
         color: img.color,
-        name: img.name,
+        name: img.product_name || img.name,
         zIndex: img.zIndex,
       }))
 
