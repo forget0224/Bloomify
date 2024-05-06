@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 import { FaRegHeart, FaHeart } from 'react-icons/fa'
-import Swal from 'sweetalert2'
 import { toast } from 'react-hot-toast'
 import { useCourseFavorites } from '@/hooks/use-course-fav' // 從 context 中調課程 isCourseFavorited 來看
 
@@ -99,7 +98,7 @@ export default function HeartButton({ opacity, courseId }) {
     }
   }
 
-  // 根據傳入的 opacity 動態設定透明度類別
+  // 根據傳入的 opacity 動態設定透明度類別 ( 決定空心愛心要不要黑色背景色 )
   const heartOpacityClass = `text-tertiary-black ${opacity} absolute z-10 w-5 h-5 top-0 right-0 cursor-pointer`
 
   return (

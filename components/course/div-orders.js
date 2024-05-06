@@ -94,6 +94,16 @@ export default function CourseOrder({ order }) {
                     </span>
                   </div>
                   <div className="flex justify-between md:justify-start">
+                    <span className="w-[100px]">發票種類：</span>
+                    <span className="ml-1">
+                      {order.invoice ? order.invoice.name : ''}
+                      {/* 如果 invoice_id 是 2 ，則顯示手機條碼 */}
+                      {order.invoice_id === 2 && order.mobile_barcode
+                        ? `(${order.mobile_barcode})`
+                        : ''}
+                    </span>
+                  </div>
+                  <div className="flex justify-between md:justify-start">
                     <span className="w-[100px]">成立時間：</span>
                     <span className="ml-1 text-right">
                       {moment(order.created_at).format('YYYY-MM-DD HH:mm:ss')}

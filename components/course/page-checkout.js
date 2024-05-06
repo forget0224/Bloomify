@@ -31,14 +31,13 @@ export default function CourseCheckOut() {
   }
 
   // 取 context 中的資料們和方法
-  const { cart, removeFromCart, clearCart, totalSubtotal, totalCartProducts } =
-    useCart()
+  const { cart, clearCart, totalSubtotal, totalCartProducts } = useCart()
   const { fillOutDetails } = useFillOut()
 
-  console.log(cart)
-  console.log(cart[0])
-  console.log(fillOutDetails)
-  console.log(auth.userData.id)
+  // console.log(cart)
+  // console.log(cart[0])
+  // console.log(fillOutDetails)
+  // console.log(auth.userData.id)
 
   // 提交訂單動作
   const handleCheckout = async () => {
@@ -53,6 +52,37 @@ export default function CourseCheckOut() {
     }
 
     try {
+      // TODO:
+      const discount = 10 // 假設 discount 從某處獲得
+      const payment_amount = totalSubtotal - discount
+      const payment_status_id = 2 // 預設的值
+      const order_status_id = 2 // 預設的值
+      // 將選項文字映射回選項id
+      const invoiceOptionMap = {
+        捐贈發票: 1,
+        手機條碼載具: 2,
+        三聯電子發票: 3,
+      }
+
+      const paymentMethodMap = {
+        綠界: 1,
+        藍新: 2,
+        'Line Pay': 3,
+        Paypal: 4,
+        現金: 5,
+        貨到付款: 6,
+      }
+
+      const invoice_id = invoiceOptionMap[fillOutDetails.invoiceOption]
+      const payment_id = paymentMethodMap[fillOutDetails.paymentMethod]
+
+      // 根據發票選項決定是否包含 mobileBarcode
+      let mobileBarcode = ''
+      if (invoice_id === 2) {
+        // 如果選了手機條碼載具
+        mobileBarcode = fillOutDetails.mobileBarcode || '' // 如果沒有值則默認為空字串
+      }
+
       const response = await fetch(
         `http://localhost:3005/api/course-orders/add`,
         {
@@ -65,12 +95,13 @@ export default function CourseCheckOut() {
           body: JSON.stringify({
             member_id: auth.userData.id,
             total_cost: totalSubtotal,
-            discount: 0, // 根據需要修改
-            payment_amount: totalSubtotal, // 根據折扣邏輯修改
-            share_payment_id: 2,
-            share_payment_status_id: 2,
-            share_order_status_id: 1,
-            invoice_id: 1,
+            discount: discount,
+            payment_amount: payment_amount,
+            share_payment_id: payment_id,
+            share_payment_status_id: payment_status_id,
+            share_order_status_id: order_status_id,
+            invoice_id: invoice_id,
+            mobileBarcode: mobileBarcode,
             courses: cart.map((item) => ({
               course_id: item.id,
               period: item.period,
@@ -231,7 +262,7 @@ export default function CourseCheckOut() {
                 </TableCell>
               </TableRow>
               <TableRow key="2">
-                <TableCell className="pr-8 text-nowrap">發票</TableCell>
+                <TableCell className="pr-8 text-nowrap">發票種類</TableCell>
                 <TableCell className="w-full text-right">
                   {fillOutDetails.invoiceOption}
                 </TableCell>
