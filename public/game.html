@@ -823,6 +823,29 @@
       .button3:hover {
         background-color: #dbeddf;
       }
+      .button4 {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        border: #68a392;
+        /* border-style: solid; */
+        border-width: 1px;
+        border-radius: 2em;
+        color: #68a392;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 500;
+        height: 3em;
+        line-height: 3em;
+        padding: 0 1em;
+        font-family: NotoSerifTC, sans-serif;
+
+        letter-spacing: 0.1em;
+      }
+      .button4:hover {
+        background-color: #dbeddf;
+      }
       /* 彈出式視窗樣式 */
       .details-modal {
         background: #ffffff;
@@ -1522,20 +1545,8 @@
       <details>
         <!-- Summary 元素 -->
         <summary>
-          <!-- 優惠碼modal的按鈕 start-->
-          <div
-            id="replay"
-            class="button3"
-            style="
-              position: absolute;
-              right: 44.5%;
-              top: 60%;
-              transform: translate(-50%, -50%);
-              display: none;
-            "
-          >
-            重新占卜
-          </div>
+         
+          
 
            <!-- 優惠碼modal的按鈕 start-->
            <div
@@ -1649,9 +1660,10 @@
 
                 <button
                   id="copyButton"
-                  class="button3"
+                  class="button4"
                   style="width: 30%"
                   onclick="copyToClipboard()"
+                  
                 >
                   複製
                 </button>
