@@ -269,6 +269,14 @@ export default function Login() {
                         {errors.password}
                       </span>
                     )}
+                    <p className="mt-2 text-right text-tertiary-gray-100">
+                      <Link
+                        href="/member/forget-password"
+                        className="text-primary hover:underline underline-offset-4"
+                      >
+                        忘記密碼？
+                      </Link>
+                    </p>
                   </div>
 
                   <MyButton className="bg-primary-100 text-white" type="submit">
