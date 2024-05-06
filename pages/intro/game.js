@@ -25,18 +25,18 @@ export default function Custom() {
         <div className=" z-10 text-center text-black absolute inset-x-0 top-10">
           {/* <p>~</p> */}
           <p>
-            <span className="bg-gray-100">以盛開的雛菊，</span>
+            <span className="bg-gray-100 text-2xl font-medium">以盛開的雛菊，</span>
           </p>
           <p>
-            <span className="bg-gray-100">為你解開疑惑。</span>
+            <span className="bg-gray-100 text-2xl font-medium">為你解開疑惑。</span>
           </p>
           <p className="mt-1">
-            <span className="bg-gray-100">
+            <span className="bg-gray-100 text-xl">
               In a garden where daisies bloom,
             </span>
           </p>
           <p>
-            <span className="bg-gray-100">
+            <span className="bg-gray-100 text-xl">
               A fortune teller lifts the gloom.
             </span>
           </p>
@@ -44,20 +44,20 @@ export default function Custom() {
         <div className="w-full justify-start flex">
           <img
             className="w-2/5 h-auto"
-            src="/assets/intro/cloud1.png"
+            src="/assets/intro/cloud1_.png"
             alt="cloud1"
           />
         </div>
         <div className="w-full flex justify-end">
           <img
             className="w-2/5 h-auto "
-            src="/assets/intro/cloud2.png"
+            src="/assets/intro/cloud2_.png"
             alt="cloud2"
           />
         </div>
         <div className="absolute bottom-0 mb-0">
           <img
-            className="w-auto h-1/3 max-w-xs h-auto"
+            className="w-full h-auto max-w-xs h-auto"
             src="/assets/intro/daisy2.png"
             alt="daisy2"
           />
