@@ -6,18 +6,16 @@ import {
   DirectionsRenderer,
 } from '@react-google-maps/api'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
+import { useMediaQuery } from 'react-responsive'
 
-const mapContainerStyle = {
-  height: '400px',
-  width: '400px',
-}
+export default function CustomGoogleMap({ destination, setDeliveryShipping }) {
+  const isDesktop = useMediaQuery({ minWidth: 1024 })
 
-const center = {
-  lat: 25.0329694,
-  lng: 121.5654177,
-}
+  const mapContainerStyle = {
+    height: isDesktop ? '400px' : '269px',
+    width: isDesktop ? '400px' : '269px',
+  }
 
-const CustomGoogleMap = ({ destination, setDeliveryShipping }) => {
   const { state } = useFlowerCart()
   const origin = state.store_address
   const [distance, setDistance] = useState('')
@@ -29,7 +27,23 @@ const CustomGoogleMap = ({ destination, setDeliveryShipping }) => {
   const onMapLoad = useCallback((map) => {
     mapRef.current = map
   }, [])
+  const [center, setCenter] = useState({
+    lat: 25.0329694,
+    lng: 121.5654177,
+  })
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setCenter({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        })
+      })
+    } else {
+      console.error('Geolocation is not supported by this browser.')
+    }
+  }, [])
   const extractCity = (destination) => {
     const cityRegex = /(.+市)/
     const match = destination.match(cityRegex)
@@ -56,6 +70,24 @@ const CustomGoogleMap = ({ destination, setDeliveryShipping }) => {
     }
     return fee
   }
+
+  // const directionsCallback = React.useCallback(
+  //   (response, status) => {
+  //     if (status === 'OK') {
+  //       setDirections(response)
+  //       const distanceInMeters = response.routes[0].legs[0].distance.value
+  //       const distanceInKm = distanceInMeters / 1000
+  //       const durationText = response.routes[0].legs[0].duration.text
+  //       const city = extractCity(destination)
+  //       setDistance(`${distanceInKm.toFixed(2)} km`)
+  //       setDuration(durationText)
+  //       setFee(calculateFees(city, distanceInKm))
+  //     } else {
+  //       console.error(`Directions request failed due to ${status}`)
+  //     }
+  //   },
+  //   [destination]
+  // )
 
   const directionsCallback = (response, status) => {
     if (status === 'OK') {
@@ -101,7 +133,7 @@ const CustomGoogleMap = ({ destination, setDeliveryShipping }) => {
           />
         )}
       </GoogleMap>
-      <div>
+      <div className="sm:w-[400px] w-[269px] mt-4">
         <div className="flex flex-row justify-between">
           <div>距離 </div>
           <div>{distance}</div>
@@ -118,5 +150,3 @@ const CustomGoogleMap = ({ destination, setDeliveryShipping }) => {
     </LoadScript>
   )
 }
-
-export default CustomGoogleMap

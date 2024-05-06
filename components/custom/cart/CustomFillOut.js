@@ -6,7 +6,7 @@ import { CiClock2 } from 'react-icons/ci'
 import { I18nProvider } from '@react-aria/i18n'
 import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
-import CustomGoogleMap from './CustomGoogleMap'
+import CustomGoogleMap from '@/components/custom/cart/CustomGoogleMap'
 import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 export default function CustomFillOut({
@@ -105,7 +105,7 @@ export default function CustomFillOut({
           {/* address */}{' '}
           {selectedDeliveryOption && selectedDeliveryOption.id === 1 && (
             <>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-3 w-full">
                 <div className="space-y-3 sm:flex sm:gap-3 ">
                   <Select
                     label="配送地址"
@@ -175,7 +175,7 @@ export default function CustomFillOut({
                   onBlur={handleAddressDetailChange}
                 />
               </div>
-              <div className="min-w-[400px] min-h-[400px]">
+              <div className="sm:w-[400px]   w-[269px] h-auto">
                 <CustomGoogleMap
                   destination={`${deliveryAddress}`}
                   setDeliveryShipping={setDeliveryShipping}

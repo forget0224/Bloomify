@@ -53,7 +53,6 @@ export default function FillOut() {
   const [date, setDate] = useState(now('Asia/Taipei'))
   //驗證
   const [errors, setErrors] = useState({})
-  console.log(errors)
 
   const times = ['不指定時間']
   for (let hour = 9; hour <= 21; hour++) {

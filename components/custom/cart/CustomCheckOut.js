@@ -42,8 +42,7 @@ export default function CustomCheckOut() {
   )
   console.log(contactStorage)
   console.log(flowerStorage)
-  function groupProductsByProductId(products) {
-    if (!products) return []
+  function groupProductsByProductId(products, packageInfo, cardInfo) {
     const grouped = products.reduce((acc, item) => {
       const key = item.product_id
       if (!acc[key]) {
@@ -57,11 +56,35 @@ export default function CustomCheckOut() {
       acc[key].total += item.product_price
       return acc
     }, {})
+    if (packageInfo && packageInfo.product_id != '') {
+      const packageKey = packageInfo.product_id || 'package'
+      grouped[packageKey] = {
+        ...packageInfo,
+        count: 1,
+        total: packageInfo.product_price,
+        sortOrder: 3,
+      }
+    }
 
-    return Object.values(grouped)
+    if (cardInfo && cardInfo.product_id != '') {
+      const cardKey = cardInfo.product_id || 'card'
+      grouped[cardKey] = {
+        ...cardInfo,
+        count: 1,
+        total: cardInfo.product_price,
+        sortOrder: 2,
+      }
+    }
+    return Object.values(grouped).sort(
+      (a, b) => (a.sortOrder || 1) - (b.sortOrder || 1)
+    )
   }
 
-  const groupedProducts = groupProductsByProductId(flowerStorage.products)
+  const groupedProducts = groupProductsByProductId(
+    state.products,
+    state.package,
+    state.card
+  )
 
   const subTotal = groupedProducts.reduce(
     (total, item) => total + item.total,
@@ -78,6 +101,7 @@ export default function CustomCheckOut() {
       bouquet_name: flowerStorage.bouquet_name,
       card_content: flowerStorage.card.content, // 確保這些值不是undefined
       card_url: flowerStorage.card.card_url || '', // 提供默認值以防undefined
+
       image_url: flowerStorage.image_url,
       products: flowerStorage.products.map((product) => ({
         product_id: product.product_id,
@@ -176,30 +200,40 @@ export default function CustomCheckOut() {
                 >
                   <div className="flex-grow">
                     <div
-                      className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-contain"
+                      className="my-1 w-[60px] rounded-md m-auto aspect-square  bg-center bg-cover bg-no-repeat"
                       style={{
-                        backgroundImage: `url(${item.url})`,
+                        backgroundImage: `url(${item.image_url})`,
+                        backgroundSize:
+                          item &&
+                          (item.product_category === 'package' ||
+                            item.product_category === 'card')
+                            ? 'cover'
+                            : 'contain',
                       }}
                     ></div>
                   </div>
 
-                  <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1">
-                    <div className="flex-grow flex sm:flex-row flex-col sm:justify-around">
-                      <div className="sm:w-[80px] text-center">{item.name}</div>
-                      <div className="sm:w-[80px] text-center sm:text-sm text-xs sm:text-tertiary-black text-tertiary-gray-100">
-                        {item.color}
+                  <div className="flex flex-row sm:gap-2 sm:justify-between flex-grow  items-center gap-1 ">
+                    <div className="flex-grow flex sm:flex-row flex-col sm:justify-around items-center">
+                      <div className="sm:w-[80px] text-center text-wrap sm:text-nowrap ">
+                        {item.name}
+                      </div>
+                      <div className="sm:w-[80px] text-center sm:text-sm text-xs  sm:text-tertiary-black text-tertiary-gray-100">
+                        {item.color ? item.color : '-'}
                       </div>
                     </div>
 
                     <div className="sm:w-[80px] text-center text-sm   text-tertiary-black ">
                       {item.count}
-                      {item.product_category === 'flower' && '朵'}
-                      {item.product_category === 'card' && '張'}
-                      {item.product_category === 'package' && '個'}
+                      {item.product_category === 'card'
+                        ? '張'
+                        : item.product_category === 'package'
+                        ? '個'
+                        : '朵'}
                     </div>
                   </div>
 
-                  <div className="flex-grow text-center ">
+                  <div className="text-center min-w-[108px]">
                     <p>${item.product_price}</p>
                   </div>
                 </div>
@@ -338,12 +372,12 @@ export default function CustomCheckOut() {
 
         <div className="w-full gap-2 flex justify-center sm:gap-4 ">
           <Link href="/cart/fill-out?source=flower">
-            <MyButton color="primary" size="xl" isOutline>
+            <MyButton color="primary" size="md" isOutline>
               上一步
             </MyButton>
           </Link>
           {/* <Link href="/cart/payment-successful" className="text-white"> */}
-          <MyButton color="primary" size="xl" onClick={handleSubmit}>
+          <MyButton color="primary" size="md" onClick={handleSubmit}>
             確認，進行付款
           </MyButton>
           {/* </Link> */}

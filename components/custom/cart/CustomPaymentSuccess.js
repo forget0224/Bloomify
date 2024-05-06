@@ -103,11 +103,11 @@ export default function CustomPaymentSuccess() {
       </div>
 
       <div className="container flex flex-wrap justify-center my-10 mx-4 sm:mx-6">
-        <div className="flex gap-2 sm:gap-4 w-full sm:w-auto">
+        <div className="flex gap-2 sm:gap-4 w-full sm:w-[400px] justify-around">
           <Link href="/center/custom-order">
             <MyButton
               color="primary"
-              size="xl"
+              size="md"
               isOutline
               className="w-full sm:w-auto"
             >
@@ -116,7 +116,7 @@ export default function CustomPaymentSuccess() {
           </Link>
 
           <Link href="/custom/list">
-            <MyButton color="primary" size="xl" className="w-full sm:w-auto">
+            <MyButton color="primary" size="md" className="w-full sm:w-auto">
               回客製首頁
             </MyButton>
           </Link>
