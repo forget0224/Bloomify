@@ -10,6 +10,7 @@ import { CartProvider } from '@/context/shop-cart-context'
 import { FillOutProvider } from '../context/fill-out-context'
 import { FlowerCartProvider } from '@/hooks/use-flowerCart'
 import { FlowerProvider } from '@/hooks/use-flower'
+import { FlowerFavoritesProvider } from '@/hooks/use-flowerFav'
 import { CourseCartProvider } from '@/context/course-cart-context'
 import { Toaster } from 'react-hot-toast'
 import '@/i18n/i18' // Import i18n configuration
@@ -31,7 +32,9 @@ export default function MyApp({ Component, pageProps }) {
                     <FlowerCartProvider>
                       <FlowerProvider>
                         <I18nextProvider i18n={i18n}>
-                          <Component {...pageProps} />
+                          <FlowerFavoritesProvider>
+                            <Component {...pageProps} />
+                          </FlowerFavoritesProvider>
                         </I18nextProvider>
                       </FlowerProvider>
                     </FlowerCartProvider>

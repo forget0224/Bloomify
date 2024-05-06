@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader, CardFooter } from '@nextui-org/react'
 import { motion, useMotionValue } from 'framer-motion'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { CiShoppingCart } from 'react-icons/ci'
-
+import AddFav from '@/components/custom/common/AddFav'
 const DraggableProductList = ({ productList }) => {
   const [isHeart, setIsHeart] = useState(false)
   const [imgIndex, setImgIndex] = useState(0)
@@ -41,10 +41,6 @@ const DraggableProductList = ({ productList }) => {
     }
   }
 
-  const handleHeartClick = () => {
-    setIsHeart(!isHeart)
-  }
-
   return (
     <div className="overflow-hidden">
       <motion.div
@@ -73,12 +69,11 @@ const DraggableProductList = ({ productList }) => {
             <CardHeader className="flex flex-col items-start">
               <div className="flex flex-row items-center justify-between w-full">
                 <h1 className="text-lg truncate">{item.name}</h1>
-                <div className="cursor-pointer" onClick={handleHeartClick}>
-                  {isHeart ? (
-                    <IoIosHeartEmpty className="text-danger text-xl" />
-                  ) : (
-                    <IoIosHeart className="text-danger text-xl" />
-                  )}
+                <div className="cursor-pointer">
+                  <AddFav
+                    templateId={item.template_id}
+                    onClick={(e) => e.stopPropagation()}
+                  />
                 </div>
               </div>
               <p className="text-sm text-tertiary-gray-100 text-left">

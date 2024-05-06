@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import {
   Breadcrumbs,
   BreadcrumbItem,
@@ -9,28 +10,28 @@ import {
   Select,
   SelectItem,
 } from '@nextui-org/react'
-import { motion, useMotionValue } from 'framer-motion'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
-import { CiShoppingCart } from 'react-icons/ci'
 import CustomCheckbox from '@/components/custom/common/CustomCheckbox'
 import { useColors } from '@/hooks/use-color'
+import { useAuth } from '@/hooks/use-auth'
+
+import AddFav from '@/components/custom/common/AddFav'
 export default function FavoriteCard() {
+  const router = useRouter()
+  const { auth } = useAuth()
+  const { userData } = auth
   const [customFavorite, setCustomFavorite] = useState([])
-  const handleHeartClick = (index) => () => {
-    const updatedFavorites = customFavorite.map((item, idx) => {
-      if (idx === index) {
-        return { ...item, isHearted: !item.isHearted }
-      }
-      return item
-    })
-    setCustomFavorite(updatedFavorites)
-  }
+
   const colors = useColors()
   useEffect(() => {
     async function fetchAllTemplates() {
+      if (!userData || !userData.id || userData.id === 0) {
+        console.log('Invalid or missing userData id')
+        return // 直接返回如果 userData.id 無效或等於 0
+      }
       try {
         const response = await fetch(
-          `http://localhost:3005/api/custom/custom-favorite/1`
+          `http://localhost:3005/api/custom/custom-favorite/${userData.id}`
         )
         const data = await response.json()
         if (response.ok && data.status === 'success') {
@@ -42,8 +43,12 @@ export default function FavoriteCard() {
         console.error('Error fetching data:', error)
       }
     }
+
     fetchAllTemplates()
-  }, [])
+  }, [userData.id]) // 添加 userData.id 作為依賴
+  const handleCardClick = (id) => {
+    router.push(`/custom/${id}`)
+  }
   return (
     <>
       {customFavorite.map((item, index) => {
@@ -57,6 +62,7 @@ export default function FavoriteCard() {
             key={item.template_id}
             className="cursor-pointer sm:w-[300px] sm:h-[300px]"
             isPressable
+            onClick={() => handleCardClick(item.template_id)}
           >
             <CardBody
               style={{ backgroundImage: `url(${item.image_url})` }}
@@ -65,15 +71,11 @@ export default function FavoriteCard() {
             <CardHeader className="flex flex-col items-start">
               <div className="flex flex-row items-center justify-between w-full">
                 <h1 className="text-lg">{item.template_name}</h1>
-                <div
-                  className="cursor-pointer"
-                  onClick={handleHeartClick(index)}
-                >
-                  {item.isHearted ? (
-                    <IoIosHeartEmpty className="text-danger text-xl" />
-                  ) : (
-                    <IoIosHeart className="text-danger text-xl" />
-                  )}
+                <div className="cursor-pointer">
+                  <AddFav
+                    templateId={item.template_id}
+                    onClick={(e) => e.stopPropagation()}
+                  />
                 </div>
               </div>
               <p className="text-xs text-tertiary-gray-100 text-left">
@@ -88,7 +90,7 @@ export default function FavoriteCard() {
                 />
               )}
             </CardHeader>
-            <CardFooter className="justify-between">
+            <CardFooter className="justify-end">
               <p className="text-lg">
                 {item.discount !== 0 ? (
                   <>

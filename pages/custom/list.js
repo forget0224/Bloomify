@@ -23,11 +23,8 @@ export default function List() {
 
   const handleOpen = () => setSheetOpen(true)
   const handleClose = () => setSheetOpen(false)
-  const [isHeart, setIsHeart] = useState(true)
+
   const { close, open, isLoading } = useLoader()
-  const handleHeartClick = () => {
-    setIsHeart(!isHeart)
-  }
 
   const [selectedOccs, setSelectedOccs] = useState([])
   const [selectedflowerType, setSelectedflowerType] = useState([])
@@ -131,8 +128,6 @@ export default function List() {
                           icon={<PiSlidersThin />}
                           iconClass="text-2xl"
                           label="排序與篩選"
-                          // {...(<FilterContent />)}
-                          // content={<div>sdfsdf</div>}
                           content={
                             <FilterContent
                               onFilterChange={handleFilterChange}
@@ -156,43 +151,9 @@ export default function List() {
                           showLabel={false}
                           blocking={true}
                         />
-                        <CiGrid41 />
                       </div>
 
                       <div className="">
-                        {/* <div className="flex flex-col gap-2 ">
-                          <div className="flex flex-row justify-between">
-                            <p className="sm:text-3xl text-xl text-tertiary-black select-none	">
-                              聖誕節
-                            </p>
-                            <div className="hidden sm:flex flex-row gap-1">
-                              {' '}
-                              <SortButton onSortChange={handleSortChange} />
-                            </div>
-                          </div>
-
-                          <hr className="w-full" />
-
-                          <div className="w-full h-full relative overflow-hidden">
-                            <DH productList={products} className="h-auto" />
-                          </div>
-                        </div>
-
-                        <div className="flex flex-col gap-2 ">
-                          <p className="sm:text-3xl text-xl text-tertiary-black">
-                            情人節
-                          </p>
-                          <hr className="w-full" />
-
-                          <div className="w-full h-full relative overflow-hidden">
-                            <DH productList={products} className="h-auto" />
-                          </div>
-
-                        
-
-
-
-                        </div> */}
                         {products.length > 0 ? (
                           products.map(
                             ({ occ_name, products, occ_id }, index) => (

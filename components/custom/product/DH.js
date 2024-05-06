@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react'
-import { Card, CardBody, CardHeader, CardFooter } from '@nextui-org/react'
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  Skeleton,
+} from '@nextui-org/react'
 import { motion, useMotionValue } from 'framer-motion'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { CiShoppingCart } from 'react-icons/ci'
@@ -8,6 +14,8 @@ import { useRouter } from 'next/router'
 import { useColors } from '@/hooks/use-color'
 import CustomCheckbox from '../common/CustomCheckbox'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
+
+import AddFav from '@/components/custom/common/AddFav'
 const DraggableProductList = ({ productList }) => {
   const router = useRouter()
   const dragBuffer = 50
@@ -59,17 +67,8 @@ const DraggableProductList = ({ productList }) => {
     }
   }
 
-  const handleHeartClick = () => {
-    setIsHeart(!isHeart)
-  }
-
-  const [isHeart, setIsHeart] = useState(false)
   const handleCardClick = (id) => {
-    console.log(`handleCardClick: isDragging = ${isDragging}, id = ${id}`)
-    if (!isDragging) {
-      console.log(`Navigating to /custom/${id}`)
-      router.push(`/custom/${id}`)
-    }
+    router.push(`/custom/${id}`)
   }
 
   return (
@@ -86,6 +85,7 @@ const DraggableProductList = ({ productList }) => {
         }}
         dragConstraints={{ left: 0, right: 0 }}
       >
+        {' '}
         {productList.map((item) => {
           const colorCode = color.find(
             (color) => color.name === item.color_name
@@ -109,17 +109,16 @@ const DraggableProductList = ({ productList }) => {
               <CardHeader className="flex flex-col items-start">
                 <div className="flex flex-row items-center justify-between w-full">
                   <h1 className="sm:text-lg text:md">{item.template_name}</h1>
-                  <div className="cursor-pointer" onClick={handleHeartClick}>
-                    {isHeart ? (
-                      <IoIosHeartEmpty className="text-danger text-xl" />
-                    ) : (
-                      <IoIosHeart className="text-danger text-xl" />
-                    )}
+                  <div className="cursor-pointer">
+                    <AddFav
+                      templateId={item.template_id}
+                      onClick={(e) => e.stopPropagation()}
+                    />
                   </div>
                 </div>
                 <p className="sm:text-sm text-xs  text-tertiary-gray-100 text-left">
                   {item.store_name}
-                </p>
+                </p>{' '}
                 {colorCode && (
                   <CustomCheckbox
                     width={'w-4'}
@@ -143,16 +142,10 @@ const DraggableProductList = ({ productList }) => {
                     <>${item.total_price}</>
                   )}
                 </p>
-                {/* <p className="text-base items-center">
-                  <CiShoppingCart
-                    className="text-primary-100 h-6 w-6 cursor-pointer"
-                    onClick={() => handleAddToCart(item)}
-                  />
-                </p> */}
               </CardFooter>
             </Card>
           )
-        })}
+        })}{' '}
       </motion.div>
       <div className="flex flex-row items-center text-2xl justify-end cursor-pointer  gap-3  w-full">
         <GoArrowLeft onClick={handlePrev} className="text-tertiary-black " />

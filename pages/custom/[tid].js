@@ -9,14 +9,16 @@ import Link from 'next/link'
 import Loader from '@/components/common/loader'
 import { ColorProvider } from '@/hooks/use-color'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
-import { useFlower } from '@/hooks/use-flower'
+import { useAuth } from '@/hooks/use-auth'
+import AddFav from '@/components/custom/common/AddFav'
 export default function Detail() {
+  const auth = useAuth()
+  const { isAuth } = auth
   const [activePage, setActivePage] = useState('custom')
   const [isHeart, setIsHeart] = useState(true)
   const { close, open, isLoading } = useLoader()
   const { dispatch, state } = useFlowerCart()
-  const { setImagesInfo } = useFlower()
-
+  const [templateId, setTemplateId] = useState('')
   const handleHeartClick = () => {
     setIsHeart(!isHeart)
   }
@@ -43,11 +45,11 @@ export default function Detail() {
       if (!res.ok) {
         throw new Error(`Failed to fetch: ${res.status}`)
       }
-      const data = await res.json() // 直接接收 JSON 数据
+      const data = await res.json()
 
       if (data.status === 'success' && data.data) {
-        console.log(data.data) // 确认数据
-        setProduct(data.data) // 确保 data.data 是你需要的数据结构
+        console.log(data.data)
+        setProduct(data.data)
       } else {
         console.error('Fetch status not success:', data.message)
       }
@@ -61,6 +63,7 @@ export default function Detail() {
     if (router.isReady) {
       const { tid } = router.query
       getProductById(tid)
+      setTemplateId(tid)
     }
   }, [router.isReady])
 
@@ -162,12 +165,8 @@ export default function Detail() {
               <div className="flex flex-col px-5 py-6 gap-1">
                 <div className="flex flex-row justify-between">
                   <p className="text-xs">{product?.occ}</p>
-                  <div className="sm:hidden" onClick={handleHeartClick}>
-                    {isHeart ? (
-                      <IoIosHeartEmpty className="text-danger text-xl " />
-                    ) : (
-                      <IoIosHeart className="text-danger text-xl " />
-                    )}
+                  <div className="sm:hidden">
+                    <AddFav templateId={templateId} />
                   </div>
                 </div>
 
@@ -203,17 +202,15 @@ export default function Detail() {
                 <p className="text-right text-3xl">${product?.total_price}</p>
               </div>
               {/* 按鈕 */}
+
               <div className="flex flex-row sm:w-full  w-[300px]  gap-6  justify-around items-center sm:px-5 ">
                 <div
                   className="hidden flex-shrink-0 sm:block w-12"
                   onClick={handleHeartClick}
                 >
-                  {isHeart ? (
-                    <IoIosHeartEmpty className="text-danger text-2xl " />
-                  ) : (
-                    <IoIosHeart className="text-danger text-2xl " />
-                  )}
+                  <AddFav templateId={templateId} />
                 </div>
+
                 <div className=" flex-1">
                   <MyButton
                     color="secondary200"
