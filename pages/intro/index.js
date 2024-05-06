@@ -516,13 +516,12 @@ export default function FlowersIndex() {
 
           {/* ------------清水模背景區塊 start------------*/}
           <div className="bg-[url('/assets/intro/vintage_speckles.png')] px-8 w-full">
-            <div className="m-8">
-              {/* --------search & select & sort end--------*/}
-
+            <div className="mt-6 sm:m-8">
               <Subtitle text="花圖鑑" />
-              <div className="flex py-10 px-15 justify-between w-full">
+              {/* --------search & select & sort start--------*/}
+              <div className="gap-4 flex flex-col sm:flex-row mt-6 px-15 w-full justify-between">
                 {/* ------------searchbar start------------*/}
-                <div className="flex max-w-xs">
+                <div className="flex flex-row max-w-xs sm:ml-8">
                   {/* 輸入框 */}
                   <div className="flex w-full rounded-md shadow-sm">
                     <input
@@ -541,120 +540,285 @@ export default function FlowersIndex() {
                       <CiSearch fill="white" className="w-6 h-6" />
                     </button>
                   </div>
+                  <div className="flex w-24 ml-4 sm:hidden">
+                    <Select
+                      variant="underlined"
+                      placeholder="請選擇"
+                      radius="full"
+                      defaultSelectedKeys={[sortOption]}
+                      // defaultValue={['A→Z']}
+                      // label="排序"
+                      clearable
+                      key={sortOption}
+                      labelPlacement="inside"
+                      className="max-w-xs w-36"
+                      scrollShadowProps={{
+                        isEnabled: false,
+                      }}
+                      onChange={(e) => handleSortChange(e)}
+                      // defaultSelectedKeys={[sortOption]}
+                    >
+                      {sortList.map((item, index) => (
+                        <SelectItem key={item.title} value={item.title}>
+                          {item.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
                 </div>
                 {/* ------------searchbar end------------ */}
-
-                {/* ------------filter start------------*/}
-                <div className="hidden sm:flex flex-cols items-center space-x-2 ">
-                  <Select
-                    placeholder="所有場合"
-                    clearable
-                    key={selectedOccasion}
-                    // defaultSelectedKeys={['所有場合']}
-                    // selectedKeys={[selectedOption]}
-                    label="場合"
-                    labelPlacement="inside"
-                    className="max-w-xs w-36"
-                    // selectedKeys={selectedOccasion}
-                    // onSelectionChange={setSelectedOccasion}
-                    // value={setSelectedOccasion}
-                    // value={}
-                    defaultSelectedKeys={[selectedOccasion]}
-                    scrollShadowProps={{
-                      isEnabled: false,
-                    }}
-                    onChange={handleOccasionChange} // 在選項改變時觸發處理函數
-                    // id="selectItems"
-                  >
-                    {occList.map((item, index) => (
-                      <SelectItem
-                        // className="occitem"
-                        key={item.title}
-                        value={item.title.trim()}
+                {/* ------------filter & sort desktop start------------*/}
+                <div className="hidden sm:flex flex-row w-full overflow-x-auto ">
+                  <div className="sm:hidden 2xl:flex flex-row w-full gap-12 overflow-x-auto justify-center">
+                    <div className="flex flex-row sm:flex flex-cols items-center space-x-2 ">
+                      <Select
+                        variant="faded"
+                        placeholder="所有場合"
+                        clearable
+                        key={selectedOccasion}
+                        // defaultSelectedKeys={['所有場合']}
+                        // selectedKeys={[selectedOption]}
+                        label="場合"
+                        labelPlacement="inside"
+                        className="max-w-xs w-36"
+                        // selectedKeys={selectedOccasion}
+                        // onSelectionChange={setSelectedOccasion}
+                        // value={setSelectedOccasion}
+                        // value={}
+                        defaultSelectedKeys={[selectedOccasion]}
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                        onChange={handleOccasionChange} // 在選項改變時觸發處理函數
+                        // id="selectItems"
                       >
-                        {item.title}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                        {occList.map((item, index) => (
+                          <SelectItem
+                            // className="occitem"
+                            key={item.title}
+                            value={item.title.trim()}
+                          >
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
+                    <div className="flex-row sm:flex flex-cols items-center space-x-4">
+                      <Select
+                        variant="faded"
+                        placeholder="所有顏色"
+                        // defaultSelectedKeys={['所有顏色']}
+                        label="顏色"
+                        clearable
+                        key={selectedColor}
+                        labelPlacement="inside"
+                        className="max-w-xs w-36"
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                        defaultSelectedKeys={[selectedColor]}
+                        onChange={handleColorChange} // 在選項改變時觸發處理函數
+                      >
+                        {colorList.map((item, index) => (
+                          <SelectItem key={item.title} value={item.title}>
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
+                    <div className="sm:flex flex-cols items-center space-x-4">
+                      <Select
+                        variant="faded"
+                        placeholder="所有對象"
+                        // defaultSelectedKeys={['所有對象']}
+                        label="對象"
+                        clearable
+                        key={selectedRole}
+                        labelPlacement="inside"
+                        className="max-w-xs w-36"
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                        defaultSelectedKeys={[selectedRole]}
+                        onChange={handleRoleChange}
+                      >
+                        {roleList.map((item, index) => (
+                          <SelectItem key={item.title} value={item.title}>
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
+                    <div className="sm:flex flex-cols items-center space-x-4">
+                      <Select
+                        variant="faded"
+                        placeholder="所有季節"
+                        // defaultSelectedKeys={['所有季節']}
+                        label="季節"
+                        clearable
+                        key={selectedSeason}
+                        labelPlacement="inside"
+                        className="max-w-xs w-36"
+                        scrollShadowProps={{
+                          isEnabled: false,
+                        }}
+                        onChange={handleSeasonChange}
+                        defaultSelectedKeys={[selectedSeason]}
+                      >
+                        {seasonList.map((item, index) => (
+                          <SelectItem key={item.title} value={item.title}>
+                            {item.title}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="hidden sm:flex flex-cols items-center space-x-4 justify-end">
+                    <Select
+                      variant="underlined"
+                      placeholder="請選擇"
+                      defaultSelectedKeys={[sortOption]}
+                      // defaultValue={['A→Z']}
+                      label="排序"
+                      clearable
+                      key={sortOption}
+                      labelPlacement="outside-left"
+                      className="max-w-xs w-36"
+                      scrollShadowProps={{
+                        isEnabled: false,
+                      }}
+                      onChange={(e) => handleSortChange(e)}
+                      // defaultSelectedKeys={[sortOption]}
+                    >
+                      {sortList.map((item, index) => (
+                        <SelectItem key={item.title} value={item.title}>
+                          {item.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
                 </div>
-                <div className="hidden sm:flex flex-cols items-center space-x-4">
-                  <Select
-                    placeholder="所有顏色"
-                    // defaultSelectedKeys={['所有顏色']}
-                    label="顏色"
-                    clearable
-                    key={selectedColor}
-                    labelPlacement="inside"
-                    className="max-w-xs w-36"
-                    scrollShadowProps={{
-                      isEnabled: false,
-                    }}
-                    defaultSelectedKeys={[selectedColor]}
-                    onChange={handleColorChange} // 在選項改變時觸發處理函數
-                  >
-                    {colorList.map((item, index) => (
-                      <SelectItem key={item.title} value={item.title}>
-                        {item.title}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                {/* ------------filter & sort desktop end------------*/}
+              </div>
+
+              {/* ------------filter & sort phone start------------*/}
+              <div className="mt-4 sm:hidden ">
+                <div className="sm: flex flex-row w-full gap-2 overflow-x-auto">
+                  <div className="h-12 flex-row sm:flex flex-cols items-center space-x-4 ">
+                    <Select
+                      variant="underlined"
+                      placeholder="所有場合"
+                      clearable
+                      key={selectedOccasion}
+                      // defaultSelectedKeys={['所有場合']}
+                      // selectedKeys={[selectedOption]}
+                      // label="場合"
+                      labelPlacement="inside"
+                      className="max-w-xs w-32"
+                      // selectedKeys={selectedOccasion}
+                      // onSelectionChange={setSelectedOccasion}
+                      // value={setSelectedOccasion}
+                      // value={}
+                      defaultSelectedKeys={[selectedOccasion]}
+                      scrollShadowProps={{
+                        isEnabled: false,
+                      }}
+                      onChange={handleOccasionChange} // 在選項改變時觸發處理函數
+                      // id="selectItems"
+                    >
+                      {occList.map((item, index) => (
+                        <SelectItem
+                          // className="occitem"
+                          key={item.title}
+                          value={item.title.trim()}
+                        >
+                          {item.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
+
+                  <div className="flex-row sm:flex flex-cols items-center space-x-4">
+                    <Select
+                      variant="underlined"
+                      placeholder="所有顏色"
+                      // defaultSelectedKeys={['所有顏色']}
+                      // label="顏色"
+                      clearable
+                      key={selectedColor}
+                      labelPlacement="inside"
+                      className="max-w-xs w-32"
+                      scrollShadowProps={{
+                        isEnabled: false,
+                      }}
+                      defaultSelectedKeys={[selectedColor]}
+                      onChange={handleColorChange} // 在選項改變時觸發處理函數
+                    >
+                      {colorList.map((item, index) => (
+                        <SelectItem key={item.title} value={item.title}>
+                          {item.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
+                  <div className="sm:flex flex-cols items-center space-x-4">
+                    <Select
+                      variant="underlined"
+                      placeholder="所有對象"
+                      // defaultSelectedKeys={['所有對象']}
+                      // label="對象"
+                      clearable
+                      key={selectedRole}
+                      labelPlacement="inside"
+                      className="max-w-xs w-32"
+                      scrollShadowProps={{
+                        isEnabled: false,
+                      }}
+                      defaultSelectedKeys={[selectedRole]}
+                      onChange={handleRoleChange}
+                    >
+                      {roleList.map((item, index) => (
+                        <SelectItem key={item.title} value={item.title}>
+                          {item.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
+                  <div className="sm:flex flex-cols items-center space-x-4">
+                    <Select
+                      variant="underlined"
+                      placeholder="所有季節"
+                      // defaultSelectedKeys={['所有季節']}
+                      // label="季節"
+                      clearable
+                      key={selectedSeason}
+                      labelPlacement="inside"
+                      className="max-w-xs w-32"
+                      scrollShadowProps={{
+                        isEnabled: false,
+                      }}
+                      onChange={handleSeasonChange}
+                      defaultSelectedKeys={[selectedSeason]}
+                    >
+                      {seasonList.map((item, index) => (
+                        <SelectItem key={item.title} value={item.title}>
+                          {item.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
                 </div>
-                <div className="hidden sm:flex flex-cols items-center space-x-4">
+                <div className="hidden sm:flex flex-cols items-center space-x-4 justify-end">
                   <Select
-                    placeholder="所有對象"
-                    // defaultSelectedKeys={['所有對象']}
-                    label="對象"
-                    clearable
-                    key={selectedRole}
-                    labelPlacement="inside"
-                    className="max-w-xs w-36"
-                    scrollShadowProps={{
-                      isEnabled: false,
-                    }}
-                    defaultSelectedKeys={[selectedRole]}
-                    onChange={handleRoleChange}
-                  >
-                    {roleList.map((item, index) => (
-                      <SelectItem key={item.title} value={item.title}>
-                        {item.title}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                </div>
-                <div className="hidden sm:flex flex-cols items-center space-x-4">
-                  <Select
-                    placeholder="所有季節"
-                    // defaultSelectedKeys={['所有季節']}
-                    label="季節"
-                    clearable
-                    key={selectedSeason}
-                    labelPlacement="inside"
-                    className="max-w-xs w-36"
-                    scrollShadowProps={{
-                      isEnabled: false,
-                    }}
-                    onChange={handleSeasonChange}
-                    defaultSelectedKeys={[selectedSeason]}
-                  >
-                    {seasonList.map((item, index) => (
-                      <SelectItem key={item.title} value={item.title}>
-                        {item.title}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                </div>
-                {/* ------------filter end------------*/}
-                {/* ------------sort start------------*/}
-                <div className="hidden sm:flex flex-cols items-center space-x-4">
-                  <Select
+                    variant="underlined"
                     placeholder="請選擇"
                     defaultSelectedKeys={[sortOption]}
                     // defaultValue={['A→Z']}
                     label="排序"
                     clearable
                     key={sortOption}
-                    labelPlacement="inside"
-                    className="max-w-xs w-36"
+                    labelPlacement="outside-left"
+                    className="max-w-xs w-32"
                     scrollShadowProps={{
                       isEnabled: false,
                     }}
@@ -668,25 +832,24 @@ export default function FlowersIndex() {
                     ))}
                   </Select>
                 </div>
-                {/* ------------sort end------------*/}
               </div>
-              {/* --------search & select & sort end--------*/}
+              {/* ------------filter & sort phone end------------*/}
+              {/* --------search & select & sort desktop end--------*/}
             </div>
 
             {/* --------花朵卡片群組-------- */}
             <div className="grid gap-y-4 my-14 ">
               <div className="gap- grid grid-cols-2 sm:grid-cols-4">
                 <Modal size={sizes} isOpen={isOpen} onClose={onClose}>
-                  <ModalContent>
+                  <ModalContent className="max-h-[90vh] overflow-y-auto">
                     {(onClose) => (
                       <>
                         <ModalHeader className="flex flex-col gap-1 text-center text-3xl text-tertiary-black font-bold ">
                           詳細介紹
                         </ModalHeader>
-                        <ModalBody className="flex flex-row bg-blue">
+                        <ModalBody className="flex flex-col sm:flex-row bg-blue">
                           <div
                             className="max-w-screen-2xl bg- px-12 pt-12
-
                         "
                           >
                             <Image
@@ -736,7 +899,9 @@ export default function FlowersIndex() {
                               <MyButton
                                 color="secondary"
                                 size="md"
-                                href={`http://localhost:3000/shop/${modalData ? modalData.flower_href : '#'}`}
+                                href={`http://localhost:3000/shop/${
+                                  modalData ? modalData.flower_href : '#'
+                                }`}
                                 as={Link}
                               >
                                 立即購買
@@ -768,7 +933,7 @@ export default function FlowersIndex() {
                     className="bg-transparent"
                   >
                     <CardBody className="static overflow-visible bg-">
-                      <div className="bg- pt-8 mx-4">
+                      <div className="sm:pt-8 mx-4 ">
                         <Image
                           isZoomed
                           removeWrapper
