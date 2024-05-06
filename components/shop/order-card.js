@@ -183,7 +183,7 @@ const OrderCard = ({ filterStatus }) => {
           <Pagination
             total={pageCount}
             initialPage={1}
-            // currentPage={currentPage}
+            page={currentPage}
             onChange={handlePageChange}
           />
         </div>
