@@ -28,7 +28,7 @@ import CardGroup from '@/components/course/card-group'
 import AverageStars from '@/components/course/star-average'
 import HeartButton from '@/components/course/btn-heart'
 import { useCourseFavorites } from '@/hooks/use-course-fav'
-import { useCart } from '@/context/course-cart-context'
+import CardGroupRecommend from '@/components/course/card-group-recommend'
 
 export default function CourseDetails() {
   const { auth } = useAuth() // 判斷會員用
@@ -65,15 +65,6 @@ export default function CourseDetails() {
   } = useDisclosure()
 
   const scrollContainerRef = useRef(null)
-
-  const scroll = (offset) => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft += offset
-    }
-  }
-
-  // 假設每張卡片的寬度加上間隔約是300px
-  const scrollAmount = 850 // 3張卡片的總寬度
 
   // FETCH 資料
   useEffect(() => {
@@ -117,7 +108,9 @@ export default function CourseDetails() {
 
     async function fetchRandomCourses() {
       try {
-        const response = await fetch('http://localhost:3005/api/courses/random')
+        const response = await fetch(
+          'http://localhost:3005/api/courses/random-sm'
+        )
         const data = await response.json()
         if (data.status === 'success' && Array.isArray(data.data.courses)) {
           // TODO:
@@ -313,26 +306,10 @@ export default function CourseDetails() {
             {/* 推薦課程 */}
             <div className="flex flex-col gap-5 mb-[80px]">
               <Subtitle text="推薦課程" />
-              <div className="flex flex-col relative">
-                <div className="cardgroup-wrapper" ref={scrollContainerRef}>
-                  <CardGroup courses={randomCourses} />
+              <div className="relative">
+                <div /*className="cardgroup-wrapper"*/ ref={scrollContainerRef}>
+                  <CardGroupRecommend courses={randomCourses} />
                 </div>
-                <MyButton
-                  onClick={() => scroll(-scrollAmount)}
-                  color="white"
-                  className="shadow-md rounded-full absolute z-20 left-0 -translate-x-1/2 transform top-1/2 -translate-y-1/2"
-                  isIconOnly
-                >
-                  <BsChevronLeft className="w-4 h-4" />
-                </MyButton>
-                <MyButton
-                  onClick={() => scroll(scrollAmount)}
-                  color="white"
-                  className="shadow-md rounded-full absolute z-20 right-0 translate-x-1/2 transform top-1/2 -translate-y-1/2"
-                  isIconOnly
-                >
-                  <BsChevronRight className="w-4 h-4" />
-                </MyButton>
               </div>
             </div>
           </div>

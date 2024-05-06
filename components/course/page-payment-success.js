@@ -113,7 +113,7 @@ export default function CoursePaymentSuccess() {
             <TableRow key="2">
               <TableCell>訂單金額</TableCell>
               <TableCell>
-                NT${orderDetails ? orderDetails.total_cost : '載入中'}
+                NT${orderDetails ? orderDetails.payment_amount : '載入中'}
               </TableCell>
             </TableRow>
             <TableRow key="3">
@@ -135,7 +135,7 @@ export default function CoursePaymentSuccess() {
               </TableCell>
             </TableRow>
             <TableRow key="6">
-              <TableCell>發票</TableCell>
+              <TableCell>發票種類</TableCell>
               <TableCell>
                 {orderDetails ? orderDetails.invoice.name : '載入中'}
               </TableCell>

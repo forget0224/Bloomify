@@ -124,14 +124,12 @@ export default function Home() {
                 ref={addToRefs}
               >
                 <div
-                  className="h-full w-[800px]"
+                  className="h-full w-[800px] mix-blend-multiply"
                   style={{
-                    backgroundImage: `url(/index/flowerstore.png)`,
+                    backgroundImage: `url(/index/flowerstore.jpg)`,
                   }}
                 ></div>
-                <div className="text-3xl flex-1  text-center">
-                  How it works?
-                </div>
+                <div className="text-3xl flex-1 text-center">How it works?</div>
               </div>
 
               <div
