@@ -1,4 +1,4 @@
-import React, { Fragment, forwardRef } from 'react'
+import React, { Fragment, forwardRef, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 // import { useState } from 'react'
 import { useAuth } from '@/hooks/use-auth'
@@ -21,7 +21,7 @@ import { CiShoppingCart } from 'react-icons/ci'
 import { CiUser } from 'react-icons/ci'
 import FlowerIcon from '../index/FlowerIcon'
 const IndexNav = forwardRef(
-  ({ activePage, bgColor = 'primary-300', showNav = true }, ref) => {
+  ({ activePage, bgColor = 'primary-300', showNav = true }, ref, pref) => {
     const { t } = useTranslation()
 
     const menuItems = [
@@ -74,6 +74,12 @@ const IndexNav = forwardRef(
           <NavbarContent className="sm:hidden" justify="start">
             <NavbarMenuToggle />
           </NavbarContent>
+          <NavbarContent className="sm:hidden flex" justify="start">
+            <FlowerIcon
+              ref={pref}
+              className="w-full h-24 text-tertiary-black "
+            />
+          </NavbarContent>
 
           <NavbarContent className="hidden sm:flex gap-4" justify="center">
             {menuItems.map((item, index) => (
@@ -81,14 +87,7 @@ const IndexNav = forwardRef(
                 {item.subMenu.length > 0 ? (
                   <Dropdown>
                     <DropdownTrigger>
-                      <Button
-                        // className={`bg-red-100 ${
-                        //   activePage === item.name
-                        //     ? ' border-b-3  border-red-700'
-                        //     : ''
-                        // }`}
-                        className="bg-transparent"
-                      >
+                      <Button className="bg-transparent text-base">
                         {item.chineseName}
                       </Button>
                     </DropdownTrigger>
@@ -126,12 +125,15 @@ const IndexNav = forwardRef(
             justify="end"
             // style={{ backgroundColor: 'blue', padding: '10px' }}
           >
-            <NavbarItem>
-              <Link href={auth.isAuth ? '/cart' : '/member/login'}>
-                <CiShoppingCart className="w-8 h-8 text-tertiary-black" />
-              </Link>
-            </NavbarItem>
-            <NavbarItem className="lg:flex">
+            {auth.isAuth && (
+              <NavbarItem className="sm:flex   items-end justify-end">
+                <Link href="/cart">
+                  {' '}
+                  <CiShoppingCart className="w-8 h-10  text-tertiary-black align-bottom	" />
+                </Link>
+              </NavbarItem>
+            )}
+            <NavbarItem className="sm:flex   items-end justify-end">
               <Link href={auth.isAuth ? '/center' : '/member/login'}>
                 <CiUser className="w-8 h-8 text-tertiary-black" />
               </Link>
@@ -145,7 +147,7 @@ const IndexNav = forwardRef(
                   <Dropdown>
                     <DropdownTrigger>
                       <Button
-                        className={`bg-red-100 ${
+                        className={`bg-transparent text-base  ${
                           activePage === item.name
                             ? ' border-b-3 border-red-700'
                             : ''

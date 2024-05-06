@@ -51,18 +51,6 @@ export default function HomeNav({ activePage }) {
         { href: 'game', chineseName: '花占卜' },
       ],
     },
-    // {
-    //   name: 'about',
-    //   chineseName: '關於我們',
-    //   href: '',
-    //   subMenu: [],
-    // },
-    // {
-    //   name: 'join',
-    //   chineseName: '加入我們',
-    //   href: '',
-    //   subMenu: [],
-    // },
   ]
   const { auth } = useAuth()
 
@@ -85,19 +73,14 @@ export default function HomeNav({ activePage }) {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem>
-          <Link color="foreground" href="/template">
-            範例
-          </Link>
-        </NavbarItem>
+      <NavbarContent className="hidden sm:flex gap-4 w-full" justify="center">
         {menuItems.map((item, index) => (
           <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
                 <DropdownTrigger>
                   <Button
-                    className={`bg-red-100 ${
+                    className={`bg-transparent text-base ${
                       activePage === item.name
                         ? ' border-b-3  border-red-700'
                         : ''
@@ -131,10 +114,7 @@ export default function HomeNav({ activePage }) {
         ))}
       </NavbarContent>
 
-      <NavbarContent
-        justify="end"
-        // style={{ backgroundColor: 'blue', padding: '10px' }}
-      >
+      <NavbarContent justify="end">
         <NavbarItem className="relative">
           {auth.isAuth && (
             <div
@@ -174,10 +154,8 @@ export default function HomeNav({ activePage }) {
               <Dropdown>
                 <DropdownTrigger>
                   <Button
-                    className={`bg-red-100 ${
-                      activePage === item.name
-                        ? ' border-b-3 border-red-700'
-                        : ''
+                    className={`bg-transparent ${
+                      activePage === item.name ? ' ' : ''
                     }`}
                   >
                     {item.chineseName}

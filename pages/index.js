@@ -5,14 +5,10 @@ import Link from 'next/link'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
 import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
-import styles from './iindex.module.css'
-import cardflip from '@/assets/index_cardflip.png'
 import bannerFlower from '@/assets/banner-flower.jpg'
-import SmoothScroll from '@/components/index/SmoothScroll'
-import ImageList from '@/components/index/ImageList'
 import Footer from '@/components/layout/footer'
 import IndexNav from '@/components/layout/indexnav'
-
+import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import {
   Card,
@@ -29,15 +25,34 @@ gsap.registerPlugin(ScrollTrigger)
 export default function Home() {
   const { t } = useTranslation()
   const [activePage, setActivePage] = useState('home')
+  const bgD1 = '/index/img_index_bg_01.jpg'
+  const bgM1 = '/index/img_index_bg_mb_01.jpg'
+  const bgD2 = '/index/img_index_bg_02.jpg'
+  const bgM2 = '/index/img_index_bg_mb_02.jpg'
+  const bgD3 = '/index/img_index_bg_03.jpg'
+  const bgM3 = '/index/img_index_bg_mb_03.jpg'
+  const bgD4 = '/index/img_index_bg_04.jpg'
+  const bgM4 = '/index/img_index_bg_mb_04.jpg'
+  const [bgImg1, setBgImage1] = useState(null)
+  const [bgImg2, setBgImage2] = useState(null)
+  const [bgImg3, setBgImage3] = useState(null)
+  const [bgImg4, setBgImage4] = useState(null)
   const [showNav, setShowNav] = useState(false)
   const svgRef = useRef(null)
   const options = {
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   }
-
   const sectionRef = useRef(null)
   const horizontalRef = useRef([])
+  // const secondRef = useRef(null)
+  // const secondBox = useRef(null)
+  const isDesktop = useMediaQuery({
+    query: '(min-width: 1024px)',
+  })
+  const isMobile = useMediaQuery({
+    query: '(max-width: 375px)',
+  })
 
   useEffect(() => {
     const section = sectionRef.current
@@ -85,6 +100,21 @@ export default function Home() {
     }
   }, [])
 
+  // useEffect(() => {
+  //   if (secondRef.current && secondBox.current) {
+  //     gsap.to(secondBox.current, {
+  //       yPercent: -20,
+  //       ease: 'none',
+  //       scrollTrigger: {
+  //         trigger: secondRef.current,
+  //         start: 'top bottom',
+  //         end: 'bottom top',
+  //         scrub: true,
+  //       },
+  //     })
+  //   }
+  // }, [])
+
   const addToRefs = (el) => {
     if (el && !horizontalRef.current.includes(el)) {
       horizontalRef.current.push(el)
@@ -106,9 +136,22 @@ export default function Home() {
       hoverStates.map((state, i) => (i === index ? false : state))
     )
   }
+
+  useEffect(() => {
+    setBgImage1(isDesktop ? bgD1 : bgM1)
+    setBgImage2(isDesktop ? bgD2 : bgM2)
+    setBgImage3(isDesktop ? bgD3 : bgM3)
+    setBgImage4(isDesktop ? bgD4 : bgM4)
+  }, [isDesktop])
+
   return (
     <>
-      <IndexNav showNav={showNav} bgColor="transparent" ref={svgRef} />
+      <IndexNav
+        showNav={showNav}
+        bgColor="transparent"
+        ref={svgRef}
+        pref={svgRef}
+      />
       <ReactLenis root options={options}>
         <section
           className={`flex flex-row overflow-hidden min-h-screen bg-secondary-300`}
@@ -117,30 +160,32 @@ export default function Home() {
           <div className="">
             <div className="w-full h-full flex flex-row">
               <div
-                className="flex flex-row items-center w-screen"
+                className="flex flex-row items-center w-screen relative object-fit"
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_01.jpg)`,
+                  backgroundImage: `url(${bgImg1})`,
                 }}
                 ref={addToRefs}
               >
                 <div
-                  className="h-full w-[800px] mix-blend-multiply"
+                  className="h-full sm:w-[800px] bg-contain bg-no-repeat bg-bottom  w-full mix-blend-multiply"
                   style={{
-                    backgroundImage: `url(/index/flowerstore.jpg)`,
+                    backgroundImage: `url(/index/flowerstore.png)`,
                   }}
                 ></div>
-                <div className="text-3xl flex-1 text-center">How it works?</div>
+                <div className="sm:text-3xl flex-1 text-center  text-xl  sm:relative   absolute top-12 right-6">
+                  How it works?
+                </div>
               </div>
 
               <div
                 className="flex flex-row items-center w-screen "
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_02.jpg)`,
+                  backgroundImage: `url(${bgImg2})`,
                 }}
                 ref={addToRefs}
               >
                 <div className="h-full w-full flex  justify-center relative">
-                  <div className="sm:w-[1000px] flex flex-wrap items-center ">
+                  <div className="sm:w-[1000px] w-[300px]  flex flex-wrap items-center ">
                     {' '}
                     {hoverStates.map((isHovered, i) => (
                       <div
@@ -162,7 +207,7 @@ export default function Home() {
                       />
                     ))}
                   </div>
-                  <div className="text-4xl absolute top-1/2 ">
+                  <div className="sm:text-4xl absolute top-1/2 text-lg">
                     Pick a flower
                   </div>
                 </div>
@@ -171,26 +216,28 @@ export default function Home() {
               <div
                 className="flex flex-row items-center w-screen "
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_03.jpg)`,
+                  backgroundImage: `url(${bgImg3})`,
                 }}
                 ref={addToRefs}
               >
-                <div className="sm:w-[1000px] h-full flex flex-row justify-center items-center mx-auto">
+                <div className="sm:w-[1000px] w-[300px]  h-full flex flex-row justify-center items-center mx-auto">
                   <div className="flex flex-col">
-                    <div className="text-[100px] flex-1  text-center ">
+                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
                       Design
                     </div>
-                    <div className="text-[100px] flex-1  text-center ">
+                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
                       your
                     </div>
-                    <div className="text-[100px] flex-1  text-center ">own</div>
-                    <div className="text-[100px] flex-1  text-center ">
+                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
+                      own
+                    </div>
+                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
                       bouquet
                     </div>
                   </div>
 
                   <div
-                    className="h-[600px] w-[400px]"
+                    className="sm:h-[600px] sm:w-[400px]    h-[300px] w-[200px]"
                     style={{
                       backgroundImage: `url(/index/bouquet.png)`,
                       backgroundSize: 'contain',
@@ -204,13 +251,13 @@ export default function Home() {
               <div
                 className="flex flex-row items-center w-screen "
                 style={{
-                  backgroundImage: `url(/index/img_index_bg_04.jpg)`,
+                  backgroundImage: `url(${bgImg4})`,
                 }}
                 ref={addToRefs}
               >
-                <div className="sm:w-[1000px] h-[600px] flex flex-row justify-center items-center mx-auto">
+                <div className="sm:w-[1000px] sm:h-[600px]  w-[300px]  h-[200px]  flex flex-row justify-center items-center mx-auto">
                   <div
-                    className="h-[600px] w-[650px] flex items-end justify-start"
+                    className="sm:h-[600px] sm:w-[650px]   h-[300px] w-[350px]   flex items-end justify-start"
                     style={{
                       backgroundImage: `url(/index/car.png)`,
                       backgroundSize: 'cover',
@@ -256,11 +303,13 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="w-screen min-h-screen flex-col items-center justify-between relative ">
+      <div
+        className="w-screen min-h-screen flex-col items-center justify-between relative "
+        style={{ background: `url(${bgImg2})` }}
+      >
         <ChangeCard />
       </div>
 
-      {/* cardsection */}
       <section className="bg-secondary-300 w-screen min-h-screen">
         <div className="flex sm:flex-row flex-col justify-center items-center min-h-screen gap-8">
           <div className="sm:w-[580px] h-auto">

@@ -146,9 +146,9 @@ export default function Sidebar() {
             我的訂單
           </Link>
           <Link
-            href="/center/favorite"
+            href="/center/custom-favorite"
             className={`hover:text-primary-100 ${
-              isActive('/custom/center-custom/favorite')
+              isActive('/custom/center/custom-favorite')
                 ? 'text-primary-100'
                 : ''
             }`}

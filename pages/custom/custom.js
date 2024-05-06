@@ -53,27 +53,7 @@ export default function Custom() {
 
   const { state, dispatch } = useFlowerCart()
   const { setImagesInfo } = useFlower()
-  // useEffect(() => {
-  //   if (state.products && state.products.length > 0) {
-  //     const productPayload = state.products.map((product) => ({
-  //       product_id: product.product_id,
-  //       product_name: product.product_name,
-  //       product_price: product.product_price,
-  //       url: product.image_url,
-  //       color: product.color,
-  //       left: product.left ? product.left : 0,
-  //       top: product.top ? product.top : 0,
-  //       zIndex: product.zIndex ? product.zIndex : 0,
-  //       angle: product.angle ? product.angle : 0,
-  //     }))
 
-  //     setImagesInfo(productPayload)
-  //     dispatch({
-  //       type: 'ADD_PRODUCTS',
-  //       payload: [],
-  //     })
-  //   }
-  // }, [])
   useEffect(() => {
     if (state.store_id && state.store_name && state.store_address) {
       setSelectedStore({
@@ -227,12 +207,6 @@ export default function Custom() {
     })
   }
 
-  const [imageUrl, setImageUrl] = useState('')
-
-  const handleSelectImage = (selectedUrl) => {
-    setImageUrl(selectedUrl)
-  }
-
   return (
     <StoreProvider>
       <FlowerProvider>
@@ -252,7 +226,7 @@ export default function Custom() {
                             <div className="hidden sm:block">
                               <LayerFloat />
                             </div>
-                            <div className="bg-secondary-200 sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full">
+                            <div className="sm:w-[500px] sm:h-[590px] m-auto relative w-[375px] h-full">
                               <WorkingArea />
                             </div>
                           </>
