@@ -167,9 +167,9 @@ export default function Home() {
                 ref={addToRefs}
               >
                 <div
-                  className="h-full sm:w-[800px] bg-contain bg-no-repeat bg-bottom  w-full mix-blend-multiply"
+                  className="h-full sm:w-[745px] bg-contain bg-no-repeat bg-bottom w-full mix-blend-multiply"
                   style={{
-                    backgroundImage: `url(/index/flowerstore.png)`,
+                    backgroundImage: `url(/index/flowerstore.jpg)`,
                   }}
                 ></div>
                 <div className="sm:text-3xl flex-1 text-center  text-xl  sm:relative   absolute top-12 right-6">
