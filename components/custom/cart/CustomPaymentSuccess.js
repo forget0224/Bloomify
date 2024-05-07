@@ -99,7 +99,7 @@ export default function CustomPaymentSuccess() {
             </TableRow>
             <TableRow key="7">
               <TableCell>發票</TableCell>
-              <TableCell>{orderResult?.invoiceOption}</TableCell>
+              <TableCell>{orderResult?.invoiceType}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

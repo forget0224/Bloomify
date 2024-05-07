@@ -116,11 +116,11 @@ export default function CustomCheckOut() {
         z_index: product.z_index,
         rotate: product.rotate,
       })),
-      delivery_date: contactStorage.deliveryDate.replace(/\//g, '-'), // 將日期格式從 YYYY/MM/DD 改為 YYYY-MM-DD
-      delivery_time: `${contactStorage.deliveryTime}:00:00`, // 時間格式為 HH:MM:SS
+      delivery_date: contactStorage.deliveryDate.replace(/\//g, '-'),
+      delivery_time: `${contactStorage.deliveryTime}:00:00`,
       member_id: userData.id,
       store_id: flowerStorage.store_id,
-      shipping_id: contactStorage.shipping_id || 1, // 預設值為1
+      shipping_id: contactStorage.shipping_id || 1,
       sender_name: contactStorage.senderName,
       sender_tel: contactStorage.senderNumber,
       recipient_name: contactStorage.recipientName,
@@ -129,10 +129,11 @@ export default function CustomCheckOut() {
       total,
       payment_method: contactStorage.paymentMethod,
       payment_status: 2,
-      shipping_method: contactStorage.shippingMethod || 1, // 預設值為1
-      shipping_status: contactStorage.shippingStatus || 1, // 預設值為1
+      shipping_method: contactStorage.shippingMethod || 1,
+      shipping_status: contactStorage.shippingStatus || 1,
       order_status: 1, // 預設值為1
       discount: contactStorage.discount || 0, // 預設值為0
+      invoice_id: 1,
     }
     console.log(orderData)
     console.log(orderData.image_url)
