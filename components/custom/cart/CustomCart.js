@@ -183,7 +183,7 @@ export default function CustomCart() {
                   </div>
 
                   <div className="sm:w-[80px] text-center text-sm   text-tertiary-black ">
-                    {item.count}
+                    {item.positions ? item.positions.length : 0}
                     {item.product_category === 'card'
                       ? '張'
                       : item.product_category === 'package'
