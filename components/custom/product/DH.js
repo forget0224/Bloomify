@@ -100,7 +100,7 @@ const DraggableProductList = ({ productList }) => {
               // onPress={handleCardClick(item.id)}
               onClick={() => handleCardClick(item.template_id)}
             >
-              <CardBody className="p-0">
+              <CardBody className="p-0  bg-secondary-200">
                 <div
                   style={{ backgroundImage: `url(${item.image_url})` }}
                   className="bg-contain bg-center bg-no-repeat aspect-video w-full rounded-t-xl"
