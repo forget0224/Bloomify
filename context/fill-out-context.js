@@ -17,6 +17,7 @@ export const FillOutProvider = ({ children }) => {
       deliveryDate: '',
       deliveryTime: '',
       couponCode: '',
+      discount: '',
       paymentMethod: '',
       invoiceOption: '',
       mobileBarcode: '',

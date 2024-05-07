@@ -113,7 +113,6 @@ export default function CourseDetails() {
         )
         const data = await response.json()
         if (data.status === 'success' && Array.isArray(data.data.courses)) {
-          // TODO:
           // 使用 addFavoritesStatusToCourses 來整合收藏狀態
           const updatedCourses = addFavoritesStatusToCourses(data.data.courses)
           // 處理隨機課程數據
