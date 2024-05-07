@@ -34,6 +34,14 @@ export default function CardGroup({ courses }) {
     )
   }
 
+  // 花束袋-藍, 花束
+
+  // parts = [花束, 袋-藍]
+
+  // <span key={index} className="highlight">
+  //            花束
+  // </span>  袋-藍
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {courses.map((course) => (

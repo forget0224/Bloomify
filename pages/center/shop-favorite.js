@@ -24,20 +24,21 @@ export default function Favorite() {
   const [favProducts, setFavProducts] = useState([])
   console.log(favProducts)
 
-  useEffect(() => {
-    async function fetchFavProducts() {
-      try {
-        const res = await fetch(`http://localhost:3005/api/product-favorites`)
-        const data = await res.json()
-        if (data.status === 'success') {
-          setFavProducts(data.data)
-        } else {
-          console.error('Failed to fetch products:', data.message)
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error)
+  async function fetchFavProducts() {
+    try {
+      const res = await fetch(`http://localhost:3005/api/product-favorites`)
+      const data = await res.json()
+      if (data.status === 'success') {
+        setFavProducts(data.data)
+      } else {
+        console.error('Failed to fetch products:', data.message)
       }
+    } catch (error) {
+      console.error('Error fetching products:', error)
     }
+  }
+
+  useEffect(() => {
     fetchFavProducts()
   }, [])
 
@@ -147,7 +148,7 @@ export default function Favorite() {
                             <HeartButton
                               productId={product.id}
                               opacity="text-opacity-40"
-                              // onRemove={removeProductFromFavorites}
+                              fetchFavProducts={fetchFavProducts}
                             />
                           </div>
                           <Card

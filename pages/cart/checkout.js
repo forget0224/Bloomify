@@ -5,7 +5,6 @@ import { useAuth } from '@/hooks/use-auth'
 import CustomCheckOut from '@/components/custom/cart/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
 import ShopCheckOut from '@/pages/shop/line-pay/order-confirm'
-// import ShopCheckOut from '@/components/shop/shop-checkout'
 import DefaultLayout from '@/components/layout/default-layout'
 
 export default function Confirm() {
@@ -45,9 +44,6 @@ export default function Confirm() {
       isComplete: false,
     },
   ]
-  // const submitStepper = () => {
-  //   console.log('submitted')
-  // }
 
   //商品列表 table 樣式
   const tableStyles = {
