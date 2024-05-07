@@ -71,9 +71,16 @@ export default function ShopCart() {
                   </Button>
                   <div style={{ width: '100px' }}>
                     <Input
+                      min={1}
                       style={{ textAlign: 'center' }}
                       value={item.quantity}
-                      onChange={(e) => handleChange(item.id, e)}
+                      onChange={(e) => {
+                        // const count = e.target.value
+                        // rexp
+                        // if (isValidCount) {
+                        // }
+                        handleChange(item.id, e)
+                      }}
                     />
                   </div>
                   <Button

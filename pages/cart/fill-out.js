@@ -373,7 +373,16 @@ export default function FillOut() {
   }
 
   // 訂購人資料同會員資料
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked
+    if (!isChecked) {
+      // going to be unchecked
+      // clear the states of sender
+      setSenderName('')
+      setSenderNumber('')
+      setSenderEmail('')
+    }
+
     setUseMemberInfo(!useMemberInfo)
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors }

@@ -25,6 +25,7 @@ import Swal from 'sweetalert2'
 import { useCart } from '@/context/shop-cart-context'
 import HeartButton from '@/components/shop/btn-heart'
 import ReviewTabPage from '@/components/shop/review-tab-page'
+import Head from 'next/head'
 
 export default function Detail() {
   const { cartItems, setCartItems } = useCart()
@@ -38,6 +39,7 @@ export default function Detail() {
     images: [],
     reviews: [],
   })
+  // console.log(product)
   // 購物車商品數量用
   const [quantity, setQuantity] = useState(1)
 
@@ -192,7 +194,7 @@ export default function Detail() {
         [product.id]: { ...product, quantity: quantity },
       }
       setCartItems(updatedCartItems)
-      router.push('/cart')
+      router.push('/cart?tab=shop')
     }
   }
   // const addToCart = () => {
@@ -236,6 +238,9 @@ export default function Detail() {
         activePage={activePage}
         className="flex flex-col justify-center items-center"
       >
+        <Head>
+          <title>{product.name}</title>
+        </Head>
         {/* 置中 & 背景色 */}
         <main className="flex flex-col justify-center items-center bg-white">
           {/* 主要容器 */}
@@ -559,7 +564,9 @@ export default function Detail() {
                       product.reviews,
                       star.id
                     )
-                    console.log('filteredReviews', filteredReviews)
+                    {
+                      /* console.log('filteredReviews', filteredReviews) */
+                    }
 
                     return (
                       <Tab
