@@ -115,9 +115,9 @@ export default function Index() {
     // eslint-disable-next-line
   }, [auth, userInfo.avatar])
 
-  useEffect(() => {
-    handleCheckAuth()
-  }, [])
+  // useEffect(() => {
+  //   handleCheckAuth()
+  // }, [])
 
   return (
     <DefaultLayout activePage={activePage}>
