@@ -102,8 +102,8 @@ const DraggableProductList = ({ productList }) => {
             >
               <CardBody className="p-0">
                 <div
-                  style={{ backgroundImage: `url(${item.src})` }}
-                  className="bg-cover bg-center aspect-video w-full rounded-t-xl"
+                  style={{ backgroundImage: `url(${item.image_url})` }}
+                  className="bg-contain bg-center bg-no-repeat aspect-video w-full rounded-t-xl"
                 ></div>
               </CardBody>
               <CardHeader className="flex flex-col items-start">
