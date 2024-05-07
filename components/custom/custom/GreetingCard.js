@@ -86,8 +86,8 @@ const GreetingCard = () => {
         transition={{ duration: 0.5, ease: 'easeInOut' }}
       >
         <div
-          className="    absolute sm:bottom-2 right-2 sm:bg-transparent  rounded-full p-2 flex items-center justify-center z-10 bottom-0"
-          style={{ width: '30px', height: '30px' }}
+          className="    absolute sm:bottom-2 right-2 sm:bg-transparent  rounded-full pt-2 flex items-center justify-center z-10 bottom-0"
+          style={{ width: '35px', height: '35px' }}
           onClick={(e) => {
             e.stopPropagation()
             toggleEditing()
@@ -96,7 +96,7 @@ const GreetingCard = () => {
           {editing ? (
             <CiCircleCheck className="text-2xl text-gray-600 text-bold" />
           ) : (
-            <MdEdit className="text-lg text-gray-600" />
+            <MdEdit className="text-xl text-gray-600" />
           )}
         </div>
 
