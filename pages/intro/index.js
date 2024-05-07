@@ -8,6 +8,7 @@ import { Link, Select, SelectItem } from '@nextui-org/react'
 // import SearchBtn from '@/components/intro/search-btn'
 import { CiSearch } from 'react-icons/ci'
 // import introData from '../../data/introData.json'
+import Head from 'next/head'
 import {
   Modal,
   ModalContent,
@@ -471,6 +472,9 @@ export default function FlowersIndex() {
       activePage={activePage}
       className="flex flex-col justify-center items-center"
     >
+      <Head>
+        <title>花圖鑑</title>
+      </Head>
       {/* 置中 & 背景色 */}
       <main className="flex flex-col justify-center items-center bg-white">
         {/* 主要容器 */}
@@ -480,7 +484,7 @@ export default function FlowersIndex() {
             {underlines.map((u) => (
               <div key={u}>
                 <Breadcrumbs underline={u}>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem href="/">首頁</BreadcrumbItem>
                   <BreadcrumbItem>花與遊戲</BreadcrumbItem>
                   <BreadcrumbItem color="primary">花圖鑑</BreadcrumbItem>
                 </Breadcrumbs>
@@ -849,7 +853,7 @@ export default function FlowersIndex() {
                         </ModalHeader>
                         <ModalBody className="flex flex-col sm:flex-row bg-blue">
                           <div
-                            className="max-w-screen-2xl bg- px-12 pt-12
+                            className="pb-8 sm:max-w-screen-2xl bg- px-12 pt-12 
                         "
                           >
                             <Image
