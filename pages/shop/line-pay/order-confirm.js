@@ -126,6 +126,7 @@ const ShopCheckout = () => {
       'rounded-xl',
     ],
   }
+
   return (
     <div className="flex flex-col w-full lg:w-8/12 gap-14">
       {/* order-detail start */}

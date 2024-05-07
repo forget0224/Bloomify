@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, Fragment } from 'react'
 import { useRouter } from 'next/router'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -33,8 +33,27 @@ import Swal from 'sweetalert2'
 import { useCart } from '@/context/shop-cart-context'
 import { useProductFavorites } from '@/context/shop-fav-context'
 import HeartButton from '@/components/shop/btn-heart'
+import Head from 'next/head'
 
 export default function Shop() {
+  function highlightKeyword(text, keyword) {
+    if (!keyword) return text // 如果沒有關鍵字，直接返回原文本
+    const parts = text.split(new RegExp(`(${keyword})`, 'gi'))
+    return (
+      <>
+        {parts.map((part, index) =>
+          part.toLowerCase() === keyword.toLowerCase() ? (
+            <span key={index} className="highlight">
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    )
+  }
+
   const { cartItems, setCartItems } = useCart()
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
@@ -252,12 +271,6 @@ export default function Shop() {
   }, [page])
 
   const notify = () => toast.success('已成功加入購物車')
-  // const handleCartClick = (product) => {
-  //   // 呼叫 toast 通知
-  //   notify()
-  //   // 將產品加入到購物車
-  //   addToCart(product)
-  // }
   const handleCartClick = (product) => {
     if (!isAuth) {
       // 用戶未登入，顯示提示信息
@@ -308,6 +321,7 @@ export default function Shop() {
         ),
     [products, selectedSubcategoryIds, selectedColors, order, searchTerm]
   )
+  // console.log(filterProduct)
 
   // 加入購物車
   const addToCart = (product) => {
@@ -324,6 +338,9 @@ export default function Shop() {
     <DefaultLayout activePage={activePage}>
       {
         <>
+          <Head>
+            <title>線上商城</title>
+          </Head>
           {/* 置中 & 背景色 */}
           <main className="flex flex-col justify-center items-center bg-white">
             {/* 主要容器 */}
@@ -468,6 +485,7 @@ export default function Shop() {
                     order={order}
                     setOrder={setOrder}
                     resetSelection={resetSelection}
+                    handleSearch={handleSearch}
                   />
                 </div>
               </div>
@@ -569,7 +587,7 @@ export default function Shop() {
                           }
 
                           return (
-                            <>
+                            <Fragment key={product.id}>
                               <div className="relative">
                                 {auth.isAuth && (
                                   <div
@@ -615,7 +633,10 @@ export default function Shop() {
                                   <CardHeader className="block text-left">
                                     <div className="flex justify-between">
                                       <p className="text-xl truncate">
-                                        {product.name}
+                                        {highlightKeyword(
+                                          product.name,
+                                          searchTerm
+                                        )}
                                       </p>
                                       <p className="text-base flex items-center space-x-1">
                                         <BsFillStarFill className="text-secondary-100" />
@@ -651,7 +672,7 @@ export default function Shop() {
                                   </CardFooter>
                                 </Card>
                               </div>
-                            </>
+                            </Fragment>
                           )
                         })}
                     </div>

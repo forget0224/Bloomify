@@ -11,20 +11,21 @@ import CustomCart from '@/components/custom/cart/CustomCart'
 export default function Cart() {
   const [activePage, setActivePage] = useState('cart')
 
-  // const router = useRouter()
-  // const [activeTab, setActiveTab] = useState('custom')
-  // useEffect(() => {
-  //   console.log('Router is ready:', router.isReady)
-  //   console.log('Tab query:', router.query.tab)
-  //   if (router.isReady) {
-  //     const tabQuery = router.query.tab
-  //     if (tabQuery) {
-  //       setActiveTab(tabQuery)
-  //     } else {
-  //       setActiveTab('custom')
-  //     }
-  //   }
-  // }, [router.isReady, router.query.tab])
+  const router = useRouter()
+  const [activeTab, setActiveTab] = useState('custom')
+
+  useEffect(() => {
+    console.log('Router is ready:', router.isReady)
+    console.log('Tab query:', router.query.tab)
+    if (router.isReady) {
+      const tabQuery = router.query.tab
+      if (tabQuery) {
+        setActiveTab(tabQuery)
+      } else {
+        setActiveTab('custom')
+      }
+    }
+  }, [router.isReady, router.query.tab])
   // console.log('qKey', activeTab)
 
   // stepper
@@ -98,8 +99,8 @@ export default function Cart() {
           {/* Tab */}
           <div className="flex w-screen flex-col bg-white items-center justify-around">
             <Tabs
-              // selectedKey={activeTab}
-              // onChange={setActiveTab}
+              selectedKey={activeTab}
+              onSelectionChange={(e) => setActiveTab(e)}
               aria-label="Options"
               color="primary"
               variant="underlined"

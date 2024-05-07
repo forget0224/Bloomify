@@ -7,7 +7,7 @@ export default function SearchBtn({ onSearch }) {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (onSearch) {
-      onSearch(searchTerm)
+      onSearch(searchTerm) // setSearch in the parent component.
     }
     setSearchTerm('')
   }
