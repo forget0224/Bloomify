@@ -189,6 +189,7 @@ export default function LayerContent() {
       product_price: img.product_price,
       url: img.url,
       name: img.name,
+      color: img.color,
       left: img.left + 10 + centerX,
       top: img.top + 10 + centerY,
       scaleX: img.scaleX || 1,
@@ -247,9 +248,9 @@ export default function LayerContent() {
   }, [canvasRef, setSelectedImageId])
 
   return (
-    <div className="text-tertiary-black w-full h-full flex flex-col justify-center items-center">
+    <div className="text-tertiary-black w-full h-full flex flex-col  items-center">
       <div className="text-tertiary-gray-100 w-60 text-center py-4">
-        <p className="text-xs">Manage your flower layers below:</p>
+        <p className="text-xs">管理花朵圖層</p>
       </div>
       <div className="h-auto w-full overflow-auto">
         {imagesInfo &&
