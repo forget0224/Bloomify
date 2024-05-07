@@ -66,7 +66,7 @@ export default function FavoriteCard() {
           >
             <CardBody
               style={{ backgroundImage: `url(${item.image_url})` }}
-              className="bg-cover bg-center aspect-video w-full rounded-t-xl p-0"
+              className="bg-contain bg- bg-no-repeat bg-center aspect-video w-full rounded-t-xl p-0"
             ></CardBody>
             <CardHeader className="flex flex-col items-start">
               <div className="flex flex-row items-center justify-between w-full">

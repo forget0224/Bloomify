@@ -104,33 +104,76 @@ export default function Detail() {
     router.push('/custom/custom')
   }
 
-  const handleAddToCart = () => {
-    dispatch({
-      type: 'SET_BOUQUET_INFO',
-      payload: {
-        template_name: product?.template_name,
-        image_url: product?.image_url,
-        store_id: product?.store_id,
-        store_name: product?.store_name,
-        store_address: product?.store_address,
-      },
-    })
+  // const handleAddToCart = () => {
+  //   dispatch({
+  //     type: 'SET_BOUQUET_INFO',
+  //     payload: {
+  //       template_name: product?.template_name,
+  //       image_url: product?.image_url,
+  //       store_id: product?.store_id,
+  //       store_name: product?.store_name,
+  //       store_address: product?.store_address,
+  //     },
+  //   })
 
-    const newProducts = product.products.map((prod) => ({
+  //   const newProducts = product.products.map((prod) => ({
+  //     product_id: prod.product_id,
+  //     name: prod.category_name,
+  //     product_price: prod.price,
+  //     image_url: prod.product_url,
+  //     color: prod.color,
+  //     top: prod.top,
+  //     left: prod.left,
+  //     zIndex: prod.zIndex,
+  //     angle: prod.rotate,
+  //   }))
+
+  //   dispatch({
+  //     type: 'CLEAR_PRODUCTS',
+  //   })
+  //   dispatch({
+  //     type: 'ADD_PRODUCTS',
+  //     payload: newProducts,
+  //   })
+
+  //   router.push('/cart?source=flower')
+  // }
+  // 輔助函數來格式化產品數據
+  const formatProducts = (products) => {
+    return products.map((prod) => ({
       product_id: prod.product_id,
-      name: prod.category_name,
+      name: prod.category_name, // 注意這裡在兩個函數中是一樣的
       product_price: prod.price,
       image_url: prod.product_url,
       color: prod.color,
-      top: prod.top,
-      left: prod.left,
-      zIndex: prod.zIndex,
-      angle: prod.rotate,
+      positions: prod.positions
+        ? prod.positions.map((position) => ({
+            left: position.left,
+            zIndex: position.zIndex,
+            rotate: position.rotate,
+            top: position.top,
+          }))
+        : undefined, // 確保 positions 可以選擇性地加入
     }))
+  }
 
-    dispatch({
-      type: 'CLEAR_PRODUCTS',
-    })
+  const setBouquetInfo = (product) => ({
+    type: 'SET_BOUQUET_INFO',
+    payload: {
+      template_name: product.template_name,
+      image_url: product.image_url,
+      store_id: product.store_id,
+      store_name: product.store_name,
+      store_address: product.store_address,
+    },
+  })
+  const handleAddToCart = () => {
+    dispatch(setBouquetInfo(product))
+
+    const newProducts = formatProducts(product.products)
+
+    // 先清空產品然後添加新產品
+    dispatch({ type: 'CLEAR_PRODUCTS' })
     dispatch({
       type: 'ADD_PRODUCTS',
       payload: newProducts,
