@@ -11,6 +11,7 @@ import { ColorProvider } from '@/hooks/use-color'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
 import { useAuth } from '@/hooks/use-auth'
 import AddFav from '@/components/custom/common/AddFav'
+import Head from 'next/head'
 export default function Detail() {
   const auth = useAuth()
   const { isAuth } = auth
@@ -185,6 +186,9 @@ export default function Detail() {
     <ColorProvider>
       {' '}
       <>
+        <Head>
+          <title>Bloomify - {product?.template_name}</title>
+        </Head>
         <div className="w-screen flex flex-col bg-white items-center justify-center text-tertiary-black gap-2 sm:flex-row ">
           <div
             className="w-[300px] sm:w-[1000px]  flex flex-col sm:flex-row justify-center  items-center gap-5"

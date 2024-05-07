@@ -31,6 +31,7 @@ import LeafContent from '@/components/custom/custom/LeafContent'
 import PackageContent from '@/components/custom/custom/PackageContent'
 import GiftCardContent from '@/components/custom/custom/GiftCardContent'
 import { useFlowerCart } from '@/hooks/use-flowerCart'
+import Head from 'next/head'
 export default function Custom() {
   const [openedIndex, setOpenedIndex] = useState(null)
   const [currentPage, setCurrentPage] = useState('main')
@@ -214,6 +215,9 @@ export default function Custom() {
           <OccProvider>
             <FlowerTypeProvider>
               <>
+                <Head>
+                  <title>Bloomify - 客製花束</title>
+                </Head>
                 {selectedStore ? (
                   <div className="h-screen w-screen bg-secondary-300 flex flex-col sm:flex-row">
                     <div className="flex flex-col sm:w-8/12 h-full ">

@@ -65,9 +65,6 @@ export default function CustomNav() {
       payload: productPayload,
     })
     router.push('/cart')
-    // } else {
-    //   console.error('No canvas snapshot URL available')
-    // }
   }, [snapshotCanvas, imagesInfo, dispatch, cardInfo, packageInfo])
 
   return (

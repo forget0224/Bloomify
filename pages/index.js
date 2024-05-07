@@ -10,6 +10,7 @@ import Footer from '@/components/layout/footer'
 import IndexNav from '@/components/layout/indexnav'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
+import Head from 'next/head'
 import {
   Card,
   CardHeader,
@@ -146,6 +147,9 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Bloomify</title>
+      </Head>
       <IndexNav
         showNav={showNav}
         bgColor="transparent"

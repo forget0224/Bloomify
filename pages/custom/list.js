@@ -3,7 +3,6 @@ import DefaultLayout from '@/components/layout/default-layout'
 import CustomFilter from '@/components/custom/product/CustomFilter'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import DH from '@/components/custom/product/DH'
-import { CiGrid41, CiGrid2H, CiBoxList } from 'react-icons/ci'
 import { PiSlidersThin } from 'react-icons/pi'
 import SortButton from '@/components/custom/product/sortButton'
 import BottomSheetButton from '@/components/custom/custom/BottomSheetButton'
@@ -14,6 +13,7 @@ import { ColorProvider } from '@/hooks/use-color'
 import { FlowerTypeProvider } from '@/hooks/use-flowerType'
 import { OccProvider } from '@/hooks/use-occ'
 import { useAuth } from '@/hooks/use-auth'
+import Head from 'next/head'
 export default function List() {
   const { auth } = useAuth()
   const { isAuth } = auth
@@ -97,10 +97,14 @@ export default function List() {
   useEffect(() => {
     updateQueryString()
   }, [filters, sortField, sortOrder])
+
   const display = (
     <ColorProvider>
       <OccProvider>
         <FlowerTypeProvider>
+          <Head>
+            <title>Bloomify - 快速選購</title>
+          </Head>
           <DefaultLayout activePage={activePage}>
             <>
               <div className="bg-white  w-screen h-auto overflow-visible">
@@ -200,8 +204,5 @@ export default function List() {
     </ColorProvider>
   )
 
-  // if (!isAuth) {
-  //   return <p>請先登入</p>
-  // }
   return <>{isLoading ? <Loader /> : display}</>
 }
