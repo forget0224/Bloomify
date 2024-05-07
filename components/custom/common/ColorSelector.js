@@ -15,7 +15,9 @@ const ColorSelector = ({ itemAttribute, categoryName, onConfirm }) => {
   } = useFlower()
 
   const handleSelectFlower = (attribute) => {
-    removeCurrentImage()
+    if (tempObjectRef.current) {
+      removeCurrentImage()
+    }
     setSelectedColor(attribute.color)
     addImageToCanvas(attribute.url, {
       color: attribute.color,

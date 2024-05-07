@@ -77,18 +77,6 @@ const WorkingArea = () => {
   )
 
   useEffect(() => {
-    // const productPayload = state.products.map((product) => ({
-    //   id: `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
-    //   product_id: product.product_id,
-    //   name: product.product_name || product.name,
-    //   product_price: product.product_price,
-    //   url: product.image_url,
-    //   color: product.color,
-    //   left: product.left || 0,
-    //   top: product.top || 0,
-    //   zIndex: product.zIndex || 0,
-    //   angle: product.angle || 0,
-    // }))
     if (
       state.products &&
       state.products.length > 0 &&
