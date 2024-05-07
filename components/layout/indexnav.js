@@ -27,30 +27,30 @@ const IndexNav = forwardRef(
     const menuItems = [
       {
         name: 'custom',
-        chineseName: t('custom'),
+        chineseName: t('nav.custom'),
         subMenu: [
-          { href: 'list', chineseName: t('greeting') },
-          { href: 'custom', chineseName: t('customize') },
+          { href: 'list', chineseName: t('nav.quickBuy') },
+          { href: 'custom', chineseName: t('nav.customize') },
         ],
       },
       {
         name: 'shop',
-        chineseName: t('shop'),
+        chineseName: t('nav.shop'),
         href: '',
         subMenu: [],
       },
       {
         name: 'course',
-        chineseName: t('course'),
+        chineseName: t('nav.course'),
         href: '',
         subMenu: [],
       },
       {
         name: 'intro',
-        chineseName: t('intro'),
+        chineseName: t('nav.intro'),
         subMenu: [
-          { href: '', chineseName: t('flowerAtlas') },
-          { href: 'game', chineseName: t('flowerDivination') },
+          { href: '', chineseName: t('nav.flowerAtlas') },
+          { href: 'game', chineseName: t('nav.flowerDivination') },
         ],
       },
     ]

@@ -1,14 +1,40 @@
-{
-  "greeting": "quickbuy",
+{"nav": {
+  "welcomeMessage": "Welcome to Our Website!",
+  "latestProducts": "Latest Products",
+  "featuredArticles": "Featured Articles",
+  "quickBuy": "快速選購",
   "customize": "客製化",
-  "buttonText": "點我",
-  "right-green":"您的故事",
-  
-    "custom": "代客送花",
-    "shop": "線上商城",
-    "course": "合作課程",
-    "intro": "花與遊戲",
-    "flowerAtlas": "花圖鑑",
-    "flowerDivination": "花占卜"
-  
+  "custom": "代客送花",
+  "shop": "線上商城",
+  "course": "合作課程",
+  "intro": "花與遊戲",
+  "flowerAtlas": "花圖鑑",
+  "flowerDivination": "花占卜"
+},
+  "section1": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "section2": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "section3": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "section4": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "footer": {
+    "followUs": "關注我們",
+    "aboutUs": "關於我們",
+    "joinUs": "加入我們",
+    "address":"台北市大安區復興南路一段390號2樓"
+  }
 }

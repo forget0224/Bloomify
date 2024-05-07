@@ -1,14 +1,42 @@
 
-{
-  "greeting": "quickbuy",
+
+{"nav": {
+  "welcomeMessage": "Welcome to Our Website!",
+  "latestProducts": "Latest Products",
+  "featuredArticles": "Featured Articles",
+  "quickBuy": "quickbuy",
   "customize": "customize",
-  "buttonText": "Click Me",
-  "right-green":"your story",
-  
   "custom": "custom",
   "shop": "shop",
   "course": "course",
   "intro": "intro",
   "flowerAtlas": "flowerAtlas",
   "flowerDivination": "flowerDivination"
+},
+  "section1": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "section2": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "section3": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "section4": {
+    "welcomeMessage": "Welcome to Our Website!",
+    "latestProducts": "Latest Products",
+    "featuredArticles": "Featured Articles"
+  },
+  "footer": {
+    "followUs": "follow us",
+    "aboutUs": "about us",
+    "joinUs": "join us",
+    "address":"2F, No. 390, Section 1, Fuxing South Road, Da’an District, Taipei City, Taiwan"
+  }
 }

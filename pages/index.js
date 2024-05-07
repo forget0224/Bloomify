@@ -177,7 +177,7 @@ export default function Home() {
                   }}
                 ></div>
                 <div className="sm:text-3xl flex-1 text-center  text-xl  sm:relative   absolute top-12 right-6">
-                  How it works?
+                  How it works? {t('homePage')}
                 </div>
               </div>
 
