@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
-import { MdEdit } from 'react-icons/md'
+
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { MyButton } from '@/components/btn/mybutton'
 import { useLoader } from '@/hooks/use-loader'
@@ -172,7 +172,6 @@ export default function Detail() {
 
     const newProducts = formatProducts(product.products)
 
-    // 先清空產品然後添加新產品
     dispatch({ type: 'CLEAR_PRODUCTS' })
     dispatch({
       type: 'ADD_PRODUCTS',
@@ -199,14 +198,9 @@ export default function Detail() {
                 backgroundPosition: 'center center',
                 backgroundSize: 'contain',
               }}
-            >
-              <div className="absolute top-2 left-2 hover:bg-white hover:text-tertiary-black rounded-full w-5 h-5">
-                <MdEdit className="text-xl" />
-              </div>
-            </div>
+            ></div>
 
             <div className="flex flex-col flex-1 w-full gap-3 sm:h-[500px]">
-              {/* 分類花束 */}
               <div className="flex flex-col px-5 py-6 gap-1">
                 <div className="flex flex-row justify-between">
                   <p className="text-xs">{product?.occ}</p>
@@ -221,7 +215,7 @@ export default function Detail() {
                 </p>
                 <p className="text-right sm:hidden">${product?.total_price}</p>
               </div>
-              {/* 詳細資訊 */}
+
               <div className="w-[300px] text-sm h-full sm:h-auto flex-col gap-3 py-6 hidden sm:flex sm:w-full">
                 <div className="flex flex-col w-full px-5">
                   <p className="">詳細資訊</p>
@@ -233,10 +227,12 @@ export default function Detail() {
                       key={index}
                       className="flex flex-row justify-between items-center flex-grow"
                     >
-                      <p className="flex-grow">{item.category_name}</p>
-                      <p className="flex-grow">{item.color}</p>
+                      <p className=" sm:w-[100px]">{item.category_name}</p>
+                      <p className="flex-grow text-center  sm:w-[100px] ">
+                        {item.color}
+                      </p>
                       <p className="w-6 text-center flex-grow">${item.price}</p>
-                      <p className="flex-grow">
+                      <p className="flex-grow text-center">
                         x{item.positions ? item.positions.length : 0}
                       </p>
                     </div>
@@ -251,30 +247,51 @@ export default function Detail() {
               {/* 按鈕 */}
 
               <div className="flex flex-row sm:w-full  w-[300px]  gap-6  justify-around items-center sm:px-5 ">
-                <div
-                  className="hidden flex-shrink-0 sm:block w-12"
-                  onClick={handleHeartClick}
-                >
-                  <AddFav templateId={templateId} />
-                </div>
-
-                <div className=" flex-1">
-                  <MyButton
-                    color="secondary200"
-                    size="xl"
-                    onClick={handleCustom}
+                <div className="hidden sm:flex justify-around items-center w-full">
+                  <div
+                    className="hidden flex-shrink-0 sm:block w-16"
+                    onClick={handleHeartClick}
                   >
-                    客製化
-                  </MyButton>
+                    <AddFav templateId={templateId} />
+                  </div>
+                  <div className=" flex-1">
+                    <MyButton
+                      color="secondary200"
+                      size="xl"
+                      onClick={handleCustom}
+                    >
+                      客製化
+                    </MyButton>
+                  </div>
+                  <div className=" flex-1">
+                    <MyButton
+                      color="secondary"
+                      size="xl"
+                      onClick={handleAddToCart}
+                    >
+                      結帳
+                    </MyButton>
+                  </div>
                 </div>
-                <div className=" flex-1">
-                  <MyButton
-                    color="secondary"
-                    size="xl"
-                    onClick={handleAddToCart}
-                  >
-                    結帳
-                  </MyButton>
+                <div className="sm:hidden flex w-full  items-center">
+                  <div className=" flex-1 text-center">
+                    <MyButton
+                      color="secondary200"
+                      size="md"
+                      onClick={handleCustom}
+                    >
+                      客製化
+                    </MyButton>
+                  </div>
+                  <div className=" flex-1 text-center">
+                    <MyButton
+                      color="secondary"
+                      size="md"
+                      onClick={handleAddToCart}
+                    >
+                      結帳
+                    </MyButton>
+                  </div>
                 </div>
               </div>
             </div>
@@ -292,10 +309,10 @@ export default function Detail() {
                   key={index}
                   className="flex flex-row justify-between items-center flex-grow"
                 >
-                  <p className="flex-grow">{item.category_name}</p>
-                  <p className="flex-grow">{item.color}</p>
-                  <p className="w-6 text-center flex-grow">${item.price}</p>
-                  <p className="flex-grow">
+                  <p className="flex-grow w-[60px] ">{item.category_name}</p>
+                  <p className="flex-grow w-[50px]  ">{item.color}</p>
+                  <p className="text-center flex-grow">${item.price}</p>
+                  <p className="flex-grow w-[30px] text-center">
                     x{item.positions ? item.positions.length : 0}
                   </p>
                 </div>
