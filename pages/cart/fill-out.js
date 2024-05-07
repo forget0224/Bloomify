@@ -8,19 +8,16 @@ import { Checkbox } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/react'
 import { RadioGroup, Radio } from '@nextui-org/react'
 import { useAuth } from '@/hooks/use-auth'
-import { FaCcMastercard, FaCcVisa, FaCcApplePay } from 'react-icons/fa6'
 import { Stepper } from 'react-dynamic-stepper'
-
 import Link from 'next/link'
-// 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
-import { DateFormatter } from '@internationalized/date'
 import CustomFillOut from '@/components/custom/cart/CustomFillOut'
 // import ShopFillOut from '@/components/shop/shop-fillout'
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store'
+import useCouponValidator from '@/hooks/use-coupon'
 
 export default function FillOut() {
   const [activePage, setActivePage] = useState('cart')
@@ -32,7 +29,6 @@ export default function FillOut() {
   const [recipientName, setRecipientName] = useState('')
   const [recipientNumber, setRecipientNumber] = useState('')
   const [deliveryOption, setDeliveryOption] = useState('')
-  const [couponCode, setCouponCode] = useState('')
   const [paymentMethod, setPaymentMethod] = useState('')
   const [senderName, setSenderName] = useState('')
   const [senderNumber, setSenderNumber] = useState('')
@@ -51,7 +47,13 @@ export default function FillOut() {
   const [postalCode, setPostalCode] = useState('')
   const [addressDetail, setAddressDetail] = useState('')
   const [date, setDate] = useState(now('Asia/Taipei'))
-  //驗證
+
+  // 優惠券驗證
+  const [couponCode, setCouponCode] = useState('')
+  const { validateCoupon, discount, error, isSubmitted } =
+    useCouponValidator(couponCode)
+
+  // 驗證
   const [errors, setErrors] = useState({})
 
   const times = ['不指定時間']
@@ -97,6 +99,7 @@ export default function FillOut() {
     setDate(value)
     setDeliveryDate(`${value.year}/${value.month}/${value.day}`)
   }
+
   const [useMemberInfo, setUseMemberInfo] = useState(false)
 
   const route = useRouter()
@@ -158,10 +161,11 @@ export default function FillOut() {
     }
   }
 
+  // 提交填寫項目，存進fill-out-context
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    let newErrors = {}
+    let newErrors = {} // 根據不同的業務需求（商城/花店/課程）來收集表單中的錯誤
 
     // 驗證用，分source不然會無法送出
     switch (source) {
@@ -215,12 +219,13 @@ export default function FillOut() {
         break
     }
 
+    // 如果有錯誤存在
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
-      return // Stop submission if there are errors
+      return // 中止提交過程
     }
 
-    // 驗證用
+    // 如果沒有錯誤，創建一個新的表單詳情物件 newFormDetails
     const newFormDetails = {
       senderName,
       senderNumber,
@@ -233,13 +238,14 @@ export default function FillOut() {
       deliveryShipping,
       deliveryAddress,
       couponCode,
+      discount,
       paymentMethod,
       invoiceOption: selectedInvoiceOption.name,
       mobileBarcode,
     }
-    console.log(newFormDetails)
-    await setFillOutDetails(newFormDetails)
-    route.push(`/cart/checkout?source=${source}`)
+    console.log(newFormDetails) // 檢查物件
+    await setFillOutDetails(newFormDetails) // 更新 newFormDetails 的這些資訊到 context 中
+    route.push(`/cart/checkout?source=${source}`) // 導航到 checkout 頁
   }
 
   // 獲取後端配送選項
@@ -286,11 +292,13 @@ export default function FillOut() {
       console.error('Error fetching invoice data:', error)
     }
   }
+
   useEffect(() => {
     fetchInvoices()
     fetchShippings()
     fetchPayments()
   }, [])
+
   // 點選相對應的運送方式會顯示的東西
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState('')
   const handleSelectDeliveryChange = (event) => {
@@ -310,7 +318,6 @@ export default function FillOut() {
 
   // 點選相對應的發票方式會顯示的東西
   const [selectedInvoiceOption, setSelectedInvoiceOption] = useState('')
-
   const handleSelectInvoiceChange = (value) => {
     const selectedInvoice = invoices.find(
       (invoice) => invoice.id === Number(value)
@@ -355,6 +362,7 @@ export default function FillOut() {
     },
   ]
 
+  // 付款方式
   const handleRadioChange = (value) => {
     setPaymentMethod(value)
     setErrors((prevErrors) => {
@@ -364,51 +372,7 @@ export default function FillOut() {
     })
   }
 
-  // stepper
-  const steps = [
-    {
-      header: {
-        label: '購物車',
-      },
-      // content: <div>First step content</div>,
-      isError: false,
-      isWarning: false,
-      isComplete: true,
-    },
-    {
-      header: {
-        label: '填寫資料',
-      },
-      // content: <div>Second step content</div>,
-      onClickHandler: () => console.log('clicked on second step next button'),
-      isLoading: false,
-      isError: false,
-      isComplete: false,
-    },
-    {
-      header: {
-        label: '訂單確認',
-      },
-      // content: <div>Third step content</div>,
-      isError: false,
-      isComplete: false,
-    },
-  ]
-  // const submitStepper = () => {
-  //   console.log('submitted')
-  // }
-
-  // input 樣式
-  const inputStyles = {
-    label: 'text-base',
-    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
-  }
-  // select 樣式
-  const selectStyles = {
-    label: 'text-base',
-    value: ['text-base', 'text-tertiary-gray-100'],
-  }
-
+  // 訂購人資料同會員資料
   const handleCheckboxChange = () => {
     setUseMemberInfo(!useMemberInfo)
     setErrors((prevErrors) => {
@@ -419,6 +383,7 @@ export default function FillOut() {
       return newErrors
     })
   }
+
   const handleRecipientChange = (event) => {
     const isChecked = event.target.checked
     setSyncData(isChecked)
@@ -448,6 +413,45 @@ export default function FillOut() {
     'http://localhost:3005/api/shipment/711',
     { autoCloseMins: 3 }
   )
+
+  // stepper
+  const steps = [
+    {
+      header: {
+        label: '購物車',
+      },
+      isError: false,
+      isWarning: false,
+      isComplete: true,
+    },
+    {
+      header: {
+        label: '填寫資料',
+      },
+      onClickHandler: () => console.log('clicked on second step next button'),
+      isLoading: false,
+      isError: false,
+      isComplete: false,
+    },
+    {
+      header: {
+        label: '訂單確認',
+      },
+      isError: false,
+      isComplete: false,
+    },
+  ]
+  // input 樣式
+  const inputStyles = {
+    label: 'text-base',
+    input: ['text-base', 'rounded-lg', 'placeholder:text-tertiary-gray-100'],
+  }
+  // select 樣式
+  const selectStyles = {
+    label: 'text-base',
+    value: ['text-base', 'text-tertiary-gray-100'],
+  }
+
   return (
     <>
       <DefaultLayout activePage={activePage}>
@@ -694,7 +698,7 @@ export default function FillOut() {
                           />
                         </div>
                       )}
-                    {/* address */}{' '}
+                    {/* address */}
                     {selectedDeliveryOption &&
                       selectedDeliveryOption.id === 1 && (
                         <div className="flex flex-col gap-3">
@@ -774,30 +778,9 @@ export default function FillOut() {
                   </div>
                 </div>
               ) : null}
-              {/* {source === 'shop' ? (
-                <ShopFillOut
-                  inputStyles={inputStyles}
-                  recipientName={recipientName}
-                  handleInputChange={handleInputChange}
-                  recipientNumber={recipientNumber}
-                  syncData={syncData}
-                  handleRecipientChange={handleRecipientChange}
-                  selectStyles={selectStyles}
-                  handleSelectDeliveryChange={handleSelectDeliveryChange}
-                  shippings={shippings}
-                  selectedDeliveryOption={selectedDeliveryOption}
-                  handleCityChange={handleCityChange}
-                  cities={cities}
-                  handleTownshipChange={handleTownshipChange}
-                  townships={townships}
-                  handlePostalCodeChange={handlePostalCodeChange}
-                  postalCodes={postalCodes}
-                  handleAddressDetailChange={handleAddressDetailChange}
-                  errors={errors}
-                />
-              ) : null} */}
               {/* shipping 商城 end */}
 
+              {/* TODO: */}
               {/* coupon start*/}
               <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                 <FormTag text="優惠券" />
@@ -813,11 +796,24 @@ export default function FillOut() {
                       name="couponCode"
                       onChange={handleInputChange}
                     />
-                    <span className="text-primary-100 text-sm">
-                      套用優惠券：滿NT$100，折NT$50
-                    </span>
+                    {isSubmitted && (
+                      <div>
+                        {error ? (
+                          <span className="text-danger">{error}</span>
+                        ) : (
+                          <span className="text-primary">
+                            折扣NT${discount}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <MyButton color="primary" size="xl" isOutline>
+                  <MyButton
+                    color="primary"
+                    size="xl"
+                    isOutline
+                    onClick={validateCoupon}
+                  >
                     套用
                   </MyButton>
                 </div>
@@ -927,7 +923,7 @@ export default function FillOut() {
               {/* button */}
               <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
                 <MyButton color="primary" size="xl" isOutline>
-                  <Link href="/">上一步</Link>
+                  <Link href={`/cart?source=${source}`}>上一步</Link>
                 </MyButton>
                 <MyButton color="primary" size="xl" onClick={handleSubmit}>
                   下一步

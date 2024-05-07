@@ -53,8 +53,6 @@ export default function CourseCheckOut() {
 
     try {
       // TODO:
-      const discount = 10 // 假設 discount 從某處獲得
-      const payment_amount = totalSubtotal - discount
       const payment_status_id = 2 // 預設的值
       const order_status_id = 2 // 預設的值
       // 將選項文字映射回選項id
@@ -95,8 +93,8 @@ export default function CourseCheckOut() {
           body: JSON.stringify({
             member_id: auth.userData.id,
             total_cost: totalSubtotal,
-            discount: discount,
-            payment_amount: payment_amount,
+            discount: fillOutDetails.discount,
+            payment_amount: totalSubtotal - fillOutDetails.discount,
             share_payment_id: payment_id,
             share_payment_status_id: payment_status_id,
             share_order_status_id: order_status_id,
@@ -229,12 +227,14 @@ export default function CourseCheckOut() {
                 </TableRow>
                 <TableRow key="3">
                   <TableCell className="w-full pr-8">折扣</TableCell>
-                  <TableCell className="text-right">{`-`}</TableCell>
+                  <TableCell className="text-right text-tertiary-black">
+                    NT${fillOutDetails.discount}
+                  </TableCell>
                 </TableRow>
                 <TableRow key="4">
                   <TableCell className="w-full pr-8">總計</TableCell>
-                  <TableCell className="text-right text-lg font-medium text-primary-100">
-                    NT${totalSubtotal - 0}
+                  <TableCell className="text-right font-medium text-primary-100">
+                    NT${totalSubtotal - fillOutDetails.discount}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -280,7 +280,7 @@ export default function CourseCheckOut() {
 
         {/* 按鈕群組 */}
         <div className="w-full gap-2 flex justify-center sm:gap-4 ">
-          <Link href="/cart/fill-out">
+          <Link href="/cart/fill-out?source=course">
             <MyButton
               color="primary"
               size="xl"

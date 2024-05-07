@@ -66,8 +66,8 @@ export default function CourseOrder({ order }) {
               <div className="flex flex-col w-full gap-2">
                 <div className="flex flex-col border-1 border-tertiary-gray-200 rounded-lg p-4 mt-2">
                   <div className="flex justify-between md:justify-start">
-                    <span className="w-[100px]">訂單原價：</span>
-                    <span className="ml-1">NT${order.payment_amount}</span>
+                    <span className="w-[100px]">訂單總額：</span>
+                    <span className="ml-1">NT${order.total_cost}</span>
                   </div>
                   <div className="flex justify-between md:justify-start">
                     <span className="w-[100px]">折扣金額：</span>
@@ -76,9 +76,9 @@ export default function CourseOrder({ order }) {
                     </span>
                   </div>
                   <div className="flex justify-between md:justify-start">
-                    <span className="w-[100px]">訂單總價：</span>
+                    <span className="w-[100px]">應付總額：</span>
                     <span className="ml-1 text-righttext-primary-100">
-                      NT${order.total_cost}
+                      NT${order.payment_amount}
                     </span>
                   </div>
                   <div className="flex justify-between md:justify-start">
