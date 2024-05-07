@@ -226,7 +226,9 @@ const ShopCheckout = () => {
               </TableRow>
               <TableRow key="4">
                 <TableCell className="w-full pr-8">折扣</TableCell>
-                <TableCell className="text-right">NT${}</TableCell>
+                <TableCell className="text-right">
+                  NT$ -{detailData.detail.discount}
+                </TableCell>
               </TableRow>
               <TableRow key="5">
                 <TableCell className="w-full pr-8">總計</TableCell>
