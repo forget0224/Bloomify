@@ -15,23 +15,7 @@ export const useFlower = () => useContext(FlowerContext)
 export const FlowerProvider = ({ children }) => {
   const canvasRef = useRef(null)
   const tempObjectRef = useRef(null)
-  // const [imagesInfo, setImagesInfo] = useState([
-  //   {
-  //     id: '',
-  //     product_id: '',
-  //     product_category: '',
-  //     product_price: 0,
-  //     url: '',
-  //     left: 0,
-  //     top: 0,
-  //     zIndex: 0,
-  //     angle: 0,
-  //     scaleX: 1,
-  //     scaleY: 1,
-  //     locked: false,
-  //     color: '',
-  //   },
-  // ])
+  const [isAdding, setIsAdding] = useState(false)
   const [imagesInfo, setImagesInfo] = useState([])
 
   const [cardInfo, setCardInfo] = useState({
@@ -230,7 +214,11 @@ export const FlowerProvider = ({ children }) => {
         tempObjectRef.current = null
       }
 
+      if (isAdding) return
+      setIsAdding(true)
+
       new fabric.Image.fromURL(url, (img) => {
+        setIsAdding(false)
         if (!img) {
           console.error('Failed to load image')
           return
@@ -273,7 +261,7 @@ export const FlowerProvider = ({ children }) => {
         }
       })
     },
-    [canvasRef]
+    [canvasRef, isAdding]
   )
 
   const commitImageToCanvas = useCallback(() => {
@@ -347,18 +335,26 @@ export const FlowerProvider = ({ children }) => {
     })
   }
 
-  const removeCurrentImage = useCallback(() => {
-    if (
-      !canvasRef.current ||
-      !canvasRef.current.fabric ||
-      !tempObjectRef.current
-    )
-      return
+  // const removeCurrentImage = useCallback(() => {
+  //   if (
+  //     !canvasRef.current ||
+  //     !canvasRef.current.fabric ||
+  //     !tempObjectRef.current
+  //   )
+  //     return
 
-    const canvas = canvasRef.current.fabric
-    canvas.remove(tempObjectRef.current)
-    tempObjectRef.current = null
-  }, [])
+  //   const canvas = canvasRef.current.fabric
+  //   canvas.remove(tempObjectRef.current)
+  //   tempObjectRef.current = null
+  // }, [])
+  const removeCurrentImage = () => {
+    const canvas = canvasRef.current?.fabric // 確保你有正確訪問到 fabric 的 canvas 實例
+    if (tempObjectRef.current && canvas) {
+      canvas.remove(tempObjectRef.current) // 從畫布移除該物件
+      canvas.requestRenderAll() // 刷新畫布以更新顯示
+      tempObjectRef.current = null // 清空暫存引用，避免重複移除
+    }
+  }
 
   const clearObjectsOnCanvas = useCallback(() => {
     const canvas = canvasRef.current?.fabric
