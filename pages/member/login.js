@@ -3,6 +3,8 @@ import { useAuth } from '@/hooks/use-auth'
 import useFirebase from '@/hooks/use-firebase'
 import { useRouter } from 'next/router'
 
+import Head from 'next/head'
+
 // sweetalert2
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -209,6 +211,9 @@ export default function Login() {
     <DefaultLayout activePage={activePage}>
       {
         <>
+          <Head>
+            <title>會員登入</title>
+          </Head>
           {/* main的東西 */}
           <div className="py-8 flex justify-center items-center w-full h-full bg-secondary-300">
             <Card className="w-full h-full flex flex-col-reverse mx-4 lg:flex lg:flex-row lg:max-w-[950px] lg:max-h-[600px] shadow-lg">

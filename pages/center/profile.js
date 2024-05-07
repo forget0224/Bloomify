@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '@/hooks/use-auth'
 
+import Head from 'next/head'
+
 // nextUI
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
@@ -223,6 +225,9 @@ export default function Profile() {
 
   return (
     <DefaultLayout activePage={activePage}>
+      <Head>
+        <title>個人資料 | 會員中心</title>
+      </Head>
       {
         <CenterLayout>
           {/* 麵包屑 */}

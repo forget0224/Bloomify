@@ -4,6 +4,8 @@ import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
 
+import Head from 'next/head'
+
 // RWD
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Link from 'next/link'
@@ -113,14 +115,17 @@ export default function Index() {
     // eslint-disable-next-line
   }, [auth, userInfo.avatar])
 
-  useEffect(() => {
-    handleCheckAuth()
-  }, [])
+  // useEffect(() => {
+  //   handleCheckAuth()
+  // }, [])
 
   return (
     <DefaultLayout activePage={activePage}>
       {
         <>
+          <Head>
+            <title>會員中心</title>
+          </Head>
           <CenterLayout>
             {/* 麵包屑 */}
             <div className="hidden sm:block sm:w-full sm:py-6">
