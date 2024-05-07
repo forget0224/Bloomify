@@ -313,6 +313,7 @@ export default function Profile() {
                       value={userProfile.phone}
                       onChange={handleFieldChange}
                       isRequired
+                      maxLength={10}
                       className={{ ...inputStyles }}
                     />
                     {errors.phone && (
