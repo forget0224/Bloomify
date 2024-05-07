@@ -77,23 +77,43 @@ const WorkingArea = () => {
   )
 
   useEffect(() => {
+    // const productPayload = state.products.map((product) => ({
+    //   id: `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+    //   product_id: product.product_id,
+    //   name: product.product_name || product.name,
+    //   product_price: product.product_price,
+    //   url: product.image_url,
+    //   color: product.color,
+    //   left: product.left || 0,
+    //   top: product.top || 0,
+    //   zIndex: product.zIndex || 0,
+    //   angle: product.angle || 0,
+    // }))
     if (
       state.products &&
       state.products.length > 0 &&
       imagesInfo.length === 0
     ) {
-      const productPayload = state.products.map((product) => ({
-        id: `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
-        product_id: product.product_id,
-        name: product.product_name || product.name,
-        product_price: product.product_price,
-        url: product.image_url,
-        color: product.color,
-        left: product.left || 0,
-        top: product.top || 0,
-        zIndex: product.zIndex || 0,
-        angle: product.angle || 0,
-      }))
+      const productPayload = []
+
+      state.products.forEach((product) => {
+        if (product.positions && product.positions.length > 0) {
+          product.positions.forEach((pos) => {
+            productPayload.push({
+              id: `img_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+              product_id: product.product_id,
+              name: product.product_name || product.name,
+              product_price: product.product_price,
+              url: product.image_url,
+              color: product.color,
+              left: pos.left || 0,
+              top: pos.top || 0,
+              zIndex: pos.zIndex || 0,
+              angle: pos.rotate || 0,
+            })
+          })
+        }
+      })
 
       setImagesInfo(productPayload)
 

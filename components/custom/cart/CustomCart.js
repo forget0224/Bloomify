@@ -29,7 +29,7 @@ export default function CustomCart() {
         }
       }
       acc[key].count += 1
-      acc[key].total += item.product_price
+      acc[key].total += item.product_price // 確保這裡的product_price是數字類型
       return acc
     }, {})
     if (packageInfo && packageInfo.product_id != '') {

@@ -352,14 +352,19 @@ export default function CustomCheckOut() {
               </TableRow>
               <TableRow key="2">
                 <TableCell className="pr-8 text-nowrap">發票格式</TableCell>
-                <TableCell className="w-full text-right">載具</TableCell>
-              </TableRow>
-              <TableRow key="3">
-                <TableCell className="pr-8 text-nowrap">載具編號</TableCell>
                 <TableCell className="w-full text-right">
-                  {contactStorage.mobileBarcode}
+                  {contactStorage.invoiceOption}
                 </TableCell>
               </TableRow>
+
+              {contactStorage.mobileBarcode && (
+                <TableRow key="3">
+                  <TableCell className="pr-8 text-nowrap">載具編號</TableCell>
+                  <TableCell className="w-full text-right">
+                    {contactStorage.mobileBarcode}
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </div>

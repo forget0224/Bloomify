@@ -68,17 +68,19 @@ export default function Detail() {
   }, [router.isReady])
 
   const handleCustom = () => {
-    const currentProducts = state.products // 從 Redux 或 Context 獲取當前的產品狀態
+    const currentProducts = state.products
     const newProducts = product.products.map((prod) => ({
       product_id: prod.product_id,
       product_name: prod.category_name,
       product_price: prod.price,
       image_url: prod.product_url,
       color: prod.color,
-      top: prod.top,
-      left: prod.left,
-      zIndex: prod.zIndex,
-      angle: prod.rotate,
+      positions: prod.positions.map((position) => ({
+        left: position.left,
+        zIndex: position.zIndex,
+        rotate: position.rotate,
+        top: position.top,
+      })),
     }))
 
     if (JSON.stringify(currentProducts) !== JSON.stringify(newProducts)) {
@@ -191,7 +193,9 @@ export default function Detail() {
                       <p className="flex-grow">{item.category_name}</p>
                       <p className="flex-grow">{item.color}</p>
                       <p className="w-6 text-center flex-grow">${item.price}</p>
-                      <p className="flex-grow">x{item ? item.length : 0}</p>
+                      <p className="flex-grow">
+                        x{item.positions ? item.positions.length : 0}
+                      </p>
                     </div>
                   ))}
                 </div>

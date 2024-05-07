@@ -112,7 +112,7 @@ export default function Sidebar() {
     <>
       <div className="hidden md:flex flex-col gap-8 lg:visible w-2/12 h-fit p-6 lg:p-10 border-1 rounded-xl border-tertiary-gray-200">
         {/* 會員資訊 start */}
-        <div className="flex flex-col gap-4 items-center">
+        <div className="flex flex-col gap-4 items-center overflow-hidden">
           <img
             src={userInfo.avatar}
             // src={`http://localhost:3005/member/avatar/${
@@ -124,8 +124,10 @@ export default function Sidebar() {
             width={40}
             height={40}
           />
-          <p className="text-xl text-tertiary-black font-medium hidden lg:block overflow-hidden">
-            {userInfo.name ? userInfo.name : auth.userData?.username}
+          <p className="text-xl text-tertiary-black font-medium hidden lg:block ">
+            {userInfo.name
+              ? userInfo.name
+              : auth.userData?.username?.substring(0, 5)}
           </p>
         </div>
         {/* 會員資訊 end */}
