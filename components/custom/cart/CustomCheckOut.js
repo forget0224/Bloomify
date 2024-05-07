@@ -45,17 +45,22 @@ export default function CustomCheckOut() {
   function groupProductsByProductId(products, packageInfo, cardInfo) {
     const grouped = products.reduce((acc, item) => {
       const key = item.product_id
+
+      const positionsCount = item.positions ? item.positions.length : 1
+
       if (!acc[key]) {
         acc[key] = {
           ...item,
-          count: 0,
-          total: 0,
+          count: positionsCount,
+          total: positionsCount * item.product_price,
         }
+      } else {
+        acc[key].count += positionsCount
+        acc[key].total = acc[key].count * item.product_price
       }
-      acc[key].count += 1
-      acc[key].total += item.product_price
       return acc
     }, {})
+
     if (packageInfo && packageInfo.product_id != '') {
       const packageKey = packageInfo.product_id || 'package'
       grouped[packageKey] = {
@@ -75,6 +80,7 @@ export default function CustomCheckOut() {
         sortOrder: 2,
       }
     }
+
     return Object.values(grouped).sort(
       (a, b) => (a.sortOrder || 1) - (b.sortOrder || 1)
     )
@@ -224,7 +230,7 @@ export default function CustomCheckOut() {
                     </div>
 
                     <div className="sm:w-[80px] text-center text-sm   text-tertiary-black ">
-                      {item.positions ? item.positions.length : 0}
+                      {item.count}
                       {item.product_category === 'card'
                         ? '張'
                         : item.product_category === 'package'

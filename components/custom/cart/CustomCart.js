@@ -21,17 +21,22 @@ export default function CustomCart() {
   function groupProductsByProductId(products, packageInfo, cardInfo) {
     const grouped = products.reduce((acc, item) => {
       const key = item.product_id
+
+      const positionsCount = item.positions ? item.positions.length : 1
+
       if (!acc[key]) {
         acc[key] = {
           ...item,
-          count: 0,
-          total: 0,
+          count: positionsCount,
+          total: positionsCount * item.product_price,
         }
+      } else {
+        acc[key].count += positionsCount
+        acc[key].total = acc[key].count * item.product_price
       }
-      acc[key].count += 1
-      acc[key].total += item.product_price // 確保這裡的product_price是數字類型
       return acc
     }, {})
+
     if (packageInfo && packageInfo.product_id != '') {
       const packageKey = packageInfo.product_id || 'package'
       grouped[packageKey] = {
@@ -51,6 +56,7 @@ export default function CustomCart() {
         sortOrder: 2,
       }
     }
+
     return Object.values(grouped).sort(
       (a, b) => (a.sortOrder || 1) - (b.sortOrder || 1)
     )
@@ -183,7 +189,7 @@ export default function CustomCart() {
                   </div>
 
                   <div className="sm:w-[80px] text-center text-sm   text-tertiary-black ">
-                    {item.positions ? item.positions.length : 0}
+                    {item.count}
                     {item.product_category === 'card'
                       ? '張'
                       : item.product_category === 'package'
@@ -217,7 +223,7 @@ export default function CustomCart() {
           </div>
           <div className="flex justify-center gap-2 sm:gap-4 sm:my-10">
             <MyButton color="primary" size="xl" isOutline>
-              <Link href="/">上一步</Link>
+              <Link href="/custom/custom">上一步</Link>
             </MyButton>
             <MyButton color="primary" size="xl">
               <Link href="/cart/fill-out?source=flower">下一步</Link>
