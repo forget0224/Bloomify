@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title></title>
+    <title>花占卜</title>
     <style>
       @font-face {
         font-family: 'NotoSerifTC'; /* 定義字型名稱 */
@@ -1598,7 +1598,7 @@
             <!-- 優惠碼modal的標題 -->
             <div class="details-modal-title">
               <h1 style="font-size: 2rem; font-weight: bold">
-                畢業季優惠準備開跑囉!
+                畢業優惠準備開跑囉!
               </h1>
             </div>
           </div>
@@ -1802,7 +1802,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (reloadButton) {
         reloadButton.addEventListener('click', function(event) {
           event.stopPropagation(); // 阻止事件冒泡
-          window.location.reload(); // 重新加載頁面
+          // window.location.reload(); // 重新加載頁面
+          window.location.href = 'http://localhost:3000/game.html'; // 跳转到指定页面
         });
     }
 });

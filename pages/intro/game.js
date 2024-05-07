@@ -2,8 +2,8 @@ import { useState } from 'react'
 import styles from '../custom/custom.module.css'
 import Image from 'next/image'
 import { MyButton } from '@/components/btn/mybutton'
-import Link from 'next/link';
-
+import Link from 'next/link'
+import Head from 'next/head'
 import {
   Modal,
   ModalContent,
@@ -21,14 +21,21 @@ export default function Custom() {
   const size = ['base']
   return (
     <>
+      <Head>
+        <title>花占卜</title>
+      </Head>
       <div className="bg-[url('/assets/intro/vintage_speckles.png')] h-screen flex flex-col items-center">
         <div className=" z-10 text-center text-black absolute inset-x-0 top-10">
           {/* <p>~</p> */}
           <p>
-            <span className="bg-gray-100 text-2xl font-medium">以盛開的雛菊，</span>
+            <span className="bg-gray-100 text-2xl font-medium">
+              以盛開的雛菊，
+            </span>
           </p>
           <p>
-            <span className="bg-gray-100 text-2xl font-medium">為你解開疑惑。</span>
+            <span className="bg-gray-100 text-2xl font-medium">
+              為你解開疑惑。
+            </span>
           </p>
           <p className="mt-1">
             <span className="bg-gray-100 text-xl">
