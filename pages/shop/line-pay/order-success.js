@@ -182,7 +182,7 @@ export default function OrderSuccess() {
                   </TableRow>
                   <TableRow key="6">
                     <TableCell>付款狀態</TableCell>
-                    <TableCell>已付款</TableCell>
+                    <TableCell className="text-primary">已付款</TableCell>
                   </TableRow>
                   <TableRow key="7">
                     <TableCell>發票</TableCell>

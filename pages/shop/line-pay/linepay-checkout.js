@@ -179,9 +179,7 @@ export default function OrderSuccess() {
                     <TableRow key="3">
                       <TableCell>訂單成立日期</TableCell>
                       <TableCell>
-                        {moment(latestDetail?.created_at).format(
-                          'YYYY-MM-DD HH:MM'
-                        )}
+                        {moment(latestDetail?.created_at).format('YYYY-MM-DD')}
                       </TableCell>
                     </TableRow>
                     <TableRow key="4">
