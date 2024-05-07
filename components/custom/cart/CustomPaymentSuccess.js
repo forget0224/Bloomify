@@ -13,12 +13,13 @@ import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import moment from 'moment'
 import { useRouter } from 'next/router'
-
+import { useFlowerCart } from '@/hooks/use-flowerCart'
 export default function CustomPaymentSuccess() {
   const [activePage, setActivePage] = useState('cart')
   const [orderResult, setOrderResult] = useState(null)
   const route = useRouter()
   const orderId = route.query.orderId
+  const { dispatch } = useFlowerCart()
 
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
@@ -50,6 +51,8 @@ export default function CustomPaymentSuccess() {
       const data = await response.json()
       if (data.status === 'success') {
         setOrderResult(data.data)
+        dispatch({ type: 'CLEAR_CARD' })
+        dispatch({ type: 'CLEAR_PRODUCTS_AND_BOUQUET' })
       } else {
         console.error('Failed to fetch invoices:', data.message)
       }
@@ -96,7 +99,7 @@ export default function CustomPaymentSuccess() {
             </TableRow>
             <TableRow key="7">
               <TableCell>發票</TableCell>
-              <TableCell>{orderResult?.orderStatus}</TableCell>
+              <TableCell>{orderResult?.invoiceOption}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

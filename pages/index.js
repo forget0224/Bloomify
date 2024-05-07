@@ -265,7 +265,7 @@ export default function Home() {
                       backgroundPosition: 'center bottom',
                     }}
                   >
-                    <div className="text-xl pb-10">we delievery for you</div>
+                    <div className="text-xl pb-10">We deliver for you</div>
                   </div>
                 </div>
               </div>
