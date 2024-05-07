@@ -225,7 +225,7 @@ export default function CustomCheckOut() {
                       <div className="sm:w-[80px] text-center text-wrap sm:text-nowrap ">
                         {item.name}
                       </div>
-                      <div className="sm:w-[80px] text-center sm:text-sm text-xs  sm:text-tertiary-black text-tertiary-gray-100">
+                      <div className="sm:w-[80px] text-center sm:text-sm text-xs    sm:text-tertiary-black text-tertiary-gray-100">
                         {item.color ? item.color : '-'}
                       </div>
                     </div>
@@ -240,7 +240,7 @@ export default function CustomCheckOut() {
                     </div>
                   </div>
 
-                  <div className="text-center min-w-[108px]">
+                  <div className="text-center min-w-[108px] flex-grow ">
                     <p>${item.product_price}</p>
                   </div>
                 </div>
@@ -260,7 +260,9 @@ export default function CustomCheckOut() {
               </div>
               <div className="flex flex-row justify-between">
                 <div className="w-full pr-8">折扣</div>
-                <div className="text-right">-{contactStorage.discount}</div>
+                <div className="text-right">
+                  {contactStorage.discount == 0 ? '-' : contactStorage.discount}
+                </div>
               </div>
               <div className="flex flex-row justify-between">
                 <div className="w-full pr-8">總計</div>
