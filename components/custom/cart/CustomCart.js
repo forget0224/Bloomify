@@ -97,7 +97,7 @@ export default function CustomCart() {
   if (isEmpty) {
     return (
       <>
-        <div className="min-h-[500px]">
+        <div className="min-h-[355px]">
           <h2 className="text-center mt-4">目前尚未加入任何花束</h2>
         </div>
       </>
