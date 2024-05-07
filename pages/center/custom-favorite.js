@@ -22,7 +22,7 @@ export default function FavoriteCustom() {
       <DefaultLayout activePage="custom">
         <CenterLayout>
           {/* Breadcrumbs */}
-          <div className="w-full py-6 invisible md:visible">
+          <div className="w-full py-6 hidden sm:block">
             <Breadcrumbs>
               <BreadcrumbItem>首頁</BreadcrumbItem>
               <BreadcrumbItem>會員中心</BreadcrumbItem>
@@ -38,9 +38,9 @@ export default function FavoriteCustom() {
               <Title text="收藏花束" />
 
               <div className="flex flex-col  justify-between gap-4 py-4 border-b border-tertiary-gray-200 flex-wrap">
-                <div className="  md:w-[320px] md:flex-shrink-0">
+                {/* <div className="  md:w-[320px] md:flex-shrink-0">
                   <CourseSearch />
-                </div>
+                </div> */}
 
                 <div className="flex-grow w-full">
                   <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 justify-items-center">
