@@ -20,7 +20,7 @@ import {
 import { CiShoppingCart } from 'react-icons/ci'
 import { CiUser } from 'react-icons/ci'
 import { useCart } from '@/context/shop-cart-context'
-
+import NavLogo from '../index/NavLogo'
 export default function HomeNav({ activePage }) {
   const menuItems = [
     {
@@ -68,7 +68,8 @@ export default function HomeNav({ activePage }) {
       <NavbarContent className="pr-3" justify="center">
         <NavbarBrand>
           <Link href="/">
-            <p className="font-bold text-white">Bloomify</p>
+            {/* <p className="font-bold text-white">Bloomify</p> */}
+            <NavLogo />
           </Link>
         </NavbarBrand>
       </NavbarContent>

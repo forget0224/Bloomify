@@ -1,5 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
+
+import NavLogo from '../index/NavLogo'
 import {
   CiMail,
   CiPhone,
@@ -9,15 +11,17 @@ import {
   CiInstagram,
 } from 'react-icons/ci'
 import { FaXTwitter } from 'react-icons/fa6'
-
+import { useTranslation } from 'react-i18next'
 import Language from '../btn/language'
 export default function Footer() {
+  const { t } = useTranslation()
+
   return (
     <footer className="bg-secondary-300 h-90 w-screen text-tertiary-black text-xs px-5 py-6  flex flex-col gap-3 ">
       <div className="flex flex-col gap-3 sm:flex-row sm:px-72 sm:justify-around">
         <div className="flex flex-col gap-2 sm:order-last sm:w-36 sm:justify-center ">
           <div className="flex flex-col gap-2 ">
-            <Link href="#">關注我們</Link>
+            <Link href="#">{t('footer.followUs')}</Link>
 
             <div className="flex flex-row text-xl gap-2">
               <Link href="#">
@@ -32,9 +36,9 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex flex-row gap-2 ">
-            <Link href="#">關於我們</Link>
+            <Link href="#">{t('footer.aboutUs')}</Link>
             <p>|</p>
-            <Link href="#">加入我們</Link>
+            <Link href="#">{t('footer.joinUs')}</Link>
           </div>
           <div className="flex flex-row">
             <Language />
@@ -42,9 +46,9 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-row sm:items-center sm:gap-3">
-          <div className="h-[130px] w-[120px] bg-secondary hidden sm:block">
-            logo
-          </div>
+          {/* <div className="h-[130px] w-[120px] bg-secondary hidden sm:block">
+            <NavLogo />
+          </div> */}
           <div className="flex flex-col  gap-2">
             <div className="flex flex-row  gap-2 items-center">
               <CiChat1 className="text-xl" />
@@ -59,9 +63,9 @@ export default function Footer() {
               <p>Bloomify@gmail.com</p>
             </div>
 
-            <div className="flex flex-row gap-2  items-center">
+            <div className="flex flex-row gap-2  items-center min-w-[572px]">
               <CiMap className="text-xl" />
-              <p>台北市大安區復興南路一段390號2樓</p>
+              <p>{t('footer.address')}</p>
             </div>
           </div>
         </div>
