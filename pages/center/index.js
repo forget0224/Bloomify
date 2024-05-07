@@ -44,35 +44,35 @@ export default function Index() {
   }
 
   // 取得登入資料
-  const getUserData = async () => {
-    const res = await fetch(
-      `http://localhost:3005/api/share-members/${auth.userData.id}`,
-      {
-        credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        method: 'GET',
-      }
-    )
-    const data = await res.json() // 將回傳的 Response 物件轉換成 JSON 格式
-    console.log(data)
-    // user: {id: 1, name: '哈利', username: 'herry@test.com', phone: '0906102808', city: '台北市', …}
+  // const getUserData = async () => {
+  //   const res = await fetch(
+  //     `http://localhost:3005/api/share-members/${auth.userData.id}`,
+  //     {
+  //       credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json',
+  //       },
+  //       method: 'GET',
+  //     }
+  //   )
+  //   const data = await res.json() // 將回傳的 Response 物件轉換成 JSON 格式
+  //   console.log(data)
+  //   // user: {id: 1, name: '哈利', username: 'herry@test.com', phone: '0906102808', city: '台北市', …}
 
-    if (data.status === 'success') {
-      // 以下為同步化目前後端資料庫資料，與這裡定義的初始化會員資料物件的資料
-      const dbUser = data.data.user
-      const newUserInfo = { name: dbUser.name, avatar: dbUser.avatar }
-      // key => name, username, ......
-      if (
-        newUserInfo.name !== userInfo.name ||
-        newUserInfo.avatar !== userInfo.avatar
-      ) {
-        setUserInfo(newUserInfo)
-      }
-    }
-  }
+  //   if (data.status === 'success') {
+  //     // 以下為同步化目前後端資料庫資料，與這裡定義的初始化會員資料物件的資料
+  //     const dbUser = data.data.user
+  //     const newUserInfo = { name: dbUser.name, avatar: dbUser.avatar }
+  //     // key => name, username, ......
+  //     if (
+  //       newUserInfo.name !== userInfo.name ||
+  //       newUserInfo.avatar !== userInfo.avatar
+  //     ) {
+  //       setUserInfo(newUserInfo)
+  //     }
+  //   }
+  // }
 
   // 處理登出
   const handleLogout = async () => {
@@ -108,12 +108,12 @@ export default function Index() {
 
   // 會員認證成功 => 取得會員資料顯示
   // auth載入完成後向資料庫要會員資料
-  useEffect(() => {
-    if (auth.isAuth && auth.userData?.id) {
-      getUserData(auth.userData.id)
-    }
-    // eslint-disable-next-line
-  }, [auth, userInfo.avatar])
+  // useEffect(() => {
+  //   if (auth.isAuth && auth.userData?.id) {
+  //     getUserData(auth.userData.id)
+  //   }
+  //   // eslint-disable-next-line
+  // }, [auth, userInfo.avatar])
 
   // useEffect(() => {
   //   handleCheckAuth()
