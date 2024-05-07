@@ -60,17 +60,17 @@ export default function FavoriteCard() {
           <Card
             shadow="sm"
             key={item.template_id}
-            className="cursor-pointer sm:w-[300px] sm:h-[300px]"
+            className="cursor-pointer sm:w-[300px] h-auto w-[250px] "
             isPressable
             onClick={() => handleCardClick(item.template_id)}
           >
-            <CardBody
+            <CardHeader
               style={{ backgroundImage: `url(${item.image_url})` }}
-              className="bg-contain bg- bg-no-repeat bg-center aspect-video w-full rounded-t-xl p-0"
-            ></CardBody>
-            <CardHeader className="flex flex-col items-start">
+              className="bg-contain bg- bg-no-repeat bg-center aspect-video w-full rounded-t-xl p-0 bg-primary-300"
+            ></CardHeader>
+            <CardBody className="flex flex-col items-start ">
               <div className="flex flex-row items-center justify-between w-full">
-                <h1 className="text-lg">{item.template_name}</h1>
+                <h1 className="sm:text-lg  text-sm">{item.template_name}</h1>
                 <div className="cursor-pointer">
                   <AddFav
                     templateId={item.template_id}
@@ -89,9 +89,9 @@ export default function FavoriteCard() {
                   bgColor={colorCode}
                 />
               )}
-            </CardHeader>
+            </CardBody>
             <CardFooter className="justify-end">
-              <p className="text-lg">
+              <p className="sm:text-lg  text-sm">
                 {item.discount !== 0 ? (
                   <>
                     <span className="line-through">${item.total_price}</span>
