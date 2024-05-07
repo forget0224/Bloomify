@@ -136,7 +136,7 @@ const GreetingCard = () => {
         </div>
 
         <motion.div
-          className={`absolute top-0 left-0 w-full h-full shadow-xl z-20 ${
+          className={`absolute top-0 left-0 w-full h-full shadow-xl bg-center z-20 ${
             currentStyle && currentStyle.url ? '' : 'bg-white'
           }`}
           style={{
