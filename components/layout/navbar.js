@@ -79,15 +79,15 @@ export default function HomeNav({ activePage }) {
             {item.subMenu.length > 0 ? (
               <Dropdown>
                 <DropdownTrigger>
-                  <Button
+                  <div
                     className={`bg-transparent text-base ${
                       activePage === item.name
-                        ? ' border-b-3  border-red-700'
+                        ? ' border-b-1 border-primary'
                         : ''
                     }`}
                   >
                     {item.chineseName}
-                  </Button>
+                  </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Sub menu">
                   {item.subMenu.map((subItem, subIndex) => (
