@@ -75,8 +75,13 @@ const IndexNav = forwardRef(
           <NavbarContent className="sm:hidden" justify="start">
             <NavbarMenuToggle />
           </NavbarContent>
-          <NavbarContent className="sm:hidden flex" justify="start">
-            <NavLogo />
+          <NavbarContent
+            className="sm:hidden flex cursor-pointer"
+            justify="start"
+          >
+            <Link href="/">
+              <NavLogo />
+            </Link>
           </NavbarContent>
 
           <NavbarContent className="hidden sm:flex gap-4" justify="center">

@@ -64,17 +64,11 @@ export default function HomeNav({ activePage }) {
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
-      <NavbarContent className=" flex" justify="start">
-        <NavLogo />
+      <NavbarContent className=" flex cursor-pointer" justify="start">
+        <Link href="/">
+          <NavLogo />
+        </Link>
       </NavbarContent>
-      {/* <NavbarContent className="pr-3" justify="center">
-        <NavbarBrand>
-          <Link href="/">
-           
-            <NavLogo />
-          </Link>
-        </NavbarBrand>
-      </NavbarContent> */}
 
       <NavbarContent className="hidden sm:flex gap-4 w-full" justify="center">
         {menuItems.map((item, index) => (
@@ -118,7 +112,7 @@ export default function HomeNav({ activePage }) {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="relative">
+        <NavbarItem className="relative items-end flex">
           {auth.isAuth && (
             <div
               style={{
@@ -140,7 +134,7 @@ export default function HomeNav({ activePage }) {
             </div>
           )}
           <Link href={auth.isAuth ? '/cart?tab=custom' : '/member/login'}>
-            <CiShoppingCart className="w-8 h-8 text-primary" />
+            <CiShoppingCart className="w-8 h-10 text-primary" />
           </Link>
         </NavbarItem>
         <NavbarItem className="lg:flex">
