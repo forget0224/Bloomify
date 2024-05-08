@@ -189,10 +189,10 @@ export default function Detail() {
         <Head>
           <title>Bloomify - {product?.template_name}</title>
         </Head>
-        <div className="w-screen flex flex-col bg-white items-center justify-center text-tertiary-black gap-2 sm:flex-row ">
+        <div className="w-screen flex flex-col bg-white items-center justify-center text-tertiary-black gap-2 sm:flex-row sm:mt-0 mt-[64px]">
           <div
             className="w-[300px] sm:w-[1000px]  flex flex-col sm:flex-row justify-center  items-center gap-5"
-            style={{ height: 'calc(100vh - 64px)' }}
+            style={{ height: 'calc(100vh - 212px)' }}
           >
             <div
               className=" w-[300px] h-[300px] sm:w-[500px]  relative my-5 sm:h-[500px]"
@@ -227,17 +227,14 @@ export default function Detail() {
                 </div>
                 <div className="flex flex-col justify-center px-5 gap-2">
                   {product?.products.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-row justify-between items-center flex-grow"
-                    >
-                      <p className=" sm:w-[100px]">{item.category_name}</p>
-                      <p className="flex-grow text-center  sm:w-[100px] ">
-                        {item.color}
+                    <div key={index} className="grid grid-cols-4 gap-2 px-5">
+                      <p className=" text-left sm:w-[100px]">
+                        {item.category_name}
                       </p>
-                      <p className="w-6 text-center flex-grow">${item.price}</p>
-                      <p className="flex-grow text-center">
-                        x{item.positions ? item.positions.length : 0}
+                      <p className="text-center sm:w-[100px] ">{item.color}</p>
+                      <p className="text-center sm:w-[100px]">${item.price}</p>
+                      <p className="text-right sm:w-[80px]">
+                        {item.positions ? item.positions.length : 0}朵
                       </p>
                     </div>
                   ))}
@@ -308,7 +305,7 @@ export default function Detail() {
               <p className="">如當日花材不足會以相似款替代</p>
             </div>
             <div className="flex flex-col justify-center px-5 gap-2">
-              {product?.products.map((item, index) => (
+              {/* {product?.products.map((item, index) => (
                 <div
                   key={index}
                   className="flex flex-row justify-between items-center flex-grow"
@@ -317,7 +314,17 @@ export default function Detail() {
                   <p className="flex-grow w-[50px]  ">{item.color}</p>
                   <p className="text-center flex-grow">${item.price}</p>
                   <p className="flex-grow w-[30px] text-center">
-                    x{item.positions ? item.positions.length : 0}
+                    {item.positions ? item.positions.length : 0}朵
+                  </p>
+                </div>
+              ))} */}
+              {product?.products.map((item, index) => (
+                <div key={index} className="grid grid-cols-4 gap-2 ">
+                  <p className=" text-left w-[80px]">{item.category_name}</p>
+                  <p className="text-right w-[60px] ">{item.color}</p>
+                  <p className="text-right ">${item.price}</p>
+                  <p className="text-right ">
+                    {item.positions ? item.positions.length : 0}朵
                   </p>
                 </div>
               ))}
