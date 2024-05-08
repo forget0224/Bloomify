@@ -231,7 +231,7 @@ export default function Profile() {
       {
         <CenterLayout>
           {/* 麵包屑 */}
-          <div className="w-full py-6 invisible md:visible">
+          <div className="mt-[64px] w-full py-6 invisible md:visible">
             <Breadcrumbs>
               <BreadcrumbItem>首頁</BreadcrumbItem>
               <BreadcrumbItem>會員中心</BreadcrumbItem>
@@ -239,7 +239,7 @@ export default function Profile() {
             </Breadcrumbs>
           </div>
           {/* 主要內容 */}
-          <div className="mt-[64px] flex flex-row w-full justify-center">
+          <div className="flex flex-row w-full justify-center">
             {/* 側邊欄 */}
             <Sidebar />
             {/* 會員資料 */}
