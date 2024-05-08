@@ -1,11 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
-import Image from 'next/image'
-import Link from 'next/link'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { ReactLenis, useLenis } from '@studio-freight/react-lenis'
-import bannerFlower from '@/assets/banner-flower.jpg'
+import { ReactLenis } from '@studio-freight/react-lenis'
 import Footer from '@/components/layout/footer'
 import IndexNav from '@/components/layout/indexnav'
 import { useMediaQuery } from 'react-responsive'
@@ -13,21 +9,13 @@ import { useTranslation } from 'react-i18next'
 import Head from 'next/head'
 import BannerSection from '@/components/index/BannerSection'
 
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Button,
-  Input,
-} from '@nextui-org/react'
+import { Card, CardBody, Input } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import ChangeCard from '@/components/index/changeCard'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
   const { t } = useTranslation()
-  const [activePage, setActivePage] = useState('home')
   const bgD1 = '/index/img_index_bg_01.jpg'
   const bgM1 = '/index/img_index_bg_mb_01.jpg'
   const bgD2 = '/index/img_index_bg_02.jpg'
@@ -36,10 +24,14 @@ export default function Home() {
   const bgM3 = '/index/img_index_bg_mb_03.jpg'
   const bgD4 = '/index/img_index_bg_04.jpg'
   const bgM4 = '/index/img_index_bg_mb_04.jpg'
+
+  const bgD5 = '/index/img_index_bg_07.jpg'
+  const bgM5 = '/index/img_index_bg_mb_07.jpg'
   const [bgImg1, setBgImage1] = useState(null)
   const [bgImg2, setBgImage2] = useState(null)
   const [bgImg3, setBgImage3] = useState(null)
   const [bgImg4, setBgImage4] = useState(null)
+  const [bgImg5, setBgImage5] = useState(null)
   const [showNav, setShowNav] = useState(false)
   const svgRef = useRef(null)
   const options = {
@@ -50,9 +42,6 @@ export default function Home() {
   const horizontalRef = useRef([])
   const isDesktop = useMediaQuery({
     query: '(min-width: 1024px)',
-  })
-  const isMobile = useMediaQuery({
-    query: '(max-width: 375px)',
   })
 
   useEffect(() => {
@@ -128,6 +117,7 @@ export default function Home() {
     setBgImage2(isDesktop ? bgD2 : bgM2)
     setBgImage3(isDesktop ? bgD3 : bgM3)
     setBgImage4(isDesktop ? bgD4 : bgM4)
+    setBgImage5(isDesktop ? bgD5 : bgM5)
   }, [isDesktop])
 
   return (
@@ -211,16 +201,16 @@ export default function Home() {
               >
                 <div className="sm:w-[1000px] w-[300px]  h-full flex flex-row justify-center items-center mx-auto">
                   <div className="flex flex-col">
-                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
+                    <div className="sm:text-[100px] text-[32px] flex-1  text-center ">
                       Design
                     </div>
-                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
+                    <div className="sm:text-[100px] text-[32px] flex-1  text-center ">
                       your
                     </div>
-                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
+                    <div className="sm:text-[100px] text-[32px] flex-1  text-center ">
                       own
                     </div>
-                    <div className="sm:text-[100px] text-[48px] flex-1  text-center ">
+                    <div className="sm:text-[100px] text-[32px] flex-1  text-center ">
                       bouquet
                     </div>
                   </div>
@@ -254,7 +244,7 @@ export default function Home() {
                       backgroundPosition: 'center bottom',
                     }}
                   >
-                    <div className="text-xl pb-10">We deliver for you</div>
+                    <div className="text-xl sm:pb-10">We deliver for you</div>
                   </div>
                 </div>
               </div>
@@ -302,7 +292,12 @@ export default function Home() {
         <ChangeCard />
       </div>
 
-      <section className="bg-secondary-300 w-screen min-h-screen">
+      <section
+        className="bg-secondary-300 w-screen min-h-screen bg-cover"
+        style={{
+          backgroundImage: `url(${bgImg5})`,
+        }}
+      >
         <div className="flex sm:flex-row flex-col justify-center items-center min-h-screen sm:gap-8">
           <div className="sm:w-[580px] h-auto sm:scale-100 scale-75">
             <Card className="col-span-12 sm:col-span-4 sm:h-[750px] h-[550x] sm:w-full  w-[400px]  bg-secondary-200">
