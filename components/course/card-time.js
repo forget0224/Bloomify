@@ -41,18 +41,19 @@ export default function CourseTime({ courseDetails, datetimes }) {
               </p>
             </div>
             {/* TODO: */}
-            <p className="text-tertiary-gray-100">尚餘{`3`}個名額</p>
+            {/* <p className="text-tertiary-gray-100">尚餘{`3`}個名額</p> */}
             <div className="flex gap-4 mt-2 lg:mt-0">
               {/* 加入購物車按鈕綁定動作 */}
               <CircleBtn
                 onClick={() => addToCart(courseDetails, datetimes.period)}
               />
               {/* TODO: */}
-              <Link href="/cart/">
+              <Link href="/cart?tab=course">
                 <MyButton
                   color="primary"
                   size="xl"
                   className="w-full md:w-1/2 lg:w-full"
+                  onClick={() => addToCart(courseDetails, datetimes.period)}
                 >
                   立即預約
                 </MyButton>

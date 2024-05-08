@@ -12,7 +12,6 @@ import {
   Image,
   Select,
   SelectItem,
-  useDisclosure,
 } from '@nextui-org/react'
 import Link from 'next/link.js'
 import toast, { Toaster } from 'react-hot-toast'
@@ -26,8 +25,6 @@ import { BiSolidLeaf } from 'react-icons/bi'
 import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
 import { FaToolbox } from 'react-icons/fa'
 import ShopRearchRwd from '@/components/shop/shop-research-rwd'
-
-// import { useWindowSize } from 'react-use'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { useCart } from '@/context/shop-cart-context'
@@ -146,7 +143,6 @@ export default function Shop() {
 
   // 篩選:第一層分類
   const handleCategoryClick = (id) => {
-    // console.log('Category clicked:', id)
     setSelectedSubcategoryIds([])
     setSelectedColors([])
     setSearchTerm('')

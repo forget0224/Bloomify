@@ -15,15 +15,18 @@ export default function CustomFillOut({
   syncData,
   selectedDeliveryOption,
   handleSelectDeliveryChange,
-  cities,
-  townships,
-  postalCodes,
+  // 宅配地址會用到的 ---------------
+  cities, // 縣市數組
+  townships, // 區域數組
   handleCityChange,
   handleTownshipChange,
-  handlePostalCodeChange,
+  selectedCity,
+  selectedTownship,
+  selectedPostalCode,
   addressDetail,
-  setAddressDetail,
+  handleBlur,
   handleAddressDetailChange,
+  // ------------------------------
   date,
   handleDateChange,
   inputStyles,
@@ -39,7 +42,6 @@ export default function CustomFillOut({
 }) {
   return (
     <>
-      {' '}
       <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
         <div className="flex text-black border-b-2 border-primary-300">
           <FormTag text="運送資訊" />
@@ -106,64 +108,67 @@ export default function CustomFillOut({
           {selectedDeliveryOption && selectedDeliveryOption.id === 1 && (
             <>
               <div className="flex flex-col gap-3 w-full">
-                <div className="space-y-3 sm:flex sm:gap-3 ">
+                <div className="space-y-3 sm:flex sm:gap-3 items-end">
+                  {/* 城市選單 */}
                   <Select
                     label="配送地址"
                     placeholder="請選擇城市"
                     labelPlacement="outside"
+                    aria-label="配送地址"
                     disableSelectorIconRotation
                     isRequired
                     classNames={{ ...selectStyles }}
                     onChange={(e) => handleCityChange(e.target.value)}
                   >
-                    {cities.map((shippingMethod) => (
+                    {cities.map((city) => (
                       <SelectItem
-                        key={shippingMethod.value}
-                        value={shippingMethod.value}
+                        key={city.value}
+                        value={city.value}
                         classNames={{
                           base: 'text-base',
                         }}
                       >
-                        {shippingMethod.label}
+                        {city.label}
                       </SelectItem>
                     ))}
                   </Select>
+                  {/* 區選單 */}
                   <Select
-                    label=""
-                    placeholder="請選擇鄉鎮"
-                    labelPlacement="outside"
-                    disableSelectorIconRotation
-                    isRequired
-                    classNames={{ ...selectStyles }}
+                    value={selectedTownship || ''}
                     onChange={(e) => handleTownshipChange(e.target.value)}
-                  >
-                    {townships.map((shippingMethod) => (
-                      <SelectItem
-                        key={shippingMethod.value}
-                        value={shippingMethod.value}
-                      >
-                        {shippingMethod.label}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                  <Select
-                    label=""
-                    placeholder="郵遞區號"
+                    placeholder="請選擇區"
+                    aria-label="區"
                     labelPlacement="outside"
                     disableSelectorIconRotation
                     isRequired
                     classNames={{ ...selectStyles }}
-                    onChange={(e) => handlePostalCodeChange(e.target.value)}
                   >
-                    {postalCodes.map((shippingMethod) => (
-                      <SelectItem
-                        key={shippingMethod.value}
-                        value={shippingMethod.value}
-                      >
-                        {shippingMethod.label}
+                    {townships.length > 0 ? (
+                      townships.map((township) => (
+                        <SelectItem key={township.value} value={township.value}>
+                          {township.label}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="" disabled>
+                        {'請先選擇城市'}
                       </SelectItem>
-                    ))}
+                    )}
                   </Select>
+                  {/* 郵遞區號 */}
+                  <input
+                    label="郵遞區號"
+                    aria-label="郵遞區號"
+                    type="text"
+                    value={selectedPostalCode || '郵遞區號'}
+                    readOnly
+                    disabled
+                    className={`bg-default-100 px-3 rounded-xl h-[40px] focus:ring-0 w-full ${
+                      selectedPostalCode
+                        ? 'text-tertiary-black'
+                        : 'text-tertiary-gray-100'
+                    }`}
+                  />
                 </div>
                 <Input
                   type="text"
@@ -171,8 +176,9 @@ export default function CustomFillOut({
                   placeholder="請填寫地址"
                   isRequired
                   classNames={{ ...inputStyles }}
-                  onChange={(e) => setAddressDetail(e.target.value)}
-                  onBlur={handleAddressDetailChange}
+                  onValueChange={handleAddressDetailChange}
+                  onBlur={handleBlur}
+                  value={addressDetail}
                 />
               </div>
               <div className="sm:w-[400px]   w-[269px] h-auto">

@@ -10,6 +10,7 @@ import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
 import CourseSearch from '@/components/course/search'
 import CourseOrder from '@/components/course/div-orders'
+import Head from 'next/head'
 
 export default function CenterCourse() {
   const [orders, setOrders] = useState([])
@@ -98,8 +99,11 @@ export default function CenterCourse() {
   const [activePage, setActivePage] = useState('course')
 
   return (
-    <DefaultLayout activePage={activePage}>
-      <>
+    <>
+      <Head>
+        <title>課程訂單</title>
+      </Head>
+      <DefaultLayout activePage={activePage}>
         <CenterLayout>
           {/* 麵包屑 */}
           <div className="w-full py-6 hidden sm:block">
@@ -186,7 +190,7 @@ export default function CenterCourse() {
             </div>
           </div>
         </CenterLayout>
-      </>
-    </DefaultLayout>
+      </DefaultLayout>
+    </>
   )
 }

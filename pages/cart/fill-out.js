@@ -15,17 +15,22 @@ import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
 import CustomFillOut from '@/components/custom/cart/CustomFillOut'
-// import ShopFillOut from '@/components/shop/shop-fillout'
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store'
 import useCouponValidator from '@/hooks/use-coupon'
+import Head from 'next/head'
+
+// TODO:
+// 縣市區郵遞區號資料引入
+import taiwanDistricts from '../../data/taiwan_districts'
 
 export default function FillOut() {
   const [activePage, setActivePage] = useState('cart')
+  const { fillOutDetails, setFillOutDetails } = useFillOut()
+
   const [payments, setPayments] = useState([])
   const [shippings, setShippings] = useState([])
   const [invoices, setInvoices] = useState([])
   const [selectedValue, setSelectedValue] = useState('')
-  const { fillOutDetails, setFillOutDetails } = useFillOut()
   const [recipientName, setRecipientName] = useState('')
   const [recipientNumber, setRecipientNumber] = useState('')
   const [deliveryOption, setDeliveryOption] = useState('')
@@ -42,11 +47,12 @@ export default function FillOut() {
   const [syncData, setSyncData] = useState(false)
   const { auth } = useAuth()
   const { userData, isAuth } = auth
-  const [city, setCity] = useState('')
-  const [township, setTownship] = useState('')
-  const [postalCode, setPostalCode] = useState('')
-  const [addressDetail, setAddressDetail] = useState('')
   const [date, setDate] = useState(now('Asia/Taipei'))
+  // TODO:
+  const [selectedCity, setSelectedCity] = useState('')
+  const [selectedTownship, setSelectedTownship] = useState('')
+  const [selectedPostalCode, setSelectedPostalCode] = useState('')
+  const [addressDetail, setAddressDetail] = useState('')
 
   // 優惠券驗證
   const [couponCode, setCouponCode] = useState('')
@@ -62,32 +68,81 @@ export default function FillOut() {
     times.push(formattedHour)
   }
 
+  // TODO:
+  // 從 taiwanDistricts 抓城市的 value 和 label
+  const cities = taiwanDistricts.map((city) => ({
+    value: city.name,
+    label: city.name,
+  }))
+  const [townships, setTownships] = useState([])
+  const [postalCodes, setPostalCodes] = useState([])
+
+  // TODO:
+  // 更新完整地址
   function updateDeliveryAddress() {
-    if (city && township && postalCode && addressDetail) {
-      setDeliveryAddress(`${city} ${township} ${postalCode} ${addressDetail}`)
-    }
+    setDeliveryAddress(
+      `${selectedCity} ${selectedTownship} ${selectedPostalCode} ${addressDetail}`
+    )
   }
+
+  // 當選擇的城市發生變化時
   const handleCityChange = (value) => {
-    setCity(value)
+    setSelectedCity(value)
     updateDeliveryAddress()
+
+    const cityData = taiwanDistricts.find((city) => city.name === value)
+    if (cityData) {
+      const newTownships = cityData.districts.map((district) => ({
+        value: district.name,
+        label: district.name,
+      }))
+      setTownships(newTownships)
+      setPostalCodes([])
+      setSelectedTownship(null)
+      setSelectedPostalCode('')
+    } else {
+      setTownships([])
+      setPostalCodes([])
+      setSelectedTownship(null)
+      setSelectedPostalCode('')
+    }
+    console.log(selectedCity)
+    console.log(selectedTownship)
+    console.log(townships)
   }
+
+  // 使用useEffect來檢查狀態更新
+  useEffect(() => {
+    console.log('Selected city updated to: ', selectedCity)
+    console.log('Selected township updated to: ', selectedTownship)
+  }, [selectedCity])
 
   const handleTownshipChange = (value) => {
-    setTownship(value)
+    setSelectedTownship(value)
     updateDeliveryAddress()
-  }
 
+    // Need to find the city first to get the correct district
+    const cityData = taiwanDistricts.find((city) => city.name === selectedCity)
+    const townshipData = cityData?.districts.find(
+      (district) => district.name === value
+    )
+    console.log(townshipData)
+    if (townshipData) {
+      setSelectedPostalCode(townshipData.zip)
+    } else {
+      setSelectedPostalCode('')
+    }
+  }
   const handlePostalCodeChange = (value) => {
-    setPostalCode(value)
+    setSelectedPostalCode(value)
     updateDeliveryAddress()
   }
-
   const handleAddressDetailChange = (value) => {
     setAddressDetail(value)
+  }
 
-    updateDeliveryAddress()
-
-    // updateDeliveryAddress()
+  const handleBlur = () => {
+    updateDeliveryAddress() // 更新配送地址
   }
 
   const handleTimeChange = (value) => {
@@ -331,37 +386,6 @@ export default function FillOut() {
     })
   }
 
-  const cities = [
-    {
-      value: '臺北市',
-      label: '臺北市',
-    },
-    {
-      value: '新北市',
-      label: '新北市',
-    },
-  ]
-  const townships = [
-    {
-      value: '大安區',
-      label: '大安區',
-    },
-    {
-      value: '淡水區',
-      label: '淡水區',
-    },
-  ]
-  const postalCodes = [
-    {
-      value: '104',
-      label: '104',
-    },
-    {
-      value: '110',
-      label: '110',
-    },
-  ]
-
   // 付款方式
   const handleRadioChange = (value) => {
     setPaymentMethod(value)
@@ -461,6 +485,9 @@ export default function FillOut() {
 
   return (
     <>
+      <Head>
+        <title>填寫資料</title>
+      </Head>
       <DefaultLayout activePage={activePage}>
         {/* 置中 & 背景色 */}
         <main className="flex flex-col justify-center items-center bg-white">
@@ -567,15 +594,22 @@ export default function FillOut() {
                   syncData={syncData}
                   selectedDeliveryOption={selectedDeliveryOption}
                   handleSelectDeliveryChange={handleSelectDeliveryChange}
+                  // --------------------------
                   cities={cities}
                   townships={townships}
                   postalCodes={postalCodes}
                   handleCityChange={handleCityChange}
                   handleTownshipChange={handleTownshipChange}
                   handlePostalCodeChange={handlePostalCodeChange}
+                  selectedCity={selectedCity}
+                  selectedTownship={selectedTownship}
+                  selectedPostalCode={selectedPostalCode}
+                  setTownships={setTownships}
+                  setSelectedPostalCode={setSelectedPostalCode}
                   addressDetail={addressDetail}
                   setAddressDetail={setAddressDetail}
                   handleAddressDetailChange={handleAddressDetailChange}
+                  // --------------------------
                   date={date}
                   handleDateChange={handleDateChange}
                   inputStyles={inputStyles}
@@ -583,6 +617,7 @@ export default function FillOut() {
                   handleInputChange={handleInputChange}
                   handleRecipientChange={handleRecipientChange}
                   shippings={shippings}
+                  handleBlur={handleBlur}
                   deliveryTime={deliveryTime}
                   times={times}
                   handleTimeChange={handleTimeChange}
@@ -706,79 +741,87 @@ export default function FillOut() {
                         </div>
                       )}
                     {/* address */}
+                    {/* TODO: */}
                     {selectedDeliveryOption &&
                       selectedDeliveryOption.id === 1 && (
                         <div className="flex flex-col gap-3">
-                          <div className="space-y-3 sm:flex sm:gap-3 ">
+                          <div className="space-y-3 md:space-y-0 sm:flex sm:gap-3 items-end">
+                            {/* 城市選單 */}
                             <Select
                               label="配送地址"
                               placeholder="請選擇城市"
                               labelPlacement="outside"
+                              aria-label="配送地址"
                               disableSelectorIconRotation
                               isRequired
                               classNames={{ ...selectStyles }}
                               onChange={(e) => handleCityChange(e.target.value)}
                             >
-                              {cities.map((shippingMethod) => (
+                              {cities.map((city) => (
                                 <SelectItem
-                                  key={shippingMethod.value}
-                                  value={shippingMethod.value}
+                                  key={city.value}
+                                  value={city.value}
                                   classNames={{
                                     base: 'text-base',
                                   }}
                                 >
-                                  {shippingMethod.label}
+                                  {city.label}
                                 </SelectItem>
                               ))}
                             </Select>
+                            {/* 區選單 */}
                             <Select
-                              label=""
-                              placeholder="請選擇鄉鎮"
-                              labelPlacement="outside"
-                              disableSelectorIconRotation
-                              isRequired
-                              classNames={{ ...selectStyles }}
+                              value={selectedTownship || ''}
                               onChange={(e) =>
                                 handleTownshipChange(e.target.value)
                               }
-                            >
-                              {townships.map((shippingMethod) => (
-                                <SelectItem
-                                  key={shippingMethod.value}
-                                  value={shippingMethod.value}
-                                >
-                                  {shippingMethod.label}
-                                </SelectItem>
-                              ))}
-                            </Select>
-                            <Select
-                              label=""
-                              placeholder="郵遞區號"
+                              placeholder="請選擇區"
+                              aria-label="區"
                               labelPlacement="outside"
                               disableSelectorIconRotation
                               isRequired
                               classNames={{ ...selectStyles }}
-                              onChange={(e) =>
-                                handlePostalCodeChange(e.target.value)
-                              }
                             >
-                              {postalCodes.map((shippingMethod) => (
-                                <SelectItem
-                                  key={shippingMethod.value}
-                                  value={shippingMethod.value}
-                                >
-                                  {shippingMethod.label}
+                              {townships.length > 0 ? (
+                                townships.map((township) => (
+                                  <SelectItem
+                                    key={township.value}
+                                    value={township.value}
+                                  >
+                                    {township.label}
+                                  </SelectItem>
+                                ))
+                              ) : (
+                                <SelectItem value="" disabled>
+                                  {'請先選擇城市'}
                                 </SelectItem>
-                              ))}
+                              )}
                             </Select>
+                            {/* 郵遞區號 */}
+                            <input
+                              label="郵遞區號"
+                              aria-label="郵遞區號"
+                              type="text"
+                              value={selectedPostalCode || '郵遞區號'}
+                              readOnly
+                              disabled
+                              className={`bg-default-100 px-3 rounded-xl h-[40px] focus:ring-0 w-full ${
+                                selectedPostalCode
+                                  ? 'text-tertiary-black'
+                                  : 'text-tertiary-gray-100'
+                              }`}
+                            />
                           </div>
                           <Input
                             type="text"
                             labelPlacement="inside"
+                            aria-label="詳細地址"
                             placeholder="請填寫地址"
                             isRequired
                             classNames={{ ...inputStyles }}
                             onValueChange={handleAddressDetailChange}
+                            onBlur={handleBlur}
+                            value={addressDetail}
                           />
                         </div>
                       )}
@@ -787,7 +830,6 @@ export default function FillOut() {
               ) : null}
               {/* shipping 商城 end */}
 
-              {/* TODO: */}
               {/* coupon start*/}
               <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
                 <FormTag text="優惠券" />

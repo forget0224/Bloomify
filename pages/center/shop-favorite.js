@@ -15,7 +15,7 @@ import { Select, SelectItem } from '@nextui-org/react'
 import { BsFillStarFill, BsHeartFill, BsHeart } from 'react-icons/bs'
 import Link from 'next/link'
 // 小組元件
-// import { MyButton } from '@/components/btn/mybutton'
+import Head from 'next/head'
 import SearchBtn from '@/components/shop/search'
 import HeartButton from '@/components/shop/btn-heart'
 
@@ -41,11 +41,6 @@ export default function Favorite() {
   useEffect(() => {
     fetchFavProducts()
   }, [])
-
-  // 當收藏取消時，就會先在畫面上被刪除
-  // const removeProductFromFavorites = (productId) => {
-  //   setFavProducts(favProducts.filter((product) => product.id !== productId))
-  // }
 
   const [searchTerm, setSearchTerm] = useState('')
   console.log(searchTerm)
@@ -73,6 +68,9 @@ export default function Favorite() {
     <DefaultLayout activePage={activePage}>
       {
         <>
+          <Head>
+            <title>收藏商品</title>
+          </Head>
           <CenterLayout>
             {/* 麵包屑 */}
             <div className="hidden sm:block sm:w-full sm:py-6">

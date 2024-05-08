@@ -14,6 +14,7 @@ import moment from 'moment'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import SuccessAnimation from '@/components/common/animation_success'
+import Head from 'next/head'
 
 export default function OrderSuccess() {
   const [activePage, setActivePage] = useState('shop')
@@ -75,9 +76,6 @@ export default function OrderSuccess() {
       const d = await r.json()
       if (d.success) {
         setPaidSuccess(true)
-        localStorage.removeItem('cartItems')
-        localStorage.removeItem('fillOutDetails')
-        localStorage.removeItem('store711')
       } else {
         setPaidSuccess(false)
         // 跳出錯誤提示
@@ -111,6 +109,9 @@ export default function OrderSuccess() {
   return (
     <DefaultLayout activePage={activePage}>
       <>
+        <Head>
+          <title>付款成功!</title>
+        </Head>
         {/* 置中 & 背景色 */}
         <main className="flex flex-col justify-center items-center bg-white">
           {/* 主要容器 */}
