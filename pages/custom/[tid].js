@@ -179,7 +179,7 @@ export default function Detail() {
       payload: newProducts,
     })
 
-    router.push('/cart?source=flower')
+    router.push('/cart?tab=custom')
   }
 
   const display = (

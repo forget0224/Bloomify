@@ -139,7 +139,7 @@ export default function HomeNav({ activePage }) {
               {itemsAmount}
             </div>
           )}
-          <Link href={auth.isAuth ? '/cart' : '/member/login'}>
+          <Link href={auth.isAuth ? '/cart?tab=custom' : '/member/login'}>
             <CiShoppingCart className="w-8 h-8 text-primary" />
           </Link>
         </NavbarItem>
