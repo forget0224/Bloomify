@@ -60,19 +60,21 @@ export default function HomeNav({ activePage }) {
   const itemsAmount = cartItemsArr.length
 
   return (
-    <Navbar isBordered className="bg-primary-300">
+    <Navbar isBordered className="bg-primary-300 fixed top-0">
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
-
-      <NavbarContent className="pr-3" justify="center">
+      <NavbarContent className=" flex" justify="start">
+        <NavLogo />
+      </NavbarContent>
+      {/* <NavbarContent className="pr-3" justify="center">
         <NavbarBrand>
           <Link href="/">
-            {/* <p className="font-bold text-white">Bloomify</p> */}
+           
             <NavLogo />
           </Link>
         </NavbarBrand>
-      </NavbarContent>
+      </NavbarContent> */}
 
       <NavbarContent className="hidden sm:flex gap-4 w-full" justify="center">
         {menuItems.map((item, index) => (
@@ -81,7 +83,7 @@ export default function HomeNav({ activePage }) {
               <Dropdown>
                 <DropdownTrigger>
                   <div
-                    className={`bg-transparent text-base ${
+                    className={`bg-transparent cursor-pointer text-base ${
                       activePage === item.name
                         ? ' border-b-1 border-primary'
                         : ''
@@ -148,19 +150,19 @@ export default function HomeNav({ activePage }) {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarMenu>
+      <NavbarMenu className="flex flex-col items-center">
         {menuItems.map((item, index) => (
           <Fragment key={`${item}-${index}`}>
             {item.subMenu.length > 0 ? (
               <Dropdown>
                 <DropdownTrigger>
-                  <Button
+                  <div
                     className={`bg-transparent ${
                       activePage === item.name ? ' ' : ''
                     }`}
                   >
                     {item.chineseName}
-                  </Button>
+                  </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="" className="text-center">
                   {item.subMenu.map((subItem, subIndex) => (
