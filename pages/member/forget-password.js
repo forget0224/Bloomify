@@ -173,7 +173,7 @@ export default function Register() {
             <title>忘記密碼</title>
           </Head>
           {/* main的東西 */}
-          <div className="py-8 flex justify-center items-center w-full h-full bg-secondary-300">
+          <div className="mt-12 py-8 flex justify-center items-center w-full h-full bg-secondary-300">
             <Card className="w-full h-full flex flex-col  mx-4 lg:flex  lg:flex-row-reverse lg:max-w-[950px] lg:max-h-[600px] shadow-lg">
               {/* <Card className="flex flex-row-reverse  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               <div className="w-full lg:w-1/2 h-full flex flex-col items-center px-10 py-12">
