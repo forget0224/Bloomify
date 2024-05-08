@@ -44,7 +44,7 @@ export default function Login() {
   const { auth, login } = useAuth()
 
   // loginGoogleRedirect無callback，要改用initApp在頁面初次渲染後監聽google登入狀態
-  const { loginGoogle, initApp } = useFirebase()
+  const { loginGoogleRedirect, initApp } = useFirebase()
 
   // 這裡要設定initApp，讓這個頁面能監聽firebase的google登入狀態
   useEffect(() => {
@@ -290,7 +290,7 @@ export default function Login() {
                 </form>
                 <button
                   className="w-full py-2 mt-8 border-2 text-2xl cursor-pointer flex justify-center items-center rounded-[30px] text-small hover:bg-gray-100"
-                  onClick={() => loginGoogle()}
+                  onClick={() => loginGoogleRedirect()}
                 >
                   <FcGoogle fontSize={20} />
                   <div className="mx-2">Google登入</div>

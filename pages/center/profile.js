@@ -313,7 +313,7 @@ export default function Profile() {
                       name="phone"
                       label="手機"
                       labelPlacement="outside"
-                      placeholder="手機號碼"
+                      placeholder="09xxxxxxxx"
                       type="text"
                       value={userProfile.phone}
                       onChange={handleFieldChange}
