@@ -4,7 +4,7 @@ import moment from 'moment'
 
 const limit = 3
 
-const reviewTabPage = ({ reviews, renderStars }) => {
+const ReviewTabPage = ({ reviews, renderStars }) => {
   const [currentPage, setCurrentPage] = useState(1)
   // 計算評論總頁數
   const pageCount = Math.ceil(reviews.length / limit)
@@ -54,4 +54,4 @@ const reviewTabPage = ({ reviews, renderStars }) => {
   )
 }
 
-export default reviewTabPage
+export default ReviewTabPage

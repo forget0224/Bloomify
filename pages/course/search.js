@@ -237,7 +237,7 @@ export default function CourseSearch() {
         activePage={activePage}
         className="justify-center flex-col items-center"
       >
-        <main className="flex justify-center items-center px-5 bg-white">
+        <main className="flex justify-center items-center px-5 bg-white mt-[64px]">
           <div className="container justify-center flex flex-col mb-20 mt-6">
             <div className="flex flex-col items-center gap-6">
               {/* 頁面標題 */}

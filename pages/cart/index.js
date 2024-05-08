@@ -66,7 +66,7 @@ export default function Cart() {
       <DefaultLayout activePage={activePage}>
         <CenterLayout>
           {/* steps */}
-          <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 my-4 sm:mt-6 sm:mb-4">
+          <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 my-4 mt-6 md:mt-[88px] mb-4">
             <Stepper
               steps={steps}
               pallet={{

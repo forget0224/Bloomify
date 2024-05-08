@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { Image } from '@nextui-org/react'
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
 
-export default function CourseImageSlider({ images }) {
-  useEffect(() => {
-    if (images && images.length > 0) {
-      const mainImage = images.find((img) => img.is_main) || images[0]
-      setSelectedImage(mainImage)
-    }
-    // console.log(images)
-  }, [images])
-
+export default function CourseImageSlider({ images = [] }) {
   // 假定 images 陣列已經有值，並且已經包含了 is_main 屬性。
   // 這裡我們尋找標記為主圖片的項目，或者預設為陣列中的第一個項目。
-  const [selectedImage, setSelectedImage] = useState(
-    images && Array.isArray(images)
-      ? images.find((img) => img.is_main) || images[0]
-      : null
-  )
+  const [selectedImage, setSelectedImage] = useState(() => {
+    // 使用箭頭函數進行初始設置
+    return images.find((img) => img.is_main) || images[0] || null
+  })
+
+  useEffect(() => {
+    if (images.length > 0) {
+      const mainImage = images.find((img) => img.is_main) || images[0]
+      setSelectedImage(mainImage)
+    } else {
+      setSelectedImage(null) // 如果沒有圖片，清空選中的圖片
+    }
+  }, [images])
 
   // 點擊縮圖時調用的函數
   const handleMainClick = (image) => {
@@ -26,11 +26,13 @@ export default function CourseImageSlider({ images }) {
 
   // 查找當前選中圖片的index
   const selectedImageIndex = images.findIndex(
-    (img) => img.id === selectedImage.id
+    (img) => selectedImage && img.id === selectedImage.id
   )
 
   // 點擊切換下一張圖的函數
   const nextImage = () => {
+    if (selectedImageIndex === -1) return // 當前選中圖片不存在
+
     const nextIndex =
       selectedImageIndex < images.length - 1 ? selectedImageIndex + 1 : 0
     setSelectedImage(images[nextIndex])
@@ -38,6 +40,8 @@ export default function CourseImageSlider({ images }) {
 
   // 點擊切換上一張圖的函數
   const prevImage = () => {
+    if (selectedImageIndex === -1) return // 當前選中圖片不存在
+
     const prevIndex =
       selectedImageIndex > 0 ? selectedImageIndex - 1 : images.length - 1
     setSelectedImage(images[prevIndex])

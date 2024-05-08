@@ -500,7 +500,7 @@ export default function FillOut() {
       </Head>
       <DefaultLayout activePage={activePage}>
         {/* 置中 & 背景色 */}
-        <main className="flex flex-col justify-center items-center bg-white">
+        <main className="flex flex-col justify-center items-center bg-white mt-[64px]">
           {/* 主要容器 */}
           <div className="bg-white container justify-center flex flex-col items-center columns-12 px-5 md:px-0 mb-10">
             {/* steps */}

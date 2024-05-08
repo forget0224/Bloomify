@@ -231,11 +231,11 @@ export default function Profile() {
       {
         <CenterLayout>
           {/* 麵包屑 */}
-          <div className="mt-[64px] w-full py-6 invisible md:visible">
+          <div className="w-full py-6 invisible md:visible">
             <Breadcrumbs>
               <BreadcrumbItem>首頁</BreadcrumbItem>
               <BreadcrumbItem>會員中心</BreadcrumbItem>
-              <BreadcrumbItem>個人資料</BreadcrumbItem>
+              <BreadcrumbItem color="primary">個人資料</BreadcrumbItem>
             </Breadcrumbs>
           </div>
           {/* 主要內容 */}
