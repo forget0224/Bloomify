@@ -13,7 +13,7 @@ import {
 function OrderList() {
   const [activeTab, setActiveTab] = useState('全部')
   const [sortKey, setSortKey] = useState('order_date')
-  const [sortOrder, setSortOrder] = useState('asc')
+  const [sortOrder, setSortOrder] = useState('desc')
   const [orderList, setOrderList] = useState([])
   const [sortedData, setSortedData] = useState([])
 
@@ -135,7 +135,7 @@ function OrderList() {
                         subtitle={
                           <div className="flex flex-col gap-2 mt-2">
                             <div>
-                              {order.bouquet_name}/{order.store_name}
+                              {order.bouquet}/{order.store_name}
                             </div>
                             <div
                               className={`w-16 text-center ${
