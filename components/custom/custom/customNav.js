@@ -64,7 +64,7 @@ export default function CustomNav() {
       type: 'ADD_PRODUCTS',
       payload: productPayload,
     })
-    router.push('/cart')
+    router.push('/cart?tab=custom')
   }, [snapshotCanvas, imagesInfo, dispatch, cardInfo, packageInfo])
 
   return (

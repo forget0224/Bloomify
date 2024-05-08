@@ -13,7 +13,7 @@ export default function Cart() {
   const [activePage, setActivePage] = useState('cart')
 
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('custom')
+  const [activeTab, setActiveTab] = useState('')
 
   useEffect(() => {
     // console.log('Router is ready:', router.isReady)
@@ -22,8 +22,6 @@ export default function Cart() {
       const tabQuery = router.query.tab
       if (tabQuery) {
         setActiveTab(tabQuery)
-      } else {
-        setActiveTab('custom')
       }
     }
   }, [router.isReady, router.query.tab])
