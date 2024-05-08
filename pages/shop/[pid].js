@@ -25,6 +25,7 @@ import { useCart } from '@/context/shop-cart-context'
 import HeartButton from '@/components/shop/btn-heart'
 import ReviewTabPage from '@/components/shop/review-tab-page'
 import Head from 'next/head'
+import { FaMinus, FaPlus } from 'react-icons/fa6'
 
 export default function Detail() {
   const { cartItems, setCartItems } = useCart()
@@ -389,10 +390,16 @@ export default function Detail() {
                             <Button
                               isIconOnly
                               variant="faded"
+                              style={{
+                                backgroundColor:
+                                  quantity <= 1 ? '#cccccc' : '#DBEDDF', // 灰色或主要颜色
+                                color: quantity <= 1 ? '#666666' : 'black', // 文字颜色
+                              }}
                               className="bg-primary-300 border-transparent"
                               onClick={handleDecrement}
+                              disabled={quantity <= 1}
                             >
-                              -
+                              <FaMinus />
                             </Button>
                             <Input
                               type="text"
@@ -408,7 +415,7 @@ export default function Detail() {
                               className="bg-primary-300 border-transparent"
                               onClick={handleIncrement}
                             >
-                              +
+                              <FaPlus />
                             </Button>
                           </div>
                         </td>
