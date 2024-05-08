@@ -1,6 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useRouter } from 'next/router'
-import Logo from '@/assets/singleLogo.svg'
+import Logo from '@/assets/logo_patternlogo.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import { CiUndo } from 'react-icons/ci'
