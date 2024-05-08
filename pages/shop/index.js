@@ -338,7 +338,7 @@ export default function Shop() {
             <title>線上商城</title>
           </Head>
           {/* 置中 & 背景色 */}
-          <main className="flex flex-col justify-center items-center bg-white">
+          <main className="flex flex-col justify-center items-center bg-white mt-[64px]">
             {/* 主要容器 */}
             <div className="container justify-center flex flex-col items-start columns-12 mb-20 px-5 md:px-0">
               {/* breadcrumb start */}

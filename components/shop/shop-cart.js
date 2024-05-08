@@ -99,7 +99,7 @@ export default function ShopCart() {
                   </Button>
                   <div style={{ width: '100px' }}>
                     <Input
-                      type="text" // 推荐使用 number 類型確保只能輸入数字
+                      type="text"
                       min="1"
                       style={{ textAlign: 'center' }}
                       value={item.quantity}

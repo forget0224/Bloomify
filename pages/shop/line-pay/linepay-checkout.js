@@ -135,7 +135,7 @@ export default function OrderSuccess() {
         <Head>
           <title>付款</title>
         </Head>
-        <main className="flex flex-col justify-center items-center bg-white">
+        <main className="flex flex-col justify-center items-center bg-white mt-[64px]">
           {/* 主要容器 */}
           <div className="bg-white container justify-center flex flex-col items-start columns-12 static px-5 md:px-0">
             {/* 麵包屑 */}

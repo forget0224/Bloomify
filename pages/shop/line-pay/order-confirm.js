@@ -24,7 +24,7 @@ const ShopCheckout = () => {
     detail: {},
     store711: {},
   })
-  console.log(detailData, 'detailData')
+  // console.log(detailData, 'detailData')
 
   const getParsedData = (stringifiedJson) => {
     return stringifiedJson ? JSON.parse(stringifiedJson) : ''
@@ -125,6 +125,13 @@ const ShopCheckout = () => {
       'border-tertiary-100',
       'rounded-xl',
     ],
+  }
+
+  const [isChecked, setIsChecked] = useState(false) 
+  console.log(isChecked)
+
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked)
   }
 
   return (
@@ -303,7 +310,7 @@ const ShopCheckout = () => {
       </div>
       {/* shipping & payment detail end*/}
       <div className="w-full flex justify-center">
-        <Checkbox defaultSelected>
+        <Checkbox onChange={handleCheckboxChange} checked={isChecked}>
           我同意辦理退貨時，由 Bloomify
           代為處理發票及銷貨退回證明單，以加速退貨退款作業。
         </Checkbox>
@@ -314,7 +321,12 @@ const ShopCheckout = () => {
           <Link href="/cart/fill-out?source=shop">上一步 </Link>
         </MyButton>
 
-        <MyButton color="primary" size="xl" onClick={confirmOrder}>
+        <MyButton
+          color="primary"
+          size="xl"
+          onClick={confirmOrder}
+          isDisabled={!isChecked}
+        >
           下一步
         </MyButton>
       </div>
