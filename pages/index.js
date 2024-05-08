@@ -11,6 +11,8 @@ import IndexNav from '@/components/layout/indexnav'
 import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import Head from 'next/head'
+import BannerSection from '@/components/index/BannerSection'
+import HeroSection from '@/components/index/Hero'
 import {
   Card,
   CardHeader,
@@ -46,8 +48,6 @@ export default function Home() {
   }
   const sectionRef = useRef(null)
   const horizontalRef = useRef([])
-  // const secondRef = useRef(null)
-  // const secondBox = useRef(null)
   const isDesktop = useMediaQuery({
     query: '(min-width: 1024px)',
   })
@@ -100,21 +100,6 @@ export default function Home() {
       }
     }
   }, [])
-
-  // useEffect(() => {
-  //   if (secondRef.current && secondBox.current) {
-  //     gsap.to(secondBox.current, {
-  //       yPercent: -20,
-  //       ease: 'none',
-  //       scrollTrigger: {
-  //         trigger: secondRef.current,
-  //         start: 'top bottom',
-  //         end: 'bottom top',
-  //         scrub: true,
-  //       },
-  //     })
-  //   }
-  // }, [])
 
   const addToRefs = (el) => {
     if (el && !horizontalRef.current.includes(el)) {
@@ -278,7 +263,7 @@ export default function Home() {
         </section>
       </ReactLenis>
       {/* sm:banner */}
-      <section className="w-screen h-screen bg-blue-100  text-black sm:flex flex-col  justify-center items-center hidden sm:flex">
+      {/* <section className="w-screen h-screen bg-blue-100  text-black sm:flex flex-col  justify-center items-center hidden sm:flex">
         <div className="border-1 border-pink w-[1000px] h-[400px] flex flex-row">
           <div className="w-full flex flex-col bg-white justify-center items-center text-center">
             <h1 className="text-2xl my-3">{t('section2.mothersDayTitle')}</h1>
@@ -293,30 +278,37 @@ export default function Home() {
             <Image src={bannerFlower} alt="" className="w-[500px] h-full" />
           </div>
         </div>
-      </section>
+      </section> */}
+      <div
+        className="h-screen w-screen"
+        style={{ background: `url(/index/index_sec2.jpg)` }}
+      >
+        <BannerSection />
+      </div>
+
       {/* phone:banner */}
-      <section className="w-screen h-60  bg-[url('/index/index_banner.jpg')] bg-cover flex items-center sm:hidden">
+      {/* <section className="w-screen h-60  bg-[url('/index/index_banner.jpg')] bg-cover flex items-center sm:hidden">
         <div className="w-80 h-52 bg-white/80 m-auto text-tertiary-black flex flex-col justify-center items-center rounded-2xl p-6 gap-y-2.5">
           <h1 className="text-[22px]">{t('section2.mothersDayTitle')}</h1>
           <p className="text-xs">{t('section2.mothersDayCampaign')}</p>
           <Link href="#">{t('section2.more')}</Link>
         </div>
-      </section>
+      </section> */}
 
       <div
         className="w-screen min-h-screen flex-col items-center justify-between relative "
-        style={{ background: `url(${bgImg2})` }}
+        style={{ background: `url(/index/index_sec2.jpg)` }}
       >
         <ChangeCard />
       </div>
 
       <section className="bg-secondary-300 w-screen min-h-screen">
-        <div className="flex sm:flex-row flex-col justify-center items-center min-h-screen gap-8">
-          <div className="sm:w-[580px] h-auto">
-            <Card className="col-span-12 sm:col-span-4 h-[750px] bg-secondary-200">
+        <div className="flex sm:flex-row flex-col justify-center items-center min-h-screen sm:gap-8">
+          <div className="sm:w-[580px] h-auto sm:scale-100 scale-75">
+            <Card className="col-span-12 sm:col-span-4 sm:h-[750px] h-[550x] sm:w-full  w-[400px]  bg-secondary-200">
               <CardBody className="flex flex-col justify-center items-center">
                 <div
-                  className="w-[225px] h-[480px] bg-contain bg-no-repeat"
+                  className="w-[225px] h-[480px] bg-contain bg-no-repeat "
                   style={{
                     backgroundImage: `url(/index/white_flower.png)`,
                   }}
@@ -336,19 +328,22 @@ export default function Home() {
                     }
                   />
                 </div>
-                <div className="text-2xl mt-4"> {t('section4.experience')}</div>
+                <div className="sm:text-2xl text-lg mt-4">
+                  {' '}
+                  {t('section4.experience')}
+                </div>
               </CardBody>
             </Card>
           </div>
-          <div className="sm:w-[580px] h-auto">
+          <div className="sm:w-[580px] h-auto   sm:scale-100 scale-75">
             <Card
-              className="col-span-12 sm:col-span-4 h-[750px] bg-primary-300 bg-no-repeat"
+              className="col-span-12 sm:col-span-4 sm:h-[750px] h-[550px] sm:w-full  w-[400px]  bg-primary-300 bg-no-repeat"
               style={{
                 backgroundImage: `url(/index/plante.png)`,
               }}
             >
-              <CardBody className="flex h-[500px] justify-end items-end gap-5 py-16 px-8">
-                <div className="text-tertiary-black text-2xl text-right gap-2 flex flex-col">
+              <CardBody className="flex h-[500px] justify-end items-end gap-5 sm:py-16 px-8  py-4">
+                <div className="text-tertiary-black sm:text-2xl  text-lg text-right gap-2 flex flex-col">
                   {' '}
                   <div className="">{t('section4.yourStory')}</div>
                   <div className="">{t('section4.ourPlatform')}</div>

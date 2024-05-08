@@ -13,6 +13,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['NotoSerifTC', 'ui-sans-serif', 'system-ui'],
+        'great-vibes': ['"Great Vibes"', 'cursive'],
       },
     },
   },

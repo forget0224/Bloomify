@@ -7,6 +7,12 @@ import { useTranslation } from 'react-i18next'
 import apple from '@/public/custom/custom/accent/red_tropaeolum.png'
 import lemon from '@/public/custom/custom/accent/yellow_coreopsis.png'
 import strawberry from '@/public/custom/custom/accent/blue_forgetmenotsit.png'
+import shop from '@/public/index/2_sec_3.png'
+import shopbg from '@/public/index/22_sec_3.png'
+import course from '@/public/index/3_sec_3.png'
+import coursebg from '@/public/index/33_sec_3.png'
+import flower from '@/public/index/4_sec_3.png'
+import flowerbg from '@/public/index/44_sec_3.png'
 import orange from '@/public/custom/custom/flowers/red_carnation.png'
 import Card from './Card'
 import gsap from 'gsap'
@@ -15,7 +21,7 @@ export default function ChangeCard() {
   const cards = [
     {
       title: t('section3.customTitle'),
-      bgCardColor: 'bg-[#E5DDC5]', // 莫蘭迪紅色
+      bgCardColor: 'bg-[#c9d6cc]',
       bgColor: '#F1EEDC',
       textColor: 'text-[#c5441c]',
       icon: <LuFlower />,
@@ -25,32 +31,32 @@ export default function ChangeCard() {
     },
     {
       title: t('section3.onlineStoreTitle'),
-      bgCardColor: 'bg-[#B4B4B3]', // 莫蘭迪粉紅
+      bgCardColor: 'bg-[#B4B4B3]',
       bgColor: '#EBE4D1',
       textColor: 'text-[#2263a6]',
       icon: <CiShop />,
-      img: strawberry,
-      bgImg: strawberry,
+      img: shop,
+      bgImg: shopbg,
       content: t('section3.onlineStoreDescription'),
     },
     {
       title: t('section3.courseBookingTitle'),
-      bgCardColor: 'bg-[#e5d5b8]', // 莫蘭迪黃色
+      bgCardColor: 'bg-[#e5d5b8]',
       bgColor: '#ded1ba',
       textColor: 'text-[#332d29]',
       icon: <PiPottedPlantThin />,
-      img: lemon,
-      bgImg: lemon,
+      img: course,
+      bgImg: coursebg,
       content: t('section3.courseBookingDescription'),
     },
     {
       title: t('section3.flowerEncyclopediaTitle'),
-      bgCardColor: 'bg-[#cba476]', // 莫蘭迪橙色
-      bgColor: '#c7a876',
-      textColor: 'text-[#f4ede8]',
+      bgCardColor: 'bg-[#E5DDC5]',
+      bgColor: ' #daf3ff ',
+      textColor: 'text-[#4ba4d0]',
       icon: <PiStarOfDavidLight />,
-      img: orange,
-      bgImg: orange,
+      img: flower,
+      bgImg: flowerbg,
       content: t('section3.flowerEncyclopediaDescription'),
     },
   ]
@@ -74,7 +80,7 @@ export default function ChangeCard() {
           })
 
           gsap.to('.img', {
-            top: '-140px',
+            top: '-170px',
             delay: 0.7,
             duration: 2,
             ease: 'none',
@@ -100,22 +106,27 @@ export default function ChangeCard() {
   return (
     <>
       <div ref={bg} className="h-screen flex items-center justify-center">
-        {cards.map((card, key) => {
-          return (
-            <div
-              ref={addToRef}
-              key={key}
-              className={`card-${key} ${
-                key === selected ? 'w-[500px]' : 'w-20'
-              } h-96  cursor-pointer  transition-all duration-[3000ms] ease-in-out`}
-              onClick={() => {
-                handleClick(key)
-              }}
-            >
-              <Card card={card} selected={selected} index={key} />
-            </div>
-          )
-        })}
+        <div
+          className="h-screen w-full flex items-center justify-center"
+          style={{ background: 'url(/index/Noise.png)' }}
+        >
+          {cards.map((card, key) => {
+            return (
+              <div
+                ref={addToRef}
+                key={key}
+                className={`card-${key} ${
+                  key === selected ? 'sm:w-[500px] w-[250px]' : 'sm:w-20 w-10'
+                } h-96  cursor-pointer  transition-all duration-[3000ms] ease-in-out   `}
+                onClick={() => {
+                  handleClick(key)
+                }}
+              >
+                <Card card={card} selected={selected} index={key} />
+              </div>
+            )
+          })}
+        </div>
       </div>
     </>
   )
