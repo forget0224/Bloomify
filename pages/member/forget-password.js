@@ -61,6 +61,10 @@ export default function Register() {
   const [password, setPassword] = useState('')
   const [disableBtn, setDisableBtn] = useState(false)
 
+  // 錯誤訊息
+  const [usernameError, setUsernameError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+
   // 倒數計時 countdown use
   const [count, setCount] = useState(60) // 60s
   const [delay, setDelay] = useState(null) // delay=null可以停止, delay是數字時會開始倒數
@@ -77,7 +81,27 @@ export default function Register() {
     }
   }, [count])
 
+  const validateEmail = (username) => {
+    // 使用正則表達式來驗證信箱格式
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailPattern.test(username)
+  }
+
+  const validatePassword = (password) => {
+    // 檢查密碼長度是否大於5
+    return password.length >= 5
+  }
+
   const handleRequestOtpToken = async () => {
+    // 驗證信箱格式
+    if (!validateEmail(username)) {
+      setUsernameError('請輸入有效的電子郵件地址')
+      return
+    }
+
+    // 清除之前的錯誤訊息
+    setUsernameError('')
+
     if (delay !== null) {
       notify2('錯誤 - 60s內無法重新獲得驗証碼')
       return
@@ -110,6 +134,15 @@ export default function Register() {
 
   // 處理重設密碼用
   const handleResetPassword = async () => {
+    // 驗證密碼長度
+    if (!validatePassword(password)) {
+      setPasswordError('請輸入5位數以上的密碼')
+      return
+    }
+
+    // 清除之前的錯誤訊息
+    setPasswordError('')
+
     const res = await fetch('http://localhost:3005/api/reset-password/reset', {
       credentials: 'include', // 設定cookie需要，有作授權或認証時都需要加這個
       headers: {
@@ -147,17 +180,25 @@ export default function Register() {
                 <h1 className="text-3xl mb-10 mt-10">忘記密碼</h1>
                 <div className="flex flex-col space-y-14 w-full mt-2">
                   <div className="flex gap-2">
-                    <Input
-                      // input 要設定name
-                      name="username"
-                      label="Email"
-                      labelPlacement="outside"
-                      placeholder="電子郵件信箱"
-                      type="text"
-                      value={username}
-                      onChange={(e) => setUserName(e.target.value)}
-                      className={{ ...inputStyles }}
-                    />
+                    <div>
+                      <Input
+                        // input 要設定name
+                        name="username"
+                        label="Email"
+                        labelPlacement="outside"
+                        placeholder="電子郵件信箱"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUserName(e.target.value)}
+                        className={{ ...inputStyles }}
+                      />
+                      {usernameError && (
+                        <span className="text-xs text-red-500 pl-2">
+                          {usernameError}
+                        </span>
+                      )}
+                    </div>
+
                     <MyButton
                       className="bg-primary-300 text-black text-xs mt-6"
                       onClick={handleRequestOtpToken}
@@ -177,17 +218,24 @@ export default function Register() {
                     onChange={(e) => setToken(e.target.value)}
                     className={{ ...inputStyles }}
                   />
-                  <Input
-                    // input 要設定name
-                    name="otp"
-                    label="新密碼:"
-                    labelPlacement="outside"
-                    placeholder="請輸入5位數密碼"
-                    type="text"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={{ ...inputStyles }}
-                  />
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="otp"
+                      label="新密碼:"
+                      labelPlacement="outside"
+                      placeholder="請輸入5位數密碼"
+                      type="text"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={{ ...inputStyles }}
+                    />
+                    {passwordError && (
+                      <span className="text-xs text-red-500 pl-2">
+                        {passwordError}
+                      </span>
+                    )}
+                  </div>
 
                   {/* button */}
                   <div className="w-full gap-2">
