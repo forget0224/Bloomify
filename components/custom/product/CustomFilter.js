@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Checkbox, CheckboxGroup, Skeleton } from '@nextui-org/react'
+import { Checkbox, CheckboxGroup } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import CustomCheckbox from '../common/CustomCheckbox'
 import { useColors } from '@/hooks/use-color'

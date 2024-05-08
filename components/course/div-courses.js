@@ -111,7 +111,7 @@ export default function CourseCard({ course, removeReviewedItem }) {
                   </div>
                 ) : (
                   <Link
-                    href={`/course/${course.id}`}
+                    href={`/course/${course.course_id}`}
                     className="flex flex-row py-1 md:py-0 items-center text-tertiary-gray-100 cursor-pointer"
                   >
                     已評價-前往查看評價

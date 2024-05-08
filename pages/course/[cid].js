@@ -97,6 +97,7 @@ export default function CourseDetails() {
               setAverageStars('目前沒有評價')
             }
           }
+
           close(1.5) // 設置一個延時來關閉 loader
         } catch (error) {
           console.error('Error fetching course details:', error)
@@ -142,6 +143,9 @@ export default function CourseDetails() {
       }
     })
   }
+
+  // console.log(courseDetails.reviews)
+  console.log(courseDetails.images)
 
   // 頁面內容
   const display = (

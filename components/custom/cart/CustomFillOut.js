@@ -183,8 +183,8 @@ export default function CustomFillOut({
               </div>
               <div className="sm:w-[400px]   w-[269px] h-auto">
                 <CustomGoogleMap
-                  destination={`${deliveryAddress}`}
                   setDeliveryShipping={setDeliveryShipping}
+                  destination={deliveryAddress}
                 />
               </div>
             </>

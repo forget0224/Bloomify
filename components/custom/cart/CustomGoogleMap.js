@@ -9,6 +9,7 @@ import { useFlowerCart } from '@/hooks/use-flowerCart'
 import { useMediaQuery } from 'react-responsive'
 
 export default function CustomGoogleMap({ destination, setDeliveryShipping }) {
+  console.log(destination)
   const isDesktop = useMediaQuery({ minWidth: 1024 })
 
   const mapContainerStyle = {
@@ -22,6 +23,7 @@ export default function CustomGoogleMap({ destination, setDeliveryShipping }) {
   const [duration, setDuration] = useState('')
   const [fee, setFee] = useState(0)
   const [directions, setDirections] = useState(null)
+  const [lastDestination, setLastDestination] = useState('')
   const mapRef = useRef(null)
 
   const onMapLoad = useCallback((map) => {
@@ -71,48 +73,39 @@ export default function CustomGoogleMap({ destination, setDeliveryShipping }) {
     return fee
   }
 
-  // const directionsCallback = React.useCallback(
-  //   (response, status) => {
-  //     if (status === 'OK') {
-  //       setDirections(response)
-  //       const distanceInMeters = response.routes[0].legs[0].distance.value
-  //       const distanceInKm = distanceInMeters / 1000
-  //       const durationText = response.routes[0].legs[0].duration.text
-  //       const city = extractCity(destination)
-  //       setDistance(`${distanceInKm.toFixed(2)} km`)
-  //       setDuration(durationText)
-  //       setFee(calculateFees(city, distanceInKm))
-  //     } else {
-  //       console.error(`Directions request failed due to ${status}`)
-  //     }
-  //   },
-  //   [destination]
-  // )
+  const directionsCallback = useCallback(
+    (response, status) => {
+      if (status === 'OK' && destination !== lastDestination) {
+        setDirections(response)
+        const distanceInMeters = response.routes[0].legs[0].distance.value
+        const distanceInKm = distanceInMeters / 1000
+        const durationText = response.routes[0].legs[0].duration.text
+        setDistance(`${distanceInKm.toFixed(2)} km`)
+        setDuration(durationText)
+        const newFee = calculateFees(
+          extractCity(destination),
+          distanceInKm,
+          fee
+        )
+        setFee(newFee)
+        setLastDestination(destination)
+        setDeliveryShipping(newFee)
+      } else if (status !== 'OK') {
+        console.error(`Directions request failed due to ${status}`)
+      }
+    },
+    [destination, lastDestination, setDeliveryShipping, fee]
+  )
 
-  const directionsCallback = (response, status) => {
-    if (status === 'OK') {
-      setDirections(response)
-      const distanceInMeters = response.routes[0].legs[0].distance.value
-      const distanceInKm = distanceInMeters / 1000
-      const durationText = response.routes[0].legs[0].duration.text
-      const city = extractCity(destination)
-      setDistance(`${distanceInKm.toFixed(2)} km`)
-      setDuration(durationText)
-      setFee(calculateFees(city, distanceInKm))
-    } else {
-      console.error(`Directions request failed due to ${status}`)
-    }
-  }
-  useEffect(() => {
-    setDeliveryShipping(fee)
-  }, [fee])
   return (
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+    <LoadScript
+      googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+      onLoad={onMapLoad}
+    >
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={center}
         zoom={10}
-        onLoad={onMapLoad}
       >
         {destination && (
           <DirectionsService
@@ -129,6 +122,10 @@ export default function CustomGoogleMap({ destination, setDeliveryShipping }) {
             directions={directions}
             options={{
               directions: directions,
+              polylineOptions: {
+                strokeColor: '#68A392', // courses's color
+                strokeWeight: 4,
+              },
             }}
           />
         )}

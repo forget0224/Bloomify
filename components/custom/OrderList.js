@@ -10,16 +10,11 @@ import {
   SelectItem,
   Image,
 } from '@nextui-org/react'
-import DatePicker from 'react-tailwindcss-datepicker'
 function OrderList() {
   const [activeTab, setActiveTab] = useState('全部')
   const [sortKey, setSortKey] = useState('order_date')
   const [sortOrder, setSortOrder] = useState('asc')
   const [orderList, setOrderList] = useState([])
-  // const [startDate, setStartDate] = useState(null)
-  // const [endDate, setEndDate] = useState(null)
-  // const [minAmount, setMinAmount] = useState('')
-  // const [maxAmount, setMaxAmount] = useState('')
   const [sortedData, setSortedData] = useState([])
 
   const accordionStyle = {

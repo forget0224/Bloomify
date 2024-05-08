@@ -129,6 +129,7 @@ export default function MyCourseItems() {
     setExpiredItems(expired)
     setUpcomingItems(upcoming)
     setUnreviewedItems(unreviewed)
+    // console.log(unreviewedItems)
   }, [orders])
 
   // 排序query string更新
