@@ -74,7 +74,7 @@ export default function Confirm() {
           <Head>
             <title>訂單確認</title>
           </Head>
-          <main className="flex flex-col justify-center items-center bg-white">
+          <main className="flex flex-col justify-center items-center bg-white mt-[64px]">
             <div className="bg-white container justify-center flex flex-col items-center columns-12 px-5 md:px-0 mb-10">
               {/* steps */}
               <div className="flex flex-col w-full md:w-6/12 lg:w-4/12 gap-14 mt-6 mb-4">
