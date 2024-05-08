@@ -69,7 +69,7 @@ export default function OrderSuccess() {
   const handleConfirm = async (transactionId, orderId) => {
     try {
       const r = await fetch(
-        'http://localhost:3005/products/line-pay/confirm' +
+        'http://localhost:3005/api/products/line-pay/confirm' +
           `?transactionId=${transactionId}&orderId=${orderId}`
       )
 
