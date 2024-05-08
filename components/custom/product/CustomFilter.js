@@ -46,7 +46,7 @@ export default function CustomFilter({ onFilterChange }) {
 
   return (
     <>
-      <div className="bg-white p-4 rounded-lg shadow-md w-[250px] m-auto h-[600px] text-tertiary-black  overflow-y-auto scrollbar-thumb:bg-tertiary-black scrollbar-thumb:rounded-sm scrollbar-track:bg-transparent items-center ">
+      <div className="bg-white p-4 rounded-lg shadow-md w-[250px] m-auto  text-tertiary-black  overflow-y-auto scrollbar-thumb:bg-tertiary-black scrollbar-thumb:rounded-sm scrollbar-track:bg-transparent items-center ">
         <div className="">
           <div className="">
             <p className="text-lg text-tertiary-black">節日</p>
