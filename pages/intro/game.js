@@ -55,9 +55,9 @@ export default function Custom() {
             alt="cloud1"
           />
         </div>
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end relative">
           <img
-            className="w-2/5 h-auto "
+            className="absolute bottom-0 w-2/5 h-auto"
             src="/assets/intro/cloud2_.png"
             alt="cloud2"
           />
@@ -86,7 +86,7 @@ export default function Custom() {
         </Link>
       </div>
 
-      <div className="absolute top-40 left-1/2 transform -translate-x-1/2 mb-4 p-3 rounded-full justify-center">
+      <div className="absolute top-60 left-1/2 transform -translate-x-1/2 mb-4 p-3 rounded-full justify-center">
         <MyButton color="primary" size="xl" onPress={onOpen} className="mt-6">
           開始占卜
         </MyButton>

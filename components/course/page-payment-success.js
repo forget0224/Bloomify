@@ -12,7 +12,6 @@ import { Link } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import moment from 'moment'
-import { useRouter } from 'next/router'
 import { useLocation } from 'react-use'
 
 export default function CoursePaymentSuccess() {
@@ -22,8 +21,6 @@ export default function CoursePaymentSuccess() {
   const [activePage, setActivePage] = useState('cart')
 
   const [orderDetails, setOrderDetails] = useState(null)
-
-  const router = useRouter()
 
   // 用來抓訂單id送去後端
   const location = useLocation()
@@ -59,7 +56,7 @@ export default function CoursePaymentSuccess() {
         console.log(data)
         setOrderDetails(data.data) // 更新狀態
       } else {
-        console.error('Failed to fetch order details')
+        console.error('獲取訂單詳情失敗')
       }
     } catch (error) {
       console.error(error.message)
@@ -119,26 +116,22 @@ export default function CoursePaymentSuccess() {
             <TableRow key="3">
               <TableCell>訂單狀態</TableCell>
               <TableCell>
-                {orderDetails ? orderDetails.order_status.name : '載入中'}
+                {orderDetails?.order_status?.name ?? '載入中'}
               </TableCell>
             </TableRow>
             <TableRow key="4">
               <TableCell>付款方式</TableCell>
-              <TableCell>
-                {orderDetails ? orderDetails.payment.name : '載入中'}
-              </TableCell>
+              <TableCell>{orderDetails?.payment?.name ?? '載入中'}</TableCell>
             </TableRow>
             <TableRow key="5">
               <TableCell>付款狀態</TableCell>
               <TableCell>
-                {orderDetails ? orderDetails.payment_status.name : '載入中'}
+                {orderDetails?.payment_status?.name ?? '載入中'}
               </TableCell>
             </TableRow>
             <TableRow key="6">
               <TableCell>發票種類</TableCell>
-              <TableCell>
-                {orderDetails ? orderDetails.invoice.name : '載入中'}
-              </TableCell>
+              <TableCell>{orderDetails?.invoice?.name ?? '載入中'}</TableCell>
             </TableRow>
             <TableRow key="7">
               <TableCell>訂單成立日期</TableCell>
