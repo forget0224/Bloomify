@@ -376,8 +376,6 @@ export default function FillOut() {
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked
     if (!isChecked) {
-      // going to be unchecked
-      // clear the states of sender
       setSenderName('')
       setSenderNumber('')
       setSenderEmail('')

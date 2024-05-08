@@ -520,7 +520,6 @@ export default function Detail() {
                   }
                 >
                   <Card className="p-8 space-y-6">
-                    {/* <p className="flex flex-col gap-3 text-xl">商品尺寸</p> */}
                     <p className="flex flex-col gap-3">{product.size}</p>
                   </Card>
                 </Tab>
@@ -564,9 +563,6 @@ export default function Detail() {
                       product.reviews,
                       star.id
                     )
-                    {
-                      /* console.log('filteredReviews', filteredReviews) */
-                    }
 
                     return (
                       <Tab

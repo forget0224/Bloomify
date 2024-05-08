@@ -74,7 +74,6 @@ const OrderCard = ({ filterStatus }) => {
   const [currentPage, setCurrentPage] = useState(1)
   // 計算總頁數
   const pageCount = Math.ceil(filteredOrderDetails.length / limit)
-  console.log('@@@@@@@@@@', pageCount)
   // 計算當前頁面資料數量
   const startIndex = (currentPage - 1) * limit // 是在計算評論的筆數。當currentPage是1，那麼(currentPage - 1)就會是0，筆數就會從數組的第0筆開始取
 
@@ -88,10 +87,6 @@ const OrderCard = ({ filterStatus }) => {
     // newPage是當前選中的頁碼
     setCurrentPage(newPage)
   }
-
-  console.log('render!!!!!!!!!!!!!')
-
-  console.log(pageCount, currentPage)
 
   return (
     <>
