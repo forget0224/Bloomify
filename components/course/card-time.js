@@ -41,7 +41,7 @@ export default function CourseTime({ courseDetails, datetimes }) {
               </p>
             </div>
             {/* TODO: */}
-            <p className="text-tertiary-gray-100">尚餘{`3`}個名額</p>
+            {/* <p className="text-tertiary-gray-100">尚餘{`3`}個名額</p> */}
             <div className="flex gap-4 mt-2 lg:mt-0">
               {/* 加入購物車按鈕綁定動作 */}
               <CircleBtn

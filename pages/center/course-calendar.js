@@ -14,6 +14,7 @@ import Title from '@/components/common/title'
 import Sidebar from '@/components/layout/sidebar'
 import { useDisclosure } from '@nextui-org/react'
 import CalendarModal from '@/components/course/modal-calendar'
+import Head from 'next/head'
 
 export default function CoursesCalendar() {
   const [activePage, setActivePage] = useState('course')
@@ -119,9 +120,29 @@ export default function CoursesCalendar() {
     }
   }, [orders]) // 依賴於訂單狀態的變化
 
+  const messages = {
+    allDay: '整日',
+    previous: '後退',
+    next: '前進',
+    today: '今天',
+    month: '月',
+    week: '週',
+    day: '日',
+    agenda: '議程',
+    date: '日期',
+    time: '時間',
+    event: '事件',
+    noEventsInRange: '這個範圍內沒有事件。',
+    showMore: (total) => `更多 ${total} 個`,
+  }
+
   return (
-    <DefaultLayout activePage={activePage}>
-      <>
+    <>
+      <Head>
+        <title>我的課表</title>
+      </Head>
+
+      <DefaultLayout activePage={activePage}>
         <CenterLayout>
           {/* 麵包屑 */}
           <div className="w-full py-6 hidden sm:block">
@@ -151,19 +172,20 @@ export default function CoursesCalendar() {
                     startAccessor="start"
                     endAccessor="end"
                     views={['month', 'week', 'day']}
+                    messages={messages}
                   />
                 </div>
               </div>
             </div>
           </div>
         </CenterLayout>
-      </>
-      {/* 課程詳細內容彈窗 */}
-      <CalendarModal
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        event={selectedEvent}
-      />
-    </DefaultLayout>
+        {/* 課程詳細內容彈窗 */}
+        <CalendarModal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          event={selectedEvent}
+        />
+      </DefaultLayout>
+    </>
   )
 }

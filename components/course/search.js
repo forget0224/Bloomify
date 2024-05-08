@@ -1,15 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { CiSearch } from 'react-icons/ci'
+import { useRouter } from 'next/router'
 
 export default function SearchBtn({ baseSearchPath }) {
   const [searchTerm, setSearchTerm] = useState('')
+  const router = useRouter()
+
+  // 獲取網址中的keyword參數
+  useEffect(() => {
+    const keyword = router.query.keyword
+    if (keyword) {
+      setSearchTerm(decodeURIComponent(keyword))
+    }
+  }, [router.query])
 
   const handleSubmit = (event) => {
     event.preventDefault()
     const searchQuery = `${baseSearchPath}?keyword=${encodeURIComponent(
       searchTerm
     )}`
-    window.location.href = searchQuery
+    // window.location.href = searchQuery
+    router.push(searchQuery)
   }
 
   return (
