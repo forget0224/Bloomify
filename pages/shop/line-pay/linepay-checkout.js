@@ -13,6 +13,7 @@ import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import moment from 'moment'
 import DefaultLayout from '@/components/layout/default-layout'
+import Head from 'next/head'
 
 export default function OrderSuccess() {
   const [activePage, setActivePage] = useState('shop')
@@ -127,15 +128,13 @@ export default function OrderSuccess() {
       console.log(ex)
     }
   }
-  //Line Pay
-  // order:
-  // package: 一套筆電會有電腦、滑鼠、充電器
-  // product: 一個Package中的商品
-  // package product
 
   return (
     <DefaultLayout activePage={activePage}>
       <>
+        <Head>
+          <title>付款</title>
+        </Head>
         <main className="flex flex-col justify-center items-center bg-white">
           {/* 主要容器 */}
           <div className="bg-white container justify-center flex flex-col items-start columns-12 static px-5 md:px-0">

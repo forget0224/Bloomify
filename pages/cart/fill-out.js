@@ -15,9 +15,9 @@ import { MyButton } from '@/components/btn/mybutton'
 import FormTag from '@/components/common/tag-form'
 import { useFillOut } from '@/context/fill-out-context'
 import CustomFillOut from '@/components/custom/cart/CustomFillOut'
-// import ShopFillOut from '@/components/shop/shop-fillout'
 import { useShip711StoreOpener } from '@/hooks/use-ship-711-store'
 import useCouponValidator from '@/hooks/use-coupon'
+import Head from 'next/head'
 
 export default function FillOut() {
   const [activePage, setActivePage] = useState('cart')
@@ -461,6 +461,9 @@ export default function FillOut() {
 
   return (
     <>
+      <Head>
+        <title>填寫資料</title>
+      </Head>
       <DefaultLayout activePage={activePage}>
         {/* 置中 & 背景色 */}
         <main className="flex flex-col justify-center items-center bg-white">

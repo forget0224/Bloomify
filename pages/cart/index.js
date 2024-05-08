@@ -7,6 +7,7 @@ import { Stepper } from 'react-dynamic-stepper'
 import ShopCart from '@/components/shop/shop-cart'
 import CourseCart from '@/components/course/page-cart'
 import CustomCart from '@/components/custom/cart/CustomCart'
+import Head from 'next/head'
 
 export default function Cart() {
   const [activePage, setActivePage] = useState('cart')
@@ -15,8 +16,8 @@ export default function Cart() {
   const [activeTab, setActiveTab] = useState('custom')
 
   useEffect(() => {
-    console.log('Router is ready:', router.isReady)
-    console.log('Tab query:', router.query.tab)
+    // console.log('Router is ready:', router.isReady)
+    // console.log('Tab query:', router.query.tab)
     if (router.isReady) {
       const tabQuery = router.query.tab
       if (tabQuery) {
@@ -59,22 +60,11 @@ export default function Cart() {
     },
   ]
 
-  //table 樣式
-  const tableStyles = {
-    base: ['text-tertiary-black'],
-    th: ['text-base', 'text-tertiary-gray-100'],
-    td: ['text-base', 'px-3', 'py-3'],
-    wrapper: [
-      'text-base',
-      'shadow-none',
-      'border-1',
-      'border-tertiary-100',
-      'rounded-xl',
-    ],
-  }
-
   return (
     <>
+      <Head>
+        <title>購物車</title>
+      </Head>
       <DefaultLayout activePage={activePage}>
         <CenterLayout>
           {/* steps */}
