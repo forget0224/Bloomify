@@ -289,7 +289,7 @@ export default function Shop() {
     }
   }
 
-  const [order, setOrder] = useState('priceAsc')
+  const [order, setOrder] = useState('idAsc')
 
   // 排序、篩選、關鍵字
   const filterProduct = useMemo(
@@ -309,15 +309,32 @@ export default function Shop() {
         )
         //關鍵字
         .filter((product) => product.name.includes(searchTerm))
-        // 排序
-        .sort((productA, productB) =>
-          order === 'priceAsc'
-            ? productA.price - productB.price
-            : productB.price - productA.price
-        ),
+        .sort((productA, productB) => {
+          switch (order) {
+            case 'idAsc':
+              return productA.id - productB.id
+            case 'priceAsc':
+              return productA.price - productB.price
+            case 'priceDesc':
+              return productB.price - productA.price
+            case 'reviewAsc':
+              return productA.overall_review - productB.overall_review
+            case 'reviewDesc':
+              return productB.overall_review - productA.overall_review
+            default:
+              return 0
+          }
+        }),
     [products, selectedSubcategoryIds, selectedColors, order, searchTerm]
   )
-  // console.log(filterProduct)
+  console.log(filterProduct)
+
+  // 排序
+  // .sort((productA, productB) =>
+  //   order === 'priceAsc'
+  //     ? productA.price - productB.price
+  //     : productB.price - productA.price
+  // ),
 
   // 加入購物車
   const addToCart = (product) => {
@@ -451,14 +468,23 @@ export default function Shop() {
                     value={order}
                     onChange={(e) => {
                       setOrder(e.target.value)
-                      console.log('Selected value: ', e.target.value)
+                      // console.log('Selected value: ', e.target.value)
                     }}
                   >
+                    <SelectItem key="idAsc" value="idAsc">
+                      預設
+                    </SelectItem>
                     <SelectItem key="priceAsc" value="priceAsc">
                       價格由低到高
                     </SelectItem>
                     <SelectItem key="priceDesc" value="priceDesc">
                       價格由高到低
+                    </SelectItem>
+                    <SelectItem key="reviewAsc" value="reviewAsc">
+                      評價由低到高
+                    </SelectItem>
+                    <SelectItem key="reviewDesc" value="reviewDesc">
+                      評價由高到低
                     </SelectItem>
                   </Select>
                 </div>
