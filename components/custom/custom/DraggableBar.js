@@ -20,7 +20,7 @@ const DraggableBar = ({
   }
 
   return (
-    <div className={`overflow-hidden ${className}`}>
+    <div className={`overflow-y-scroll w-full ${className}`}>
       <motion.div
         transition={{ type: 'spring', mass: 9, stiffness: 400, damping: 50 }}
         style={{ y: dragY }}
