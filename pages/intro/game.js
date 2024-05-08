@@ -64,9 +64,10 @@ export default function Custom() {
         </div>
         <div className="absolute bottom-0 mb-0">
           <img
-            className="w-full h-auto max-w-xs h-auto"
-            src="/assets/intro/daisy2.png"
+            className="w-200 h-auto max-w-xs h-auto"
+            src="/assets/intro/daisy.gif"
             alt="daisy2"
+            
           />
         </div>
       </div>
