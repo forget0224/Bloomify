@@ -39,6 +39,21 @@ export default function CoursesCalendar() {
   // 選中的課程詳細資訊彈窗
   const { isOpen, onOpenChange, onClose, onOpen } = useDisclosure()
 
+  // 生成 Google Calendar URL
+  const generateGoogleCalendarUrl = (event) => {
+    const startTime = moment(event.start).format('YYYYMMDDTHHmmss')
+    const endTime = moment(event.end).format('YYYYMMDDTHHmmss')
+    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+      event.title
+    )}&dates=${startTime}/${endTime}&details=${encodeURIComponent(
+      event.period
+    )}&location=${encodeURIComponent(event.address)}`
+    console.log(startTime)
+    console.log(endTime)
+    console.log(url)
+    return url
+  }
+
   // 點擊單堂課程
   const handleEventSelect = (event) => {
     console.log(event)
@@ -76,6 +91,23 @@ export default function CoursesCalendar() {
         course_id: item.course_id,
       }))
     )
+  }
+
+  // TODO:
+  const eventPropGetter = (event, start, end, isSelected) => {
+    const today = new Date()
+    const isPastEvent = start < today
+    const backgroundColor = isPastEvent ? '#a6a6a6' : '#68A392' // 灰色或藍色
+
+    return {
+      className: '',
+      style: {
+        backgroundColor,
+        color: 'white',
+        borderRadius: '5px',
+        border: isSelected ? '2px solid #000' : 'none',
+      },
+    }
   }
 
   // 訂單資料fetch
@@ -171,6 +203,7 @@ export default function CoursesCalendar() {
                     onSelectEvent={handleEventSelect}
                     startAccessor="start"
                     endAccessor="end"
+                    eventPropGetter={eventPropGetter}
                     views={['month', 'week', 'day']}
                     messages={messages}
                   />
@@ -184,6 +217,8 @@ export default function CoursesCalendar() {
           isOpen={isOpen}
           onOpenChange={onOpenChange}
           event={selectedEvent}
+          selectedEvent={selectedEvent}
+          googleCalendarUrl={generateGoogleCalendarUrl(selectedEvent)}
         />
       </DefaultLayout>
     </>

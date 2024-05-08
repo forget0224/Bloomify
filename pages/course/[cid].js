@@ -176,7 +176,7 @@ export default function CourseDetails() {
             </Breadcrumbs>
           </div>
           {/* 課程圖和課程資訊 */}
-          <div className="flex flex-col gap-14 lg:flex-row mb-12 w-full">
+          <div className="flex flex-col md:gap-14 lg:flex-row mb-12 w-full">
             {/* 課程圖 */}
             <div className="w-full flex justify-center items-center lg:w-6/12 mb-6 md:mb-0">
               <ImageSlider images={courseDetails.images} />
@@ -210,13 +210,17 @@ export default function CourseDetails() {
                 </div>
                 <div>
                   <div className="line-clamp-4">{courseDetails.intro}</div>
-                  <p
-                    className="text-tertiary-gray-100 no-underline hover:underline flex items-center mt-1 cursor-pointer"
-                    onClick={onOpen}
-                  >
-                    查看詳細
-                    <BsChevronRight />
-                  </p>
+                  {courseDetails?.intro?.length > 168 && (
+                    <>
+                      <p
+                        className="text-tertiary-gray-100 no-underline hover:underline flex items-center mt-1 cursor-pointer"
+                        onClick={onOpen}
+                      >
+                        查看詳細
+                        <BsChevronRight />
+                      </p>
+                    </>
+                  )}
                 </div>
                 <div className="flex flex-row gap-2">
                   {Array.isArray(courseDetails.tags) &&
@@ -277,7 +281,7 @@ export default function CourseDetails() {
               <CourseMap store={courseDetails.store} />
             </div>
             {/* 其他詳細資訊 */}
-            <div className="flex w-full lg:w-7/12 flex-col gap-16">
+            <div className="flex flex-col w-full lg:w-7/12 gap-16">
               {/* 最新訊息 */}
               {courseDetails.news && courseDetails.news.length > 0 && (
                 <div className="flex flex-col gap-6">

@@ -2,12 +2,13 @@ import React from 'react'
 import { MyButton } from '@/components/btn/mybutton'
 import { CiShoppingCart } from 'react-icons/ci'
 
-export default function CircleBtn({ onClick }) {
+export default function CircleBtn({ onClick, disabled = false }) {
   return (
     <div className="flex gap-4 items-center">
       <MyButton
         isIconOnly
         isOutline
+        isDisabled={disabled}
         color="primary"
         variant="faded"
         aria-label="add course to cart"

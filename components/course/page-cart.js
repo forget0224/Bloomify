@@ -5,6 +5,7 @@ import Link from 'next/link.js'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { useCart } from '@/context/course-cart-context'
 import moment from 'moment'
+import 'moment/locale/zh-cn'
 
 export default function CourseCart() {
   const { cart, removeFromCart, clearCart, totalSubtotal, totalCartProducts } =
@@ -27,7 +28,7 @@ export default function CourseCart() {
                   <div className="w-full md:w-1/2">
                     <Link
                       href={`/course/${course.id}`}
-                      className="flex flex-col md:flex-row gap-2 items-center truncate px-2 py-1 md:py-2"
+                      className="flex flex-col md:flex-row gap-2 truncate px-2 py-1 md:py-2 items-center"
                     >
                       <div className="w-full md:w-1/4">
                         <Image
@@ -41,24 +42,26 @@ export default function CourseCart() {
                       <span className="w-full md:w-3/4 md:ml-1 truncate">
                         {course.name}/{course.period}期
                       </span>
-                      <br />
                     </Link>
                   </div>
-                  <div className="w-full md:w-1/4 flex items-center px-2 py-1 md:py-2">
-                    {moment(course.date).format('YYYY-MM-DD')}
-                    <br />
-                    {moment(course.startTime, 'HH:mm:ss').format('HH:mm')}-
-                    {moment(course.endTime, 'HH:mm:ss').format('HH:mm')}
+                  <div className="w-full md:w-1/4 flex-row md:flex-row items-center px-2 py-1 md:py-2">
+                    <div>{moment(course.date).format('YYYY年MM月DD日')}</div>
+                    <div>
+                      {moment(course.startTime, 'HH:mm:ss').format('HH:mm')}-
+                      {moment(course.endTime, 'HH:mm:ss').format('HH:mm')}
+                    </div>
                   </div>
-                  <div className="w-full md:w-1/6 flex items-center justify-end px-2 py-1 md:py-2">
-                    NT${course.price}
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 justify-between">
+                    <div className="md:w-1/6 items-center px-2 md:py-2">
+                      NT${course.price}
+                    </div>
+                    <button
+                      onClick={() => removeFromCart(course.id, course.period)}
+                      className="flex items-center text-right text-primary px-2 md:py-2"
+                    >
+                      <FaRegTrashAlt />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => removeFromCart(course.id, course.period)}
-                    className="flex w-fit flex items-center text-right justify-start text-primary md:justify-end px-2 py-1 md:py-2"
-                  >
-                    <FaRegTrashAlt />
-                  </button>
                 </div>
               </Card>
             ))}

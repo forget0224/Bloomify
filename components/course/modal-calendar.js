@@ -17,9 +17,11 @@ export default function CalendarModal({
   isOpen,
   onClose,
   onOpenChange,
+  googleCalendarUrl,
 }) {
   moment.locale('zh-cn')
   console.log(event) // 檢查傳進來的值
+  console.log(googleCalendarUrl)
 
   return (
     <>
@@ -60,6 +62,14 @@ export default function CalendarModal({
               className="text-tertiary-gray-100 flex flex-row items-center"
             >
               查看課程頁面
+              <BsChevronRight />
+            </Link>
+            <Link
+              href={googleCalendarUrl}
+              target="_blank"
+              className="text-tertiary-gray-100 flex flex-row items-center"
+            >
+              加到Google日歷
               <BsChevronRight />
             </Link>
           </ModalBody>

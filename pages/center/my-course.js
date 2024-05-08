@@ -189,7 +189,7 @@ export default function MyCourseItems() {
                   {/* Tab1 - 全部訂單 */}
                   <Tab key="all" title="全部訂單">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-2">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />
@@ -223,7 +223,7 @@ export default function MyCourseItems() {
                   {/* Tab2 - 未完課訂單 */}
                   <Tab key="upcoming" title="未完課">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-2">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />
@@ -257,7 +257,7 @@ export default function MyCourseItems() {
                   {/* Tab3 - 已完課訂單 */}
                   <Tab key="expired" title="已完課">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-2">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />

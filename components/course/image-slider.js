@@ -58,41 +58,51 @@ export default function CourseImageSlider({ images = [] }) {
           src={selectedImage.path}
           className="rounded-2xl w-full"
         />
-        <button
-          className="z-20 bg-white bg-opacity-50 hover:bg-opacity-90 text-tertiary-gray-100 hover:text-tertiary-black absolute top-1/2 transform -translate-y-1/2 left-0 w-6 h-14 flex items-center justify-center rounded-r-lg"
-          onClick={prevImage}
-        >
-          <BsChevronLeft className="w-4 h-4" />
-        </button>
-        <button
-          className="z-20 bg-white bg-opacity-50 hover:bg-opacity-90 text-tertiary-gray-100 hover:text-tertiary-black absolute top-1/2 transform -translate-y-1/2 right-0 w-6 h-14 flex items-center justify-center rounded-l-lg"
-          onClick={nextImage}
-        >
-          <BsChevronRight className="w-4 h-4 text-tertiary-black" />
-        </button>
+        {/* 按鈕在圖片陣列長度>1時才顯示 */}
+        {images.length > 1 && (
+          <>
+            <button
+              className="z-20 bg-white bg-opacity-50 hover:bg-opacity-90 text-tertiary-gray-100 hover:text-tertiary-black absolute top-1/2 transform -translate-y-1/2 left-0 w-6 h-14 flex items-center justify-center rounded-r-lg"
+              onClick={prevImage}
+            >
+              <BsChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              className="z-20 bg-white bg-opacity-50 hover:bg-opacity-90 text-tertiary-gray-100 hover:text-tertiary-black absolute top-1/2 transform -translate-y-1/2 right-0 w-6 h-14 flex items-center justify-center rounded-l-lg"
+              onClick={nextImage}
+            >
+              <BsChevronRight className="w-4 h-4 text-tertiary-black" />
+            </button>
+          </>
+        )}
       </div>
-      <div className="flex md:flex-col justify-center gap-2 order-2 md:order-1">
-        {images.map((image) => (
-          <div
-            key={image.id}
-            onClick={() => handleMainClick(image)}
-            className={`cursor-pointer rounded-2xl lg:rounded-2xl overflow-hidden box-border ${
-              image.id === selectedImage.id
-                ? 'border-1 border-tertiary-gray-100'
-                : ''
-            }`}
-          >
-            <Image
-              isZoomed
-              width={120}
-              height={80}
-              alt="課程首頁banner圖"
-              src={image.path}
-              className="rounded-lg lg:rounded-2xl cursor-pointer"
-            />
+      {/* 小圖組在圖片陣列長度>1時才顯示 */}
+      {images.length > 1 && (
+        <>
+          <div className="flex md:flex-col justify-center gap-2 order-2 md:order-1">
+            {images.map((image) => (
+              <div
+                key={image.id}
+                onClick={() => handleMainClick(image)}
+                className={`cursor-pointer rounded-2xl lg:rounded-2xl overflow-hidden box-border ${
+                  image.id === selectedImage.id
+                    ? 'border-1 border-tertiary-gray-100'
+                    : ''
+                }`}
+              >
+                <Image
+                  isZoomed
+                  width={120}
+                  height={80}
+                  alt="課程首頁banner圖"
+                  src={image.path}
+                  className="rounded-lg lg:rounded-2xl cursor-pointer"
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   )
 }

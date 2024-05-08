@@ -194,7 +194,7 @@ a {
 }
 
 .rbc-event{
-  background-color: #68A392 !important;
+  /* background-color: #68A392 !important; */
   margin: 0px 4px !important;
   padding: 4px 8px !important;
   width: calc(100% - 8px) !important;
@@ -206,6 +206,7 @@ a {
 
 .rbc-toolbar-label{
   font-size: 20px;
+  padding: 8px !important;
 }
 
 .card-width {
