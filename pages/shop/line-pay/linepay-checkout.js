@@ -144,7 +144,7 @@ export default function OrderSuccess() {
                 <Breadcrumbs>
                   <BreadcrumbItem>首頁</BreadcrumbItem>
                   <BreadcrumbItem>線上商城</BreadcrumbItem>
-                  <BreadcrumbItem color="primary">商品明細</BreadcrumbItem>
+                  <BreadcrumbItem color="primary">訂單明細</BreadcrumbItem>
                 </Breadcrumbs>
               </div>
             </div>
