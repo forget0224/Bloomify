@@ -476,7 +476,7 @@ export default function FlowersIndex() {
         <title>花圖鑑</title>
       </Head>
       {/* 置中 & 背景色 */}
-      <main className="flex flex-col justify-center items-center bg-white">
+      <main className="flex flex-col justify-center items-center bg-white mt-[64px]">
         {/* 主要容器 */}
         <div className="bg-white container justify-center flex flex-col items-start columns-12 static">
           {/* 麵包屑 */}
