@@ -178,9 +178,9 @@ export default function Register() {
               {/* <Card className="flex flex-row-reverse  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               <div className="w-full lg:w-1/2 h-full flex flex-col items-center px-10 py-12">
                 <h1 className="text-3xl mb-10 mt-10">忘記密碼</h1>
-                <div className="flex flex-col space-y-14 w-full mt-2">
+                <div className="flex flex-col space-y-12 w-full mt-2">
                   <div className="flex gap-2">
-                    <div>
+                    <div className="w-3/4">
                       <Input
                         // input 要設定name
                         name="username"
@@ -198,26 +198,30 @@ export default function Register() {
                         </span>
                       )}
                     </div>
-
-                    <MyButton
-                      className="bg-primary-300 text-black text-xs mt-6"
-                      onClick={handleRequestOtpToken}
-                      disabled={disableBtn}
-                    >
-                      {delay ? count + '秒' : '取得驗証碼'}
-                    </MyButton>
+                    <div>
+                      <MyButton
+                        className="bg-primary-300 text-black text-xs mt-6 "
+                        onClick={handleRequestOtpToken}
+                        disabled={disableBtn}
+                      >
+                        {delay ? count + '秒' : '取得驗証碼'}
+                      </MyButton>
+                    </div>
                   </div>
-                  <Input
-                    // input 要設定name
-                    name="otp"
-                    label="otp驗證碼:"
-                    labelPlacement="outside"
-                    placeholder="請輸入驗證碼"
-                    type="text"
-                    value={token}
-                    onChange={(e) => setToken(e.target.value)}
-                    className={{ ...inputStyles }}
-                  />
+                  <div>
+                    <Input
+                      // input 要設定name
+                      name="otp"
+                      label="otp驗證碼:"
+                      labelPlacement="outside"
+                      placeholder="請輸入驗證碼"
+                      type="text"
+                      value={token}
+                      onChange={(e) => setToken(e.target.value)}
+                      className={{ ...inputStyles }}
+                    />
+                  </div>
+
                   <div>
                     <Input
                       // input 要設定name
