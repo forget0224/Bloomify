@@ -72,15 +72,13 @@ export default function Footer() {
       </div>
       <div className="flex flex-col gap-1   sm:items-center">
         <div className="sm:flex sm:flex-row sm:gap-2">
-          <div>
-            本網站受到 reCAPTCHA 和 Google 隱私政策的保護，且適用服務條款
-          </div>
+          <div>{t('footer.recaptcha_protection')}</div>
           <div>© 2024 Bloomify Inc. </div>
         </div>
 
         <div className="flex flex-row gap-1">
-          <div>隱私政策</div>
-          <div>價格條款</div>
+          <div>{t('footer.privacy_policy')}</div>
+          <div>{t('footer.price_terms')}</div>
         </div>
       </div>
     </footer>

@@ -1,42 +1,51 @@
-
-
-{"nav": {
-  "welcomeMessage": "Welcome to Our Website!",
-  "latestProducts": "Latest Products",
-  "featuredArticles": "Featured Articles",
-  "quickBuy": "quickbuy",
-  "customize": "customize",
-  "custom": "custom",
-  "shop": "shop",
-  "course": "course",
-  "intro": "intro",
-  "flowerAtlas": "flowerAtlas",
-  "flowerDivination": "flowerDivination"
-},
-  "section1": {
+{
+  "nav": {
     "welcomeMessage": "Welcome to Our Website!",
     "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "featuredArticles": "Featured Articles",
+    "quickBuy": "quickbuy",
+    "customize": "customize",
+    "custom": "custom",
+    "shop": "shop",
+    "course": "course",
+    "intro": "intro",
+    "flowerAtlas": "flowerAtlas",
+    "flowerDivination": "flowerDivination"
   },
+  
   "section2": {
-    "welcomeMessage": "Welcome to Our Website!",
-    "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "mothersDayCampaign": "Celebrate this Mother's Day with our exclusive floral collections. Surprise your mom with a bouquet that shows your love and appreciation!",
+    "mothersDayTitle": "Mother's Day",
+    "more":"More"
   },
   "section3": {
-    "welcomeMessage": "Welcome to Our Website!",
-    "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "customTitle": "Custom Flower",
+    "customDescription": "We offer professional custom flower delivery services for any occasion, ensuring your love and care are conveyed.",
+    "onlineStoreTitle":"Online Store",
+    "onlineStoreDescription": "Explore our extensive range of products online, from fresh flowers to gardening supplies.",
+
+    "courseBookingTitle":"Course Booking",
+    "courseBookingDescription": "Book professional floral arrangement courses to learn the art of flower design and enhance your aesthetic and crafting skills.",
+    "flowerEncyclopediaTitle":"Flower Encyclopedia",
+    "flowerEncyclopediaDescription": "Explore our botanical world! Visit our website to discover a specially crafted section introducing various plants."
+    
   },
   "section4": {
-    "welcomeMessage": "Welcome to Our Website!",
-    "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "emailInputPlaceholder": "Get the latest deals first",
+    "subscribe": "Send Email",
+    "experience": "Personalized shopping",
+    "yourStory": "Share your story",
+    "ourPlatform": "Our innovative platform",
+    "continue": "Make magic happen",
+    "joinButton": "Join Us"
   },
   "footer": {
     "followUs": "follow us",
     "aboutUs": "about us",
     "joinUs": "join us",
-    "address":"2F, No. 390, Section 1, Fuxing South Road, Da’an District, Taipei City, Taiwan"
+    "address": "2F, No. 390, Section 1, Fuxing South Road, Da’an District, Taipei City, Taiwan",
+    "privacy_policy": "Privacy Policy",
+    "price_terms": "Pricing Terms",
+    "recaptcha_protection": "This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply"
   }
 }

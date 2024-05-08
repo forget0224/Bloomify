@@ -177,7 +177,7 @@ export default function Home() {
                   }}
                 ></div>
                 <div className="sm:text-3xl flex-1 text-center  text-xl  sm:relative   absolute top-12 right-6">
-                  How it works? {t('homePage')}
+                  How it works?
                 </div>
               </div>
 
@@ -281,13 +281,11 @@ export default function Home() {
       <section className="w-screen h-screen bg-blue-100  text-black sm:flex flex-col  justify-center items-center hidden sm:flex">
         <div className="border-1 border-pink w-[1000px] h-[400px] flex flex-row">
           <div className="w-full flex flex-col bg-white justify-center items-center text-center">
-            <h1 className="text-2xl my-3">情人節活動</h1>
-            <p className="my-3 px-4">
-              無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。
-            </p>
+            <h1 className="text-2xl my-3">{t('section2.mothersDayTitle')}</h1>
+            <p className="my-3 px-4">{t('section2.mothersDayCampaign')}</p>
             <div className="w-full text-right px-4 my-3">
               <a href="#" className="text-black ">
-                More
+                {t('section2.more')}
               </a>
             </div>
           </div>
@@ -299,11 +297,9 @@ export default function Home() {
       {/* phone:banner */}
       <section className="w-screen h-60  bg-[url('/index/index_banner.jpg')] bg-cover flex items-center sm:hidden">
         <div className="w-80 h-52 bg-white/80 m-auto text-tertiary-black flex flex-col justify-center items-center rounded-2xl p-6 gap-y-2.5">
-          <h1 className="text-[22px]">情人節活動</h1>
-          <p className="text-xs">
-            無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。無論風雨，無論時節，花店都在為您提供最溫馨的服務。
-          </p>
-          <Link href="#">More</Link>
+          <h1 className="text-[22px]">{t('section2.mothersDayTitle')}</h1>
+          <p className="text-xs">{t('section2.mothersDayCampaign')}</p>
+          <Link href="#">{t('section2.more')}</Link>
         </div>
       </section>
 
@@ -331,16 +327,16 @@ export default function Home() {
                     radius="full"
                     type="email"
                     label="Email"
-                    placeholder="搶先取得最新優惠消息"
+                    placeholder={t('section4.experience')}
                     className="max-w-[450px]"
                     endContent={
                       <MyButton color="secondary" size="md">
-                        寄送Email
+                        {t('section4.subscribe')}
                       </MyButton>
                     }
                   />
                 </div>
-                <div className="text-2xl mt-4">輕鬆體驗定製化的購物體驗</div>
+                <div className="text-2xl mt-4"> {t('section4.experience')}</div>
               </CardBody>
             </Card>
           </div>
@@ -354,13 +350,13 @@ export default function Home() {
               <CardBody className="flex h-[500px] justify-end items-end gap-5 py-16 px-8">
                 <div className="text-tertiary-black text-2xl text-right gap-2 flex flex-col">
                   {' '}
-                  <div className="">{t('right-green')}</div>
-                  <div className="">我們的平台</div>
-                  <div className="">成為我們的一部分</div>
+                  <div className="">{t('section4.yourStory')}</div>
+                  <div className="">{t('section4.ourPlatform')}</div>
+                  <div className="">{t('section4.continue')}</div>
                 </div>
                 <div>
                   <MyButton size="xl" color="primary200" className="px-24 py-6">
-                    加入我們
+                    {t('section4.joinButton')}
                   </MyButton>
                 </div>
               </CardBody>

@@ -1,40 +1,51 @@
-{"nav": {
-  "welcomeMessage": "Welcome to Our Website!",
-  "latestProducts": "Latest Products",
-  "featuredArticles": "Featured Articles",
-  "quickBuy": "快速選購",
-  "customize": "客製化",
-  "custom": "代客送花",
-  "shop": "線上商城",
-  "course": "合作課程",
-  "intro": "花與遊戲",
-  "flowerAtlas": "花圖鑑",
-  "flowerDivination": "花占卜"
-},
-  "section1": {
+{
+  "nav": {
     "welcomeMessage": "Welcome to Our Website!",
     "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "featuredArticles": "Featured Articles",
+    "quickBuy": "快速選購",
+    "customize": "客製化",
+    "custom": "代客送花",
+    "shop": "線上商城",
+    "course": "合作課程",
+    "intro": "花與遊戲",
+    "flowerAtlas": "花圖鑑",
+    "flowerDivination": "花占卜"
   },
+  
   "section2": {
-    "welcomeMessage": "Welcome to Our Website!",
-    "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "mothersDayCampaign": "在這個母親節，用我們獨家花卉系列來慶祝。給您的母親一個驚喜的花束，表達您的愛與感激！",
+    "mothersDayTitle": "母親節活動",
+    "more":"更多"
   },
   "section3": {
-    "welcomeMessage": "Welcome to Our Website!",
-    "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "customTitle": "代客送花",
+    "customDescription": "提供專業的代客送花服務，無論是節日還是日常，我們都能幫您傳遞愛與關懷。",
+    "onlineStoreTitle":"線上商城",
+    "onlineStoreDescription": "探索我們豐富的線上商品，從鮮花到園藝用品，一應俱全。",
+
+    "courseBookingTitle":"課程預約",
+    "courseBookingDescription": "預約專業花藝課程，學習花卉設計的技巧，提升個人審美和手工製作能力。",
+    "flowerEncyclopediaTitle":"花朵圖鑑",
+    "flowerEncyclopediaDescription": "探索我們的植物世界！在我們的網站中，您將發現一個專為您打造的植物介紹區域。"
+    
   },
   "section4": {
-    "welcomeMessage": "Welcome to Our Website!",
-    "latestProducts": "Latest Products",
-    "featuredArticles": "Featured Articles"
+    "emailInputPlaceholder": "搶先取得最新優惠消息",
+    "subscribe": "寄送Email",
+    "experience": "輕鬆體驗定製化的購物體驗",
+    "yourStory": "您的故事",
+    "ourPlatform": "我們的平台",
+    "continue": "一起創造奇蹟",
+    "joinButton": "加入我們"
   },
   "footer": {
     "followUs": "關注我們",
     "aboutUs": "關於我們",
     "joinUs": "加入我們",
-    "address":"台北市大安區復興南路一段390號2樓"
+    "address": "台北市大安區復興南路一段390號2樓",
+    "privacy_policy": "隱私政策",
+    "price_terms": "價格條款",
+    "recaptcha_protection": "本網站受到 reCAPTCHA 和 Google 隱私政策的保護，且適用服務條款"
   }
 }
