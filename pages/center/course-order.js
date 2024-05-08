@@ -106,7 +106,7 @@ export default function CenterCourse() {
       <DefaultLayout activePage={activePage}>
         <CenterLayout>
           {/* 麵包屑 */}
-          <div className="w-full py-6 hidden sm:block mt-[64px]">
+          <div className="w-full py-6 hidden sm:block">
             <Breadcrumbs>
               <BreadcrumbItem>首頁</BreadcrumbItem>
               <BreadcrumbItem>會員中心</BreadcrumbItem>

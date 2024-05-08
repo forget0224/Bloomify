@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import {
   Table,
   TableHeader,
@@ -96,7 +96,7 @@ const OrderCard = ({ filterStatus }) => {
             .filter((detail) => filterStatus.includes(detail.order_status))
             .map((detail, index) => {
               return (
-                <>
+                <Fragment key={index}>
                   <Card className="rounded-xl border-tertiary-gray-200 border-1 shadow-none p-4">
                     <CardBody className="p-0">
                       <Accordion itemClasses={accordionStyle}>
@@ -173,7 +173,7 @@ const OrderCard = ({ filterStatus }) => {
                       </Accordion>
                     </CardBody>
                   </Card>{' '}
-                </>
+                </Fragment>
               )
             })
         ) : (

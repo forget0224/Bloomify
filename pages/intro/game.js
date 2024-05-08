@@ -48,25 +48,34 @@ export default function Custom() {
             </span>
           </p>
         </div>
-        <div className="w-full justify-start flex">
+        <div className="w-full justify-start flex flex-row">
           <img
             className="w-2/5 h-auto"
-            src="/assets/intro/cloud1_.png"
+            src="/assets/intro/cloudL.gif"
             alt="cloud1"
           />
         </div>
-        <div className="w-full flex justify-end relative">
+        
+        <div className="w-full justify-center flex">
           <img
-            className="absolute bottom-0 w-2/5 h-auto"
-            src="/assets/intro/cloud2_.png"
+            className="w-2/5 h-auto"
+            src="/assets/intro/cloudC.gif"
+            alt="cloud1"
+          />
+        </div>
+        <div className=" w-full flex justify-end relative">
+          <img
+            className="absolute bottom-0 w-3/5 h-auto"
+            src="/assets/intro/cloudC.gif"
             alt="cloud2"
           />
         </div>
         <div className="absolute bottom-0 mb-0">
           <img
-            className="w-full h-auto max-w-xs h-auto"
-            src="/assets/intro/daisy2.png"
-            alt="daisy2"
+            className="max-w-xl"
+            src="/assets/intro/daisy.gif"
+            alt="daisy"
+            
           />
         </div>
       </div>
@@ -86,7 +95,7 @@ export default function Custom() {
         </Link>
       </div>
 
-      <div className="absolute top-60 left-1/2 transform -translate-x-1/2 mb-4 p-3 rounded-full justify-center">
+      <div className="absolute top-52 left-1/2 transform -translate-x-1/2 mb-4 p-3 rounded-full justify-center">
         <MyButton color="primary" size="xl" onPress={onOpen} className="mt-6">
           開始占卜
         </MyButton>
