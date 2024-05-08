@@ -97,6 +97,7 @@ export default function CourseDetails() {
               setAverageStars('目前沒有評價')
             }
           }
+
           close(1.5) // 設置一個延時來關閉 loader
         } catch (error) {
           console.error('Error fetching course details:', error)
@@ -143,6 +144,9 @@ export default function CourseDetails() {
     })
   }
 
+  // console.log(courseDetails.reviews)
+  console.log(courseDetails.images)
+
   // 頁面內容
   const display = (
     <>
@@ -155,7 +159,7 @@ export default function CourseDetails() {
       >
         <CenterLayout>
           {/* 麵包屑 */}
-          <div className="w-full py-6 hidden md:block">
+          <div className="w-full py-6 hidden md:block mt-[64px]">
             <Breadcrumbs>
               <BreadcrumbItem href="/">首頁</BreadcrumbItem>
               <BreadcrumbItem href="/course/">合作課程</BreadcrumbItem>
