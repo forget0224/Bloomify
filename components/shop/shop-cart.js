@@ -86,20 +86,27 @@ export default function ShopCart() {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Button
-                    style={{ minWidth: '20px' }}
-                    className="bg-primary-300"
+                    style={{
+                      minWidth: '20px',
+                      backgroundColor:
+                        item.quantity <= 1 ? '#cccccc' : '#DBEDDF', // 灰色或主要颜色
+                      color: item.quantity <= 1 ? '#666666' : 'black', // 文字颜色
+                    }}
                     onClick={() => handleDecrement(item.id)}
+                    disabled={item.quantity <= 1}
                   >
                     <FaMinus />
                   </Button>
                   <div style={{ width: '100px' }}>
                     <Input
-                      min={1}
+                      type="text" // 推荐使用 number 類型確保只能輸入数字
+                      min="1"
                       style={{ textAlign: 'center' }}
                       value={item.quantity}
                       onChange={(e) => {
-                        handleChange(item.id, e)
+                        handleChange(item.id, e.target.value)
                       }}
+                      className="w-full rounded-md p-1 text-center"
                     />
                   </div>
                   <Button

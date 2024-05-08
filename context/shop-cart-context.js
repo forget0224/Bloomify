@@ -52,8 +52,13 @@ export const CartProvider = ({ children }) => {
 
   // 更改特定商品的數量
   const handleChange = (itemId, quantity) => {
+    // 將 quantity 轉換成整數
+    const parsedQuantity = parseInt(quantity, 10)
+    // 如果解析结果是 NaN 或者小於1，數字默認為1
+    const safeQuantity =
+      isNaN(parsedQuantity) || parsedQuantity < 1 ? 1 : parsedQuantity
     const updatedItems = Object.values(cartItems).map((item) =>
-      item.id === itemId ? { ...item, quantity: Math.max(quantity, 0) } : item
+      item.id === itemId ? { ...item, quantity: safeQuantity } : item
     )
     console.log('handleChange', updatedItems)
     setCartItems(updatedItems)
