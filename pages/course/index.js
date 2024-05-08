@@ -101,7 +101,7 @@ export default function CourseIndex() {
       >
         <CenterLayout>
           {/* 麵包屑 */}
-          <div className="w-full py-6 hidden md:block mt-[64px]">
+          <div className="w-full py-6 hidden md:block">
             <Breadcrumbs>
               <BreadcrumbItem href="/">首頁</BreadcrumbItem>
               <BreadcrumbItem color="primary">合作課程</BreadcrumbItem>
