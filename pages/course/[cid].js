@@ -19,7 +19,7 @@ import Loader from '@/components/common/loader'
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import CardNews from '@/components/course/card-news'
-import CardTime from '@/components/course/card-time'
+import CourseTime from '@/components/course/card-time'
 import ShareModal from '@/components/common/modal-share'
 import CourseMap from '@/components/course/card-map'
 import ImageSlider from '@/components/course/image-slider'
@@ -285,7 +285,7 @@ export default function CourseDetails() {
               <div ref={dateRef} className="flex flex-col gap-6">
                 <Subtitle text="上課日期" />
                 <div className="flex flex-col gap-4">
-                  <CardTime
+                  <CourseTime
                     courseDetails={courseDetails}
                     datetimes={courseDetails.datetimes}
                   />

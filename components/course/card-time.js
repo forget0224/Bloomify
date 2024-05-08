@@ -48,11 +48,12 @@ export default function CourseTime({ courseDetails, datetimes }) {
                 onClick={() => addToCart(courseDetails, datetimes.period)}
               />
               {/* TODO: */}
-              <Link href="/cart/">
+              <Link href="/cart?tab=course">
                 <MyButton
                   color="primary"
                   size="xl"
                   className="w-full md:w-1/2 lg:w-full"
+                  onClick={() => addToCart(courseDetails, datetimes.period)}
                 >
                   立即預約
                 </MyButton>
