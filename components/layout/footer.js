@@ -1,7 +1,5 @@
 import React from 'react'
 import Link from 'next/link'
-
-import NavLogo from '../index/NavLogo'
 import {
   CiMail,
   CiPhone,
@@ -75,7 +73,6 @@ export default function Footer() {
           <div>{t('footer.recaptcha_protection')}</div>
           <div>© 2024 Bloomify Inc. </div>
         </div>
-
         <div className="flex flex-row gap-1">
           <div>{t('footer.privacy_policy')}</div>
           <div>{t('footer.price_terms')}</div>
