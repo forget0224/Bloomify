@@ -51,7 +51,7 @@ export default function Custom() {
         <div className="w-full justify-start flex flex-row">
           <img
             className="w-2/5 h-auto"
-            src="/assets/intro/cloud1_.png"
+            src="/assets/intro/cloudL.gif"
             alt="cloud1"
           />
         </div>
