@@ -148,7 +148,7 @@ export default function Register() {
                       type="text"
                       value={user.username}
                       onChange={handleFieldChange}
-                      // isRequired
+                      isRequired
                       className={{ ...inputStyles }}
                     />
                     {errors.username && (
