@@ -1,8 +1,12 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
+import { useMediaQuery } from 'react-responsive'
 gsap.registerPlugin(ScrollTrigger)
 const HeroSection = () => {
+  const isDesktop = useMediaQuery({
+    query: '(min-width: 1024px)',
+  })
   const sectionRef = useRef(null)
   const mediaRef = useRef(null)
 
@@ -12,11 +16,17 @@ const HeroSection = () => {
     if (!section) return
     const setupAnimation = () => {
       const titles = gsap.utils.toArray('.hero_title_row_text', section)
-      const mediaImages = gsap.utils.toArray('.hero_media_image', section) // 確保這個類名是對的
+      const mediaImages = gsap.utils.toArray('.hero_media_image', section)
 
-      gsap.set(titles, { autoAlpha: 0, yPercent: -100 })
-      gsap.set(media, { autoAlpha: 0, xPercent: -100, yPercent: -25 })
-      gsap.set(mediaImages, { xPercent: -100 })
+      const initialPercent100 = isDesktop ? -100 : -50
+      const initialYPercent = isDesktop ? -25 : -20
+      gsap.set(titles, { autoAlpha: 0, yPercent: initialPercent100 })
+      gsap.set(media, {
+        autoAlpha: 0,
+        xPercent: initialPercent100,
+        yPercent: initialYPercent,
+      })
+      gsap.set(mediaImages, { xPercent: initialPercent100 })
 
       // 創建時間軸
       const tl = gsap.timeline({
@@ -27,7 +37,7 @@ const HeroSection = () => {
           toggleActions: 'play none none none',
           scrub: true,
         },
-        defaults: { duration: 2, ease: 'expo.inOut' },
+        defaults: { duration: isDesktop ? 2 : 4, ease: 'expo.inOut' },
       })
       tl.to(media, {
         autoAlpha: 1,
@@ -71,7 +81,7 @@ const HeroSection = () => {
       resizeObserver.disconnect()
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
     }
-  }, [])
+  }, [isDesktop])
 
   function getImageClass(index) {
     const base =
