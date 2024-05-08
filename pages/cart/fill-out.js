@@ -76,19 +76,31 @@ export default function FillOut() {
   }))
   const [townships, setTownships] = useState([])
   const [postalCodes, setPostalCodes] = useState([])
+  const [isBlurred, setIsBlurred] = useState(false)
 
-  // TODO:
-  // 更新完整地址
-  function updateDeliveryAddress() {
-    setDeliveryAddress(
-      `${selectedCity} ${selectedTownship} ${selectedPostalCode} ${addressDetail}`
-    )
-  }
+  useEffect(() => {
+    const newAddress = `${selectedCity} ${selectedTownship} ${addressDetail}`
+    if (
+      isBlurred &&
+      newAddress !== deliveryAddress &&
+      selectedCity &&
+      selectedTownship &&
+      addressDetail
+    ) {
+      setDeliveryAddress(newAddress)
+      setIsBlurred(false)
+    }
+  }, [
+    selectedCity,
+    selectedTownship,
+    addressDetail,
+    isBlurred,
+    deliveryAddress,
+  ])
 
   // 當選擇的城市發生變化時
   const handleCityChange = (value) => {
     setSelectedCity(value)
-    updateDeliveryAddress()
 
     const cityData = taiwanDistricts.find((city) => city.name === value)
     if (cityData) {
@@ -119,7 +131,6 @@ export default function FillOut() {
 
   const handleTownshipChange = (value) => {
     setSelectedTownship(value)
-    updateDeliveryAddress()
 
     // Need to find the city first to get the correct district
     const cityData = taiwanDistricts.find((city) => city.name === selectedCity)
@@ -135,14 +146,13 @@ export default function FillOut() {
   }
   const handlePostalCodeChange = (value) => {
     setSelectedPostalCode(value)
-    updateDeliveryAddress()
   }
   const handleAddressDetailChange = (value) => {
     setAddressDetail(value)
   }
 
   const handleBlur = () => {
-    updateDeliveryAddress() // 更新配送地址
+    setIsBlurred(true)
   }
 
   const handleTimeChange = (value) => {
@@ -193,9 +203,9 @@ export default function FillOut() {
       case 'senderEmail':
         setSenderEmail(value)
         break
-      case 'deliveryAddress':
-        setDeliveryAddress(value)
-        break
+      // case 'deliveryAddress':
+      //   setDeliveryAddress(value)
+      //   break
 
       default:
         // 這裡可以處理默認情況或當未匹配到任何鍵時的情況

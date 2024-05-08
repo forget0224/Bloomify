@@ -40,6 +40,14 @@ export default function CustomFillOut({
   deliveryAddress,
   setDeliveryShipping,
 }) {
+  const [destination, setDestination] = useState('')
+
+  // useEffect(() => {
+  //   if (deliveryAddress && deliveryAddress !== destination) {
+  //     setDestination(deliveryAddress)
+  //   }
+  // }, [deliveryAddress])
+
   return (
     <>
       <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
@@ -183,8 +191,8 @@ export default function CustomFillOut({
               </div>
               <div className="sm:w-[400px]   w-[269px] h-auto">
                 <CustomGoogleMap
-                  destination={`${deliveryAddress}`}
                   setDeliveryShipping={setDeliveryShipping}
+                  destination={deliveryAddress}
                 />
               </div>
             </>
