@@ -40,14 +40,6 @@ export default function CustomFillOut({
   deliveryAddress,
   setDeliveryShipping,
 }) {
-  const [destination, setDestination] = useState('')
-
-  // useEffect(() => {
-  //   if (deliveryAddress && deliveryAddress !== destination) {
-  //     setDestination(deliveryAddress)
-  //   }
-  // }, [deliveryAddress])
-
   return (
     <>
       <div className="w-full justify-center max-w-3xl flex flex-col gap-3">
