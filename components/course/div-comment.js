@@ -5,7 +5,7 @@ import { FaStar } from 'react-icons/fa'
 
 export default function CourseComment({ reviews }) {
   const [selectedStar, setSelectedStar] = useState(null) // 儲存當前選中的星級篩選條件；null初始值，表示顯示全部評價
-  const [filteredReviews, setFilteredReviews] = useState(reviews) // 用來儲存篩選後的評價；初始值為傳入的reviews
+  const [filteredReviews, setFilteredReviews] = useState(reviews || []) // 用來儲存篩選後的評價；初始值為傳入的reviews
 
   const [currentPage, setCurrentPage] = useState(1)
   const reviewsPerPage = 3 // 每頁顯示的評價數量

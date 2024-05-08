@@ -90,7 +90,7 @@ export default function CourseReview({
         onClose() // 關閉 Modal
         removeReviewedItem(courseDetails.id)
         // 顯示成功提示
-        toast.success(`成功新增此課程的評價`)
+        toast.success(`成功新增此${courseDetails.id}課程的評價`)
         setTimeout(() => {
           location.reload() // 頁面刷新
         }, 1000)
