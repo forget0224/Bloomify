@@ -215,8 +215,8 @@ export default function Login() {
             <title>會員登入</title>
           </Head>
           {/* main的東西 */}
-          <div className="py-8 flex justify-center items-center w-full h-full bg-secondary-300">
-            <Card className="w-full h-full flex flex-col-reverse mx-4 lg:flex lg:flex-row lg:max-w-[950px] lg:max-h-[600px] shadow-lg">
+          <div className="mt-12 py-8 flex justify-center items-center w-full h-full bg-secondary-300">
+            <Card className=" w-full h-full flex flex-col-reverse mx-4 lg:flex lg:flex-row lg:max-w-[950px] lg:max-h-[600px] shadow-lg">
               {/* <Card className="flex flex-row  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               {/* Form */}
               <div className="w-full lg:w-1/2 h-full flex flex-col items-center px-10 py-12">
@@ -308,8 +308,8 @@ export default function Login() {
               {/* Banner Image */}
               <div className="w-full lg:w-1/2 h-full">
                 <Image
-                  width={633}
-                  height={759}
+                  width={1000}
+                  height={600}
                   src={'/assets/member/member_login.jpg'}
                   alt="flower"
                   className="object-center size-full"
