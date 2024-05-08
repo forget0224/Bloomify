@@ -135,7 +135,7 @@ export default function CenterCourse() {
                   {/* Tab1 - 全部訂單 */}
                   <Tab key="all" title="全部訂單">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-2">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />
@@ -150,7 +150,7 @@ export default function CenterCourse() {
                   {/* Tab2 - 待付款訂單 */}
                   <Tab key="unpaid" title="待付款" className="flex flex-col">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-2">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />
@@ -165,7 +165,7 @@ export default function CenterCourse() {
                   {/* Tab3 - 已付款訂單 */}
                   <Tab key="paid" title="已付款">
                     {/* 搜尋與排序 */}
-                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-2">
                       {/* searchbar */}
                       <div className="w-full md:w-[320px]">
                         <CourseSearch />

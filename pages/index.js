@@ -12,7 +12,7 @@ import { useMediaQuery } from 'react-responsive'
 import { useTranslation } from 'react-i18next'
 import Head from 'next/head'
 import BannerSection from '@/components/index/BannerSection'
-import HeroSection from '@/components/index/Hero'
+// import HeroSection from '@/components/index/Hero'
 import {
   Card,
   CardHeader,

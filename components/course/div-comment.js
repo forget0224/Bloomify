@@ -60,7 +60,7 @@ export default function CourseComment({ reviews }) {
   return (
     <>
       {/* 印出篩選按鈕 */}
-      <div className="flex flex-row gap-2 overflow-x-auto items-center">
+      <div className="flex flex-row gap-2 overflow-x-auto items-center py-2 md:py-0">
         <Button
           onClick={() => filterReviewsByStars(null)}
           color={selectedStar === null ? 'primary' : 'white'}

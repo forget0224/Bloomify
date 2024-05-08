@@ -44,7 +44,7 @@ export default function CourseOrder({ order }) {
                           key={item.id}
                           className="flex flex-col md:flex-row text-base border-b-1 last:border-0 py-1"
                         >
-                          <span className="md:w-[350px] truncate">
+                          <span className="md:w-[350px] line-clamp-1">
                             {item.course.name}/{item.period}期
                           </span>
                           <span className="md:w-[150px]">
@@ -89,7 +89,14 @@ export default function CourseOrder({ order }) {
                   </div>
                   <div className="flex justify-between md:justify-start">
                     <span className="w-[100px]">付款狀態：</span>
-                    <span className="ml-1">
+                    <span
+                      className={`ml-1 ${
+                        order.payment_status &&
+                        order.payment_status.name === '未付款'
+                          ? 'text-danger'
+                          : 'text-primary'
+                      }`}
+                    >
                       {order.payment_status ? order.payment_status.name : ''}
                     </span>
                   </div>

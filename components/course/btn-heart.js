@@ -59,7 +59,7 @@ export default function HeartButton({ opacity, courseId }) {
         await fetchFavorites()
 
         // 顯示成功提示
-        toast.success(`成功${method === 'POST' ? '收藏' : '取消收藏'} 課程`)
+        toast.success(`${method === 'POST' ? '成功收藏' : '取消收藏'}課程`)
       } else {
         throw new Error('Response not OK')
       }

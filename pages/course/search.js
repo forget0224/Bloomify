@@ -14,6 +14,13 @@ import Head from 'next/head'
 
 export default function CourseSearch() {
   const router = useRouter()
+  // 搜尋框條件清空
+  const [resetKey, setResetKey] = useState(0)
+  const handleReset = () => {
+    setResetKey((prevKey) => prevKey + 1)
+    router.push('/course/search')
+  }
+
   const [courses, setCourses] = useState([]) // set 課程資料
   const [courseCount, setCourseCount] = useState(0) // set 課程資料筆數
   const [stores, setStores] = useState([]) // set 商家資料
@@ -244,7 +251,10 @@ export default function CourseSearch() {
               <Title text="課程搜尋" />
               {/* 搜尋框 */}
               <div>
-                <SearchBtn baseSearchPath="/course/search" />
+                <SearchBtn
+                  baseSearchPath="/course/search"
+                  resetKey={resetKey}
+                />
               </div>
               {/* 篩選與排序 */}
               <div className="flex flex-wrap gap-2 items-center justify-center relative z-20">
@@ -304,11 +314,12 @@ export default function CourseSearch() {
                   <span className="text-tertiary-gray-100">
                     {courseCount}筆資料
                   </span>
-                  <Link href={'/course/search'}>
-                    <span className="text-primary-100 hover:text-primary-200">
-                      條件清空
-                    </span>
-                  </Link>
+                  <span
+                    className="text-primary-100 hover:text-primary-200 cursor-pointer"
+                    onClick={handleReset}
+                  >
+                    條件清空
+                  </span>
                 </div>
               </div>
             </div>

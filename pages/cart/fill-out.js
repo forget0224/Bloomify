@@ -544,7 +544,9 @@ export default function FillOut() {
                         onChange={handleInputChange}
                       />
                       {errors.senderName && (
-                        <p className="text-danger text">{errors.senderName}</p>
+                        <p className="text-danger text-sm mt-2">
+                          {errors.senderName}
+                        </p>
                       )}
                     </div>
                     <div>
@@ -563,7 +565,9 @@ export default function FillOut() {
                         onChange={handleInputChange}
                       />
                       {errors.senderNumber && (
-                        <p className="text-danger">{errors.senderNumber}</p>
+                        <p className="text-danger text-sm mt-2">
+                          {errors.senderNumber}
+                        </p>
                       )}
                     </div>
                     <div>
@@ -582,7 +586,9 @@ export default function FillOut() {
                         onChange={handleInputChange}
                       />
                       {errors.senderEmail && (
-                        <p className="text-danger">{errors.senderEmail}</p>
+                        <p className="text-danger text-sm mt-2">
+                          {errors.senderEmail}
+                        </p>
                       )}
                     </div>
                     <Checkbox
@@ -660,7 +666,9 @@ export default function FillOut() {
                         onChange={handleInputChange}
                       />
                       {errors.recipientName && (
-                        <p className="text-danger">{errors.recipientName}</p>
+                        <p className="text-danger text-sm mt-2">
+                          {errors.recipientName}
+                        </p>
                       )}
                     </div>
                     <div>
@@ -679,7 +687,9 @@ export default function FillOut() {
                         onChange={handleInputChange}
                       />
                       {errors.recipientNumber && (
-                        <p className="text-danger">{errors.recipientNumber}</p>
+                        <p className="text-danger text-sm mt-2">
+                          {errors.recipientNumber}
+                        </p>
                       )}
                     </div>
                     <Checkbox
@@ -708,7 +718,7 @@ export default function FillOut() {
                         ))}
                       </Select>
                       {errors.shipping && (
-                        <p className="error-message text-danger">
+                        <p className="error-message text-danger text-sm mt-2">
                           {errors.shipping}
                         </p>
                       )}
@@ -858,9 +868,11 @@ export default function FillOut() {
                     {isSubmitted && (
                       <div>
                         {error ? (
-                          <span className="text-danger">{error}</span>
+                          <span className="text-danger text-sm mt-2">
+                            {error}
+                          </span>
                         ) : (
-                          <span className="text-primary">
+                          <span className="text-primary text-sm mt-2">
                             折扣NT${discount}
                           </span>
                         )}
@@ -884,7 +896,7 @@ export default function FillOut() {
                 <div className="flex text-black border-b-2 border-primary-300">
                   <FormTag text="付款方式" />
                 </div>
-                <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4 bg-white border-1 rounded-lg">
+                <div className="flex flex-col w-full p-8 flex-wrap md:flex-nowrap mb-6 md:mb-0 bg-white border-1 rounded-lg">
                   <RadioGroup>
                     {payments.map((payment) => (
                       <label
@@ -916,7 +928,7 @@ export default function FillOut() {
                     ))}
                   </RadioGroup>
                   {errors.paymentMethod && (
-                    <p className="error-message text-danger">
+                    <p className="error-message text-danger text-sm">
                       {errors.paymentMethod}
                     </p>
                   )}
@@ -956,7 +968,7 @@ export default function FillOut() {
                       ))}
                     </Select>{' '}
                     {errors.invoiceOption && (
-                      <p className="error-message text-danger">
+                      <p className="error-message text-danger text-sm mt-2">
                         {errors.invoiceOption}
                       </p>
                     )}

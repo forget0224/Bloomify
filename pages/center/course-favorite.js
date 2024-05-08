@@ -92,7 +92,7 @@ export default function FavoriteCourses() {
               <Title text="收藏課程" />
 
               {/* 搜尋與排序 */}
-              <div className="flex flex-col md:flex-row justify-between gap-4 py-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+              <div className="flex flex-col md:flex-row justify-between gap-4 py-4">
                 {/* searchbar */}
                 <div className="w-full md:w-[320px]">
                   <CourseSearch />
