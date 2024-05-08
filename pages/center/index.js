@@ -128,14 +128,14 @@ export default function Index() {
           </Head>
           <CenterLayout>
             {/* 麵包屑 */}
-            <div className="hidden sm:block sm:w-full sm:py-6">
+            <div className="mt-[64px] hidden sm:block sm:w-full sm:py-6">
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
                 <BreadcrumbItem color="primary">會員中心</BreadcrumbItem>
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
-            <div className="mt-[64px] hidden sm:block sm:flex sm:flex-row sm:w-full sm:justify-center">
+            <div className="hidden sm:block sm:flex sm:flex-row sm:w-full sm:justify-center">
               {/* 側邊欄 */}
               <Sidebar />
               <div className="hidden sm:block sm:w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10 text-2xl">

@@ -135,7 +135,7 @@ export default function Register() {
               <div className="w-full lg:w-1/2 h-full flex flex-col items-center px-10 py-12">
                 <h1 className="text-3xl mb-10 mt-10">會員註冊</h1>
                 <form
-                  className="flex flex-col space-y-14 w-full mt-2"
+                  className="flex flex-col space-y-12 w-full mt-2"
                   onSubmit={handleSubmit}
                 >
                   <div>
@@ -239,7 +239,7 @@ export default function Register() {
                     <MyButton
                       color="primary"
                       size="xl"
-                      className=" bg-primary-100 text-white w-full "
+                      className=" bg-primary-100 text-white w-full mt-4"
                       type="submit"
                     >
                       會員註冊
