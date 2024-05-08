@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import moment from 'moment'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { Card } from '@nextui-org/react'
 import Image from 'next/image'
 import { BsChevronRight } from 'react-icons/bs'
-import Review from '@/components/shop/center/review'
+import CourseReview from './modal-review'
 import { useDisclosure } from '@nextui-org/react'
+import Link from 'next/link'
 
 // 這裡傳遞進來的是單堂課程
-export default function CourseCard({ course }) {
+export default function CourseCard({ course, removeReviewedItem }) {
   //外層手風琴樣式
   const accordionStyle = {
     base: ['p-0', 'text-tertiary-black', 'p-4'], // 訂單明細
@@ -18,7 +19,22 @@ export default function CourseCard({ course }) {
   }
 
   // 評價 Modal 變數
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  // 要傳遞給評價 Modal 的資料
+  const [reviewDetails, setReviewDetails] = useState({
+    name: '',
+    period: '',
+    id: '',
+  })
+  // 在打開 Modal 前設置課程評價需要的資料
+  const handleReviewClick = () => {
+    setReviewDetails({
+      name: course.course.name,
+      period: course.period,
+      id: course.id,
+    })
+    onOpen()
+  }
 
   return (
     <>
@@ -85,20 +101,36 @@ export default function CourseCard({ course }) {
                   <div>上課地點：</div>
                   <div>{course.course.store.store_address}</div>
                 </div>
-                <div
-                  className="flex flex-row py-1 md:py-0 items-center text-primary-100 cursor-pointer"
-                  onClick={onOpen}
-                >
-                  進行評價
-                  <BsChevronRight />
-                </div>
+                {course.course.reviews.length === 0 ? (
+                  <div
+                    className="flex flex-row py-1 md:py-0 items-center text-primary-100 cursor-pointer"
+                    onClick={() => handleReviewClick()}
+                  >
+                    未評價-進行評價
+                    <BsChevronRight />
+                  </div>
+                ) : (
+                  <Link
+                    href={`/course/${course.id}`}
+                    className="flex flex-row py-1 md:py-0 items-center text-tertiary-gray-100 cursor-pointer"
+                  >
+                    已評價-前往查看評價
+                    <BsChevronRight />
+                  </Link>
+                )}
               </div>
             </div>
           </AccordionItem>
         </Accordion>
       </Card>
       {/* 評價 Modal */}
-      <Review onOpen={onOpen} isOpen={isOpen} onOpenChange={onOpenChange} />
+      <CourseReview
+        courseDetails={reviewDetails}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        onClose={onClose}
+        removeReviewedItem={removeReviewedItem}
+      />
     </>
   )
 }

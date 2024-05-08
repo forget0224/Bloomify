@@ -7,7 +7,7 @@ import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
-// import CourseSearch from '@/components/course/search'
+import Head from 'next/head'
 
 import OrderCard from '@/components/shop/order-card'
 
@@ -18,6 +18,9 @@ export default function CenterShop() {
     <DefaultLayout activePage={activePage}>
       {
         <>
+          <Head>
+            <title>商品訂單</title>
+          </Head>
           <CenterLayout>
             {/* 麵包屑 */}
             <div className="hidden sm:block w-full py-6">

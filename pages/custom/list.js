@@ -107,7 +107,10 @@ export default function List() {
           </Head>
           <DefaultLayout activePage={activePage}>
             <>
-              <div className="bg-white  w-screen h-auto overflow-visible">
+              <div
+                className="bg-white  w-screen overflow-visible mt-[64px]"
+                style={{ minHeight: 'calc(100vh - 64px)' }}
+              >
                 <div className="container m-auto">
                   <div className="flex sm:flex-row flex-col ">
                     <div className="h-[600px] w-auto  p-4 sticky top-0  hidden sm:block">

@@ -11,17 +11,24 @@ import CenterLayout from '@/components/layout/center-layout'
 import Loader from '@/components/common/loader'
 import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
-import Review from '@/components/shop/center/review'
 import CourseSearch from '@/components/course/search'
 import CourseDropdown from '@/components/course/dropdown'
 import CourseCard from '@/components/course/div-courses'
 import CoursePagination from '@/components/course/pagination'
+import Head from 'next/head'
 
 export default function MyCourseItems() {
   // const { close, open, isLoading } = useLoader()
   const [orders, setOrders] = useState([])
   const [expiredItems, setExpiredItems] = useState([])
   const [upcomingItems, setUpcomingItems] = useState([])
+  const [unreviewedItems, setUnreviewedItems] = useState([])
+
+  const removeReviewedItem = (courseId) => {
+    setUnreviewedItems((prevItems) =>
+      prevItems.filter((item) => item.course.id !== courseId)
+    )
+  }
 
   // 分頁 --------------------------------------------------------------
   const [activeTab, setActiveTab] = useState('all')
@@ -78,13 +85,13 @@ export default function MyCourseItems() {
           }
         )
         const data = await response.json()
-        console.log('API data:', data) // 确认数据已接收
+        console.log('API data:', data) // 確認數據已接收
         if (response.ok && data.status === 'success') {
           const allItems = []
           data.data.forEach((order) => {
-            allItems.push(...order.items) // 将每个订单的课程项添加到 allItems
+            allItems.push(...order.items) // 將每個訂單的課程項目添加到 allItems
           })
-          setOrders(allItems) // 设置 orders 为包含所有课程项的数组
+          setOrders(allItems) // 設置 orders 為包含所有課程項的數組
         } else {
           throw new Error('Failed to fetch orders or wrong data structure')
         }
@@ -100,6 +107,7 @@ export default function MyCourseItems() {
     const now = new Date()
     const expired = []
     const upcoming = []
+    const unreviewed = [] // 未評價
 
     orders.forEach((item) => {
       const courseDate = new Date(item.course.datetimes[0].date)
@@ -108,6 +116,11 @@ export default function MyCourseItems() {
 
       if (courseDate < now) {
         expired.push(item)
+        // 雙重篩選
+        if (item.course.reviews.length === 0) {
+          // 檢查 reviews 數組有東西還是沒東西
+          unreviewed.push(item) // 如果沒東西，添加到未評價數組
+        }
       } else {
         upcoming.push(item)
       }
@@ -115,6 +128,7 @@ export default function MyCourseItems() {
 
     setExpiredItems(expired)
     setUpcomingItems(upcoming)
+    setUnreviewedItems(unreviewed)
   }, [orders])
 
   // 排序query string更新
@@ -137,168 +151,157 @@ export default function MyCourseItems() {
   const [activePage, setActivePage] = useState('course')
 
   const display = (
-    <DefaultLayout activePage={activePage}>
-      <CenterLayout>
-        {/* 麵包屑 */}
-        <div className="w-full py-6 hidden sm:block">
-          <Breadcrumbs>
-            <BreadcrumbItem>首頁</BreadcrumbItem>
-            <BreadcrumbItem>會員中心</BreadcrumbItem>
-            <BreadcrumbItem>合作課程</BreadcrumbItem>
-            <BreadcrumbItem>我的課程</BreadcrumbItem>
-          </Breadcrumbs>
-        </div>
+    <>
+      <Head>
+        <title>我的課程</title>
+      </Head>
+      <DefaultLayout activePage={activePage}>
+        <CenterLayout>
+          {/* 麵包屑 */}
+          <div className="w-full py-6 hidden sm:block">
+            <Breadcrumbs>
+              <BreadcrumbItem>首頁</BreadcrumbItem>
+              <BreadcrumbItem>會員中心</BreadcrumbItem>
+              <BreadcrumbItem>合作課程</BreadcrumbItem>
+              <BreadcrumbItem>我的課程</BreadcrumbItem>
+            </Breadcrumbs>
+          </div>
 
-        {/* 主要內容 */}
-        <div className="flex flex-row w-full justify-center">
-          {/* 側邊欄 */}
-          <Sidebar />
+          {/* 主要內容 */}
+          <div className="flex flex-row w-full justify-center">
+            {/* 側邊欄 */}
+            <Sidebar />
 
-          {/* 歷史訂單 */}
-          <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
-            {/* 訂單明細 */}
-            <Title text="我的課程" />
-            <div className="flex w-full flex-col">
-              <Tabs
-                radius={'full'}
-                color={'primary'}
-                aria-label="Tabs radius"
-                className="pt-4"
-                selectedKey={activeTab}
-                onSelectionChange={handleTabChange}
-              >
-                {/* Tab1 - 全部訂單 */}
-                <Tab key="all" title="全部訂單">
-                  {/* 搜尋與排序 */}
-                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
-                    {/* searchbar */}
-                    <div className="w-full md:w-[320px]">
-                      <CourseSearch />
+            {/* 歷史訂單 */}
+            <div className="w-10/12 md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
+              {/* 訂單明細 */}
+              <Title text="我的課程" />
+              <div className="flex w-full flex-col">
+                <Tabs
+                  radius={'full'}
+                  color={'primary'}
+                  aria-label="Tabs radius"
+                  className="pt-4"
+                  selectedKey={activeTab}
+                  onSelectionChange={handleTabChange}
+                >
+                  {/* Tab1 - 全部訂單 */}
+                  <Tab key="all" title="全部訂單">
+                    {/* 搜尋與排序 */}
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                      {/* searchbar */}
+                      <div className="w-full md:w-[320px]">
+                        <CourseSearch />
+                      </div>
+                      {/* filter */}
+                      <div className="w-full md: w-fit flex flex-cols items-center">
+                        <span className="mr-4 text-tertiary-black text-nowrap">
+                          排序
+                        </span>
+                        <CourseDropdown
+                          label="預設排序"
+                          options={sortOptions}
+                          selectedOption={sortOption}
+                          onChange={handleSortChange}
+                        />
+                      </div>
                     </div>
-                    {/* filter */}
-                    <div className="w-full md: w-fit flex flex-cols items-center">
-                      <span className="mr-4 text-tertiary-black text-nowrap">
-                        排序
-                      </span>
-                      <CourseDropdown
-                        label="預設排序"
-                        options={sortOptions}
-                        selectedOption={sortOption}
-                        onChange={handleSortChange}
-                      />
+                    {/* 歷史訂單卡片 */}
+                    <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
+                      {/* 卡片包手風琴 */}
+                      {currentItems.map((item) => (
+                        <CourseCard
+                          key={item.id}
+                          course={item}
+                          removeReviewedItem={removeReviewedItem}
+                        />
+                      ))}
                     </div>
-                  </div>
-                  {/* 歷史訂單卡片 */}
-                  <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
-                    {/* 卡片包手風琴 */}
-                    {currentItems.map((item) => (
-                      <CourseCard key={item.id} course={item} />
-                    ))}
-                  </div>
-                </Tab>
+                  </Tab>
 
-                {/* Tab2 - 未完課訂單 */}
-                <Tab key="upcoming" title="未完課">
-                  {/* 搜尋與排序 */}
-                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
-                    {/* searchbar */}
-                    <div className="w-full md:w-[320px]">
-                      <CourseSearch />
+                  {/* Tab2 - 未完課訂單 */}
+                  <Tab key="upcoming" title="未完課">
+                    {/* 搜尋與排序 */}
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                      {/* searchbar */}
+                      <div className="w-full md:w-[320px]">
+                        <CourseSearch />
+                      </div>
+                      {/* filter */}
+                      <div className="w-full md: w-fit flex flex-cols items-center">
+                        <span className="mr-4 text-tertiary-black text-nowrap">
+                          排序
+                        </span>
+                        <CourseDropdown
+                          label="預設排序"
+                          options={sortOptions}
+                          selectedOption={sortOption}
+                          onChange={handleSortChange}
+                        />
+                      </div>
                     </div>
-                    {/* filter */}
-                    <div className="w-full md: w-fit flex flex-cols items-center">
-                      <span className="mr-4 text-tertiary-black text-nowrap">
-                        排序
-                      </span>
-                      <CourseDropdown
-                        label="預設排序"
-                        options={sortOptions}
-                        selectedOption={sortOption}
-                        onChange={handleSortChange}
-                      />
+                    {/* 歷史訂單卡片 */}
+                    <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
+                      {/* 卡片包手風琴 */}
+                      {currentItems.map((item) => (
+                        <CourseCard
+                          key={item.id}
+                          course={item}
+                          removeReviewedItem={removeReviewedItem}
+                        />
+                      ))}
                     </div>
-                  </div>
-                  {/* 歷史訂單卡片 */}
-                  <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
-                    {/* 卡片包手風琴 */}
-                    {currentItems.map((item) => (
-                      <CourseCard key={item.id} course={item} />
-                    ))}
-                  </div>
-                </Tab>
+                  </Tab>
 
-                {/* Tab3 - 已完課訂單 */}
-                <Tab key="expired" title="已完課">
-                  {/* 搜尋與排序 */}
-                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
-                    {/* searchbar */}
-                    <div className="w-full md:w-[320px]">
-                      <CourseSearch />
+                  {/* Tab3 - 已完課訂單 */}
+                  <Tab key="expired" title="已完課">
+                    {/* 搜尋與排序 */}
+                    <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
+                      {/* searchbar */}
+                      <div className="w-full md:w-[320px]">
+                        <CourseSearch />
+                      </div>
+                      {/* filter */}
+                      <div className="w-full md: w-fit flex flex-cols items-center">
+                        <span className="mr-4 text-tertiary-black text-nowrap">
+                          排序
+                        </span>
+                        <CourseDropdown
+                          label="預設排序"
+                          options={sortOptions}
+                          selectedOption={sortOption}
+                          onChange={handleSortChange}
+                        />
+                      </div>
                     </div>
-                    {/* filter */}
-                    <div className="w-full md: w-fit flex flex-cols items-center">
-                      <span className="mr-4 text-tertiary-black text-nowrap">
-                        排序
-                      </span>
-                      <CourseDropdown
-                        label="預設排序"
-                        options={sortOptions}
-                        selectedOption={sortOption}
-                        onChange={handleSortChange}
-                      />
+                    {/* 歷史訂單卡片 */}
+                    <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
+                      {/* 卡片包手風琴 */}
+                      {currentItems.map((item) => (
+                        <CourseCard
+                          key={item.id}
+                          course={item}
+                          removeReviewedItem={removeReviewedItem}
+                        />
+                      ))}
                     </div>
-                  </div>
-                  {/* 歷史訂單卡片 */}
-                  <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0">
-                    {/* 卡片包手風琴 */}
-                    {currentItems.map((item) => (
-                      <CourseCard key={item.id} course={item} />
-                    ))}
-                  </div>
-                </Tab>
+                  </Tab>
+                </Tabs>
+              </div>
 
-                {/* Tab4 - 待評價 */}
-                <Tab key="review" title="待評價">
-                  {/* 搜尋與排序 */}
-                  <div className="flex flex-col md:flex-row justify-between gap-4 pb-4 border-b-1 md:border-0 md:border-0 border-tertiary-gray-200">
-                    {/* searchbar */}
-                    <div className="w-full md:w-[320px]">
-                      <CourseSearch />
-                    </div>
-                    {/* filter */}
-                    <div className="w-full md: w-fit flex flex-cols items-center">
-                      <span className="mr-4 text-tertiary-black text-nowrap">
-                        排序
-                      </span>
-                      <CourseDropdown
-                        label="預設排序"
-                        options={sortOptions}
-                        selectedOption={sortOption}
-                        onChange={handleSortChange}
-                      />
-                    </div>
-                  </div>
-                  {/* 歷史訂單卡片 */}
-                  <div className="flex flex-col gap-4 mt-4 md:mt-0 md:mt-0"></div>
-                </Tab>
-              </Tabs>
-            </div>
-
-            {/* pagination */}
-            <div className="mt-4">
-              <CoursePagination
-                current={currentPage}
-                total={totalPages}
-                onPageChange={handlePageChange}
-              />
+              {/* pagination */}
+              <div className="mt-4">
+                <CoursePagination
+                  current={currentPage}
+                  total={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* 評價 Modal */}
-        <Review onOpen={onOpen} isOpen={isOpen} onOpenChange={onOpenChange} />
-      </CenterLayout>
-    </DefaultLayout>
+        </CenterLayout>
+      </DefaultLayout>
+    </>
   )
 
   // 使用 isLoading 狀態決定是顯示 loader 還是顯示頁面內容

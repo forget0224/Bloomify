@@ -20,6 +20,7 @@ import {
 import { CiShoppingCart } from 'react-icons/ci'
 import { CiUser } from 'react-icons/ci'
 import FlowerIcon from '../index/FlowerIcon'
+import NavLogo from '../index/NavLogo'
 const IndexNav = forwardRef(
   ({ activePage, bgColor = 'primary-300', showNav = true }, ref, pref) => {
     const { t } = useTranslation()
@@ -75,10 +76,7 @@ const IndexNav = forwardRef(
             <NavbarMenuToggle />
           </NavbarContent>
           <NavbarContent className="sm:hidden flex" justify="start">
-            <FlowerIcon
-              ref={pref}
-              className="w-full h-24 text-tertiary-black "
-            />
+            <NavLogo />
           </NavbarContent>
 
           <NavbarContent className="hidden sm:flex gap-4" justify="center">

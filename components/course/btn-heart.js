@@ -59,24 +59,7 @@ export default function HeartButton({ opacity, courseId }) {
         await fetchFavorites()
 
         // 顯示成功提示
-        toast.success(
-          `成功${
-            method === 'POST' ? '收藏' : '取消收藏'
-          } course_id=${courseId}的課程`
-        )
-        // Swal.fire({
-        //   title: 'Success',
-        //   text: `成功${
-        //     method === 'POST' ? '新增' : '移除'
-        //   } course_id=${courseId}的課程`,
-        //   icon: 'success',
-        //   iconColor: '#68A392',
-        //   confirmButtonColor: '#68A392',
-        //   customClass: {
-        //     popup: 'rounded-xl',
-        //     confirmButton: 'w-[100px]',
-        //   },
-        // })
+        toast.success(`成功${method === 'POST' ? '收藏' : '取消收藏'} 課程`)
       } else {
         throw new Error('Response not OK')
       }
@@ -88,13 +71,6 @@ export default function HeartButton({ opacity, courseId }) {
 
       // 顯示錯誤提示
       toast.error(error.message || `無法更新課程收藏狀態。`)
-      // Swal.fire({
-      //   title: 'Error',
-      //   text: error.message || '無法更新課程收藏狀態。',
-      //   icon: 'error',
-      //   iconColor: '#FFC1B4',
-      //   confirmButtonColor: '#FFC1B4',
-      // })
     }
   }
 

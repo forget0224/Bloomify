@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link.js'
 import DefaultLayout from '@/components/layout/default-layout'
 import ShareModal from '@/components/common/modal-share'
 import {
@@ -125,13 +124,6 @@ export default function Detail() {
   }
   // images end
 
-  //table樣式
-  const tableStyles = {
-    th: 'text-base', // 表頭
-    td: 'text-base', // 表格
-    wrapper: 'text-base', // 整個表格
-  }
-
   const notify = () => toast.success('已成功加入購物車')
   const handleCartClick = (product) => {
     if (!isAuth) {
@@ -197,18 +189,8 @@ export default function Detail() {
       router.push('/cart?tab=shop')
     }
   }
-  // const addToCart = () => {
-  //   // 透過展開運算符，創建新的購物車物件
-  //   // 由於狀態不可改變，要增加物件需創建新的購物車物件
-  //   const updatedCartItems = {
-  //     ...cartItems,
-  //     [product.id]: { ...product, quantity: quantity },
-  //   }
-  //   setCartItems(updatedCartItems)
-  // }
 
   const filterReviewsByStar = (reviews, starId) => {
-    // console.log(reviews)
     return reviews.filter((review) =>
       starId === 1 ? true : review.share_star_id === starId
     )
@@ -416,7 +398,7 @@ export default function Detail() {
                               type="text"
                               value={quantity}
                               onChange={handleQuantityChange}
-                              min="1"
+                              // min="1"
                               className="w-full rounded-md p-1 text-center"
                               style={{ textAlign: 'center' }}
                             />
@@ -596,5 +578,12 @@ export default function Detail() {
       </DefaultLayout>
     </>
   )
-  return <>{isLoading ? <Loader /> : display}</>
+  return (
+    <>
+      <Head>
+        <title>線上商城</title>
+      </Head>
+      {isLoading ? <Loader /> : display}
+    </>
+  )
 }

@@ -72,7 +72,7 @@ const DraggableProductList = ({ productList }) => {
   }
 
   return (
-    <div className="   max-w-[1200px] pl-[10px] sm:py-3  py-2 ">
+    <div className="   max-w-[1200px] sm:px-[10px] sm:py-3  py-2 ">
       <motion.div
         transition={{ type: 'spring', mass: 9, stiffness: 400, damping: 50 }}
         drag="x"
@@ -81,7 +81,7 @@ const DraggableProductList = ({ productList }) => {
         onDragEnd={onDragEnd}
         className="grid grid-flow-col auto-cols-max gap-3  "
         animate={{
-          translateX: `-${imgIndex * (cardMinWidth + cardMinGap) + 10}px`,
+          translateX: `-${imgIndex * (cardMinWidth + cardMinGap)}px`,
         }}
         dragConstraints={{ left: 0, right: 0 }}
       >

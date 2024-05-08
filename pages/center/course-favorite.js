@@ -12,6 +12,7 @@ import Sidebar from '@/components/layout/sidebar'
 import CardGroup from '@/components/course/card-group'
 import CourseDropdown from '@/components/course/dropdown'
 import CoursePagination from '@/components/course/pagination'
+import Head from 'next/head'
 
 export default function FavoriteCourses() {
   const [activePage, setActivePage] = useState('course')
@@ -67,8 +68,11 @@ export default function FavoriteCourses() {
   }
 
   return (
-    <DefaultLayout activePage={activePage}>
-      <>
+    <>
+      <Head>
+        <title>收藏課程</title>
+      </Head>
+      <DefaultLayout activePage={activePage}>
         <CenterLayout>
           {/* 麵包屑 */}
           <div className="w-full py-6 hidden sm:block">
@@ -123,7 +127,7 @@ export default function FavoriteCourses() {
             </div>
           </div>
         </CenterLayout>
-      </>
-    </DefaultLayout>
+      </DefaultLayout>
+    </>
   )
 }

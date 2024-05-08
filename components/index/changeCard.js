@@ -7,7 +7,7 @@ import { PiPottedPlantThin } from 'react-icons/pi'
 import { PiOrangeSliceLight } from 'react-icons/pi'
 import { FaStarOfDavid } from 'react-icons/fa'
 import { PiStarOfDavidLight } from 'react-icons/pi'
-
+import { useTranslation } from 'react-i18next'
 import apple from '@/public/custom/custom/accent/red_tropaeolum.png'
 import lemon from '@/public/custom/custom/accent/yellow_coreopsis.png'
 import strawberry from '@/public/custom/custom/accent/blue_forgetmenotsit.png'
@@ -15,49 +15,47 @@ import orange from '@/public/custom/custom/flowers/red_carnation.png'
 import Card from './Card'
 import gsap from 'gsap'
 export default function ChangeCard() {
+  const { t } = useTranslation()
   const cards = [
     {
-      title: '代客送花',
+      title: t('section3.customTitle'),
       bgCardColor: 'bg-[#E5DDC5]', // 莫蘭迪紅色
       bgColor: '#F1EEDC',
       textColor: 'text-[#c5441c]',
       icon: <LuFlower />,
       img: apple,
       bgImg: apple,
-      content:
-        '提供專業的代客送花服務，無論是節日還是日常，我們都能幫您傳遞愛與關懷。',
+      content: t('section3.customDescription'),
     },
     {
-      title: '線上商城',
+      title: t('section3.onlineStoreTitle'),
       bgCardColor: 'bg-[#B4B4B3]', // 莫蘭迪粉紅
       bgColor: '#EBE4D1',
       textColor: 'text-[#2263a6]',
       icon: <CiShop />,
       img: strawberry,
       bgImg: strawberry,
-      content: '探索我們豐富的線上商品，從鮮花到園藝用品，一應俱全。',
+      content: t('section3.onlineStoreDescription'),
     },
     {
-      title: '課程預約',
+      title: t('section3.courseBookingTitle'),
       bgCardColor: 'bg-[#e5d5b8]', // 莫蘭迪黃色
       bgColor: '#ded1ba',
       textColor: 'text-[#332d29]',
       icon: <PiPottedPlantThin />,
       img: lemon,
       bgImg: lemon,
-      content:
-        '預約專業花藝課程，學習花卉設計的技巧，提升個人審美和手工製作能力。',
+      content: t('section3.courseBookingDescription'),
     },
     {
-      title: '花朵圖鑑',
+      title: t('section3.flowerEncyclopediaTitle'),
       bgCardColor: 'bg-[#cba476]', // 莫蘭迪橙色
       bgColor: '#c7a876',
       textColor: 'text-[#f4ede8]',
       icon: <PiStarOfDavidLight />,
       img: orange,
       bgImg: orange,
-      content:
-        '探索我們的植物世界！在我們的網站中，您將發現一個專為您打造的植物介紹區域。',
+      content: t('section3.flowerEncyclopediaDescription'),
     },
   ]
 

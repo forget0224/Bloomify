@@ -10,6 +10,7 @@ import CardGroup from '@/components/course/card-group'
 import CoursePagination from '@/components/course/pagination'
 import SearchBtn from '@/components/course/search'
 import CourseDropdown from '@/components/course/dropdown'
+import Head from 'next/head'
 
 export default function CourseSearch() {
   const router = useRouter()
@@ -112,7 +113,7 @@ export default function CourseSearch() {
   }))
 
   // 價格 range slider -------------------------------------------------------------
-  const [priceRange, setPriceRange] = useState([100, 500]) // 預設值
+  const [priceRange, setPriceRange] = useState([0, 5000]) // 預設值
 
   // 處理slider值變化的函數
   const handlePriceChange = (value) => {
@@ -149,24 +150,6 @@ export default function CourseSearch() {
       query: { ...router.query, sort: value },
     })
   }
-
-  // 螢光筆
-  // function highlightKeyword(text, keyword) {
-  //   if (!keyword.trim()) return text
-
-  //   const regex = new RegExp(`(${keyword})`, 'gi')
-  //   const parts = text.split(regex)
-
-  //   return parts.map((part, index) =>
-  //     regex.test(part) ? (
-  //       <span key={index} className="highlight">
-  //         {part}
-  //       </span>
-  //     ) : (
-  //       part
-  //     )
-  //   )
-  // }
 
   // fetch 資料
   useEffect(() => {
@@ -246,101 +229,106 @@ export default function CourseSearch() {
   const [activePage, setActivePage] = useState('course')
 
   return (
-    <DefaultLayout
-      activePage={activePage}
-      className="justify-center flex-col items-center"
-    >
-      <main className="flex justify-center items-center px-5 bg-white">
-        <div className="container justify-center flex flex-col mb-20 mt-6">
-          <div className="flex flex-col items-center gap-6">
-            {/* 頁面標題 */}
-            <Title text="課程搜尋" />
-            {/* 搜尋框 */}
-            <div>
-              <SearchBtn baseSearchPath="/course/search" />
-            </div>
-            {/* 篩選與排序 */}
-            <div className="flex flex-wrap gap-2 items-center justify-center relative z-20">
-              {/* TODO: */}
-              {/* 即將額滿 */}
-              {/* <Button color="primary" variant="solid">
+    <>
+      <Head>
+        <title>課程搜尋</title>
+      </Head>
+      <DefaultLayout
+        activePage={activePage}
+        className="justify-center flex-col items-center"
+      >
+        <main className="flex justify-center items-center px-5 bg-white">
+          <div className="container justify-center flex flex-col mb-20 mt-6">
+            <div className="flex flex-col items-center gap-6">
+              {/* 頁面標題 */}
+              <Title text="課程搜尋" />
+              {/* 搜尋框 */}
+              <div>
+                <SearchBtn baseSearchPath="/course/search" />
+              </div>
+              {/* 篩選與排序 */}
+              <div className="flex flex-wrap gap-2 items-center justify-center relative z-20">
+                {/* TODO: */}
+                {/* 即將額滿 */}
+                {/* <Button color="primary" variant="solid">
                 即將額滿
               </Button> */}
 
-              {/* 課程分類 */}
-              <CourseDropdown
-                label="選擇分類"
-                options={categoryOptions}
-                selectedOption={categoryMap[selectedCategoryId] || '選擇分類'}
-                onChange={handleCategoryChange}
-              />
+                {/* 課程分類 */}
+                <CourseDropdown
+                  label="選擇分類"
+                  options={categoryOptions}
+                  selectedOption={categoryMap[selectedCategoryId] || '選擇分類'}
+                  onChange={handleCategoryChange}
+                />
 
-              {/* 開課商家 */}
-              <CourseDropdown
-                label="選擇商家"
-                options={storeOptions}
-                selectedOption={storeMap[selectedStoreId] || '選擇商家'}
-                onChange={handleStoreChange}
-              />
+                {/* 開課商家 */}
+                <CourseDropdown
+                  label="選擇商家"
+                  options={storeOptions}
+                  selectedOption={storeMap[selectedStoreId] || '選擇商家'}
+                  onChange={handleStoreChange}
+                />
 
-              {/* 價格範圍 */}
-              <Slider
-                label="Price Range"
-                size="md"
-                step={500}
-                minValue={0}
-                maxValue={5000}
-                value={priceRange} // 綁定狀態
-                onChange={handlePriceChange} // 綁定處理函數
-                formatOptions={{ style: 'currency', currency: 'NTD' }}
-                classNames={{
-                  base: 'max-w-xs',
-                  filler: '',
-                  labelWrapper: '',
-                  label: '',
-                  value: '',
-                }}
-              />
+                {/* 價格範圍 */}
+                <Slider
+                  label="價格範圍"
+                  size="md"
+                  step={200}
+                  minValue={0}
+                  maxValue={5000}
+                  value={priceRange} // 綁定狀態
+                  onChange={handlePriceChange} // 綁定處理函數
+                  formatOptions={{ style: 'currency', currency: 'NTD' }}
+                  classNames={{
+                    base: 'max-w-xs',
+                    filler: '',
+                    labelWrapper: '',
+                    label: '',
+                    value: '',
+                  }}
+                />
 
-              {/* 排序 */}
-              <span className="ml-4">排序</span>
-              <CourseDropdown
-                label="預設排序"
-                options={sortOptions}
-                selectedOption={sortOption}
-                onChange={handleSortChange}
-              />
+                {/* 排序 */}
+                <span className="ml-4">排序</span>
+                <CourseDropdown
+                  label="預設排序"
+                  options={sortOptions}
+                  selectedOption={sortOption}
+                  onChange={handleSortChange}
+                />
 
-              {/* 日期範圍 */}
+                {/* 日期範圍 */}
 
-              <div className="flex flex-row gap-4 mt-2">
-                <span className="text-tertiary-gray-100">
-                  {courseCount}筆資料
-                </span>
-                <Link href={'/course/search'}>
-                  <span className="text-primary-100 hover:text-primary-200">
-                    條件清空
+                <div className="flex flex-row gap-4 mt-2">
+                  <span className="text-tertiary-gray-100">
+                    {courseCount}筆資料
                   </span>
-                </Link>
+                  <Link href={'/course/search'}>
+                    <span className="text-primary-100 hover:text-primary-200">
+                      條件清空
+                    </span>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* 搜尋結果卡片 */}
-          <div className="grid gap-y-16 my-14 w-full">
-            <CardGroup courses={currentCourses} />
-          </div>
+            {/* 搜尋結果卡片 */}
+            <div className="grid gap-y-16 my-14 w-full">
+              <CardGroup courses={currentCourses} />
+            </div>
 
-          {/* 頁碼 */}
-          <div className="mt-4">
-            <CoursePagination
-              current={currentPage}
-              total={totalPages}
-              onPageChange={handlePageChange}
-            />
+            {/* 頁碼 */}
+            <div className="mt-4">
+              <CoursePagination
+                current={currentPage}
+                total={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
           </div>
-        </div>
-      </main>
-    </DefaultLayout>
+        </main>
+      </DefaultLayout>
+    </>
   )
 }

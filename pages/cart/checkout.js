@@ -6,6 +6,7 @@ import CustomCheckOut from '@/components/custom/cart/CustomCheckOut'
 import CourseCheckOut from '@/components/course/page-checkout'
 import ShopCheckOut from '@/pages/shop/line-pay/order-confirm'
 import DefaultLayout from '@/components/layout/default-layout'
+import Head from 'next/head'
 
 export default function Confirm() {
   const { auth } = useAuth()
@@ -46,30 +47,33 @@ export default function Confirm() {
   ]
 
   //商品列表 table 樣式
-  const tableStyles = {
-    base: ['text-tertiary-black'],
-    th: ['text-base', 'text-tertiary-gray-100'], // 表頭
-    td: ['text-base', 'px-3', 'py-3'], // 表格
-    wrapper: [
-      'text-base',
-      'shadow-none',
-      'border-1',
-      'border-tertiary-100',
-      'rounded-xl',
-    ], // 整個表格
-  }
+  // const tableStyles = {
+  //   base: ['text-tertiary-black'],
+  //   th: ['text-base', 'text-tertiary-gray-100'], // 表頭
+  //   td: ['text-base', 'px-3', 'py-3'], // 表格
+  //   wrapper: [
+  //     'text-base',
+  //     'shadow-none',
+  //     'border-1',
+  //     'border-tertiary-100',
+  //     'rounded-xl',
+  //   ], // 整個表格
+  // }
 
   //明細 table 樣式
-  const tableStylesContent = {
-    th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
-    td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
-    wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
-  }
+  // const tableStylesContent = {
+  //   th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
+  //   td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
+  //   wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
+  // }
 
   return (
     <DefaultLayout activePage={activePage}>
       {
         <>
+          <Head>
+            <title>訂單確認</title>
+          </Head>
           <main className="flex flex-col justify-center items-center bg-white">
             <div className="bg-white container justify-center flex flex-col items-center columns-12 px-5 md:px-0 mb-10">
               {/* steps */}
@@ -83,7 +87,6 @@ export default function Confirm() {
                     success: '#68A392',
                   }}
                   footerData={{
-                    // submitHandler: submitStepper,
                     prevBtnClassName: 'hidden',
                     nextBtnClassName: 'hidden',
                     submitBtnClassName: 'hidden',

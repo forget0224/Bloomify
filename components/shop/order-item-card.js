@@ -128,7 +128,7 @@ const OrderItemCard = ({
           </div>
           <div className="flex w-full text-nowrap justify-between">
             <div className="py-1 mr-2 text-tertiary-gray-100">折扣</div>
-            <div className="py-1">NT$ {filteredOrderDetails.discount}</div>
+            <div className="py-1">NT$ -{filteredOrderDetails.discount}</div>
           </div>
           <div className="flex w-full text-nowrap items-center justify-between">
             <div className="py-1 mr-2 text-tertiary-gray-100">總計</div>
