@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Card, CardBody, CardHeader, CardFooter } from '@nextui-org/react'
 import { motion, useMotionValue } from 'framer-motion'
-import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
-import { CiShoppingCart } from 'react-icons/ci'
 import AddFav from '@/components/custom/common/AddFav'
 const DraggableProductList = ({ productList }) => {
-  const [isHeart, setIsHeart] = useState(false)
   const [imgIndex, setImgIndex] = useState(0)
   const [cardWidth, setCardWidth] = useState(300) // Default card width
   const [slideCount, setSlideCount] = useState(1) // Default slide count
