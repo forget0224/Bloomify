@@ -6,6 +6,7 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 import { Input, Button } from '@nextui-org/react'
 import { FaMinus, FaPlus } from 'react-icons/fa6'
 import { useCart } from '@/context/shop-cart-context'
+import Swal from 'sweetalert2'
 
 export default function ShopCart() {
   const {
@@ -17,6 +18,28 @@ export default function ShopCart() {
     totalSubtotal,
     totalCartProducts,
   } = useCart()
+
+  const deleteAlert = (itemId) => {
+    Swal.fire({
+      title: '是否要刪除?',
+      text: '刪除後將無法恢復!',
+      icon: 'warning',
+      iconColor: '#FF6347', // Tomato color for warning
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '是的',
+      cancelButtonText: '取消',
+      customClass: {
+        popup: 'rounded-xl',
+        confirmButton: 'w-[100px]',
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCartItem(itemId)
+      }
+    })
+  }
 
   return (
     <div className="flex flex-col w-[350px] md:w-[600px] lg:w-[800px] h-full gap-2 mt-4">
@@ -75,10 +98,6 @@ export default function ShopCart() {
                       style={{ textAlign: 'center' }}
                       value={item.quantity}
                       onChange={(e) => {
-                        // const count = e.target.value
-                        // rexp
-                        // if (isValidCount) {
-                        // }
                         handleChange(item.id, e)
                       }}
                     />
@@ -97,7 +116,7 @@ export default function ShopCart() {
                 >
                   <span>NT${item.quantity * item.price}</span>
                 </div>
-                <button onClick={() => deleteCartItem(item.id)}>
+                <button onClick={() => deleteAlert(item.id)}>
                   <FaRegTrashAlt />
                 </button>
               </div>

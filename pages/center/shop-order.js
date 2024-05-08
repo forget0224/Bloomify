@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Breadcrumbs, BreadcrumbItem, Pagination } from '@nextui-org/react'
+import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab, Card } from '@nextui-org/react'
 
 // 小組元件

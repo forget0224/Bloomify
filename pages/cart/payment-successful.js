@@ -1,33 +1,15 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
-// import ShopPaymentSuccess from '@/components/shop/shop-payment-success'
-import ShopPaymentSuccess from '@/pages/shop/line-pay/order-success'
+// import ShopPaymentSuccess from '@/pages/shop/line-pay/order-success'
 import CoursePaymentSuccess from '@/components/course/page-payment-success'
 import CustomPaymentSuccess from '@/components/custom/cart/CustomPaymentSuccess'
 import SuccessAnimation from '@/components/common/animation_success'
-// import {
-//   Table,
-//   TableHeader,
-//   TableColumn,
-//   TableBody,
-//   TableRow,
-//   TableCell,
-// } from '@nextui-org/react'
-// import Subtitle from '@/components/common/subtitle'
-// import { MyButton } from '@/components/btn/mybutton'
-// import { Link } from '@nextui-org/react'
 
 export default function PaymentSuccessed() {
   const [activePage, setActivePage] = useState('cart')
   const route = useRouter()
   const source = route.query.source
-  //table樣式
-  // const tableStyles = {
-  //   th: 'text-base',
-  //   td: 'text-base',
-  //   wrapper: 'text-base',
-  // }
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -64,7 +46,7 @@ export default function PaymentSuccessed() {
             </div>
             {/* 訂單明細 */}
             {source === 'flower' && <CustomPaymentSuccess />}
-            {source === 'shop' && <ShopPaymentSuccess />}
+            {/* {source === 'shop' && <ShopPaymentSuccess />} */}
             {source === 'course' && <CoursePaymentSuccess />}
             {/* <div className="w-full flex flex-col md:w-6/12 lg:w-4/12 items-center justify-center gap-4">
             <Subtitle text="訂單明細" className="w-full" />

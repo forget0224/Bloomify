@@ -66,8 +66,6 @@ export default function OrderSuccess() {
   const latestDetail =
     orderDetails.length > 0 ? orderDetails[orderDetails.length - 1] : null
   console.log('latestDetail', latestDetail)
-  const latestItem =
-    orderItems.length > 0 ? orderItems[orderItems.length - 1] : null
   // 根據訂單找出相對應的結帳總商品
   const orderProducts = orderItems.filter(
     (item) => +item.product_order_detail_id === latestDetail.id
