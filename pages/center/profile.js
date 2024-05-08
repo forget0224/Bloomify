@@ -239,7 +239,7 @@ export default function Profile() {
             </Breadcrumbs>
           </div>
           {/* 主要內容 */}
-          <div className="flex flex-row w-full justify-center">
+          <div className="mt-[64px] flex flex-row w-full justify-center">
             {/* 側邊欄 */}
             <Sidebar />
             {/* 會員資料 */}

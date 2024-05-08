@@ -128,14 +128,14 @@ export default function Register() {
             <title>會員註冊</title>
           </Head>
           {/* main的東西 */}
-          <div className="py-8 flex justify-center items-center w-full h-full bg-secondary-300">
+          <div className="mt-12 py-8 flex justify-center items-center w-full h-full bg-secondary-300">
             <Card className="w-full h-full flex flex-col  mx-4 lg:flex  lg:flex-row-reverse lg:max-w-[950px] lg:max-h-[600px] shadow-lg">
               {/* <Card className="flex flex-row-reverse  max-w-[950px] w-[950px] max-h-[600px] h-[600px] shadow-lg"> */}
               {/* Form */}
               <div className="w-full lg:w-1/2 h-full flex flex-col items-center px-10 py-12">
                 <h1 className="text-3xl mb-10 mt-10">會員註冊</h1>
                 <form
-                  className="flex flex-col space-y-14 w-full mt-2"
+                  className="flex flex-col space-y-12 w-full mt-2"
                   onSubmit={handleSubmit}
                 >
                   <div>
@@ -239,7 +239,7 @@ export default function Register() {
                     <MyButton
                       color="primary"
                       size="xl"
-                      className=" bg-primary-100 text-white w-full "
+                      className=" bg-primary-100 text-white w-full mt-4"
                       type="submit"
                     >
                       會員註冊
