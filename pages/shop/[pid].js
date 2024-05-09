@@ -348,7 +348,7 @@ export default function Detail() {
                         onClick={onShareOpen}
                         className="flex flex-row items-center h-6 w-6 justify-center text-secondary-100 hover:text-[#FFAC9A]"
                       >
-                        <FaShareAlt className="w-5 h-5" />
+                        <FaShareAlt className="w-5 h-5 cursor-pointer" />
                       </div>
                     </div>
                   </div>
