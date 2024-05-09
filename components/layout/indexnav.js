@@ -131,7 +131,6 @@ const IndexNav = forwardRef(
             {auth.isAuth && (
               <NavbarItem className="sm:flex   items-end justify-end">
                 <Link href="/cart?tab=custom">
-                  {' '}
                   <CiShoppingCart className="w-8 h-10  text-tertiary-black align-bottom	" />
                 </Link>
               </NavbarItem>
