@@ -186,8 +186,8 @@ export default function MyCourseItems() {
                   selectedKey={activeTab}
                   onSelectionChange={handleTabChange}
                 >
-                  {/* Tab1 - 全部訂單 */}
-                  <Tab key="all" title="全部訂單">
+                  {/* Tab1 - 全部課程 */}
+                  <Tab key="all" title="全部課程">
                     {/* 搜尋與排序 */}
                     <div className="flex flex-col md:flex-row justify-between gap-4 pb-2">
                       {/* searchbar */}
