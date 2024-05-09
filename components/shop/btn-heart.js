@@ -37,14 +37,13 @@ export default function HeartButton({ opacity, productId, fetchFavProducts }) {
       if (response.ok) {
         setActive(!active)
         const data = await response.json()
-        console.log(data) // 後端響應
+        console.log(data) // Log backend response
 
+        // Update local favorites state based on response
         if (method === 'DELETE') {
-          // 移除收藏
           setProductFavorites((currentFavorites) =>
             currentFavorites.filter((product) => product.id !== productId)
           )
-          fetchFavProducts()
         } else {
           if (data.product) {
             setProductFavorites((currentFavorites) => [
@@ -54,7 +53,10 @@ export default function HeartButton({ opacity, productId, fetchFavProducts }) {
           }
         }
 
-        await fetchFavorites()
+        // Re-fetch favorites if the function is available
+        if (fetchFavProducts) {
+          fetchFavProducts()
+        }
 
         // 顯示成功提示
         Swal.fire({
