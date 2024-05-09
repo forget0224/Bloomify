@@ -71,7 +71,7 @@ export default function Footer() {
       <div className="flex flex-col gap-1   sm:items-center">
         <div className="sm:flex sm:flex-row sm:gap-2">
           <div>{t('footer.recaptcha_protection')}</div>
-          <div>© 2024 Bloomify Inc. </div>
+          <div>© 2024 Bloomify Inc. </div>
         </div>
         <div className="flex flex-row gap-1">
           <div>{t('footer.privacy_policy')}</div>
