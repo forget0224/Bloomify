@@ -235,7 +235,7 @@ export default function Profile() {
             <Breadcrumbs>
               <BreadcrumbItem>首頁</BreadcrumbItem>
               <BreadcrumbItem>會員中心</BreadcrumbItem>
-              <BreadcrumbItem color="primary">個人資料</BreadcrumbItem>
+              <BreadcrumbItem>個人資料</BreadcrumbItem>
             </Breadcrumbs>
           </div>
           {/* 主要內容 */}
