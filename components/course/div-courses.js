@@ -31,7 +31,7 @@ export default function CourseCard({ course, removeReviewedItem }) {
     setReviewDetails({
       name: course.course.name,
       period: course.period,
-      id: course.id,
+      id: course.course_id,
     })
     onOpen()
   }

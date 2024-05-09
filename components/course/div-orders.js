@@ -84,7 +84,7 @@ export default function CourseOrder({ order }) {
                   <div className="flex justify-between md:justify-start">
                     <span className="w-[100px]">付款方式：</span>
                     <span className="ml-1">
-                      {order.payment ? order.payment.name : ''}
+                      現金
                     </span>
                   </div>
                   <div className="flex justify-between md:justify-start">

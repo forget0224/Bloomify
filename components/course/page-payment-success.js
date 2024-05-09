@@ -121,7 +121,7 @@ export default function CoursePaymentSuccess() {
             </TableRow>
             <TableRow key="4">
               <TableCell>付款方式</TableCell>
-              <TableCell>{orderDetails?.payment?.name ?? '載入中'}</TableCell>
+              <TableCell>現金</TableCell>
             </TableRow>
             <TableRow key="5">
               <TableCell>付款狀態</TableCell>

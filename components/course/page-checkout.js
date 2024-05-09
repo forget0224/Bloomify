@@ -258,7 +258,7 @@ export default function CourseCheckOut() {
               <TableRow key="1">
                 <TableCell className="pr-8 text-nowrap">付款方式</TableCell>
                 <TableCell className="w-full text-right">
-                  {fillOutDetails.paymentMethod}
+                  現金
                 </TableCell>
               </TableRow>
               <TableRow key="2">
