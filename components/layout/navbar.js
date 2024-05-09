@@ -112,8 +112,8 @@ export default function HomeNav({ activePage }) {
       </NavbarContent>
 
       <NavbarContent justify="end">
+{auth.isAuth && (
         <NavbarItem className="relative items-end flex">
-          {auth.isAuth && (
             <div
               style={{
                 position: 'absolute',
@@ -132,11 +132,12 @@ export default function HomeNav({ activePage }) {
             >
               {itemsAmount}
             </div>
-          )}
-          <Link href={auth.isAuth ? '/cart?tab=custom' : '/member/login'}>
+          
+          <Link href='/cart?tab=custom'>
             <CiShoppingCart className="w-8 h-10 text-primary" />
           </Link>
         </NavbarItem>
+      )}
         <NavbarItem className="lg:flex">
           <Link href={auth.isAuth ? '/center' : '/member/login'}>
             <CiUser className="w-8 h-8" />
