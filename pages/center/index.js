@@ -131,7 +131,7 @@ export default function Index() {
             <div className="hidden sm:block sm:w-full sm:py-6">
               <Breadcrumbs>
                 <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem color="primary">會員中心</BreadcrumbItem>
+                <BreadcrumbItem>會員中心</BreadcrumbItem>
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
