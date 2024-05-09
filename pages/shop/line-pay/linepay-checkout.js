@@ -164,7 +164,9 @@ export default function OrderSuccess() {
                   <TableBody>
                     <TableRow key="1">
                       <TableCell>訂單編號</TableCell>
-                      <TableCell>#{latestDetail?.order_number.substring(0, 7)}</TableCell>
+                      <TableCell>
+                        #{latestDetail?.order_number.substring(0, 7)}
+                      </TableCell>
                     </TableRow>
                     <TableRow key="2">
                       <TableCell>訂單金額</TableCell>

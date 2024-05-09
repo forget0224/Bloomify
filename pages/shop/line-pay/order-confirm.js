@@ -181,7 +181,7 @@ const ShopCheckout = () => {
                         <Image
                           src={imageUrl}
                           alt=""
-                          className="hidden md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
+                          className="hidden sm:block md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
                         />
                         <div>
                           <p>{item.name.substring(0, 2)}</p>

@@ -327,7 +327,7 @@ export default function Shop() {
         }),
     [products, selectedSubcategoryIds, selectedColors, order, searchTerm]
   )
-  console.log(filterProduct)
+  // console.log(filterProduct)
 
   // 排序
   // .sort((productA, productB) =>
