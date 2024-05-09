@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
-
+import { useMediaQuery } from 'react-responsive'
 import { IoIosHeartEmpty, IoIosHeart } from 'react-icons/io'
 import { MyButton } from '@/components/btn/mybutton'
 import { useLoader } from '@/hooks/use-loader'
@@ -20,6 +20,7 @@ export default function Detail() {
   const { close, open, isLoading } = useLoader()
   const { dispatch, state } = useFlowerCart()
   const [templateId, setTemplateId] = useState('')
+  const isDesktop = useMediaQuery({ minWidth: 1024 })
   const handleHeartClick = () => {
     setIsHeart(!isHeart)
   }
@@ -140,6 +141,7 @@ export default function Detail() {
   //   router.push('/cart?source=flower')
   // }
   // 輔助函數來格式化產品數據
+
   const formatProducts = (products) => {
     return products.map((prod) => ({
       product_id: prod.product_id,
@@ -182,6 +184,7 @@ export default function Detail() {
     router.push('/cart?tab=custom')
   }
 
+  const height=isDesktop?'calc(100vh - 212px)':'calc(100vh - 64px)'
   const display = (
     <ColorProvider>
       {' '}
@@ -191,8 +194,8 @@ export default function Detail() {
         </Head>
         <div className="w-screen flex flex-col bg-white items-center justify-center text-tertiary-black gap-2 sm:flex-row sm:mt-0 mt-[64px]">
           <div
-            className="w-[300px] sm:w-[1000px]  flex flex-col sm:flex-row justify-center  items-center gap-5"
-            style={{ height: 'calc(100vh - 212px)' }}
+            className="w-[300px] sm:w-[1000px] h-screen  flex flex-col sm:flex-row justify-center  items-center gap-5"
+            style={{ height: height }}
           >
             <div
               className=" w-[300px] h-[300px] sm:w-[500px]  relative my-5 sm:h-[500px]"
@@ -299,7 +302,7 @@ export default function Detail() {
           </div>
           <hr className="w-full sm:hidden" />
           {/* 詳細資訊 */}
-          <div className="w-[300px] text-sm h-full flex flex-col gap-3 py-6 sm:hidden">
+          <div className="w-[300px] text-sm min-h-[250px] flex flex-col gap-3 py-6 sm:hidden">
             <div className="flex flex-col ">
               <p className="">詳細資訊</p>
               <p className="">如當日花材不足會以相似款替代</p>
