@@ -181,12 +181,12 @@ const ShopCheckout = () => {
                         <Image
                           src={imageUrl}
                           alt=""
-                          className="md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
+                          className="hidden md:w-24 md:h-24 mx-auto rounded-md md:rounded-xl"
                         />
                         <div>
-                          <p>{item.name}</p>
+                          <p>{item.name.substring(0, 2)}</p>
                           <p className="text-tertiary-gray-100">
-                            {item.stores.store_name}
+                            {item.stores.store_name.substring(0, 2)}
                           </p>
                         </div>
                       </div>

@@ -36,7 +36,7 @@ export default function CenterShop() {
               {/* 側邊欄 */}
               <Sidebar />
 
-              <div className="md:w-10/12 lg:w-10/12 pl-0 md:pl-10">
+              <div className="w-10/12 lg:w-10/12 pl-0 md:pl-10">
                 <Title text="商品訂單" />
                 <div className="flex w-full flex-col">
                   <Tabs

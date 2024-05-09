@@ -103,7 +103,7 @@ const OrderCard = ({ filterStatus }) => {
                         <AccordionItem
                           key={`detail-${detail.id}`}
                           aria-label={`Accordion ${index}`}
-                          title={`訂單編號#${detail.order_number}`}
+                          title={`訂單編號#${detail.order_number.substring(0, 7)}`}
                           subtitle={
                             <div className="flex flex-col gap-2 mt-2">
                               <Table
