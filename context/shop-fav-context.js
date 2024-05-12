@@ -39,7 +39,6 @@ export const ProductFavoritesProvider = ({ children }) => {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === 'success') {
-            // 重新映射數據屬性，同时保留其他屬性
             const formattedProducts = data.data.map((product) => ({
               ...product,
               mainImage: product.url,

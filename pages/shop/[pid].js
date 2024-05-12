@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import DefaultLayout from '@/components/layout/default-layout'
-import ShareModal from '@/components/common/modal-share'
+import Head from 'next/head'
 import {
   Breadcrumbs,
   BreadcrumbItem,
@@ -13,43 +12,40 @@ import {
   Input,
   useDisclosure,
 } from '@nextui-org/react'
-import Subtitle from '@/components/common/subtitle'
-import { MyButton } from '@/components/btn/mybutton'
 import { FaStar, FaShareAlt } from 'react-icons/fa'
 import toast, { Toaster } from 'react-hot-toast'
-import { useLoader } from '@/hooks/use-loader'
+import { FaMinus, FaPlus } from 'react-icons/fa6'
+import DefaultLayout from '@/components/layout/default-layout'
+import ShareModal from '@/components/common/modal-share'
+import Subtitle from '@/components/common/subtitle'
+import { MyButton } from '@/components/btn/mybutton'
+import ReviewTabPage from '@/components/shop/review-tab-page'
 import Loader from '@/components/common/loader'
+import HeartButton from '@/components/shop/btn-heart'
+import { useLoader } from '@/hooks/use-loader'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { useCart } from '@/context/shop-cart-context'
-import HeartButton from '@/components/shop/btn-heart'
-import ReviewTabPage from '@/components/shop/review-tab-page'
-import Head from 'next/head'
-import { FaMinus, FaPlus } from 'react-icons/fa6'
 
 export default function Detail() {
-  const { cartItems, setCartItems } = useCart()
-  const { auth } = useAuth() // 判斷會員用
-  const { isAuth } = auth
   const [activePage, setActivePage] = useState('shop')
+  const { cartItems, setCartItems } = useCart()
+  const { auth } = useAuth()
+  const { isAuth } = auth
   const router = useRouter()
   const { close, open, isLoading } = useLoader()
-  // 商品的所有資料
+  // 商品所有資料
   const [product, setProduct] = useState({
     images: [],
     reviews: [],
   })
-  // console.log(product)
   // 購物車商品數量用
   const [quantity, setQuantity] = useState(1)
-
   // 星星tab
   const [stars, setStars] = useState([])
-  // console.log(stars)
 
-  // 獲取商品的所有資料
+  // 獲取商品所有資料
   useEffect(() => {
-    console.log('open')
     open()
     async function fetchData() {
       if (!router.isReady) return
@@ -120,7 +116,7 @@ export default function Detail() {
   function handleThumbnailClick(imageUrl) {
     setProduct((prevState) => ({
       ...prevState,
-      mainImage: `${prevState.basePath}${imageUrl}`, // Use stored basePath
+      mainImage: `${prevState.basePath}${imageUrl}`,
     }))
   }
   // images end
@@ -128,7 +124,6 @@ export default function Detail() {
   const notify = () => toast.success('已成功加入購物車')
   const handleCartClick = (product) => {
     if (!isAuth) {
-      // 用戶未登入，顯示提示信息
       Swal.fire({
         title: '未登入',
         text: '請先登入才能添加商品到購物車。',
@@ -141,9 +136,7 @@ export default function Detail() {
         },
       })
     } else {
-      // 呼叫 toast 通知
       notify()
-      // 將產品加入到購物車
       addToCart(product)
     }
   }
@@ -168,7 +161,6 @@ export default function Detail() {
   // 加入購物車
   const addToCart = () => {
     if (!isAuth) {
-      // User is not logged in, display the prompt
       Swal.fire({
         title: '未登入',
         text: '請先登入才能添加商品到購物車。',
@@ -232,9 +224,11 @@ export default function Detail() {
             <div className="bg-white flex flex-col flex-wrap gap-4 py-6 w-full">
               <div>
                 <Breadcrumbs>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
-                  <BreadcrumbItem>線上商城</BreadcrumbItem>
-                  <BreadcrumbItem color="primary">商品細節</BreadcrumbItem>
+                  <BreadcrumbItem href="/">首頁</BreadcrumbItem>
+                  <BreadcrumbItem href="/shop">線上商城</BreadcrumbItem>
+                  <BreadcrumbItem color="primary">
+                    {product.name}
+                  </BreadcrumbItem>
                 </Breadcrumbs>
               </div>
             </div>
@@ -392,8 +386,8 @@ export default function Detail() {
                               variant="faded"
                               style={{
                                 backgroundColor:
-                                  quantity <= 1 ? '#cccccc' : '#DBEDDF', // 灰色或主要颜色
-                                color: quantity <= 1 ? '#666666' : 'black', // 文字颜色
+                                  quantity <= 1 ? '#cccccc' : '#DBEDDF',
+                                color: quantity <= 1 ? '#666666' : 'black',
                               }}
                               className="bg-primary-300 border-transparent"
                               onClick={handleDecrement}
@@ -577,7 +571,6 @@ export default function Detail() {
         {/* 分享 Modal */}
         <>
           <ShareModal
-            // onOpen={onShareOpen}
             isShareOpen={isShareOpen}
             onShareOpenChange={onShareOpenChange}
           />

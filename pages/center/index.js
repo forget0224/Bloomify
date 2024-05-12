@@ -3,13 +3,11 @@ import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
-
 import Head from 'next/head'
 
 // RWD
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useAuth } from '@/hooks/use-auth'
 import useFirebase from '@/hooks/use-firebase'

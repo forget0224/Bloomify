@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { Card, Image } from '@nextui-org/react'
+import { Card } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import Link from 'next/link.js'
 import { FaRegTrashAlt } from 'react-icons/fa'
@@ -89,8 +88,8 @@ export default function ShopCart() {
                     style={{
                       minWidth: '20px',
                       backgroundColor:
-                        item.quantity <= 1 ? '#cccccc' : '#DBEDDF', // 灰色或主要颜色
-                      color: item.quantity <= 1 ? '#666666' : 'black', // 文字颜色
+                        item.quantity <= 1 ? '#cccccc' : '#DBEDDF',
+                      color: item.quantity <= 1 ? '#666666' : 'black',
                     }}
                     onClick={() => handleDecrement(item.id)}
                     disabled={item.quantity <= 1}
@@ -133,7 +132,6 @@ export default function ShopCart() {
         {/* 小計 */}
         <div className="text-right">
           <div>共 {totalCartProducts} 項商品</div>
-          {/* 共 {shopCartItems.length} 項商品，數量 {totalQuantity} 個 */}
           <div>
             小計{' '}
             <span className="text-primary text-right">NT$ {totalSubtotal}</span>

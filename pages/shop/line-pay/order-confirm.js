@@ -6,25 +6,26 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Image,
+  Checkbox,
+  Link,
 } from '@nextui-org/react'
-import { Image } from '@nextui-org/react'
-import { Checkbox } from '@nextui-org/react'
-import { Link } from '@nextui-org/react'
-// 小組元件
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
 import { useCart } from '@/context/shop-cart-context'
 import { useRouter } from 'next/router'
-const ShopCheckout = () => {
-  const { clearCart } = useCart()
 
-  // 這是資料來源
+const ShopCheckout = () => {
+  const [isChecked, setIsChecked] = useState(false)
+  // 獲取商品資料
   const [detailData, setDetailData] = useState({
     products: [],
     detail: {},
     store711: {},
   })
   // console.log(detailData, 'detailData')
+  const router = useRouter()
+  const { clearCart } = useCart()
 
   const getParsedData = (stringifiedJson) => {
     return stringifiedJson ? JSON.parse(stringifiedJson) : ''
@@ -35,27 +36,21 @@ const ShopCheckout = () => {
     const filledOutDetail = getParsedData(
       localStorage.getItem('fillOutDetails')
     )
-    //7-11
     const store711Detail = getParsedData(localStorage.getItem('store711'))
-    // console.log(store711Detail)
-
     const normalizedProductList = Object.values(productList)
-    console.log('productList', productList)
     return {
       products: normalizedProductList,
       detail: filledOutDetail,
       store711: store711Detail,
     }
   }
-  const router = useRouter()
 
   useEffect(() => {
     const data = getDetailData() // fetch data
-    setDetailData(data) // store data in useState
-  }, []) // dependencies array 可以用來控制 要執行幾次getDetailData
+    setDetailData(data)
+  }, [])
 
-  // 計算商品總數量
-  // total是累加器，item是當前元素
+  // 計算商品總數量 // total是累加器，item是當前元素
   const totalQuantity = detailData.products.reduce((total, item) => {
     return total + item.quantity
   }, 0) // 0是reduce第2個參數，代表初始值
@@ -65,14 +60,13 @@ const ShopCheckout = () => {
     return total + item.price * item.quantity
   }, 0)
 
-  // 全部的金額
   const deliveryShipping = Number(detailData.detail.deliveryShipping) || 0
   const discount = Number(detailData.detail.discount) || 0
   const totalAmount = subtotal + deliveryShipping - discount
 
   // 將資料送到後端
   const confirmOrder = async () => {
-    console.log('Sending order details:', detailData) // 查看傳送的數據
+    // console.log('Sending order details:', detailData)
     try {
       const response = await fetch(
         'http://localhost:3005/api/products/save-order-details',
@@ -108,11 +102,14 @@ const ShopCheckout = () => {
     // 訂單成功後清空 cart
     clearCart()
   }
+  const handleCheckboxChange = (event) => {
+    setIsChecked(event.target.checked)
+  }
 
   const tableStylesContent = {
-    th: ['text-base', 'text-tertiary-gray-100', 'font-normal'], // 表頭
-    td: ['text-base', 'py-1', ''], // 表格 text-initial md:text-right
-    wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'], // 整個表格
+    th: ['text-base', 'text-tertiary-gray-100', 'font-normal'],
+    td: ['text-base', 'py-1', ''],
+    wrapper: ['text-base', 'shadow-none', 'border-1', 'rounded-xl'],
   }
   const tableStyles = {
     base: ['text-tertiary-black'],
@@ -125,13 +122,6 @@ const ShopCheckout = () => {
       'border-tertiary-100',
       'rounded-xl',
     ],
-  }
-
-  const [isChecked, setIsChecked] = useState(false) 
-  console.log(isChecked)
-
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked)
   }
 
   return (
@@ -318,7 +308,7 @@ const ShopCheckout = () => {
 
       <div className="gap-2 flex sm:justify-center sm:gap-4 ">
         <MyButton color="primary" size="xl" isOutline>
-          <Link href="/cart/fill-out?source=shop">上一步 </Link>
+          <Link href="/cart/fill-out?source=shop">上一步</Link>
         </MyButton>
 
         <MyButton

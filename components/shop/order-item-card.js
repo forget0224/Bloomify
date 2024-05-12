@@ -18,9 +18,6 @@ const OrderItemCard = ({
   const filteredItems = orderItems.filter(
     (item) => String(item.product_order_detail_id) === String(orderDetailId)
   )
-  // console.log('filteredItems', filteredItems)
-
-  // Filter order details to get additional info like payment method
   const filteredOrderDetails = orderDetails.find(
     (detail) => String(detail.id) === String(orderDetailId)
   )

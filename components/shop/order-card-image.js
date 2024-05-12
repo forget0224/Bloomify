@@ -12,13 +12,9 @@ const OrderCardImage = ({ orderDetailId, orderItems }) => {
         const imageUrl = item.thumbnail_url
           ? `/assets/shop/products/${item.directory}/${item.thumbnail_url}`
           : `/assets/shop/products/default_fallback_image.jpg`
-        {
-          /* console.log('Image URL:', imageUrl) */
-        }
-
         return (
           <Image
-            key={item.id} // Correctly placed `key` prop here
+            key={item.id}
             src={imageUrl}
             alt={item.name}
             className="w-24 h-24 rounded-md md:rounded-xl"

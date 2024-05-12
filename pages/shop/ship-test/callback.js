@@ -6,7 +6,7 @@ export default function Callback() {
 
   return (
     <>
-      {/* 以下並非必要，可寫可不寫。只是為了自動關閉功能出意外時手動使用 */}
+      {/* 為了自動關閉功能出意外時手動使用 */}
       <div className="d-flex justify-content-center">
         <div className="d-flex flex-column">
           <p className="text-center">

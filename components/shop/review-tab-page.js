@@ -6,15 +6,11 @@ const limit = 3
 
 const ReviewTabPage = ({ reviews, renderStars }) => {
   const [currentPage, setCurrentPage] = useState(1)
-  // 計算評論總頁數
   const pageCount = Math.ceil(reviews.length / limit)
-  // 計算當前頁面的評論
   const startIndex = (currentPage - 1) * limit // 是在計算評論的筆數。當currentPage是1，那麼(currentPage - 1)就會是0，筆數就會從數組的第0筆開始取
   const currentReviews = reviews.slice(startIndex, startIndex + limit) // 如果currentPage是1，且limit是3，那currentReviews會包含索引0、1、2的評論
   // 分頁變化處理的函數
   const handlePageChange = (newPage) => {
-    console.log(newPage)
-    // newPage是當前選中的頁碼
     setCurrentPage(newPage)
   }
 

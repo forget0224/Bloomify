@@ -10,7 +10,7 @@ import useInterval from '@/hooks/use-interval'
 import useLocalStorage from '@/hooks/use-localStorage'
 
 export function useShip711StoreOpener(
-  serverCallbackUrl = '', //必要。伺服器7-11運送商店用Callback路由網址
+  serverCallbackUrl = '', // 伺服器7-11運送商店用Callback路由網址
   {
     title = '7-11運送店家選擇視窗', //跳出視窗標題
     h = 680, //跳出視窗高度

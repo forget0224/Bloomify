@@ -16,8 +16,6 @@ export default function Cart() {
   const [activeTab, setActiveTab] = useState('')
 
   useEffect(() => {
-    // console.log('Router is ready:', router.isReady)
-    // console.log('Tab query:', router.query.tab)
     if (router.isReady) {
       const tabQuery = router.query.tab
       if (tabQuery) {

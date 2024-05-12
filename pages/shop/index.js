@@ -14,78 +14,104 @@ import {
   SelectItem,
 } from '@nextui-org/react'
 import Link from 'next/link.js'
+import Head from 'next/head'
 import toast, { Toaster } from 'react-hot-toast'
+import { BsFillGridFill, BsFillStarFill } from 'react-icons/bs'
+import { BiSolidLeaf } from 'react-icons/bi'
+import { PiShoppingCartSimpleFill } from 'react-icons/pi'
+import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
+import { FaToolbox } from 'react-icons/fa'
 import DefaultLayout from '@/components/layout/default-layout'
 import Subtitle from '@/components/common/subtitle.js'
 import { MyButton } from '@/components/btn/mybutton'
 import SearchBtn from '@/components/shop/search'
-import { BsFillGridFill, BsFillStarFill } from 'react-icons/bs'
-import { PiShoppingCartSimpleFill } from 'react-icons/pi'
-import { BiSolidLeaf } from 'react-icons/bi'
-import { IoMdFlower, IoIosArrowForward, IoIosArrowBack } from 'react-icons/io'
-import { FaToolbox } from 'react-icons/fa'
 import ShopRearchRwd from '@/components/shop/shop-research-rwd'
+import HeartButton from '@/components/shop/btn-heart'
 import { useAuth } from '@/hooks/use-auth'
 import Swal from 'sweetalert2'
 import { useCart } from '@/context/shop-cart-context'
 import { useProductFavorites } from '@/context/shop-fav-context'
-import HeartButton from '@/components/shop/btn-heart'
-import Head from 'next/head'
 
 export default function Shop() {
-  function highlightKeyword(text, keyword) {
-    if (!keyword) return text // 如果沒有關鍵字，直接返回原文本
-    const parts = text.split(new RegExp(`(${keyword})`, 'gi'))
-    return (
-      <>
-        {parts.map((part, index) =>
-          part.toLowerCase() === keyword.toLowerCase() ? (
-            <span key={index} className="highlight">
-              {part}
-            </span>
-          ) : (
-            part
-          )
-        )}
-      </>
-    )
-  }
-
+  const [activePage, setActivePage] = useState('shop')
   const { cartItems, setCartItems } = useCart()
-  const { auth } = useAuth() // 判斷會員用
+  const { auth } = useAuth()
   const { isAuth } = auth
   const searchParams = useSearchParams()
   const queryParentId = searchParams.get('parent_id')
   const router = useRouter()
-  const [activePage, setActivePage] = useState('shop')
+  const { addFavoritesStatusToProducts } = useProductFavorites() // 收藏
+  const iconLookup = {
+    1: <BsFillGridFill />,
+    2: <IoMdFlower />,
+    3: <BiSolidLeaf />,
+    4: <FaToolbox />,
+  }
+
   // 列表用(原始資料)
   const [products, setProducts] = useState([])
-  // console.log(products)
-  // 第一層選項 產生資料用
+  // 第一層選項
   const [categories, setCategories] = useState([])
-  // console.log(categories)
-  // 顏色資料
-  const [colors, setColors] = useState([])
-  // console.log(colors)
-  // 紀錄被選擇的顏色
-  const [selectedColors, setSelectedColors] = useState([])
-  // console.log(selectedColors)
   // 第一層選項用
   const [activeCategory, setActiveCategory] = useState(1)
-  // console.log(activeCategory)
   // 用來控制第一層的選擇出現在url
   const [selectedCategoryId, setSelectedCategoryId] = useState([])
   // 切換第二層篩選
   const [selectedSubcategoryIds, setSelectedSubcategoryIds] = useState([])
+  // 顏色資料
+  const [colors, setColors] = useState([])
+  // 紀錄被選擇的顏色
+  const [selectedColors, setSelectedColors] = useState([])
+  // 排序
+  const [order, setOrder] = useState('idAsc')
   // 關鍵字
   const [searchTerm, setSearchTerm] = useState('')
-  // console.log(searchTerm)
   // 分頁用
-  const [loadPage, setLoadPage] = useState(1) // Track the current page
-  // 收藏
-  const { addFavoritesStatusToProducts } = useProductFavorites()
+  const [loadPage, setLoadPage] = useState(1)
+  // carousel
+  const [page, setPage] = useState(0)
 
-  // didMount 後端資料從這裏來的
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3005/api/product-categories'
+      )
+      const data = await response.json()
+      if (data.status === 'success') {
+        setCategories(data.data.categories)
+      } else {
+        console.error('Failed to fetch colors:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching category data:', error)
+    }
+  }
+
+  // 獲得顏色資料
+  const fetchColors = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/share-colors')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setColors(data.data.colors)
+      } else {
+        console.error('Failed to fetch colors:', data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching color data:', error)
+    }
+  }
+
+  const handleColorClick = (colorId, isChecked) => {
+    setSelectedColors((currentSelectedColors) => {
+      if (isChecked) {
+        return [...currentSelectedColors, colorId]
+      } else {
+        return currentSelectedColors.filter((id) => id !== colorId)
+      }
+    })
+  }
+
   useEffect(() => {
     async function fetchProducts() {
       try {
@@ -111,35 +137,11 @@ export default function Shop() {
       fetchProducts()
     }
   }, [activeCategory, loadPage, addFavoritesStatusToProducts])
-  // Product categories and icon setup
-  const iconLookup = {
-    1: <BsFillGridFill />,
-    2: <IoMdFlower />,
-    3: <BiSolidLeaf />,
-    4: <FaToolbox />,
-  }
 
-  // 獲取種類、顏色資料
   useEffect(() => {
     fetchCategories()
     fetchColors()
   }, [])
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:3005/api/product-categories'
-      )
-      const data = await response.json()
-      if (data.status === 'success') {
-        setCategories(data.data.categories)
-      } else {
-        console.error('Failed to fetch colors:', data.message)
-      }
-    } catch (error) {
-      console.error('Error fetching category data:', error)
-    }
-  }
 
   // 篩選:第一層分類
   const handleCategoryClick = (id) => {
@@ -150,9 +152,9 @@ export default function Shop() {
     setActiveCategory(id)
     handleCategoryChange(id)
   }
+
   const handleCategoryChange = (categoryId) => {
     setSelectedCategoryId(categoryId)
-    // Use the Next.js router to update the URL without triggering a navigation
     router.replace(
       {
         pathname: router.pathname,
@@ -166,15 +168,10 @@ export default function Shop() {
   // 篩選:第二層分類
   const handleCheckboxChange = (subcategoryId, isChecked) => {
     // console.log(`Subcategory ID: ${subcategoryId}, Checked: ${isChecked}`)
-
     setSelectedSubcategoryIds((currentIds) => {
-      // If the checkbox is checked, add the ID to the array
       if (isChecked) {
-        // console.log('Adding subcategory ID:', subcategoryId)
         return [...currentIds, subcategoryId]
       } else {
-        // If the checkbox is unchecked, remove the ID from the array
-        // console.log('Removing subcategory ID:', subcategoryId)
         return currentIds.filter((id) => id !== subcategoryId)
       }
     })
@@ -182,7 +179,6 @@ export default function Shop() {
 
   // 關鍵字篩選
   const handleSearch = (term) => {
-    console.log('Received search term:', term) // 確認收到的關鍵字
     setSearchTerm(term.toLowerCase())
   }
 
@@ -190,40 +186,10 @@ export default function Shop() {
     if (!!queryParentId && queryParentId !== activeCategory)
       setActiveCategory(+queryParentId)
   }, [queryParentId])
-  // console.log('check', categories, activeCategory, selectedSubcategoryIds)
-
-  // 獲得顏色資料
-  const fetchColors = async () => {
-    try {
-      const response = await fetch('http://localhost:3005/api/share-colors')
-      const data = await response.json()
-      if (data.status === 'success') {
-        setColors(data.data.colors)
-      } else {
-        console.error('Failed to fetch colors:', data.message)
-      }
-    } catch (error) {
-      console.error('Error fetching color data:', error)
-    }
-  }
-
-  const handleColorClick = (colorId, isChecked) => {
-    console.log(`color ID: ${colorId}, Checked: ${isChecked}`)
-
-    setSelectedColors((currentSelectedColors) => {
-      if (isChecked) {
-        // Add color_id to the selectedColors state if checked
-        return [...currentSelectedColors, colorId]
-      } else {
-        // Remove color_id from the selectedColors state if not checked
-        return currentSelectedColors.filter((id) => id !== colorId)
-      }
-    })
-  }
 
   // 清除條件
   const resetSelection = () => {
-    setActiveCategory(1) // If it's a single value, it should not be an array
+    setActiveCategory(1)
     setSelectedSubcategoryIds([])
     setSelectedColors([])
     setOrder('')
@@ -235,8 +201,7 @@ export default function Shop() {
     setLoadPage((prevLoadPage) => prevLoadPage + 1)
   }
 
-  // Carousel State
-  const [page, setPage] = useState(0)
+  // Carousel
   const banners = [
     {
       banner: '/assets/shop/banner/banner1.jpg',
@@ -289,8 +254,6 @@ export default function Shop() {
     }
   }
 
-  const [order, setOrder] = useState('idAsc')
-
   // 排序、篩選、關鍵字
   const filterProduct = useMemo(
     () =>
@@ -327,14 +290,6 @@ export default function Shop() {
         }),
     [products, selectedSubcategoryIds, selectedColors, order, searchTerm]
   )
-  // console.log(filterProduct)
-
-  // 排序
-  // .sort((productA, productB) =>
-  //   order === 'priceAsc'
-  //     ? productA.price - productB.price
-  //     : productB.price - productA.price
-  // ),
 
   // 加入購物車
   const addToCart = (product) => {
@@ -344,7 +299,26 @@ export default function Shop() {
       ...cartItems,
       [product.id]: { ...product, quantity: 1 },
     }
-    setCartItems(updatedCartItems) // Update state
+    setCartItems(updatedCartItems)
+  }
+
+  // 關鍵字 highlight
+  function highlightKeyword(text, keyword) {
+    if (!keyword) return text
+    const parts = text.split(new RegExp(`(${keyword})`, 'gi'))
+    return (
+      <>
+        {parts.map((part, index) =>
+          part.toLowerCase() === keyword.toLowerCase() ? (
+            <span key={index} className="highlight">
+              {part}
+            </span>
+          ) : (
+            part
+          )
+        )}
+      </>
+    )
   }
 
   return (
@@ -361,7 +335,7 @@ export default function Shop() {
               {/* breadcrumb start */}
               <div className="py-6 w-full hidden sm:block">
                 <Breadcrumbs>
-                  <BreadcrumbItem>首頁</BreadcrumbItem>
+                  <BreadcrumbItem href="/">首頁</BreadcrumbItem>
                   <BreadcrumbItem color="primary">線上商城</BreadcrumbItem>
                 </Breadcrumbs>
               </div>
@@ -434,7 +408,6 @@ export default function Shop() {
                     if (activeCategory === 1) {
                       return category.parent_id !== 0
                     }
-                    // Otherwise, filter sub-categories based on the active top-level category
                     return category.parent_id === activeCategory
                   })
                   .map((category) => (
@@ -468,7 +441,6 @@ export default function Shop() {
                     value={order}
                     onChange={(e) => {
                       setOrder(e.target.value)
-                      // console.log('Selected value: ', e.target.value)
                     }}
                   >
                     <SelectItem key="idAsc" value="idAsc">
@@ -636,8 +608,8 @@ export default function Shop() {
                                   <CardBody className="overflow-visible p-0">
                                     <Link
                                       href={{
-                                        pathname: '/shop/[pid]', // dynamic route
-                                        query: { pid: product.id }, // setting pid to product ID
+                                        pathname: '/shop/[pid]',
+                                        query: { pid: product.id },
                                       }}
                                       className="block relative"
                                     >

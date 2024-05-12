@@ -1,28 +1,30 @@
 import { useState, useEffect, useMemo } from 'react'
-import DefaultLayout from '@/components/layout/default-layout'
-import CenterLayout from '@/components/layout/center-layout'
-import Sidebar from '@/components/layout/sidebar'
-import Title from '@/components/common/title'
-import { Breadcrumbs, BreadcrumbItem, table } from '@nextui-org/react'
 import {
   Card,
   CardHeader,
   CardBody,
   CardFooter,
   Image,
+  Breadcrumbs,
+  BreadcrumbItem,
+  Select,
+  SelectItem,
 } from '@nextui-org/react'
-import { Select, SelectItem } from '@nextui-org/react'
-import { BsFillStarFill, BsHeartFill, BsHeart } from 'react-icons/bs'
-import Link from 'next/link'
-// 小組元件
-import Head from 'next/head'
+import DefaultLayout from '@/components/layout/default-layout'
+import CenterLayout from '@/components/layout/center-layout'
+import Sidebar from '@/components/layout/sidebar'
+import Title from '@/components/common/title'
 import SearchBtn from '@/components/shop/search'
 import HeartButton from '@/components/shop/btn-heart'
+import { BsFillStarFill } from 'react-icons/bs'
+import Link from 'next/link'
+import Head from 'next/head'
 
 export default function Favorite() {
   const [activePage, setActivePage] = useState('shop')
   const [favProducts, setFavProducts] = useState([])
-  console.log(favProducts)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [order, setOrder] = useState('priceAsc')
 
   async function fetchFavProducts() {
     try {
@@ -42,13 +44,11 @@ export default function Favorite() {
     fetchFavProducts()
   }, [])
 
-  const [searchTerm, setSearchTerm] = useState('')
-  console.log(searchTerm)
   const handleSearch = (term) => {
-    console.log('Received search term:', term) // 確認收到的關鍵字
+    // console.log('Received search term:', term)
     setSearchTerm(term.toLowerCase())
   }
-  const [order, setOrder] = useState('priceAsc')
+
   // 當 searchTerm 更新時，會重新計算過濾後的商品
   const filteredFavProducts = useMemo(
     () =>
@@ -75,10 +75,9 @@ export default function Favorite() {
             {/* 麵包屑 */}
             <div className="hidden sm:block sm:w-full sm:py-6">
               <Breadcrumbs>
-                <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem>會員中心</BreadcrumbItem>
-                <BreadcrumbItem>線上商城</BreadcrumbItem>
-                <BreadcrumbItem>收藏商品</BreadcrumbItem>
+                <BreadcrumbItem href="/">首頁</BreadcrumbItem>
+                <BreadcrumbItem href="/center">會員中心</BreadcrumbItem>
+                <BreadcrumbItem color="primary">收藏商品</BreadcrumbItem>
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}
@@ -159,8 +158,8 @@ export default function Favorite() {
                             <CardBody className="overflow-visible p-0">
                               <Link
                                 href={{
-                                  pathname: '/shop/[pid]', // dynamic route
-                                  query: { pid: product.id }, // setting pid to product ID
+                                  pathname: '/shop/[pid]',
+                                  query: { pid: product.id },
                                 }}
                                 className="block relative"
                               >

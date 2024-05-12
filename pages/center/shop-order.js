@@ -1,15 +1,11 @@
 import { useState } from 'react'
-import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
-import { Tabs, Tab, Card } from '@nextui-org/react'
-
-// 小組元件
+import { Breadcrumbs, BreadcrumbItem, Tabs, Tab } from '@nextui-org/react'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
 import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
-import Head from 'next/head'
-
 import OrderCard from '@/components/shop/order-card'
+import Head from 'next/head'
 
 export default function CenterShop() {
   const [activePage, setActivePage] = useState('shop')
@@ -25,10 +21,9 @@ export default function CenterShop() {
             {/* 麵包屑 */}
             <div className="hidden sm:block w-full py-6">
               <Breadcrumbs>
-                <BreadcrumbItem>首頁</BreadcrumbItem>
-                <BreadcrumbItem>會員中心</BreadcrumbItem>
-                <BreadcrumbItem>線上商城</BreadcrumbItem>
-                <BreadcrumbItem>商品訂單</BreadcrumbItem>
+                <BreadcrumbItem href="/">首頁</BreadcrumbItem>
+                <BreadcrumbItem href="/center">會員中心</BreadcrumbItem>
+                <BreadcrumbItem color="primary">商品訂單</BreadcrumbItem>
               </Breadcrumbs>
             </div>
             {/* 主要內容 */}

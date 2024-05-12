@@ -6,25 +6,20 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Link,
 } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
-import { Link } from '@nextui-org/react'
 import Subtitle from '@/components/common/subtitle'
-import moment from 'moment'
-import { useRouter } from 'next/router'
 import DefaultLayout from '@/components/layout/default-layout'
 import SuccessAnimation from '@/components/common/animation_success'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import moment from 'moment'
 
 export default function OrderSuccess() {
   const [activePage, setActivePage] = useState('shop')
-  const tableStyles = {
-    th: 'text-base', // 表頭
-    td: 'text-base', // 表格
-    wrapper: 'text-base', // 整個表格
-  }
   const [orderDetails, setOrderDetails] = useState([])
-  // console.log(orderDetails)
+  const [paidSuccess, setPaidSuccess] = useState([])
 
   // 獲得訂單明細
   const getOrderDetails = async () => {
@@ -45,7 +40,6 @@ export default function OrderSuccess() {
         if (data && data.orderDetails) {
           setOrderDetails(data.orderDetails)
         } else {
-          console.log('No order details available or data is malformed:', data)
           setOrderDetails([]) // 若無數據，設置為空陣列
         }
       }
@@ -61,11 +55,9 @@ export default function OrderSuccess() {
   // 取數據陣列的最後一項，確保數據已加載
   const latestDetail =
     orderDetails.length > 0 ? orderDetails[orderDetails.length - 1] : null
-  // console.log(latestDetail)
 
   // Line Pay: 確認交易，處理伺服器通知 line pay 已確認付款
   const router = useRouter()
-  const [paidSuccess, setPaidSuccess] = useState([])
   const handleConfirm = async (transactionId, orderId) => {
     try {
       const r = await fetch(
@@ -88,23 +80,23 @@ export default function OrderSuccess() {
   // Line Pay: confirm 回來使用
   useEffect(() => {
     if (router.isReady) {
-      // console.log(router.query)
       const { transactionId, orderId } = router.query
 
       // 如果沒有帶transactionId或orderId時，導向至首頁(或其它頁)或跳出錯誤訊息
       if (!transactionId || !orderId) {
-        console.log('qs 參數錯誤')
+        // console.log('qs 參數錯誤')
         router.push('/shop/line-pay/order-confirm')
-        // 關閉載入狀態
-        return
+        return // 關閉載入狀態
       }
-
-      // 向server發送確認交易api
-      handleConfirm(transactionId, orderId)
+      handleConfirm(transactionId, orderId) // 向server發送確認交易api
     }
-
-    // eslint-disable-next-line
   }, [router.isReady])
+
+  const tableStyles = {
+    th: 'text-base', // 表頭
+    td: 'text-base', // 表格
+    wrapper: 'text-base', // 整個表格
+  }
 
   return (
     <DefaultLayout activePage={activePage}>
@@ -139,7 +131,9 @@ export default function OrderSuccess() {
                 <TableBody>
                   <TableRow key="1">
                     <TableCell>訂單編號</TableCell>
-                    <TableCell>#{latestDetail?.order_number.substring(0, 7)}</TableCell>
+                    <TableCell>
+                      #{latestDetail?.order_number.substring(0, 7)}
+                    </TableCell>
                   </TableRow>
                   <TableRow key="2">
                     <TableCell>訂單金額</TableCell>

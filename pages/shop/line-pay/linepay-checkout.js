@@ -11,21 +11,19 @@ import {
 } from '@nextui-org/react'
 import { MyButton } from '@/components/btn/mybutton'
 import Subtitle from '@/components/common/subtitle'
-import moment from 'moment'
 import DefaultLayout from '@/components/layout/default-layout'
+import moment from 'moment'
 import Head from 'next/head'
 
 export default function OrderSuccess() {
   const [activePage, setActivePage] = useState('shop')
+  const [orderDetails, setOrderDetails] = useState([])
+  const [orderItems, setOrderItems] = useState([])
   const tableStyles = {
     th: 'text-base', // 表頭
     td: 'text-base', // 表格
     wrapper: 'text-base', // 整個表格
   }
-  const [orderDetails, setOrderDetails] = useState([])
-  console.log(orderDetails)
-  const [orderItems, setOrderItems] = useState([])
-  // console.log(orderItems)
 
   // 獲得訂單明細
   const getOrderDetails = async () => {
@@ -72,8 +70,6 @@ export default function OrderSuccess() {
     (item) => +item.product_order_detail_id === latestDetail.id
   )
 
-  console.log('orderProducts', orderProducts)
-
   // 按下付費按鈕
   const sendPoToLine = async () => {
     try {
@@ -95,14 +91,14 @@ export default function OrderSuccess() {
         }
       )
       const d = await r.json() //將 fetch 請求的回應轉換成一個 JSON 物件
-      console.log('linpayresWeb:', d) //??
+      // console.log('linpayresWeb:', d)
       window.location.replace(`${d}`)
     } catch (ex) {
       console.log(ex)
     }
   }
 
-  // // 將訂單資訊轉換成line要求的格式
+  // 將訂單資訊轉換成line要求的格式
   const convertOrderForLinePay = async () => {
     try {
       const linePayOrder = {
