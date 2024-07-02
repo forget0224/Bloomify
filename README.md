@@ -23,7 +23,7 @@
 - **前端**：React, Next.js, TailwindCSS, NextUI, GSAP
 - **後端**：Node.js, Express
 - **資料庫**：MySQL
-- **其他**：Sequelize ORM, JWT 認證, Google Map API
+- **其他**：Sequelize ORM, JWT 認證, Google Map API,綠界金流
 
 ## 專案後端連結
 [客製花束平台後端](https://github.com/Miminywang/Bloomify-node)
