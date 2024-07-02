@@ -5,6 +5,7 @@
 ## 專案簡介
 
 此專案是使用 React、Next.js 和 MySQL 開發的一個全端應用程式。使用者可以輕鬆地選擇花材、查看即時的花束效果，並進行訂單下單。我們的平台除了主要的花束配置功能，還提供了課程預約、商城購物和花朵圖鑑等功能。
+專案企劃書及組內分工介紹：[連結](https://drive.google.com/file/d/1VNuqtVDKyTbmaUSBQANBKEWUgXMFKBcl/view)
 
 ## 功能
 
