@@ -8,8 +8,11 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
 import { MyButton } from '@/components/btn/mybutton'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function CardGroupRecommend({ courses }) {
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
   const sliderRef = useRef(null)
 
   if (!courses || courses.length === 0) {
@@ -89,11 +92,14 @@ export default function CardGroupRecommend({ courses }) {
               </CardFooter>
             </Link>
             <div className="absolute top-0 right-0 p-4">
-              {/*  傳遞課程 ID 到愛心元件 */}
-              <HeartButton
-                courseId={course.course_id}
-                opacity="text-opacity-40"
-              />
+              {/* 傳遞課程 ID 到愛心元件 */}
+              {/* 未登入不顯示愛心 */}
+              {auth.isAuth && (
+                <HeartButton
+                  courseId={course.course_id}
+                  opacity="text-opacity-40"
+                />
+              )}
             </div>
           </Card>
         ))}

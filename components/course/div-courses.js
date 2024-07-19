@@ -78,7 +78,7 @@ export default function CourseCard({ course, removeReviewedItem }) {
                 />
               </div>
               {/* 新表格 */}
-              <div className="flex flex-col w-full gap-2 md:mt-2">
+              <div className="flex flex-col h-full w-full self-center gap-2 md:mt-2">
                 <div className="flex flex-col md:flex-row py-1 md:py-0 border-b-1 md:border-0 border-tertiary-gray-200">
                   <div>上課時間：</div>
                   {course.course.datetimes && course.course.datetimes.length > 0
@@ -101,23 +101,25 @@ export default function CourseCard({ course, removeReviewedItem }) {
                   <div>上課地點：</div>
                   <div>{course.course.store.store_address}</div>
                 </div>
-                {course.course.reviews.length === 0 ? (
-                  <div
-                    className="flex flex-row py-1 md:py-0 items-center text-primary-100 cursor-pointer"
-                    onClick={() => handleReviewClick()}
-                  >
-                    未評價-進行評價
-                    <BsChevronRight />
-                  </div>
-                ) : (
-                  <Link
-                    href={`/course/${course.course_id}`}
-                    className="flex flex-row py-1 md:py-0 items-center text-tertiary-gray-100 cursor-pointer"
-                  >
-                    已評價-前往查看評價
-                    <BsChevronRight />
-                  </Link>
-                )}
+                {/* 是否已經評價過 */}
+                {course.isExpired &&
+                  (course.course.reviews.length === 0 ? (
+                    <div
+                      className="flex flex-row py-1 md:py-0 items-center text-primary-100 cursor-pointer"
+                      onClick={() => handleReviewClick()}
+                    >
+                      未評價-進行評價
+                      <BsChevronRight />
+                    </div>
+                  ) : (
+                    <Link
+                      href={`/course/${course.course_id}`}
+                      className="flex flex-row py-1 md:py-0 items-center text-tertiary-gray-100 cursor-pointer"
+                    >
+                      已評價-前往查看評價
+                      <BsChevronRight />
+                    </Link>
+                  ))}
               </div>
             </div>
           </AccordionItem>

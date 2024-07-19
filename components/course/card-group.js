@@ -4,8 +4,11 @@ import Link from 'next/link'
 import { BsFillStarFill } from 'react-icons/bs'
 import HeartButton from './btn-heart'
 import { useLocation } from 'react-use'
+import { useAuth } from '@/hooks/use-auth'
 
 export default function CardGroup({ courses }) {
+  const { auth } = useAuth() // 判斷會員用
+  const { isAuth } = auth
   const location = useLocation()
   const queryParams = new URLSearchParams(location.search)
   const keyword = queryParams.get('keyword')
@@ -33,14 +36,6 @@ export default function CardGroup({ courses }) {
       </>
     )
   }
-
-  // 花束袋-藍, 花束
-
-  // parts = [花束, 袋-藍]
-
-  // <span key={index} className="highlight">
-  //            花束
-  // </span>  袋-藍
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -81,11 +76,14 @@ export default function CardGroup({ courses }) {
             </CardFooter>
           </Link>
           <div className="absolute top-0 right-0 p-4">
-            {/*  傳遞課程 ID 到愛心元件 */}
-            <HeartButton
-              courseId={course.course_id}
-              opacity="text-opacity-40"
-            />
+            {/* 傳遞課程 ID 到愛心元件 */}
+            {/* 判斷是否登入，沒有登入就隱藏愛心 */}
+            {isAuth && (
+              <HeartButton
+                courseId={course.course_id}
+                opacity="text-opacity-40"
+              />
+            )}
           </div>
         </Card>
       ))}

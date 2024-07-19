@@ -11,7 +11,7 @@ import {
 import { Card, CardBody, CardFooter } from '@nextui-org/react'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { FaShareAlt } from 'react-icons/fa'
-import { BsChevronRight, BsChevronLeft } from 'react-icons/bs'
+import { BsChevronRight } from 'react-icons/bs'
 import { useAuth } from '@/hooks/use-auth'
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
@@ -24,12 +24,12 @@ import ShareModal from '@/components/common/modal-share'
 import CourseMap from '@/components/course/card-map'
 import ImageSlider from '@/components/course/image-slider'
 import CourseComment from '@/components/course/div-comment'
-import CardGroup from '@/components/course/card-group'
 import AverageStars from '@/components/course/star-average'
 import HeartButton from '@/components/course/btn-heart'
 import { useCourseFavorites } from '@/hooks/use-course-fav'
 import CardGroupRecommend from '@/components/course/card-group-recommend'
 import Head from 'next/head'
+import CourseLogin from '@/components/course/modal-login' // 提示登入彈窗
 
 export default function CourseDetails() {
   const { auth } = useAuth() // 判斷會員用
@@ -195,10 +195,12 @@ export default function CourseDetails() {
                       </span>
                     </div>
                     <div className="flex flex-row items-center">
-                      <HeartButton
-                        courseId={courseDetails.id}
-                        opacity="text-opacity-0"
-                      />
+                      {isAuth && (
+                        <HeartButton
+                          courseId={courseDetails.id}
+                          opacity="text-opacity-0"
+                        />
+                      )}
                       <button
                         onClick={onShareOpen}
                         className="flex flex-row items-center h-6 w-6 justify-center text-secondary-100 hover:text-[#FFAC9A]"
@@ -354,6 +356,8 @@ export default function CourseDetails() {
           isShareOpen={isShareOpen}
           onShareOpenChange={onShareOpenChange}
         />
+        {/* 登入提示 Modal */}
+        <CourseLogin />
       </DefaultLayout>
     </>
   )
