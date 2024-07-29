@@ -52,7 +52,6 @@ export default function CourseCheckOut() {
     }
 
     try {
-      // TODO:
       const payment_status_id = 2 // 預設的值
       const order_status_id = 2 // 預設的值
       // 將選項文字映射回選項id
@@ -64,11 +63,8 @@ export default function CourseCheckOut() {
 
       const paymentMethodMap = {
         綠界: 1,
-        藍新: 2,
-        'Line Pay': 3,
-        Paypal: 4,
-        現金: 5,
-        貨到付款: 6,
+        'Line Pay': 2,
+        現金: 3,
       }
 
       const invoice_id = invoiceOptionMap[fillOutDetails.invoiceOption]
@@ -258,7 +254,7 @@ export default function CourseCheckOut() {
               <TableRow key="1">
                 <TableCell className="pr-8 text-nowrap">付款方式</TableCell>
                 <TableCell className="w-full text-right">
-                  現金
+                  {fillOutDetails.paymentMethod}
                 </TableCell>
               </TableRow>
               <TableRow key="2">

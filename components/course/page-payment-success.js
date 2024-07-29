@@ -17,9 +17,7 @@ import { useLocation } from 'react-use'
 export default function CoursePaymentSuccess() {
   const { auth } = useAuth() // 判斷會員用
   const { isAuth } = auth
-
   const [activePage, setActivePage] = useState('cart')
-
   const [orderDetails, setOrderDetails] = useState(null)
 
   // 用來抓訂單id送去後端
@@ -102,42 +100,32 @@ export default function CoursePaymentSuccess() {
             <TableRow key="1">
               <TableCell>訂單編號</TableCell>
               <TableCell>
-                {orderDetails
-                  ? `#${shortenUUID(orderDetails.order_number)}`
-                  : '載入中'}
+                {`#${shortenUUID(orderDetails.order_number)}`}
               </TableCell>
             </TableRow>
             <TableRow key="2">
               <TableCell>訂單金額</TableCell>
-              <TableCell>
-                NT${orderDetails ? orderDetails.payment_amount : '載入中'}
-              </TableCell>
+              <TableCell>NT${orderDetails.payment_amount}</TableCell>
             </TableRow>
             <TableRow key="3">
               <TableCell>訂單狀態</TableCell>
-              <TableCell>
-                {orderDetails?.order_status?.name ?? '載入中'}
-              </TableCell>
+              <TableCell>{orderDetails.order_status.name}</TableCell>
             </TableRow>
             <TableRow key="4">
               <TableCell>付款方式</TableCell>
-              <TableCell>現金</TableCell>
+              <TableCell>{orderDetails.payment.name}</TableCell>
             </TableRow>
             <TableRow key="5">
               <TableCell>付款狀態</TableCell>
-              <TableCell>
-                {orderDetails?.payment_status?.name ?? '載入中'}
-              </TableCell>
+              <TableCell>{orderDetails.payment_status.name}</TableCell>
             </TableRow>
             <TableRow key="6">
               <TableCell>發票種類</TableCell>
-              <TableCell>{orderDetails?.invoice?.name ?? '載入中'}</TableCell>
+              <TableCell>{orderDetails.invoice.name}</TableCell>
             </TableRow>
             <TableRow key="7">
               <TableCell>訂單成立日期</TableCell>
-              <TableCell>
-                {orderDetails ? formatDate(orderDetails.created_at) : '載入中'}
-              </TableCell>
+              <TableCell>{formatDate(orderDetails.created_at)}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

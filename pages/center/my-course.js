@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useLoader } from '@/hooks/use-loader'
 import { Breadcrumbs, BreadcrumbItem } from '@nextui-org/react'
 import { Tabs, Tab } from '@nextui-org/react'
 import { useDisclosure } from '@nextui-org/react'
-import { Select, SelectItem } from '@nextui-org/react'
 import moment from 'moment'
 // 小組元件
 import DefaultLayout from '@/components/layout/default-layout'
 import CenterLayout from '@/components/layout/center-layout'
-import Loader from '@/components/common/loader'
 import Sidebar from '@/components/layout/sidebar'
 import Title from '@/components/common/title'
 import CourseSearch from '@/components/course/search'
@@ -18,7 +15,6 @@ import CoursePagination from '@/components/course/pagination'
 import Head from 'next/head'
 
 export default function MyCourseItems() {
-  // const { close, open, isLoading } = useLoader()
   const [orders, setOrders] = useState([])
   const [expiredItems, setExpiredItems] = useState([])
   const [upcomingItems, setUpcomingItems] = useState([])
@@ -105,8 +101,8 @@ export default function MyCourseItems() {
 
   useEffect(() => {
     const now = new Date()
-    const expired = []
-    const upcoming = []
+    const expired = [] // 已完課
+    const upcoming = [] // 未完課
     const unreviewed = [] // 未評價
 
     orders.forEach((item) => {
@@ -114,7 +110,10 @@ export default function MyCourseItems() {
       const startTime = item.course.datetimes[0].start_time.split(':')
       courseDate.setHours(startTime[0], startTime[1])
 
-      if (courseDate < now) {
+      const isExpired = courseDate > now
+      item.isExpired = isExpired
+
+      if (isExpired) {
         expired.push(item)
         // 雙重篩選
         if (item.course.reviews.length === 0) {

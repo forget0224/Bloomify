@@ -84,7 +84,11 @@ export default function CourseOrder({ order }) {
                   <div className="flex justify-between md:justify-start">
                     <span className="w-[100px]">付款方式：</span>
                     <span className="ml-1">
-                      現金
+                      {order.share_payment_id === 1
+                        ? '綠界'
+                        : order.share_payment_id === 2
+                        ? 'Line Pay'
+                        : '現金'}
                     </span>
                   </div>
                   <div className="flex justify-between md:justify-start">
